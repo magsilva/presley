@@ -7,7 +7,7 @@
  * and open the template in the editor.
  */
 
-package ontologia;
+package presley.ontologia;
 
 import java.util.LinkedList;
 
