@@ -1,0 +1,12 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: ProjectPresley Plug-in
+Bundle-SymbolicName: ProjectPresley; singleton:=true
+Bundle-Version: 1.0.0
+Bundle-Activator: projectpresley.Activator
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.eclipse.ui.console,
+ org.eclipse.jdt.ui
+Eclipse-LazyStart: true
+Bundle-RequiredExecutionEnvironment: J2SE-1.4
