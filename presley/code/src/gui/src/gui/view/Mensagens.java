@@ -1,4 +1,4 @@
-package projectpresley.view;
+package gui.view;
 
 /* Desenvolvido por Leandro Carlos e Samara Martins */
 

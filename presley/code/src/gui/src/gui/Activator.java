@@ -1,6 +1,6 @@
 /* Desenvolvido por Leandro Carlos e Samara Martins */
 
-package projectpresley;
+package gui;
 
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.plugin.AbstractUIPlugin;

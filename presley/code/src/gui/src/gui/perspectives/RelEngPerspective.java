@@ -10,7 +10,7 @@
  *******************************************************************************/
 
 
-package projectpresley.perspectives;
+package gui.perspectives;
 
 /* Desenvolvido por Leandro Carlos e Samara Martins */
 

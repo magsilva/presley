@@ -7,7 +7,7 @@
       <perspective
             name="Presley"
             icon="icons/releng_gears.gif"
-            class="projectpresley.perspectives.RelEngPerspective"
+            class="gui.perspectives.RelEngPerspective"
             id="projectpresley.perspectives.RelEngPerspective">
       </perspective>
    </extension>
@@ -18,9 +18,19 @@
             name="NovaCategoria">
       </category>
       <view
-            class="projectpresley.view.Mensagens"
+            class="gui.view.Mensagens"
             id="ProjectPresley.NovaVisao"
             name="Mensagens"
+            restorable="true">
+      </view>
+      <category
+            id="gui.OutraCategoria"
+            name="outraCategoria">
+      </category>
+      <view
+            class="gui.view.Atividade"
+            id="gui.Atividade"
+            name="name"
             restorable="true">
       </view>
    </extension>
