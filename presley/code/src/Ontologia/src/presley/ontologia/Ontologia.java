@@ -1,4 +1,6 @@
-import java.util.LinkedList;
+package presley.ontologia;
+
+import java.util.ArrayList;
 
 /**
  * Esta classe relaciona uma detrminada Ontologia,
@@ -15,7 +17,7 @@ public class Ontologia {
     
     boolean [][] DAG; /** DIRECT ACYCLIC GRAPH. */
     int [][] usersCounts; /** Contadores dos conhecimentos dos usuarios. */
-    LinkedList<Integer> stack; /** Pilha de trabalho. */
+    ArrayList<Integer> stack; /** Pilha de trabalho. */
     
     /** 
      * Cria uma  nova instancia de ontologia
@@ -28,7 +30,7 @@ public class Ontologia {
     {
         this.DAG = DAG;
         this.usersCounts = usersCounts;
-        stack = new LinkedList<Integer>();
+        stack = new ArrayList<Integer>();
     }
     
     /**
@@ -38,18 +40,18 @@ public class Ontologia {
      * @param start O no de inicio (deve ser o pai)
      * @param end O no de trmino (deve ser um noh folha)
      * @param list Lista auxiliar SEMPRE deve ser igual a null.
-     * @return LinkedList<LinkedList<Integer>> Uma lista de listas correspondente aos caminhos que ligam start e end na estrutura da ontologia.
+     * @return ArrayList<ArrayList<Integer>> Uma lista de listas correspondente aos caminhos que ligam start e end na estrutura da ontologia.
      */
-    public LinkedList<LinkedList<Integer>> find_closed_paths(int start, int end, LinkedList<LinkedList<Integer>> list)
+    public ArrayList<ArrayList<Integer>> find_closed_paths(int start, int end, ArrayList<ArrayList<Integer>> list)
     {
     	if(list == null)
     	{
-    		LinkedList<LinkedList<Integer>> l = new LinkedList<LinkedList<Integer>>();
+    		ArrayList<ArrayList<Integer>> l = new ArrayList<ArrayList<Integer>>();
     		find_closed_paths(start, end, l);
     		return l;
     	}
     	
-        LinkedList<Integer> aux = null; 
+        ArrayList<Integer> aux = null; 
         
         if(stack.contains(new Integer(start)))
                 return null;
@@ -58,7 +60,7 @@ public class Ontologia {
         
         if(start == end)
         {
-                aux = new LinkedList<Integer>();
+                aux = new ArrayList<Integer>();
                 for(int i = 0; i < stack.size(); i++)
                         aux.add(stack.get(i));
                 
@@ -82,11 +84,11 @@ public class Ontologia {
      * imediatamente ligados a um no.
      *  
      * @param node_id O identificador do no cujos filhos se deseja obter.
-     * @return LinkedList<Integer> Uma lista com os identificadores dos filhos.
+     * @return ArrayList<Integer> Uma lista com os identificadores dos filhos.
      */
-    public LinkedList<Integer> getFirstSons(int node_id)
+    public ArrayList<Integer> getFirstSons(int node_id)
     {
-        LinkedList<Integer> ret = new LinkedList<Integer>();
+        ArrayList<Integer> ret = new ArrayList<Integer>();
 
         for(int i = 0; i < DAG.length; i++)
                 if(DAG[node_id][i])
@@ -99,15 +101,15 @@ public class Ontologia {
      *  
      * @param node_id O identificador do no cujos filhos se deseja obter.
      * @param list Uma lista auxiliar. SEMPRE deve ter valor null, na chamada do metodo.
-     * @return LinkedList<Integer> Uma lista com os identificadores de todos filhos.
+     * @return ArrayList<Integer> Uma lista com os identificadores de todos filhos.
      */
-    public LinkedList<Integer> getAllSons(int node_id, LinkedList<Integer> list)
+    public ArrayList<Integer> getAllSons(int node_id, ArrayList<Integer> list)
     {
     	if(list == null)
     	{
-    		LinkedList<Integer> ret = new LinkedList<Integer>();
+    		ArrayList<Integer> ret = new ArrayList<Integer>();
     		
-    		LinkedList<Integer> aux = getFirstSons(node_id);
+    		ArrayList<Integer> aux = getFirstSons(node_id);
      
             for(int i=0; i < aux.size(); i++)
             	getAllSons(aux.get(i).intValue(), ret);
@@ -117,7 +119,7 @@ public class Ontologia {
     	
     	list.add(new Integer(node_id));
     	
-    	LinkedList<Integer> aux = getFirstSons(node_id);
+    	ArrayList<Integer> aux = getFirstSons(node_id);
         
         for(int i=0; i < aux.size(); i++)
         	getAllSons(aux.get(i).intValue(), list);
@@ -130,15 +132,15 @@ public class Ontologia {
      *  
      * @param node_id O identificador do no cujos pais se deseja obter.
      * @param list Uma lista auxiliar. SEMPRE deve ter valor null, na chamada do metodo.
-     * @return LinkedList<Integer> Uma lista com os identificadores de todos filhos.
+     * @return ArrayList<Integer> Uma lista com os identificadores de todos filhos.
      */
-    public LinkedList<Integer> getAllParents(int node_id, LinkedList<Integer> list)
+    public ArrayList<Integer> getAllParents(int node_id, ArrayList<Integer> list)
     {
     	if(list == null)
     	{
-    		LinkedList<Integer> ret = new LinkedList<Integer>();
+    		ArrayList<Integer> ret = new ArrayList<Integer>();
     		
-    		LinkedList<Integer> aux = getFirstParents(node_id);
+    		ArrayList<Integer> aux = getFirstParents(node_id);
      
             for(int i=0; i < aux.size(); i++)
             	getAllSons(aux.get(i).intValue(), ret);
@@ -148,7 +150,7 @@ public class Ontologia {
     	
     	list.add(new Integer(node_id));
     	
-    	LinkedList<Integer> aux = getFirstParents(node_id);
+    	ArrayList<Integer> aux = getFirstParents(node_id);
         
         for(int i=0; i < aux.size(); i++)
         	getAllSons(aux.get(i).intValue(), list);
@@ -212,11 +214,11 @@ public class Ontologia {
      * imediatamente ligados a um no.
      *  
      * @param node_id O identificador do no cujos pais se deseja obter.
-     * @return LinkedList<Integer> Uma lista com os identificadores dos pais.
+     * @return ArrayList<Integer> Uma lista com os identificadores dos pais.
      */
-    public LinkedList<Integer> getFirstParents(int node_id)
+    public ArrayList<Integer> getFirstParents(int node_id)
     {
-        LinkedList<Integer> ret = new LinkedList<Integer>();
+        ArrayList<Integer> ret = new ArrayList<Integer>();
 
         for(int i = 0; i < DAG.length; i++)
                 if(DAG[i][node_id])
@@ -246,19 +248,23 @@ public class Ontologia {
      *@param counts Os contadores de um determinado usuario
      *@return O valor do nivel do usuario sobre determinado conhecimento
      */
-    private int calculaScore(int[] counts, LinkedList<LinkedList<Integer>> caminhos)
+    private int calculaScore(int[] counts, ArrayList<ArrayList<Integer>> caminhos)
     {
-        int ret = 0;
-        int aux = 1;
+        double ret = 0;
+        double aux = 1;
         
         for(int i=0; i < caminhos.size(); i++)
         {
-            for(int j=0; j < caminhos.get(i).size(); j++)
-                aux *= counts[caminhos.get(i).get(j).intValue()];
+        	aux = 1;
+        	
+            for(int j=0; j < caminhos.get(i).size(); j++)                
+            	aux *= 1.0/counts[caminhos.get(i).get(j).intValue()];
+            
             ret += aux;
+            
         }
-  
-        return ret;    
+        
+        return (int) Math.round(10000 * (1 - ret));    
     }
     
     /**
@@ -271,7 +277,7 @@ public class Ontologia {
      */
     public int getScore(int user_id, int conh_id)
     {
-    	LinkedList<LinkedList<Integer>> caminhos = this.find_closed_paths(0, conh_id, null);
+    	ArrayList<ArrayList<Integer>> caminhos = this.find_closed_paths(0, conh_id, null);
     	return this.calculaScore(usersCounts[user_id], caminhos);
     }
 }
