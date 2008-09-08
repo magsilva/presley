@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+
+   <extension
+         point="org.eclipse.ui.perspectives">
+      <perspective
+            name="Presley"
+            icon="icons/releng_gears.gif"
+            class="gui.perspectives.RelEngPerspective"
+            id="projectpresley.perspectives.RelEngPerspective">
+      </perspective>
+   </extension>
+   <extension
+         point="org.eclipse.ui.views">
+      <category
+            id="ProjectPresley.NovaCategoria"
+            name="NovaCategoria">
+      </category>
+      <view
+            class="gui.view.Mensagens"
+            id="ProjectPresley.NovaVisao"
+            name="Mensagens"
+            restorable="true">
+      </view>
+      <category
+            id="gui.OutraCategoria"
+            name="outraCategoria">
+      </category>
+      <view
+            class="gui.view.Atividade"
+            id="gui.Atividade"
+            name="Atividade"
+            restorable="true">
+      </view>
+   </extension>
+
+</plugin>
