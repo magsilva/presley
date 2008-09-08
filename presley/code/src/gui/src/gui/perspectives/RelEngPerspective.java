@@ -38,6 +38,7 @@ public class RelEngPerspective implements IPerspectiveFactory {
 
 	public void createInitialLayout(IPageLayout factory) {
 		this.factory = factory;
+		
 		addViews();
 		addActionSets();
 		addNewWizardShortcuts();
@@ -51,10 +52,15 @@ public class RelEngPerspective implements IPerspectiveFactory {
 		
 		IFolderLayout bottom =
 			factory.createFolder(
-				"bottomRight", //NON-NLS-1
+				"topRight", //NON-NLS-1
 				IPageLayout.BOTTOM,
 				0.75f,
 				factory.getEditorArea());
+		
+		// Top left: Resource Navigator view and Bookmarks view placeholder
+		
+		
+		
 		bottom.addView(IPageLayout.ID_PROBLEM_VIEW);
 		bottom.addView("org.eclipse.team.ui.GenericHistoryView"); //NON-NLS-1
 		bottom.addPlaceholder(IConsoleConstants.ID_CONSOLE_VIEW);
