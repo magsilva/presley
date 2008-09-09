@@ -17,13 +17,34 @@ import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 import org.eclipse.ui.part.ViewPart;
 
+enum COMPONENT {
+	SPACE,
+	LABEL,
+	BUTTON,
+	TREE
+}
+
 public class Atividade extends ViewPart {
 
+	private Point location;
+	private Point size;
+	private String selection;
+	
 	public Atividade() {
-		// TODO Auto-generated constructor stub
+		location = new Point(0,0);
+		size = new Point(0,0);
+		selection = "";
+	}
+	
+	
+	
+	public void createPartControl(Composite parent) 
+	{		
+		parent.setLayout(null);
+		initComponents(parent);
 	}
 
-	public void createPartControl(Composite parent) {
+/*	public void createPartControl(Composite parent) {
 		
 		FillLayout fl = new FillLayout();
 		fl.type = SWT.VERTICAL;
@@ -81,10 +102,95 @@ public class Atividade extends ViewPart {
 		radio5.setText("Erro 2 ...");	
 
 	}
-
+*/
 	public void setFocus() {
 		// TODO Auto-generated method stub
 
 	}
+	
+	private Point getNextLocation()
+	{
+		return this.location;
+	}
+	
+	private Point getSize(COMPONENT component)
+	{
+		if(component == COMPONENT.BUTTON)
+		{
+			this.size.x = 300;
+			this.size.y = 25;
+		}
+		else if(component == COMPONENT.LABEL)
+		{
+			this.size.x = 180;
+			this.size.y = 25;
+		}else if(component == COMPONENT.SPACE)
+		{
+			this.size.x = 0;
+			this.size.y = 5;
+		}else if(component == COMPONENT.TREE)
+		{
+			this.size.x = 300;
+			this.size.y = 150;
+		}		
+		
+		this.location.y += this.size.y;
+		
+		return this.size;
+	}
 
+	private void initComponents(Composite parent)
+	{
+		this.location = new Point(0,0);		
+		this.size = new Point(0,0);
+
+		ArrayList<String> atividadesNomes = ViewComunication.getAtividades();
+		
+		if(atividadesNomes.size() > 0)
+			this.selection = atividadesNomes.get(0);
+		
+		for(String e : atividadesNomes)
+		{
+			Button b = new Button(parent, SWT.RADIO);
+			b.setText(e);
+			b.setLocation(this.getNextLocation());
+			b.setSize(this.getSize(COMPONENT.BUTTON));
+		}
+		
+		this.getSize(COMPONENT.SPACE);	
+		
+		Label conhecimentoLabel = new Label(parent, SWT.BORDER | SWT.CENTER);
+		conhecimentoLabel.setText("Conhecimentos Envolvidos");
+		conhecimentoLabel.setLocation(this.getNextLocation());
+		conhecimentoLabel.setSize(this.getSize(COMPONENT.LABEL));		
+		
+		final Tree conhecimentoTree = new Tree(parent, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL | SWT.CHECK);
+		conhecimentoTree.setLocation(this.getNextLocation());
+		conhecimentoTree.setSize(this.getSize(COMPONENT.TREE));
+		
+			ArrayList<String> conhecimentos = ViewComunication.getConhecimentosEnvolvidos(this.selection);
+				for(String c : conhecimentos)
+				{
+					TreeItem item = new TreeItem(conhecimentoTree, SWT.NONE);
+					item.setText(c);
+				}			
+
+		this.getSize(COMPONENT.SPACE);	
+		
+		Label problemaLabel = new Label(parent, SWT.BORDER | SWT.CENTER);
+		problemaLabel.setText("Problemas Encontrados");
+		problemaLabel.setLocation(this.getNextLocation());
+		problemaLabel.setSize(this.getSize(COMPONENT.LABEL));
+		
+		final Tree problemaTree = new Tree(parent, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL | SWT.CHECK);
+		problemaTree.setLocation(this.getNextLocation());
+		problemaTree.setSize(this.getSize(COMPONENT.TREE));
+		
+			ArrayList<String> conhecimentos = ViewComunication.getProblemas(this.selection);
+				for(String c : conhecimentos)
+				{
+					TreeItem item = new TreeItem(problemaTree, SWT.NONE);
+					item.setText(c);
+				}			
+	}
 }
