@@ -32,12 +32,7 @@ enum COMPONENT {
 
 public class Atividade extends ViewPart {
 
-	private  Point location;
-	private  Point size;
 	private ArrayList<Button> buttons;
-	private ArrayList<Point> locations;
-	private ArrayList<Point> sizes;
-	
 
 	public Atividade()
 	{
@@ -112,66 +107,23 @@ public class Atividade extends ViewPart {
 	public void setFocus() {
 		// TODO Auto-generated method stub
 
-	}
+	}	
 	
-	private Point getNextLocation()
-	{
-		return location;
-	}
-	
-	private Point getSize(COMPONENT component)
-	{
-		if(component == COMPONENT.BUTTON)
-		{
-			size.x = 300;
-			size.y = 25;
-		}
-		else if(component == COMPONENT.LABEL)
-		{
-			size.x = 180;
-			size.y = 25;
-		}else if(component == COMPONENT.TREE)
-		{
-			size.x = 300;
-			size.y = 150;
-		}		
-		
-		location.y += size.y;
-		
-		return size;
-	}
-
 	private void initComponents(Composite parent)
 	{
-		locations = new ArrayList<Point>();
-		sizes = new ArrayList<Point>();
-		location = new Point(0,0);		
-		size = new Point(0,0);
 		buttons = new ArrayList<Button>();
 
 		ArrayList<String> atividadesNomes = ViewComunication.getAtividades();
 		
-		for(String e : atividadesNomes)
+		for(int i=0; i < atividadesNomes.size(); i++)
 		{
 			final Button b = new Button(parent, SWT.RADIO);
-			b.setText(e);
-			b.setLocation(getNextLocation());
-			b.setSize(getSize(COMPONENT.BUTTON));
+			b.setText(atividadesNomes.get(i));
+			b.setLocation(0, i*25);
+			b.setSize(200, 25);
 			this.buttons.add(b);	
 		}
-		
-		locations.add(getNextLocation());
-		sizes.add(getSize(COMPONENT.LABEL));
-		
-		locations.add(getNextLocation());
-		sizes.add(getSize(COMPONENT.TREE));
-		
-		locations.add(getNextLocation());
-		sizes.add(getSize(COMPONENT.LABEL));
-		
-		locations.add(getNextLocation());
-		sizes.add(getSize(COMPONENT.TREE));
-		
+	
 		for(final Button b : buttons)
 		{
 			b.addMouseListener(new MouseListener(){
@@ -181,16 +133,17 @@ public class Atividade extends ViewPart {
 	
 				public void mouseDown(MouseEvent e) {
 					String selection = b.getText();
-					Composite parent = b.getParent();						
-					
+					Composite parent = b.getParent();
+					int depoisButoes = ViewComunication.getAtividades().size()*25;
+											
 					Label conhecimentoLabel = new Label(parent, SWT.BORDER | SWT.CENTER);
 					conhecimentoLabel.setText("Conhecimentos Envolvidos");
-					conhecimentoLabel.setLocation(locations.get(0));
-					conhecimentoLabel.setSize(sizes.get(0));		
+					conhecimentoLabel.setLocation(0, depoisButoes + 5);
+					conhecimentoLabel.setSize(200, 20);		
 					
 					final Tree conhecimentoTree = new Tree(parent, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL | SWT.CHECK);
-					conhecimentoTree.setLocation(locations.get(1));
-					conhecimentoTree.setSize(sizes.get(1));
+					conhecimentoTree.setLocation(0, depoisButoes + 30);
+					conhecimentoTree.setSize(200, 150);
 					
 						ArrayList<String> conhecimentos = ViewComunication.getConhecimentosEnvolvidos(selection);
 						if(conhecimentos != null)
@@ -199,16 +152,15 @@ public class Atividade extends ViewPart {
 								TreeItem item = new TreeItem(conhecimentoTree, SWT.NONE);
 								item.setText(c);
 							}			
-
 					
 					Label problemaLabel = new Label(parent, SWT.BORDER | SWT.CENTER);
 					problemaLabel.setText("Problemas Encontrados");
-					problemaLabel.setLocation(locations.get(2));
-					problemaLabel.setSize(sizes.get(2));
+					problemaLabel.setLocation(0, depoisButoes + 185);
+					problemaLabel.setSize(200, 25);
 					
-					final Tree problemaTree = new Tree(parent, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL | SWT.CHECK);
-					problemaTree.setLocation(locations.get(3));
-					problemaTree.setSize(sizes.get(3));
+					final Tree problemaTree = new Tree(parent, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL | SWT.CHECK | SWT.SCROLL_LINE);
+					problemaTree.setLocation(0, depoisButoes + 210);
+					problemaTree.setSize(200, 150);
 					
 						ArrayList<String> problemas = ViewComunication.getProblemas(selection);
 						
@@ -218,6 +170,7 @@ public class Atividade extends ViewPart {
 								TreeItem item = new TreeItem(problemaTree, SWT.NONE);
 								item.setText(c);
 							}
+						
 						parent.update();
 						parent.redraw();		
 				}

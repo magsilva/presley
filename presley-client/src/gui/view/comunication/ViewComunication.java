@@ -44,15 +44,15 @@ public class ViewComunication {
 		ViewComunication.addAtividade("Java", conh, prob);
 		
 		ArrayList<String> conh1 = new ArrayList<String>();
-		conh.add("Ponteiro");
-		conh.add("QS");
+		conh1.add("Ponteiro");
+		conh1.add("QS");
 		
-		ArrayList<String> prob2 = new ArrayList<String>();
-		prob.add("Not a mumber");
-		prob.add("segmentation faul");
-		prob.add("stack error");
+		ArrayList<String> prob1 = new ArrayList<String>();
+		prob1.add("Not a mumber");
+		prob1.add("segmentation faul");
+		prob1.add("stack error");
 		
-		ViewComunication.addAtividade("C++", conh1, prob2);
+		ViewComunication.addAtividade("C++", conh1, prob1);
 	}
 }
 
