@@ -101,7 +101,7 @@ public class Atividade extends ViewPart {
 					Label problemaLabel = new Label(parent, SWT.BORDER | SWT.CENTER);
 					problemaLabel.setText("Problemas Encontrados");
 					problemaLabel.setLocation(0, depoisButoes + 185);
-					problemaLabel.setSize(200, 25);
+					problemaLabel.setSize(200, 20);
 					
 					final Tree problemaTree = new Tree(parent, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL | SWT.CHECK | SWT.SCROLL_LINE);
 					problemaTree.setLocation(0, depoisButoes + 210);
