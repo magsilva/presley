@@ -4,33 +4,38 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class ViewComunication {	
-	private static ArrayList<String> atividades = new ArrayList<String>();	
-	private static HashMap<String,ArrayList<String>> conhecimentos = new HashMap<String,ArrayList<String>>();
-	private static HashMap<String,ArrayList<String>> problemas = new HashMap<String,ArrayList<String>>();
+	private ArrayList<String> atividades = new ArrayList<String>();	
+	private HashMap<String,ArrayList<String>> conhecimentos = new HashMap<String,ArrayList<String>>();
+	private HashMap<String,ArrayList<String>> problemas = new HashMap<String,ArrayList<String>>();
 	
-	public static ArrayList<String> getAtividades()
+	public ArrayList<String> getAtividades()
 	{
-		return ViewComunication.atividades;
+		return this.atividades;
 	}
 	
-	public static ArrayList<String> getConhecimentosEnvolvidos(String atividade)
+	public ArrayList<String> getConhecimentosEnvolvidos(String atividade)
 	{
-		return ViewComunication.conhecimentos.get(atividade);
+		return this.conhecimentos.get(atividade);
 	}
 	
-	public static ArrayList<String> getProblemas(String atividade)
+	public ArrayList<String> getProblemas(String atividade)
 	{
-		return ViewComunication.problemas.get(atividade);
+		return this.problemas.get(atividade);
 	}
 	
-	public static void addAtividade(String atividade, ArrayList<String> conhecimentos, ArrayList<String> problemas)
+	/**
+	 * @param atividade
+	 * @param conhecimentos
+	 * @param problemas
+	 */
+	public void addAtividade(String atividade, ArrayList<String> conhecimentos, ArrayList<String> problemas)
 	{
-		ViewComunication.atividades.add(atividade);
-		ViewComunication.conhecimentos.put(atividade, conhecimentos);
-		ViewComunication.problemas.put(atividade, problemas);
+		this.atividades.add(atividade);
+		this.conhecimentos.put(atividade, conhecimentos);
+		this.problemas.put(atividade, problemas);
 	}
 	
-	public static void teste()
+	public void teste()
 	{
 		ArrayList<String> conh = new ArrayList<String>();
 		conh.add("JU");
@@ -41,7 +46,7 @@ public class ViewComunication {
 		prob.add("web");
 		prob.add("RMI");
 		
-		ViewComunication.addAtividade("Java", conh, prob);
+		this.addAtividade("Java", conh, prob);
 		
 		ArrayList<String> conh1 = new ArrayList<String>();
 		conh1.add("Ponteiro");
@@ -52,7 +57,7 @@ public class ViewComunication {
 		prob1.add("segmentation faul");
 		prob1.add("stack error");
 		
-		ViewComunication.addAtividade("C++", conh1, prob1);
+		this.addAtividade("C++", conh1, prob1);
 	}
 }
 
