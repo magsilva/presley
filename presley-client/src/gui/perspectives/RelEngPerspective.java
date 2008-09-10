@@ -70,6 +70,7 @@ public class RelEngPerspective implements IPerspectiveFactory {
 		
 		factory.addFastView("org.eclipse.team.ccvs.ui.RepositoriesView",0.50f); //NON-NLS-1
 		factory.addFastView("org.eclipse.team.sync.views.SynchronizeView", 0.50f); //NON-NLS-1
+	
 	}
 
 	private void addActionSets() {
