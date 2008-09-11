@@ -1,7 +1,6 @@
 package validacao.implementacao;
 
 import beans.Conhecimento;
-import beans.Desenvolvedor;
 import persistencia.implementacao.ServicoAtividadeImplDAO;
 import persistencia.implementacao.ServicoConhecimentoImplDAO;
 import persistencia.interfaces.ServicoAtividade;
