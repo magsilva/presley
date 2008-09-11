@@ -18,7 +18,7 @@ import persistencia.interfaces.ServicoSolucao;
 
 public class ServicoSolucaoImplDAO implements ServicoSolucao{
 
-	public boolean atualizarStatusDaSolução(int id, boolean status) {
+	public boolean atualizarStatusDaSolucao(int id, boolean status) {
 		
 		MySQLConnectionFactory factory = new MySQLConnectionFactory();
 		

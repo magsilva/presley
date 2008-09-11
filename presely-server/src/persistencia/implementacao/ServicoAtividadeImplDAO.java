@@ -17,10 +17,10 @@ import persistencia.interfaces.ServicoDesenvolvedor;
 /**
  * 
  * @author Amilcar Jr
- * Essa classe contém a implementacao de operações para 
+ * Essa classe contm a implementacao de operaes para 
  * administracao de atividades.
  * 
- * Última modificacao: 03/09/2008 por Amilcar Jr
+ * ltima modificacao: 09/09/2008 por RodrigoCMD
  */
 
 public class ServicoAtividadeImplDAO implements ServicoAtividade{
@@ -54,7 +54,7 @@ public class ServicoAtividadeImplDAO implements ServicoAtividade{
 	         try {
 	             conn.close();
 	           } catch (SQLException onConClose) {
-	             System.out.println(" Houve erro no fechamento da conexão ");
+	             System.out.println(" Houve erro no fechamento da conexo ");
 	             onConClose.printStackTrace();	             
 	           }
 	         }
@@ -89,7 +89,7 @@ public class ServicoAtividadeImplDAO implements ServicoAtividade{
 	         try {
 	             conn.close();
 	           } catch (SQLException onConClose) {
-	             System.out.println(" Houve erro no fechamento da conexão ");
+	             System.out.println(" Houve erro no fechamento da conexo ");
 	             onConClose.printStackTrace();	             
 	           }
 	         }
@@ -144,7 +144,7 @@ public class ServicoAtividadeImplDAO implements ServicoAtividade{
 	         try {
 	             conn.close();
 	           } catch (SQLException onConClose) {
-	             System.out.println(" Houve erro no fechamento da conexão ");
+	             System.out.println(" Houve erro no fechamento da conexo ");
 	             onConClose.printStackTrace();	             
 	           }
 	         }
@@ -194,7 +194,7 @@ public class ServicoAtividadeImplDAO implements ServicoAtividade{
 	         try {
 	             conn.close();
 	           } catch (SQLException onConClose) {
-	             System.out.println(" Houve erro no fechamento da conexão ");
+	             System.out.println(" Houve erro no fechamento da conexo ");
 	             onConClose.printStackTrace();	             
 	           }
 	         }
@@ -254,7 +254,7 @@ public class ServicoAtividadeImplDAO implements ServicoAtividade{
 	         try {
 	             conn.close();
 	           } catch (SQLException onConClose) {
-	             System.out.println(" Houve erro no fechamento da conexão ");
+	             System.out.println(" Houve erro no fechamento da conexo ");
 	             onConClose.printStackTrace();	             
 	           }
 	         }
@@ -290,7 +290,7 @@ public class ServicoAtividadeImplDAO implements ServicoAtividade{
 	         try {
 	             conn.close();
 	           } catch (SQLException onConClose) {
-	             System.out.println(" Houve erro no fechamento da conexão ");
+	             System.out.println(" Houve erro no fechamento da conexo ");
 	             onConClose.printStackTrace();	             
 	           }
 	         }
@@ -327,7 +327,7 @@ public class ServicoAtividadeImplDAO implements ServicoAtividade{
 	         try {
 	             conn.close();
 	           } catch (SQLException onConClose) {
-	             System.out.println(" Houve erro no fechamento da conexão ");
+	             System.out.println(" Houve erro no fechamento da conexo ");
 	             onConClose.printStackTrace();	             
 	           }
 	         }
@@ -358,7 +358,7 @@ public class ServicoAtividadeImplDAO implements ServicoAtividade{
 	         try {
 	             conn.close();
 	           } catch (SQLException onConClose) {
-	             System.out.println(" Houve erro no fechamento da conexão ");
+	             System.out.println(" Houve erro no fechamento da conexo ");
 	             onConClose.printStackTrace();	             
 	           }
 	         }
@@ -398,7 +398,7 @@ public class ServicoAtividadeImplDAO implements ServicoAtividade{
 	         try {
 	             conn.close();
 	           } catch (SQLException onConClose) {
-	             System.out.println(" Houve erro no fechamento da conexão ");
+	             System.out.println(" Houve erro no fechamento da conexo ");
 	             onConClose.printStackTrace();	             
 	           }
 	         }
@@ -438,7 +438,7 @@ public class ServicoAtividadeImplDAO implements ServicoAtividade{
 	         try {
 	             conn.close();
 	           } catch (SQLException onConClose) {
-	             System.out.println(" Houve erro no fechamento da conexão ");
+	             System.out.println(" Houve erro no fechamento da conexo ");
 	             onConClose.printStackTrace();	             
 	           }
 	         }
@@ -480,12 +480,51 @@ public class ServicoAtividadeImplDAO implements ServicoAtividade{
 	         try {
 	             conn.close();
 	           } catch (SQLException onConClose) {
-	             System.out.println(" Houve erro no fechamento da conexão ");
+	             System.out.println(" Houve erro no fechamento da conexo ");
+	             onConClose.printStackTrace();	             
+	           }
+	         }		
+	}
+
+	public boolean desassociarAtividades(int idSubAtividade, int idAtividadePai) {
+		MySQLConnectionFactory factory = new MySQLConnectionFactory();
+		
+		Connection conn = factory.getConnection();
+		
+		try {
+		
+			Statement stm = conn.createStatement();
+		
+			String SQL;
+			
+			if (this.atividadeExiste(idSubAtividade) &&
+				this.atividadeExiste(idAtividadePai)){
+				
+			
+				SQL = " UPDATE atividade SET atividadePai = '0'"+
+				      " WHERE id = "+idSubAtividade+";";
+				
+				System.out.println(SQL);
+				stm.execute(SQL);
+				return true;
+				
+			}else{
+				return false;
+			}
+			
+			
+		} catch (SQLException e) {
+			//e.printStackTrace();
+			return false;
+		} finally {
+	         try {
+	             conn.close();
+	           } catch (SQLException onConClose) {
+	             System.out.println(" Houve erro no fechamento da conexo ");
 	             onConClose.printStackTrace();	             
 	           }
 	         }
-					
-		
 	}
 
 }
+
