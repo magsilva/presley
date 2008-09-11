@@ -2,6 +2,7 @@ package gui.view;
 
 import gui.view.comunication.ViewComunication;
 
+import java.awt.Event;
 import java.security.MessageDigest;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -22,6 +23,8 @@ import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.events.ControlListener;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.KeyListener;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.MouseMoveListener;
@@ -53,6 +56,10 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.refresh.IRefreshMonitor;
 import org.eclipse.core.resources.refresh.IRefreshResult;
 import org.eclipse.core.resources.refresh.RefreshProvider;
+import org.eclipse.swt.events.FocusEvent;
+import org.eclipse.swt.events.FocusListener;
+import org.eclipse.swt.events.MouseAdapter;
+import org.eclipse.swt.events.MouseEvent;
 
 
 public class Atividade extends ViewPart {
@@ -65,6 +72,7 @@ public class Atividade extends ViewPart {
 	private Label problemaLabel;
 	private Composite panel;
 	private Text textAtividade;
+	private boolean textoHabilitado = false;
 	
 	public Atividade()
 	{
@@ -141,11 +149,7 @@ public class Atividade extends ViewPart {
 	private void initComponents(final Composite parent)
 	{
 		buttons = new ArrayList<Button>();
-		
-		/*final Button novaAtividade = new Button(parent, SWT.ICON);
-		novaAtividade.setLocation(4,4);
-		novaAtividade.setSize(16, 16);
-		*/
+			
 		panel = new Composite(parent, SWT.V_SCROLL | SWT.BORDER);
 		panel.setLocation(0, 25);
 		panel.setSize(200, 100);
@@ -155,86 +159,61 @@ public class Atividade extends ViewPart {
 				
 		textAtividade = new Text(parent, SWT.BORDER);
 		textAtividade.setSize(200, 25);
-		textAtividade.setLocation(0, 0);
+		textAtividade.setLocation(24, 0);
 		textAtividade.setVisible(true);
 		textAtividade.setTextLimit(200);
 		
-		textAtividade.addKeyListener(
-				new KeyListener(){
-
-					public void keyPressed(KeyEvent arg0) {
-						// TODO Auto-generated method stub
-						
-					}
-
-					public void keyReleased(KeyEvent arg0) {
-						// TODO Auto-generated method stub
-						
-					}
-					
-				});
-		
-	//	Image novo = new Image(novaAtividade.getDisplay(), "C:/Documents and Settings/alyson/Desktop/project_client/src/gui/view/add.gif");
-	//	novaAtividade.setImage(novo);
-		
-
-	//	novaAtividade.setImage(new Image(null, "icons/novo.gif"));
-		/*
-		novaAtividade.addMouseListener(
-				new MouseListener()
-				{
-					public void mouseDoubleClick(MouseEvent arg0) {
-						// TODO Auto-generated method stub
-						
-					}
-
-					public void mouseDown(MouseEvent arg0) {
-									
-						//colocar a tela para captura das atividades
-						
-						textAtividade.setVisible(true);
-						textAtividade.setFocus();
-						atualizaPosicaoComponentes();
-						String novaAtividade = "";
-						
-						try {
-							this.wait();
-						} catch (InterruptedException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-						
-						novaAtividade = textAtividade.getText();
-						
-						textAtividade.setText("");
-						
-						viewComunication.addAtividade(novaAtividade, null, null);
-												
-						final Button novoButao = new Button(panel, SWT.RADIO);
-						novoButao.setText(novaAtividade);
-						buttons.add(novoButao);
-						
-						final Tree conhecimentoTree = new Tree(parent, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL | SWT.CHECK | SWT.SCROLL_LINE);
-						conhecimentoTree.setVisible(false);						
-						conhecimentosTree.put(novaAtividade, conhecimentoTree);
-						
-						final Tree problemaTree = new Tree(parent, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL | SWT.CHECK | SWT.SCROLL_LINE);
-						problemaTree.setVisible(false);						
-						problemasTree.put(novaAtividade, conhecimentoTree);
-						
-						setListener(novoButao);		
-						textAtividade.setVisible(false);
-						atualizaPosicaoComponentes();					
-					}
-
-					public void mouseUp(MouseEvent arg0) {
-						// TODO Auto-generated method stub
-						
-					}
-					
-				}
-				);
-		*/
+	    FocusListener focusListener = new FocusListener() {
+	        public void focusGained(FocusEvent e) {
+	        	/*Text t = (Text) e.widget;
+	        	String novaAtividade = t.getText();						
+				
+				viewComunication.addAtividade(novaAtividade, null, null);						
+				textAtividade.setText("");
+										
+				final Button novoButao = new Button(panel, SWT.RADIO);
+				novoButao.setText(novaAtividade);
+				buttons.add(novoButao);
+				
+				final Tree conhecimentoTree = new Tree(parent, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL | SWT.CHECK | SWT.SCROLL_LINE);
+				conhecimentoTree.setVisible(false);						
+				conhecimentosTree.put(novaAtividade, conhecimentoTree);
+				
+				final Tree problemaTree = new Tree(parent, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL | SWT.CHECK | SWT.SCROLL_LINE);
+				problemaTree.setVisible(false);						
+				problemasTree.put(novaAtividade, conhecimentoTree);
+				
+				setListener(novoButao);		
+				atualizaPosicaoComponentes();	*/
+	        }
+	        public void focusLost(FocusEvent e) {
+	        	
+	        	Text t = (Text) e.widget;
+	        	String novaAtividade =  t.getText();								
+				
+				viewComunication.addAtividade(novaAtividade, null, null);						
+				textAtividade.setText("");
+										
+				final Button novoButao = new Button(panel, SWT.RADIO);
+				novoButao.setText(novaAtividade);
+				buttons.add(novoButao);
+				
+				final Tree conhecimentoTree = new Tree(parent, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL | SWT.CHECK | SWT.SCROLL_LINE);
+				conhecimentoTree.setVisible(false);						
+				conhecimentosTree.put(novaAtividade, conhecimentoTree);
+				
+				final Tree problemaTree = new Tree(parent, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL | SWT.CHECK | SWT.SCROLL_LINE);
+				problemaTree.setVisible(false);						
+				problemasTree.put(novaAtividade, conhecimentoTree);
+				
+				setListener(novoButao);		
+				atualizaPosicaoComponentes();	
+	            }
+	          
+	        };
+	        
+	   textAtividade.addFocusListener(focusListener);		
+			
 		for(int i=0; i < atividadesNomes.size(); i++)
 		{
 			final Button b = new Button(panel, SWT.RADIO);
