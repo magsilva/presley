@@ -11,8 +11,8 @@ import java.sql.SQLException;
 
 public class MySQLConnectionFactory {
 
-	private static String user = "root";
-	private static String pwd = "123456";
+	private static String user = "presley_user";
+	private static String pwd = "presley123";
 	private Connection connection = null;
 	
 	public MySQLConnectionFactory(){
@@ -25,7 +25,7 @@ public class MySQLConnectionFactory {
 			try {
 				
 	            Class.forName("com.mysql.jdbc.Driver");
-	            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/presley", user, pwd);
+	            connection = DriverManager.getConnection("jdbc:mysql://vanderlinden.com.br:3306/presley_bd", user, pwd);
 	            return connection;
 	            
 	        } catch (ClassNotFoundException e) {
