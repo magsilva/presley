@@ -123,40 +123,28 @@ public class Atividade extends ViewPart {
 		{
 			buttons.get(i).setLocation(0, i*25);
 			buttons.get(i).setSize(200, 25);
-		}
-				
-		int depoisButoes = viewComunication.getAtividades().size()*25 + 20;		
+			this.buttons.get(i).getParent().redraw();
+		}		
 		
-		this.conhecimentoLabel.setLocation(0, depoisButoes + 5);
+		panel.update();
+		panel.getParent().update();
 		
-		for(String tree : viewComunication.getAtividades())
-		{			
-			this.conhecimentosTree.get(tree).setLocation(0, depoisButoes + 30);
-			this.conhecimentosTree.get(tree).setSize(200, 150);
-		}
-		
-		this.problemaLabel.setLocation(0, depoisButoes + 185);
-		
-		for(String tree : viewComunication.getAtividades())
-		{			
-			this.problemasTree.get(tree).setLocation(0, depoisButoes + 210);
-			this.problemasTree.get(tree).setSize(200, 150);
-		}
-		
-		conhecimentoLabel.getParent().redraw();
+		panel.redraw();
+		panel.getParent().redraw();
 	}
 		
 	private void initComponents(final Composite parent)
 	{
 		buttons = new ArrayList<Button>();
 		
-		panel = new Composite(parent, SWT.V_SCROLL | SWT.H_SCROLL);
+		panel = new Composite(parent, SWT.V_SCROLL | SWT.BORDER);
 		panel.setLocation(0, 25);
-
+		panel.setSize(200, 100);
+		panel.setVisible(true);
 
 		ArrayList<String> atividadesNomes = viewComunication.getAtividades();
 		
-		final Button novaAtividade = new Button(panel, SWT.ICON);
+		final Button novaAtividade = new Button(parent, SWT.ICON);
 		novaAtividade.setLocation(0,0);
 		novaAtividade.setSize(16, 16);
 	//	Image novo = new Image(novaAtividade.getDisplay(), "C:/Documents and Settings/alyson/Desktop/project_client/src/gui/view/add.gif");
@@ -215,9 +203,8 @@ public class Atividade extends ViewPart {
 			this.buttons.add(b);
 			setListener(b);
 		}
-		int depoisButoes = viewComunication.getAtividades().size()*25;	
-		panel.setSize(200, depoisButoes);
-		
+		int depoisButoes = 120;	
+	
 		conhecimentoLabel = new Label(parent, SWT.BORDER | SWT.CENTER);
 		conhecimentoLabel.setText("Conhecimentos Envolvidos");
 		conhecimentoLabel.setLocation(0, depoisButoes + 5);
