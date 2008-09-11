@@ -58,6 +58,7 @@ public class ViewComunication {
 		prob1.add("stack error");
 		
 		this.addAtividade("C++", conh1, prob1);
+
 	}
 }
 

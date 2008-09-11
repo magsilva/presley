@@ -20,8 +20,11 @@ import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.events.ControlListener;
+import org.eclipse.swt.events.KeyEvent;
+import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
+import org.eclipse.swt.events.MouseMoveListener;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Region;
@@ -36,8 +39,10 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Layout;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
+import org.eclipse.ui.commands.KeyConfigurationEvent;
 import org.eclipse.ui.console.MessageConsole;
 import org.eclipse.ui.console.MessageConsoleStream;
 import org.eclipse.ui.internal.MessageLine;
@@ -59,6 +64,7 @@ public class Atividade extends ViewPart {
 	private Label conhecimentoLabel;
 	private Label problemaLabel;
 	private Composite panel;
+	private Text textAtividade;
 	private int count = 0;
 	
 	public Atividade()
@@ -119,17 +125,52 @@ public class Atividade extends ViewPart {
 	
 	private void atualizaPosicaoComponentes()
 	{
-		for(int i=0; i < this.buttons.size(); i++)
-		{
-			buttons.get(i).setLocation(0, i*25);
-			buttons.get(i).setSize(200, 25);
-			this.buttons.get(i).getParent().redraw();
-		}		
-		
+			if(textAtividade.isVisible())
+			{
+				panel.setLocation(0, 50);
+				
+				System.out.println("passou");
+				
+				int depoisButoes = 150; 				
+				conhecimentoLabel.setLocation(0, depoisButoes + 5);
+				
+				Set<String> keys = this.conhecimentosTree.keySet();
+				
+				problemaLabel.setLocation(0, depoisButoes + 185);
+				
+				for(String tree : keys)
+				{
+					this.conhecimentosTree.get(tree).setLocation(0, depoisButoes + 30);
+					this.problemasTree.get(tree).setLocation(0, depoisButoes + 210);
+				}
+			}else
+			{
+				for(int i=0; i < this.buttons.size(); i++)
+				{
+					buttons.get(i).setLocation(0, i*25);
+					buttons.get(i).setSize(200, 25);
+					this.buttons.get(i).getParent().redraw();
+				}		
+				
+				panel.setLocation(0, 25);
+				
+				int depoisButoes = 125; 				
+				conhecimentoLabel.setLocation(0, depoisButoes + 5);
+				
+				Set<String> keys = this.conhecimentosTree.keySet();
+				
+				problemaLabel.setLocation(0, depoisButoes + 185);
+				
+				for(String tree : keys)
+				{
+					this.conhecimentosTree.get(tree).setLocation(0, depoisButoes + 30);
+					this.problemasTree.get(tree).setLocation(0, depoisButoes + 210);
+				}
+			}
+			
 		panel.update();
-		panel.getParent().update();
-		
 		panel.redraw();
+		panel.getParent().update();
 		panel.getParent().redraw();
 	}
 		
@@ -137,16 +178,37 @@ public class Atividade extends ViewPart {
 	{
 		buttons = new ArrayList<Button>();
 		
+		final Button novaAtividade = new Button(parent, SWT.ICON);
+		novaAtividade.setLocation(4,4);
+		novaAtividade.setSize(16, 16);
+		
 		panel = new Composite(parent, SWT.V_SCROLL | SWT.BORDER);
 		panel.setLocation(0, 25);
 		panel.setSize(200, 100);
 		panel.setVisible(true);
-
+				
 		ArrayList<String> atividadesNomes = viewComunication.getAtividades();
+				
+		textAtividade = new Text(parent, SWT.BORDER);
+		textAtividade.setSize(200, 25);
+		textAtividade.setLocation(0, 25);
+		textAtividade.setVisible(false);
+		textAtividade.setTextLimit(200);
 		
-		final Button novaAtividade = new Button(parent, SWT.ICON);
-		novaAtividade.setLocation(0,0);
-		novaAtividade.setSize(16, 16);
+		textAtividade.addKeyListener(
+				new KeyListener(){
+
+					public void keyPressed(KeyEvent e) {
+						if(e.getSource().equals("a"))
+							this.notifyAll();						
+					}
+
+					public void keyReleased(KeyEvent e) {
+						// TODO Auto-generated method stub
+						
+					}
+					
+				});
 	//	Image novo = new Image(novaAtividade.getDisplay(), "C:/Documents and Settings/alyson/Desktop/project_client/src/gui/view/add.gif");
 	//	novaAtividade.setImage(novo);
 		
@@ -163,9 +225,23 @@ public class Atividade extends ViewPart {
 
 					public void mouseDown(MouseEvent arg0) {
 									
-							//colocar a tela para captura das atividades
+						//colocar a tela para captura das atividades
 						
-						String novaAtividade = "kkkkkkkkkk" + (count++);
+						textAtividade.setVisible(true);
+						textAtividade.setFocus();
+						atualizaPosicaoComponentes();
+						String novaAtividade = "";
+						
+						try {
+							this.wait();
+						} catch (InterruptedException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+						
+						novaAtividade = textAtividade.getText();
+						
+						textAtividade.setText("");
 						
 						viewComunication.addAtividade(novaAtividade, null, null);
 												
@@ -182,7 +258,7 @@ public class Atividade extends ViewPart {
 						problemasTree.put(novaAtividade, conhecimentoTree);
 						
 						setListener(novoButao);		
-						
+						textAtividade.setVisible(false);
 						atualizaPosicaoComponentes();					
 					}
 
