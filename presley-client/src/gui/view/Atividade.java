@@ -149,6 +149,30 @@ public class Atividade extends ViewPart {
 	private void initComponents(final Composite parent)
 	{
 		buttons = new ArrayList<Button>();
+		
+		Button evento = new Button(parent, SWT.NONE);
+		evento.setLocation(4, 4);
+		evento.setSize(16, 16);
+		
+		evento.addMouseListener(
+				new MouseListener(){
+
+					public void mouseDoubleClick(MouseEvent arg0) {
+						// TODO Auto-generated method stub
+						
+					}
+
+					public void mouseDown(MouseEvent arg0) {
+						// TODO Auto-generated method stub
+						
+					}
+
+					public void mouseUp(MouseEvent arg0) {
+						// TODO Auto-generated method stub
+						
+					}
+					
+				});
 			
 		panel = new Composite(parent, SWT.V_SCROLL | SWT.BORDER);
 		panel.setLocation(0, 25);
@@ -159,7 +183,7 @@ public class Atividade extends ViewPart {
 				
 		textAtividade = new Text(parent, SWT.BORDER);
 		textAtividade.setSize(200, 25);
-		textAtividade.setLocation(24, 0);
+		textAtividade.setLocation(25, 0);
 		textAtividade.setVisible(true);
 		textAtividade.setTextLimit(200);
 		
