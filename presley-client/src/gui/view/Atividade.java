@@ -65,7 +65,6 @@ public class Atividade extends ViewPart {
 	private Label problemaLabel;
 	private Composite panel;
 	private Text textAtividade;
-	private int count = 0;
 	
 	public Atividade()
 	{
@@ -125,48 +124,13 @@ public class Atividade extends ViewPart {
 	
 	private void atualizaPosicaoComponentes()
 	{
-			if(textAtividade.isVisible())
-			{
-				panel.setLocation(0, 50);
-				
-				System.out.println("passou");
-				
-				int depoisButoes = 150; 				
-				conhecimentoLabel.setLocation(0, depoisButoes + 5);
-				
-				Set<String> keys = this.conhecimentosTree.keySet();
-				
-				problemaLabel.setLocation(0, depoisButoes + 185);
-				
-				for(String tree : keys)
-				{
-					this.conhecimentosTree.get(tree).setLocation(0, depoisButoes + 30);
-					this.problemasTree.get(tree).setLocation(0, depoisButoes + 210);
-				}
-			}else
-			{
+
 				for(int i=0; i < this.buttons.size(); i++)
 				{
 					buttons.get(i).setLocation(0, i*25);
 					buttons.get(i).setSize(200, 25);
 					this.buttons.get(i).getParent().redraw();
 				}		
-				
-				panel.setLocation(0, 25);
-				
-				int depoisButoes = 125; 				
-				conhecimentoLabel.setLocation(0, depoisButoes + 5);
-				
-				Set<String> keys = this.conhecimentosTree.keySet();
-				
-				problemaLabel.setLocation(0, depoisButoes + 185);
-				
-				for(String tree : keys)
-				{
-					this.conhecimentosTree.get(tree).setLocation(0, depoisButoes + 30);
-					this.problemasTree.get(tree).setLocation(0, depoisButoes + 210);
-				}
-			}
 			
 		panel.update();
 		panel.redraw();
@@ -178,10 +142,10 @@ public class Atividade extends ViewPart {
 	{
 		buttons = new ArrayList<Button>();
 		
-		final Button novaAtividade = new Button(parent, SWT.ICON);
+		/*final Button novaAtividade = new Button(parent, SWT.ICON);
 		novaAtividade.setLocation(4,4);
 		novaAtividade.setSize(16, 16);
-		
+		*/
 		panel = new Composite(parent, SWT.V_SCROLL | SWT.BORDER);
 		panel.setLocation(0, 25);
 		panel.setSize(200, 100);
@@ -191,30 +155,31 @@ public class Atividade extends ViewPart {
 				
 		textAtividade = new Text(parent, SWT.BORDER);
 		textAtividade.setSize(200, 25);
-		textAtividade.setLocation(0, 25);
-		textAtividade.setVisible(false);
+		textAtividade.setLocation(0, 0);
+		textAtividade.setVisible(true);
 		textAtividade.setTextLimit(200);
 		
 		textAtividade.addKeyListener(
 				new KeyListener(){
 
-					public void keyPressed(KeyEvent e) {
-						if(e.getSource().equals("a"))
-							this.notifyAll();						
+					public void keyPressed(KeyEvent arg0) {
+						// TODO Auto-generated method stub
+						
 					}
 
-					public void keyReleased(KeyEvent e) {
+					public void keyReleased(KeyEvent arg0) {
 						// TODO Auto-generated method stub
 						
 					}
 					
 				});
+		
 	//	Image novo = new Image(novaAtividade.getDisplay(), "C:/Documents and Settings/alyson/Desktop/project_client/src/gui/view/add.gif");
 	//	novaAtividade.setImage(novo);
 		
 
 	//	novaAtividade.setImage(new Image(null, "icons/novo.gif"));
-		
+		/*
 		novaAtividade.addMouseListener(
 				new MouseListener()
 				{
@@ -269,7 +234,7 @@ public class Atividade extends ViewPart {
 					
 				}
 				);
-		
+		*/
 		for(int i=0; i < atividadesNomes.size(); i++)
 		{
 			final Button b = new Button(panel, SWT.RADIO);
