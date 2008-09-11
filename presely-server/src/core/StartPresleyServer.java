@@ -15,8 +15,6 @@ import beans.Atividade;
 public class StartPresleyServer {
 
 	public StartPresleyServer() {
-		Object objeto = null;
-		PacketStruct packet = new PacketStruct("Dado 1", 1);
 		
 		try {
 			/** Instanciando servidor.
@@ -24,7 +22,7 @@ public class StartPresleyServer {
 			 * parametro2: ip (no caso do servidor vai nulo).
 			 * parametro3: porta que o servidor vai escutar.
 			 */
-			objeto = PrincipalSUBJECT.getInstance("server", null, 1099);
+			PrincipalSUBJECT.getInstance("server", null, 1099);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -36,13 +34,7 @@ public class StartPresleyServer {
 		/* setando serverBridge no servidor. */ 
 		PrincipalSUBJECT.facade(1099, trocaMsg);
 		
-		trocaMsg.sendToServer(packet);
 	}
 	
-	public static void main(String[] args) {
-		System.out.println("Startou o servidor!");
-		StartPresleyServer server = new StartPresleyServer();
-		
-	}
 
 }
