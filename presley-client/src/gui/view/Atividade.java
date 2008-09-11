@@ -56,6 +56,10 @@ public class Atividade extends ViewPart {
 	private HashMap<String,Tree> conhecimentosTree;
 	private HashMap<String,Tree> problemasTree;
 	private ViewComunication viewComunication;
+	private Label conhecimentoLabel;
+	private Label problemaLabel;
+	private Composite panel;
+	private int count = 0;
 	
 	public Atividade()
 	{
@@ -73,15 +77,86 @@ public class Atividade extends ViewPart {
 		// TODO Auto-generated method stub
 
 	}	
+	
+	private void setListener(final Button button)
+	{
+		button.addMouseListener(new MouseListener(){
+			
+			public void mouseDoubleClick(MouseEvent e) {
+								
+			}
 
+			public void mouseDown(MouseEvent e) {
+				Set<String> keys = conhecimentosTree.keySet();
+			
+					for(String key : keys)
+					{
+						conhecimentosTree.get(key).setVisible(false);
+						conhecimentosTree.get(key).setEnabled(false);
+						
+						problemasTree.get(key).setVisible(false);
+						problemasTree.get(key).setEnabled(false);
+					}
+					
+					problemaLabel.setVisible(true);
+					conhecimentoLabel.setVisible(true);
+					
+					conhecimentosTree.get( button.getText()).setVisible(true);
+					conhecimentosTree.get( button.getText()).setEnabled(true);
+					
+					problemasTree.get( button.getText()).setVisible(true);
+					problemasTree.get( button.getText()).setEnabled(true);
+				
+					button.getParent().redraw();
+			}
+			
+			public void mouseUp(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}				
+		});
+	}
+	
+	private void atualizaPosicaoComponentes()
+	{
+		for(int i=0; i < this.buttons.size(); i++)
+		{
+			buttons.get(i).setLocation(0, i*25);
+			buttons.get(i).setSize(200, 25);
+		}
+				
+		int depoisButoes = viewComunication.getAtividades().size()*25 + 20;		
 		
-	private void initComponents(Composite parent)
+		this.conhecimentoLabel.setLocation(0, depoisButoes + 5);
+		
+		for(String tree : viewComunication.getAtividades())
+		{			
+			this.conhecimentosTree.get(tree).setLocation(0, depoisButoes + 30);
+			this.conhecimentosTree.get(tree).setSize(200, 150);
+		}
+		
+		this.problemaLabel.setLocation(0, depoisButoes + 185);
+		
+		for(String tree : viewComunication.getAtividades())
+		{			
+			this.problemasTree.get(tree).setLocation(0, depoisButoes + 210);
+			this.problemasTree.get(tree).setSize(200, 150);
+		}
+		
+		conhecimentoLabel.getParent().redraw();
+	}
+		
+	private void initComponents(final Composite parent)
 	{
 		buttons = new ArrayList<Button>();
+		
+		panel = new Composite(parent, SWT.V_SCROLL | SWT.H_SCROLL);
+		panel.setLocation(0, 25);
+
 
 		ArrayList<String> atividadesNomes = viewComunication.getAtividades();
 		
-		final Button novaAtividade = new Button(parent, SWT.ICON);
+		final Button novaAtividade = new Button(panel, SWT.ICON);
 		novaAtividade.setLocation(0,0);
 		novaAtividade.setSize(16, 16);
 	//	Image novo = new Image(novaAtividade.getDisplay(), "C:/Documents and Settings/alyson/Desktop/project_client/src/gui/view/add.gif");
@@ -101,6 +176,26 @@ public class Atividade extends ViewPart {
 					public void mouseDown(MouseEvent arg0) {
 									
 							//colocar a tela para captura das atividades
+						
+						String novaAtividade = "kkkkkkkkkk" + (count++);
+						
+						viewComunication.addAtividade(novaAtividade, null, null);
+												
+						final Button novoButao = new Button(panel, SWT.RADIO);
+						novoButao.setText(novaAtividade);
+						buttons.add(novoButao);
+						
+						final Tree conhecimentoTree = new Tree(parent, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL | SWT.CHECK | SWT.SCROLL_LINE);
+						conhecimentoTree.setVisible(false);						
+						conhecimentosTree.put(novaAtividade, conhecimentoTree);
+						
+						final Tree problemaTree = new Tree(parent, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL | SWT.CHECK | SWT.SCROLL_LINE);
+						problemaTree.setVisible(false);						
+						problemasTree.put(novaAtividade, conhecimentoTree);
+						
+						setListener(novoButao);		
+						
+						atualizaPosicaoComponentes();					
 					}
 
 					public void mouseUp(MouseEvent arg0) {
@@ -113,15 +208,17 @@ public class Atividade extends ViewPart {
 		
 		for(int i=0; i < atividadesNomes.size(); i++)
 		{
-			final Button b = new Button(parent, SWT.RADIO);
+			final Button b = new Button(panel, SWT.RADIO);
 			b.setText(atividadesNomes.get(i));
-			b.setLocation(0, i*25 + 20);
+			b.setLocation(0, i*25);
 			b.setSize(200, 25);
-			this.buttons.add(b);	
+			this.buttons.add(b);
+			setListener(b);
 		}
-		int depoisButoes = viewComunication.getAtividades().size()*25 + 20;		
+		int depoisButoes = viewComunication.getAtividades().size()*25;	
+		panel.setSize(200, depoisButoes);
 		
-		final Label conhecimentoLabel = new Label(parent, SWT.BORDER | SWT.CENTER);
+		conhecimentoLabel = new Label(parent, SWT.BORDER | SWT.CENTER);
 		conhecimentoLabel.setText("Conhecimentos Envolvidos");
 		conhecimentoLabel.setLocation(0, depoisButoes + 5);
 		conhecimentoLabel.setSize(200, 20);	
@@ -146,7 +243,7 @@ public class Atividade extends ViewPart {
 				conhecimentosTree.put(selection, conhecimentoTree);
 		}
 		
-		final Label problemaLabel = new Label(parent, SWT.BORDER | SWT.CENTER);
+		problemaLabel = new Label(parent, SWT.BORDER | SWT.CENTER);
 		problemaLabel.setText("Problemas Encontrados");
 		problemaLabel.setLocation(0, depoisButoes + 185);
 		problemaLabel.setSize(200, 20);
@@ -172,46 +269,6 @@ public class Atividade extends ViewPart {
 					}
 				
 				problemasTree.put(selection, problemaTree);
-		}
-			
-	
-		for(final Button b : buttons)
-		{
-			b.addMouseListener(new MouseListener(){
-				
-				public void mouseDoubleClick(MouseEvent e) {
-									
-				}
-	
-				public void mouseDown(MouseEvent e) {
-					Set<String> keys = conhecimentosTree.keySet();
-				
-						for(String key : keys)
-						{
-							conhecimentosTree.get(key).setVisible(false);
-							conhecimentosTree.get(key).setEnabled(false);
-							
-							problemasTree.get(key).setVisible(false);
-							problemasTree.get(key).setEnabled(false);
-						}
-						
-						problemaLabel.setVisible(true);
-						conhecimentoLabel.setVisible(true);
-						
-						conhecimentosTree.get( b.getText()).setVisible(true);
-						conhecimentosTree.get( b.getText()).setEnabled(true);
-						
-						problemasTree.get( b.getText()).setVisible(true);
-						problemasTree.get( b.getText()).setEnabled(true);
-					
-						b.getParent().redraw();
-				}
-				
-				public void mouseUp(MouseEvent e) {
-					// TODO Auto-generated method stub
-					
-				}				
-			});
-		}		
+		}					
 	}
 }
