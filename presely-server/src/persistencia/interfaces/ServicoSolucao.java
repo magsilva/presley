@@ -26,7 +26,7 @@ public interface ServicoSolucao {
 	 * @param status Situacao da solução.
 	 * @return true se a atualizacao foi realizada com sucesso.
 	 */
-	public boolean atualizarStatusDaSolução(int id, boolean status);
+	public boolean atualizarStatusDaSolucao(int id, boolean status);
 	
 	/**
 	 * Esse método remove uma solução proposta por um desenvolvedor da base de dados.

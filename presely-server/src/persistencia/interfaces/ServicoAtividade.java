@@ -12,7 +12,7 @@ import beans.Conhecimento;
  * Essa interface contem metodos para a administracao de atividades que um
  * desenvolvedor deve realizar.
  * 
- * Última modificacao: 03/09/2008 por Amilcar Jr
+ * Última modificacao: 09/09/2008 por RodrigoCMD
  */
 
 public interface ServicoAtividade {
@@ -108,5 +108,13 @@ public interface ServicoAtividade {
 	 * @return true se a associacao foi feita com sucesso.
 	 */
 	public boolean associarAtividades(int idSubAtividade, int idAtividadePai);
+	
+	/**
+	 * Esse método desassocia uma sub-atividade a uma atividade maior. 
+	 * @param idSubAtividade Identificador da sub-atividade 
+	 * @param idAtividadePai Identificador da atividade pai.
+	 * @return true se a associacao foi feita com sucesso.
+	 */
+	public boolean desassociarAtividades(int idSubAtividade, int idAtividadePai);
 }
 
