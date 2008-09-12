@@ -13,7 +13,7 @@ public class ViewComunication {
 	public ViewComunication() {
 		try {
 			System.out.println("instanciando cliente");
-			Object o = PrincipalSUBJECT.getInstance("client", "150.165.130.20", 1099);
+			Object o = PrincipalSUBJECT.getInstance("client", "150.165.130.230", 1099);
 			System.out.println(o.toString());
 		} catch (Exception e) {
 			System.out.println("Dentro do catch");

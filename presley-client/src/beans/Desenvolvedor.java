@@ -14,6 +14,10 @@ import java.util.ArrayList;
 
 public class Desenvolvedor implements Serializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String email;
 	private String nome;
 	private String localidade;

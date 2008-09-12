@@ -15,6 +15,10 @@ import java.sql.Date;
 
 public class Solucao implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private int id;
 	private Problema problema;
 	private Desenvolvedor desenvolvedor;

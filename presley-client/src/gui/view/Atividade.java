@@ -1,68 +1,25 @@
 package gui.view;
 
 import gui.view.comunication.ViewComunication;
-import beans.*;
-import java.awt.Event;
-import java.security.MessageDigest;
+
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
 
-import org.eclipse.jdt.internal.ui.refactoring.MessageWizardPage;
-import org.eclipse.jdt.internal.ui.refactoring.TextInputWizardPage;
-import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.jface.dialogs.MessageDialogWithToggle;
-import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.jface.viewers.*;
-import org.eclipse.jface.wizard.IWizard;
-import org.eclipse.jface.wizard.IWizardContainer;
-import org.eclipse.jface.wizard.IWizardPage;
-import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.ControlEvent;
-import org.eclipse.swt.events.ControlListener;
-import org.eclipse.swt.events.KeyEvent;
-import org.eclipse.swt.events.KeyListener;
-import org.eclipse.swt.events.ModifyEvent;
-import org.eclipse.swt.events.ModifyListener;
+import org.eclipse.swt.events.FocusEvent;
+import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
-import org.eclipse.swt.events.MouseMoveListener;
-import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.graphics.Region;
-import org.eclipse.swt.layout.FillLayout;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Layout;
-import org.eclipse.swt.widgets.MessageBox;
-import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
-import org.eclipse.ui.commands.KeyConfigurationEvent;
-import org.eclipse.ui.console.MessageConsole;
-import org.eclipse.ui.console.MessageConsoleStream;
-import org.eclipse.ui.internal.MessageLine;
-import org.eclipse.ui.internal.dialogs.ImportWizard;
 import org.eclipse.ui.part.ViewPart;
-import org.eclipse.core.internal.runtime.Messages;
-import org.eclipse.core.resources.IResource;
-import org.eclipse.core.resources.refresh.IRefreshMonitor;
-import org.eclipse.core.resources.refresh.IRefreshResult;
-import org.eclipse.core.resources.refresh.RefreshProvider;
-import org.eclipse.swt.events.FocusEvent;
-import org.eclipse.swt.events.FocusListener;
-import org.eclipse.swt.events.MouseAdapter;
-import org.eclipse.swt.events.MouseEvent;
 
-import beans.Conhecimento;
 import beans.Desenvolvedor;
 
 

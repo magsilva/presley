@@ -10,6 +10,10 @@ import facade.StubInterface;
 
 public class PacketSTUB extends UnicastRemoteObject implements StubInterface {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private ServerBridge bridge;
 	
 	protected PacketSTUB(ServerBridge bridge) throws RemoteException {
