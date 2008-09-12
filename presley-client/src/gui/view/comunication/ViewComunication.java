@@ -5,18 +5,25 @@ import java.util.HashMap;
 import facade.PacketStruct;
 import facade.PrincipalSUBJECT;
 
+/**
+ * Esta classe controla a comunicacao entre o cliente e o servidor.
+ * @author Leandro Carlos, Samara Martins, Alysson Diniz 
+ * @since 2008
+ */
 public class ViewComunication {	
 	private ArrayList<String> atividades = new ArrayList<String>();	
 	private HashMap<String,ArrayList<String>> conhecimentos = new HashMap<String,ArrayList<String>>();
 	private HashMap<String,ArrayList<String>> problemas = new HashMap<String,ArrayList<String>>();
 	
+	/**
+	 * Construtor da classe ViewCommunication. Instancia a comunicacao como cliente, passando o ip do
+	 * servidor e a porta para acesso remoto (1099 padrao RMI)
+	 */
 	public ViewComunication() {
 		try {
 			System.out.println("instanciando cliente");
-			Object o = PrincipalSUBJECT.getInstance("client", "150.165.130.230", 1099);
-			System.out.println(o.toString());
+			PrincipalSUBJECT.getInstance("client", "150.165.130.230", 1099);
 		} catch (Exception e) {
-			System.out.println("Dentro do catch");
 			e.printStackTrace();
 		}
 	}
@@ -74,10 +81,17 @@ public class ViewComunication {
 
 	}
 	
-	public void comunicacao(Object data, int id) {
+	/**
+	 * Metodo responsavel por enviar uma requisicao/pacote ao servidor 
+	 * @param data o dado do pacote
+	 * @param id a id com o tipo do pacote
+	 * @return o pacote de resposta do servidor
+	 */
+	public PacketStruct sendPack(Object data, int id) {
 		PacketStruct pack = new PacketStruct(data, id);
 		PacketStruct packet = PrincipalSUBJECT.facade(pack);
 		System.out.println(packet.getData());
+		return packet;
 	}
 }
 

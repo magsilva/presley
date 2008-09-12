@@ -157,7 +157,7 @@ public class Atividade extends ViewPart {
 	        	Desenvolvedor des = new Desenvolvedor();
 	        	des.setEmail("coelhao@vai.pro.japao");
 	        	beans.TipoAtividade ati = new beans.TipoAtividade(novaAtividade, des, des, 0,  new Date(System.currentTimeMillis()), new Date(System.currentTimeMillis()), false, null);
-	        	viewComunication.comunicacao(ati, 1);
+	        	viewComunication.sendPack(ati, 1);
 	        	
 				viewComunication.addAtividade(novaAtividade, null, null);						
 				textAtividade.setText("");
