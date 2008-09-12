@@ -1,5 +1,6 @@
 package beans;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
@@ -11,7 +12,7 @@ import java.util.ArrayList;
  * 
  */
 
-public class Desenvolvedor {
+public class Desenvolvedor implements Serializable {
 	
 	private String email;
 	private String nome;

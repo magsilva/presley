@@ -1,5 +1,7 @@
 package beans;
 
+import java.io.Serializable;
+
 /**
  * 
  * @author Amilcar Jr
@@ -9,7 +11,7 @@ package beans;
  * 
  */
 
-public class Conhecimento {
+public class Conhecimento implements Serializable {
 	
 	private String nome;
 	private String descricao;

@@ -4,7 +4,7 @@ import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-import beans.Atividade;
+import beans.TipoAtividade;
 
 import persistencia.implementacao.ServicoAtividadeImplDAO;
 import persistencia.implementacao.ServicoConhecimentoImplDAO;
@@ -100,7 +100,7 @@ public class ServicoAtividadeImplDAOTest extends TestCase {
 	
 	public void testAtividadeExiste() {
 		
-		ArrayList<Atividade> list = sd.getAtividadesDoDesenvolvedor("asju@gmail.com");
+		ArrayList<TipoAtividade> list = sd.getAtividadesDoDesenvolvedor("asju@gmail.com");
 		
 		assertTrue(sa.atividadeExiste(list.get(0).getId()));
 		
@@ -109,7 +109,7 @@ public class ServicoAtividadeImplDAOTest extends TestCase {
 	}
 		
 	public void testAtualizarStatusDaAtividade() {
-		ArrayList<Atividade> list = sd.getAtividadesDoDesenvolvedor("asju@gmail.com");
+		ArrayList<TipoAtividade> list = sd.getAtividadesDoDesenvolvedor("asju@gmail.com");
 		
 		assertTrue(sa.atualizarStatusDaAtividade(list.get(0).getId(), true));
 		
@@ -132,9 +132,9 @@ public class ServicoAtividadeImplDAOTest extends TestCase {
 //		cal.set(2005, 01, 01);
 //		Date dataInicio2 = new Date(cal.getTimeInMillis());
 		
-		ArrayList<Atividade> list = sd.getAtividadesDoDesenvolvedor("amilcarsj@gmail.com");
+		ArrayList<TipoAtividade> list = sd.getAtividadesDoDesenvolvedor("amilcarsj@gmail.com");
 		
-		Atividade a = sa.getAtividade(list.get(0).getId());
+		TipoAtividade a = sa.getAtividade(list.get(0).getId());
 		
 		assertTrue(a.getDescricao().equals("Executar testes"));
 //		assertTrue(a.getDataInicio().getTime() == dataInicio2.getTime());
@@ -149,7 +149,7 @@ public class ServicoAtividadeImplDAOTest extends TestCase {
 		
 		this.adicionarConhecimentos();
 		
-		ArrayList<Atividade> list = sd.getAtividadesDoDesenvolvedor("amilcarsj@gmail.com");
+		ArrayList<TipoAtividade> list = sd.getAtividadesDoDesenvolvedor("amilcarsj@gmail.com");
 				
 		int idAtividade = list.get(0).getId();
 		
@@ -165,7 +165,7 @@ public class ServicoAtividadeImplDAOTest extends TestCase {
 
 	public void testGetConhecimentosEnvolvidosNaAtividade() {
 		
-		ArrayList<Atividade> list = sd.getAtividadesDoDesenvolvedor("amilcarsj@gmail.com");
+		ArrayList<TipoAtividade> list = sd.getAtividadesDoDesenvolvedor("amilcarsj@gmail.com");
 		
 		int idAtividade = list.get(0).getId();
 		
@@ -180,7 +180,7 @@ public class ServicoAtividadeImplDAOTest extends TestCase {
 	}
 	
 	public void testRemoverConhecimentoDaAtividade() {
-		ArrayList<Atividade> list = sd.getAtividadesDoDesenvolvedor("amilcarsj@gmail.com");
+		ArrayList<TipoAtividade> list = sd.getAtividadesDoDesenvolvedor("amilcarsj@gmail.com");
 		
 		int idAtividade = list.get(0).getId();
 		
@@ -201,9 +201,9 @@ public class ServicoAtividadeImplDAOTest extends TestCase {
 
 	public void testAssociarAtividades(){
 		
-		ArrayList<Atividade> list = sd.getAtividadesDoDesenvolvedor("amilcarsj@gmail.com");
+		ArrayList<TipoAtividade> list = sd.getAtividadesDoDesenvolvedor("amilcarsj@gmail.com");
 	
-		ArrayList<Atividade> list2 = sd.getAtividadesDoDesenvolvedor("asju@gmail.com");
+		ArrayList<TipoAtividade> list2 = sd.getAtividadesDoDesenvolvedor("asju@gmail.com");
 		
 		
 		int idAtividade = list.get(0).getId();
@@ -220,11 +220,11 @@ public class ServicoAtividadeImplDAOTest extends TestCase {
 	
 	public void testGetSubAtividades() {
 		
-		ArrayList<Atividade> list2 = sd.getAtividadesDoDesenvolvedor("asju@gmail.com");
+		ArrayList<TipoAtividade> list2 = sd.getAtividadesDoDesenvolvedor("asju@gmail.com");
 		int idAtividadePai = list2.get(0).getId();
 		
 		
-		ArrayList<Atividade> list = sa.getSubAtividades(idAtividadePai);
+		ArrayList<TipoAtividade> list = sa.getSubAtividades(idAtividadePai);
 		
 		assertTrue(list.get(0).getDesenvolvedor().getEmail().equals("amilcarsj@gmail.com"));
 		assertTrue(list.get(0).getSupervisor().getEmail().equals("asju@gmail.com"));
@@ -236,7 +236,7 @@ public class ServicoAtividadeImplDAOTest extends TestCase {
 
 	public void testRemoverAtividade() {
 		
-		ArrayList<Atividade> list = sd.getAtividadesDoDesenvolvedor("asju@gmail.com");
+		ArrayList<TipoAtividade> list = sd.getAtividadesDoDesenvolvedor("asju@gmail.com");
 		
 		assertTrue(sa.removerAtividade(list.get(0).getId()));
 			

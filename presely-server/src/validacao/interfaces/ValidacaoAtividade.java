@@ -3,7 +3,7 @@ package validacao.interfaces;
 import java.sql.Date;
 import java.util.ArrayList;
 
-import beans.Atividade;
+import beans.TipoAtividade;
 import beans.Conhecimento;
 
 /**
@@ -38,20 +38,20 @@ public interface ValidacaoAtividade {
 	public boolean removerAtividade(int id) throws Exception;
 	
 	/**
-	 * Esse método retorna um objeto Atividade com todos os dados de uma atividade
+	 * Esse método retorna um objeto TipoAtividade com todos os dados de uma atividade
 	 * previamente cadastrada.
 	 * @param id Identificador da atividade
-	 * @return <Atividade>
+	 * @return <TipoAtividade>
 	 */
-	public Atividade getAtividade(int id) throws Exception;
+	public TipoAtividade getAtividade(int id) throws Exception;
 	
 	/**
 	 * Esse método retorna uma lista de sub-atividades associadas a uma atividade
 	 * pai.
 	 * @param idPai Identificador da atividade pai
-	 * @return ArrayList<Atividade>
+	 * @return ArrayList<TipoAtividade>
 	 */
-	public ArrayList<Atividade> getSubAtividades(int idPai) throws Exception;
+	public ArrayList<TipoAtividade> getSubAtividades(int idPai) throws Exception;
 	
 	/**
 	 * Esse método atualiza o status se a atividade foi concluida ou

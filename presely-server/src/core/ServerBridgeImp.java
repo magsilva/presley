@@ -3,7 +3,8 @@ package core;
 import java.sql.Date;
 import server.ServerBridge;
 import validacao.ValidacaoAtividade;
-import beans.Atividade;
+import validacao.implementacao.ValidacaoAtividadeImpl;
+import beans.TipoAtividade;
 import facade.PacketStruct;
 
 /**
@@ -17,7 +18,11 @@ import facade.PacketStruct;
 public class ServerBridgeImp implements ServerBridge{
 
 	
-	@Override
+
+	public ServerBridgeImp() {
+		System.out.println("instanciando ServerBridgeImp");
+	}
+	
 	/**
      * Recebe o pacote no servidor e o encaminha 
      * de forma adequada. Implementado da interface ServerBridge
@@ -45,7 +50,24 @@ public class ServerBridgeImp implements ServerBridge{
      */
 	private boolean cadastraAtividade(PacketStruct packet) {
 		System.out.println("Chamar o modulo de validacao pra cadastrar essa bagaca!");
+		TipoAtividade novaAtividade = (TipoAtividade) packet.getData();
+		System.out.println(novaAtividade);
+		
+		ValidacaoAtividadeImpl validacaoAtividade = new ValidacaoAtividadeImpl();
+
+		try {
+			validacaoAtividade.cadastrarAtividade(novaAtividade.getDesenvolvedor().getEmail(), 
+					novaAtividade.getSupervisor().getEmail(), 
+					novaAtividade.getDescricao(), 
+					novaAtividade.getDataInicio(), 
+					novaAtividade.getDataFinal());
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 		return true;
 	}
 
+	
 }

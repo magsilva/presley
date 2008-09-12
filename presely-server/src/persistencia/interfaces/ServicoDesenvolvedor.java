@@ -2,7 +2,7 @@ package persistencia.interfaces;
 
 import java.util.ArrayList;
 
-import beans.Atividade;
+import beans.TipoAtividade;
 import beans.Conhecimento;
 import beans.Desenvolvedor;
 
@@ -85,9 +85,9 @@ public interface ServicoDesenvolvedor {
 	/**
 	 * Esse método retorna uma lista de atividades atribuidas a um desenvolvedor
 	 * @param email Email do desenvolvedor
-	 * @return ArrayList<Atividade>
+	 * @return ArrayList<TipoAtividade>
 	 */
-	public ArrayList<Atividade> getAtividadesDoDesenvolvedor(String email);
+	public ArrayList<TipoAtividade> getAtividadesDoDesenvolvedor(String email);
 
 	/**
 	 * Esse método verifica se existe relacao entre um conhecimento e um desenvolvedor/

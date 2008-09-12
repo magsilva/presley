@@ -1,5 +1,6 @@
 package beans;
 
+import java.io.Serializable;
 import java.sql.Date;
 import java.util.ArrayList;
 
@@ -7,19 +8,19 @@ import java.util.ArrayList;
  * 
  * @author Amilcar Jr
  * Essa classe contém dados inerentes a um problema reportado por um desenvolvedor
- * a respeito de uma atividade.
+ * a respeito de uma tipoAtividade.
  * 
  * Última modificacao: 03/08/2008 por Amilcar Jr
  * 
  */
 
-public class Problema {
+public class Problema implements Serializable {
 
 	private int id;
 	private String descricao;
 	private boolean resolvido;
 	private ArrayList<Solucao> solucoes;
-	private Atividade atividade;
+	private TipoAtividade tipoAtividade;
 	private Date data;
 	private String mensagem;
 	
@@ -47,11 +48,11 @@ public class Problema {
 	public void setSolucoes(ArrayList<Solucao> solucoes) {
 		this.solucoes = solucoes;
 	}
-	public Atividade getAtividade() {
-		return atividade;
+	public TipoAtividade getAtividade() {
+		return tipoAtividade;
 	}
-	public void setAtividade(Atividade atividade) {
-		this.atividade = atividade;
+	public void setAtividade(TipoAtividade tipoAtividade) {
+		this.tipoAtividade = tipoAtividade;
 	}
 	public Date getData() {
 		return data;

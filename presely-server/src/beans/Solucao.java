@@ -1,5 +1,6 @@
 package beans;
 
+import java.io.Serializable;
 import java.sql.Date;
 
 /**
@@ -12,7 +13,7 @@ import java.sql.Date;
  * 
  */
 
-public class Solucao {
+public class Solucao implements Serializable {
 
 	private int id;
 	private Problema problema;

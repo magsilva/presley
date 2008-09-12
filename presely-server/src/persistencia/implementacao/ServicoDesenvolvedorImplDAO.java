@@ -6,7 +6,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
-import beans.Atividade;
+import beans.TipoAtividade;
 import beans.Conhecimento;
 import beans.Desenvolvedor;
 import persistencia.MySQLConnectionFactory;
@@ -363,10 +363,10 @@ public class ServicoDesenvolvedorImplDAO implements ServicoDesenvolvedor{
 		
 	}
 
-	public ArrayList<Atividade> getAtividadesDoDesenvolvedor(String email) {
+	public ArrayList<TipoAtividade> getAtividadesDoDesenvolvedor(String email) {
 		
 		MySQLConnectionFactory factory = new MySQLConnectionFactory();
-		ArrayList<Atividade> list = new ArrayList<Atividade>();
+		ArrayList<TipoAtividade> list = new ArrayList<TipoAtividade>();
 		
 		
 		Connection conn = factory.getConnection();
@@ -386,20 +386,20 @@ public class ServicoDesenvolvedorImplDAO implements ServicoDesenvolvedor{
 			while (rs.next()){
 											
 				
-				Atividade atividade = new Atividade();
+				TipoAtividade tipoAtividade = new TipoAtividade();
 				
-				atividade.setId(rs.getInt(1));
-				atividade.setDesenvolvedor(this.getDesenvolvedor(rs.getString(2)));
-				atividade.setSupervisor(this.getDesenvolvedor(rs.getString(3)));
-				atividade.setIdPai(rs.getInt(4));
-				atividade.setDescricao(rs.getString(5));
-				atividade.setDataInicio(rs.getDate(6));
-				atividade.setDataFinal(rs.getDate(7));
-				atividade.setConcluida(rs.getBoolean(8));
-				atividade.setListaDeConhecimentosEnvolvidos(this.getConhecimentosDoDesenvolvedor(rs.getString(2)));
+				tipoAtividade.setId(rs.getInt(1));
+				tipoAtividade.setDesenvolvedor(this.getDesenvolvedor(rs.getString(2)));
+				tipoAtividade.setSupervisor(this.getDesenvolvedor(rs.getString(3)));
+				tipoAtividade.setIdPai(rs.getInt(4));
+				tipoAtividade.setDescricao(rs.getString(5));
+				tipoAtividade.setDataInicio(rs.getDate(6));
+				tipoAtividade.setDataFinal(rs.getDate(7));
+				tipoAtividade.setConcluida(rs.getBoolean(8));
+				tipoAtividade.setListaDeConhecimentosEnvolvidos(this.getConhecimentosDoDesenvolvedor(rs.getString(2)));
 				
 				
-				list.add(atividade);
+				list.add(tipoAtividade);
 				
 			}
 				return list;

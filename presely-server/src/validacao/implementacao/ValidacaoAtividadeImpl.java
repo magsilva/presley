@@ -9,7 +9,7 @@ import persistencia.implementacao.ServicoConhecimentoImplDAO;
 import persistencia.interfaces.ServicoAtividade;
 import persistencia.interfaces.ServicoConhecimento;
 import validacao.interfaces.ValidacaoAtividade;
-import beans.Atividade;
+import beans.TipoAtividade;
 import beans.Conhecimento;
 
 /**
@@ -43,12 +43,12 @@ public class ValidacaoAtividadeImpl implements ValidacaoAtividade{
 	public boolean associarAtividades(int idSubAtividade, int idAtividadePai) throws Exception {
 		
 		//Verificando se a atividade pai no  filha da atividade pai.
-		ArrayList<Atividade> subAtividades = servicoAtividade.getSubAtividades(idSubAtividade);
-		Iterator<Atividade> it = subAtividades.iterator();
+		ArrayList<TipoAtividade> subAtividades = servicoAtividade.getSubAtividades(idSubAtividade);
+		Iterator<TipoAtividade> it = subAtividades.iterator();
 		
 		while (it.hasNext()) {
-			Atividade atividade = it.next();
-			if (atividade.getId() == idAtividadePai) {
+			TipoAtividade tipoAtividade = it.next();
+			if (tipoAtividade.getId() == idAtividadePai) {
 				throw new Exception();
 			}
 		}
@@ -71,10 +71,30 @@ public class ValidacaoAtividadeImpl implements ValidacaoAtividade{
 		
 		return servicoAtividade.atualizarStatusDaAtividade(id, terminada);
 	}
+	
+	public boolean cadastrarAtividade(TipoAtividade tipoAtividade) throws Exception {
+		System.out.println("TipoAtividade adicionada com sucesso!");
+		
+		String emailDesenvolvedor = tipoAtividade.getDesenvolvedor().getEmail();
+		String emailGerente = tipoAtividade.getSupervisor().getEmail();
+		String descricao = tipoAtividade.getDescricao();
+		Date dataInicio = tipoAtividade.getDataInicio();
+		Date dataFim = tipoAtividade.getDataFinal();
+		
+		if (!ValidacaoUtil.validaEmail(emailDesenvolvedor)) throw new Exception();
+		if (!ValidacaoUtil.validaEmail(emailGerente)) throw new Exception();
+		if (!ValidacaoUtil.validaDescricao(descricao)) throw new Exception();
+		if (!ValidacaoUtil.verificaOrdemDatas(dataInicio, dataFim)) throw new Exception();
+		
+		return servicoAtividade.cadastrarAtividade(emailDesenvolvedor, emailGerente, descricao, dataInicio, dataFim);
+		
+	}
 
 	public boolean cadastrarAtividade(String emailDesenvolvedor,
 			String emailGerente, String descricao, Date dataInicio, Date dataFim)
 			throws Exception {
+		
+		System.out.println("TipoAtividade adicionada com sucesso!");
 
 		if (!ValidacaoUtil.validaEmail(emailDesenvolvedor)) throw new Exception();
 		if (!ValidacaoUtil.validaEmail(emailGerente)) throw new Exception();
@@ -84,12 +104,12 @@ public class ValidacaoAtividadeImpl implements ValidacaoAtividade{
 		return servicoAtividade.cadastrarAtividade(emailDesenvolvedor, emailGerente, descricao, dataInicio, dataFim);
 	}
 
-	public Atividade getAtividade(int id) throws Exception {
+	public TipoAtividade getAtividade(int id) throws Exception {
 		
-		Atividade atividade = servicoAtividade.getAtividade(id);
-		if (atividade == null) throw new Exception();
+		TipoAtividade tipoAtividade = servicoAtividade.getAtividade(id);
+		if (tipoAtividade == null) throw new Exception();
 		
-		return atividade;
+		return tipoAtividade;
 	}
 
 	public ArrayList<Conhecimento> getConhecimentosEnvolvidosNaAtividade(
@@ -100,7 +120,7 @@ public class ValidacaoAtividadeImpl implements ValidacaoAtividade{
 		return servicoAtividade.getConhecimentosEnvolvidosNaAtividade(idAtividade);
 	}
 
-	public ArrayList<Atividade> getSubAtividades(int idPai) throws Exception {
+	public ArrayList<TipoAtividade> getSubAtividades(int idPai) throws Exception {
 		
 		if (!servicoAtividade.atividadeExiste(idPai)) throw new Exception();
 		
@@ -119,11 +139,11 @@ public class ValidacaoAtividadeImpl implements ValidacaoAtividade{
 			servicoAtividade.removerConhecimentoDaAtividade(id, conhecimento.getDescricao());
 		}
 		
-		ArrayList<Atividade> filhos = servicoAtividade.getSubAtividades(id);
-		Iterator<Atividade> it2 = filhos.iterator();
+		ArrayList<TipoAtividade> filhos = servicoAtividade.getSubAtividades(id);
+		Iterator<TipoAtividade> it2 = filhos.iterator();
 		
 		while (it2.hasNext()) {
-			Atividade subAtividade = it2.next();
+			TipoAtividade subAtividade = it2.next();
 			servicoAtividade.desassociarAtividades(subAtividade.getId(), id);
 		}
 		

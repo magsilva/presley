@@ -3,7 +3,7 @@ package validacao.implementacao;
 
 import java.util.ArrayList;
 
-import beans.Atividade;
+import beans.TipoAtividade;
 import beans.Conhecimento;
 import beans.Desenvolvedor;
 import persistencia.implementacao.ServicoAtividadeImplDAO;
@@ -74,7 +74,7 @@ public class ValidacaoDesenvolvedorImpl implements ValidacaoDesenvolvedor{
 		return servicoDesenvolvedor.desenvolvedorExiste(email);
 	}
 
-	public ArrayList<Atividade> getAtividadesDoDesenvolvedor(String email) throws Exception {
+	public ArrayList<TipoAtividade> getAtividadesDoDesenvolvedor(String email) throws Exception {
 		
 		if (!servicoDesenvolvedor.desenvolvedorExiste(email)) throw new Exception();
 		

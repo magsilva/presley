@@ -4,7 +4,7 @@ import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-import beans.Atividade;
+import beans.TipoAtividade;
 import beans.Conhecimento;
 import beans.Desenvolvedor;
 
@@ -170,7 +170,7 @@ public class ServicoDesenvolvedorImplDAOTest extends TestCase {
 		sa.cadastrarAtividade("asju@gmail.com", "amilcarpiox@hotmail.com", "Criar Relatorio",
 				dataInicio, dataFim);
 		
-		ArrayList<Atividade> list = sd.getAtividadesDoDesenvolvedor("asju@gmail.com");
+		ArrayList<TipoAtividade> list = sd.getAtividadesDoDesenvolvedor("asju@gmail.com");
 		
 		assertTrue(list.get(0).getSupervisor().getEmail().equals("amilcarpiox@hotmail.com"));
 		

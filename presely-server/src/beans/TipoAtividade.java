@@ -1,5 +1,6 @@
 package beans;
 
+import java.io.Serializable;
 import java.sql.Date;
 import java.util.ArrayList;
 
@@ -12,7 +13,7 @@ import java.util.ArrayList;
  * 
  */
 
-public class Atividade {
+public class TipoAtividade implements Serializable {
 
 	private int id;
 	private String descricao;
@@ -24,12 +25,29 @@ public class Atividade {
 	private boolean concluida;
 	private ArrayList<Conhecimento> listaDeConhecimentosEnvolvidos;
 	
+	public TipoAtividade(String descricao, Desenvolvedor desenvolvedor, Desenvolvedor supervisor, 
+			int idPai, Date dataInicio, Date dataFinal, boolean concluida, ArrayList<Conhecimento> listaConhecimentos) {
+	
+		setDescricao(descricao);
+		setDesenvolvedor(desenvolvedor);
+		setSupervisor(supervisor);
+		setIdPai(idPai);
+		setDataInicio(dataInicio);
+		setDataFinal(dataFinal);
+		setConcluida(concluida);
+		setListaDeConhecimentosEnvolvidos(listaConhecimentos);
+
+	}
+	
 	public int getId() {
 		return id;
 	}
+	
+	/*Se eh auto increment nao precisa de set!
 	public void setId(int id) {
 		this.id = id;
-	}
+	}*/
+	
 	public String getDescricao() {
 		return descricao;
 	}

@@ -4,7 +4,7 @@ import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-import beans.Atividade;
+import beans.TipoAtividade;
 import beans.Problema;
 
 import persistencia.implementacao.ServicoAtividadeImplDAO;
@@ -75,7 +75,7 @@ public class ServicoProblemaImplDAOTest extends TestCase {
 	
 	private void removerAtividades(){
 		
-		ArrayList<Atividade> list = sd.getAtividadesDoDesenvolvedor("asju@gmail.com");
+		ArrayList<TipoAtividade> list = sd.getAtividadesDoDesenvolvedor("asju@gmail.com");
 		
 		assertTrue(sa.removerAtividade(list.get(0).getId()));
 			
@@ -99,7 +99,7 @@ public class ServicoProblemaImplDAOTest extends TestCase {
 		Date dataDoRelato = new Date(cal.getTimeInMillis());
 		
 		
-		ArrayList<Atividade> list = sd.getAtividadesDoDesenvolvedor("amilcarsj@gmail.com");
+		ArrayList<TipoAtividade> list = sd.getAtividadesDoDesenvolvedor("amilcarsj@gmail.com");
 		
 		sp.cadastrarProblema(list.get(0).getId(), "Erro de transacao", dataDoRelato, "Stack trace do problema ...");
 		sp.cadastrarProblema(list.get(0).getId(), "Erro de conexao", dataDoRelato, "Deu o seguinte erro de porta!! ...");
@@ -115,7 +115,7 @@ public class ServicoProblemaImplDAOTest extends TestCase {
 	
 	public void testListarProblemasDaAtividade() {
 		
-		ArrayList<Atividade> list = sd.getAtividadesDoDesenvolvedor("amilcarsj@gmail.com");
+		ArrayList<TipoAtividade> list = sd.getAtividadesDoDesenvolvedor("amilcarsj@gmail.com");
 		
 		
 		ArrayList<Problema> plist = sp.listarProblemasDaAtividade(list.get(0).getId());
@@ -134,7 +134,7 @@ public class ServicoProblemaImplDAOTest extends TestCase {
 	
 	public void testAtualizarStatusDoProblema() {
 		
-		ArrayList<Atividade> list = sd.getAtividadesDoDesenvolvedor("amilcarsj@gmail.com");
+		ArrayList<TipoAtividade> list = sd.getAtividadesDoDesenvolvedor("amilcarsj@gmail.com");
 				
 		ArrayList<Problema> plist = sp.listarProblemasDaAtividade(list.get(0).getId());
 		
@@ -154,7 +154,7 @@ public class ServicoProblemaImplDAOTest extends TestCase {
 	
 	public void testGetProblema(){
 		
-		ArrayList<Atividade> list = sd.getAtividadesDoDesenvolvedor("amilcarsj@gmail.com");
+		ArrayList<TipoAtividade> list = sd.getAtividadesDoDesenvolvedor("amilcarsj@gmail.com");
 		
 		ArrayList<Problema> plist = sp.listarProblemasDaAtividade(list.get(0).getId());
 		
@@ -170,7 +170,7 @@ public class ServicoProblemaImplDAOTest extends TestCase {
 	
 	public void testRemoverProblema() {
 		
-		ArrayList<Atividade> list = sd.getAtividadesDoDesenvolvedor("amilcarsj@gmail.com");
+		ArrayList<TipoAtividade> list = sd.getAtividadesDoDesenvolvedor("amilcarsj@gmail.com");
 			
 		ArrayList<Problema> plist = sp.listarProblemasDaAtividade(list.get(0).getId());
 		

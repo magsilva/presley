@@ -3,7 +3,7 @@ package persistencia.interfaces;
 import java.sql.Date;
 import java.util.ArrayList;
 
-import beans.Atividade;
+import beans.TipoAtividade;
 import beans.Conhecimento;
 
 /**
@@ -38,20 +38,20 @@ public interface ServicoAtividade {
 	public boolean removerAtividade(int id);
 	
 	/**
-	 * Esse método retorna um objeto Atividade com todos os dados de uma atividade
+	 * Esse método retorna um objeto TipoAtividade com todos os dados de uma atividade
 	 * previamente cadastrada.
 	 * @param id Identificador da atividade
-	 * @return <Atividade>
+	 * @return <TipoAtividade>
 	 */
-	public Atividade getAtividade(int id);
+	public TipoAtividade getAtividade(int id);
 	
 	/**
 	 * Esse método retorna uma lista de sub-atividades associadas a uma atividade
 	 * pai.
 	 * @param idPai Identificador da atividade pai
-	 * @return ArrayList<Atividade>
+	 * @return ArrayList<TipoAtividade>
 	 */
-	public ArrayList<Atividade> getSubAtividades(int idPai);
+	public ArrayList<TipoAtividade> getSubAtividades(int idPai);
 	
 	/**
 	 * Esse método atualiza o status se a atividade foi concluida ou

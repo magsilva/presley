@@ -7,7 +7,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
-import beans.Atividade;
+import beans.TipoAtividade;
 import beans.Conhecimento;
 import persistencia.MySQLConnectionFactory;
 import persistencia.interfaces.ServicoAtividade;
@@ -98,7 +98,7 @@ public class ServicoAtividadeImplDAO implements ServicoAtividade{
 
 	}
 
-	public Atividade getAtividade(int id) {
+	public TipoAtividade getAtividade(int id) {
 		
 		MySQLConnectionFactory factory = new MySQLConnectionFactory();
 		
@@ -119,19 +119,19 @@ public class ServicoAtividadeImplDAO implements ServicoAtividade{
 			
 			if (rs.next()){
 				
-				Atividade atividade = new Atividade();
+				TipoAtividade tipoAtividade = new TipoAtividade();
 				
-				atividade.setId(rs.getInt(1));
-				atividade.setDesenvolvedor(sd.getDesenvolvedor(rs.getString(2)));
-				atividade.setSupervisor(sd.getDesenvolvedor(rs.getString(3)));
-				atividade.setIdPai(rs.getInt(4));
-				atividade.setDescricao(rs.getString(5));
-				atividade.setDataInicio(rs.getDate(6));
-				atividade.setDataFinal(rs.getDate(7));
-				atividade.setConcluida(rs.getBoolean(8));
-				atividade.setListaDeConhecimentosEnvolvidos(this.getConhecimentosEnvolvidosNaAtividade(rs.getInt(1)));
+				tipoAtividade.setId(rs.getInt(1));
+				tipoAtividade.setDesenvolvedor(sd.getDesenvolvedor(rs.getString(2)));
+				tipoAtividade.setSupervisor(sd.getDesenvolvedor(rs.getString(3)));
+				tipoAtividade.setIdPai(rs.getInt(4));
+				tipoAtividade.setDescricao(rs.getString(5));
+				tipoAtividade.setDataInicio(rs.getDate(6));
+				tipoAtividade.setDataFinal(rs.getDate(7));
+				tipoAtividade.setConcluida(rs.getBoolean(8));
+				tipoAtividade.setListaDeConhecimentosEnvolvidos(this.getConhecimentosEnvolvidosNaAtividade(rs.getInt(1)));
 				
-				return atividade;
+				return tipoAtividade;
 				
 			}else{
 				return null;
@@ -202,13 +202,13 @@ public class ServicoAtividadeImplDAO implements ServicoAtividade{
 		
 	}
 
-	public ArrayList<Atividade> getSubAtividades(int idPai) {
+	public ArrayList<TipoAtividade> getSubAtividades(int idPai) {
 		
 		MySQLConnectionFactory factory = new MySQLConnectionFactory();
 		
 		ServicoDesenvolvedor sd = new ServicoDesenvolvedorImplDAO();
 		
-		ArrayList<Atividade> list = new ArrayList<Atividade>();
+		ArrayList<TipoAtividade> list = new ArrayList<TipoAtividade>();
 		
 		
 		Connection conn = factory.getConnection();
@@ -228,20 +228,20 @@ public class ServicoAtividadeImplDAO implements ServicoAtividade{
 			while (rs.next()){
 											
 				
-				Atividade atividade = new Atividade();
+				TipoAtividade tipoAtividade = new TipoAtividade();
 				
-				atividade.setId(rs.getInt(1));
-				atividade.setDesenvolvedor(sd.getDesenvolvedor(rs.getString(2)));
-				atividade.setSupervisor(sd.getDesenvolvedor(rs.getString(3)));
-				atividade.setIdPai(rs.getInt(4));
-				atividade.setDescricao(rs.getString(5));
-				atividade.setDataInicio(rs.getDate(6));
-				atividade.setDataFinal(rs.getDate(7));
-				atividade.setConcluida(rs.getBoolean(8));
-				atividade.setListaDeConhecimentosEnvolvidos(sd.getConhecimentosDoDesenvolvedor(rs.getString(2)));
+				tipoAtividade.setId(rs.getInt(1));
+				tipoAtividade.setDesenvolvedor(sd.getDesenvolvedor(rs.getString(2)));
+				tipoAtividade.setSupervisor(sd.getDesenvolvedor(rs.getString(3)));
+				tipoAtividade.setIdPai(rs.getInt(4));
+				tipoAtividade.setDescricao(rs.getString(5));
+				tipoAtividade.setDataInicio(rs.getDate(6));
+				tipoAtividade.setDataFinal(rs.getDate(7));
+				tipoAtividade.setConcluida(rs.getBoolean(8));
+				tipoAtividade.setListaDeConhecimentosEnvolvidos(sd.getConhecimentosDoDesenvolvedor(rs.getString(2)));
 				
 				
-				list.add(atividade);
+				list.add(tipoAtividade);
 				
 			}
 				return list;
