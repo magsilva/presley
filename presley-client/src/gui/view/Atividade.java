@@ -1,9 +1,10 @@
 package gui.view;
 
 import gui.view.comunication.ViewComunication;
-
+import beans.*;
 import java.awt.Event;
 import java.security.MessageDigest;
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
@@ -61,6 +62,9 @@ import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
 
+import beans.Conhecimento;
+import beans.Desenvolvedor;
+
 
 public class Atividade extends ViewPart {
 
@@ -72,12 +76,11 @@ public class Atividade extends ViewPart {
 	private Label problemaLabel;
 	private Composite panel;
 	private Text textAtividade;
-	private boolean textoHabilitado = false;
 	
 	public Atividade()
 	{
 		this.viewComunication = new ViewComunication();
-		viewComunication.teste();		
+
 	}	
 	
 	public void createPartControl(Composite parent) 
@@ -153,26 +156,6 @@ public class Atividade extends ViewPart {
 		Button evento = new Button(parent, SWT.NONE);
 		evento.setLocation(4, 4);
 		evento.setSize(16, 16);
-		
-		evento.addMouseListener(
-				new MouseListener(){
-
-					public void mouseDoubleClick(MouseEvent arg0) {
-						// TODO Auto-generated method stub
-						
-					}
-
-					public void mouseDown(MouseEvent arg0) {
-						// TODO Auto-generated method stub
-						
-					}
-
-					public void mouseUp(MouseEvent arg0) {
-						// TODO Auto-generated method stub
-						
-					}
-					
-				});
 			
 		panel = new Composite(parent, SWT.V_SCROLL | SWT.BORDER);
 		panel.setLocation(0, 25);
@@ -213,8 +196,12 @@ public class Atividade extends ViewPart {
 	        public void focusLost(FocusEvent e) {
 	        	
 	        	Text t = (Text) e.widget;
-	        	String novaAtividade =  t.getText();								
-				
+	        	String novaAtividade =  t.getText();							
+	        	Desenvolvedor des = new Desenvolvedor();
+	        	des.setEmail("coelhao@vai.pro.japao");
+	        	beans.TipoAtividade ati = new beans.TipoAtividade(novaAtividade, des, des, 0,  new Date(System.currentTimeMillis()), new Date(System.currentTimeMillis()), false, null);
+	        	viewComunication.comunicacao(ati, 1);
+	        	
 				viewComunication.addAtividade(novaAtividade, null, null);						
 				textAtividade.setText("");
 										

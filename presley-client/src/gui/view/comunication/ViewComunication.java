@@ -2,11 +2,24 @@ package gui.view.comunication;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import facade.PacketStruct;
+import facade.PrincipalSUBJECT;
 
 public class ViewComunication {	
 	private ArrayList<String> atividades = new ArrayList<String>();	
 	private HashMap<String,ArrayList<String>> conhecimentos = new HashMap<String,ArrayList<String>>();
 	private HashMap<String,ArrayList<String>> problemas = new HashMap<String,ArrayList<String>>();
+	
+	public ViewComunication() {
+		try {
+			System.out.println("instanciando cliente");
+			Object o = PrincipalSUBJECT.getInstance("client", "150.165.130.230", 1099);
+			System.out.println(o.toString());
+		} catch (Exception e) {
+			System.out.println("Dentro do catch");
+			e.printStackTrace();
+		}
+	}
 	
 	public ArrayList<String> getAtividades()
 	{
@@ -59,6 +72,12 @@ public class ViewComunication {
 		
 		this.addAtividade("C++", conh1, prob1);
 
+	}
+	
+	public void comunicacao(Object data, int id) {
+		PacketStruct pack = new PacketStruct(data, id);
+		PacketStruct packet = PrincipalSUBJECT.facade(pack);
+		System.out.println(packet.getData());
 	}
 }
 
