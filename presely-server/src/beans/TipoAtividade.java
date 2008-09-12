@@ -39,14 +39,17 @@ public class TipoAtividade implements Serializable {
 
 	}
 	
+	public TipoAtividade() {
+
+	}
+
 	public int getId() {
 		return id;
 	}
 	
-	/*Se eh auto increment nao precisa de set!
 	public void setId(int id) {
 		this.id = id;
-	}*/
+	}
 	
 	public String getDescricao() {
 		return descricao;
@@ -97,8 +100,5 @@ public class TipoAtividade implements Serializable {
 	public void setIdPai(int idPai) {
 		this.idPai = idPai;
 	}
-	
-	
-	
 	
 }
