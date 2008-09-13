@@ -67,7 +67,7 @@ public class Atividade extends ViewPart {
 	public Atividade()
 	{
 		this.viewComunication = new ViewComunication();
-		this.viewComunication.teste(); //(HABILITAR PARA FINS DE TESTE)
+		//this.viewComunication.teste(); //(HABILITAR PARA FINS DE TESTE)
 
 	}	
 	
@@ -201,7 +201,7 @@ public class Atividade extends ViewPart {
 		    	Desenvolvedor des = new Desenvolvedor();
 		    	des.setEmail("coelhao@vai.pro.japao");
 		    	beans.TipoAtividade ati = new beans.TipoAtividade(novaAtividade, des, des, 0,  new Date(System.currentTimeMillis()), new Date(System.currentTimeMillis()), false, null);
-		    	//viewComunication.sendPack(ati, 1);
+		    	viewComunication.sendPack(ati, 1);
 										
 				Button novoButao = new Button(panel, SWT.RADIO);
 				novoButao.setText(novaAtividade);
