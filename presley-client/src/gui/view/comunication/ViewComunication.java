@@ -22,7 +22,7 @@ public class ViewComunication {
 	public ViewComunication() {
 		try {
 			System.out.println("instanciando cliente");
-			PrincipalSUBJECT.getInstance("client", "150.165.130.230", 1099);
+			PrincipalSUBJECT.getInstance("client", "150.165.130.20", 1099);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
