@@ -21,8 +21,10 @@ public class MySQLConnectionFactory {
 			try {
 				
 	            Class.forName("com.mysql.jdbc.Driver");
-	            connection = DriverManager.getConnection("jdbc:mysql://150.165.130.20:3306/presley", user, pwd);
-	            return connection;
+	            connection = DriverManager.getConnection(
+	            		"jdbc:mysql://150.165.130.20/presley", 
+	            		user, 
+	            		pwd);
 	            
 	        } catch (ClassNotFoundException e) {
 	            e.printStackTrace();
