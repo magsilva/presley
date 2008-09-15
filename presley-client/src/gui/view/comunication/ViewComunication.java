@@ -37,7 +37,7 @@ public class ViewComunication {
 		///*
 		try {
 			System.out.println("instanciando cliente");
-			PrincipalSUBJECT.getInstance("client", "150.165.130.20", 1099);
+		//	PrincipalSUBJECT.getInstance("client", "150.165.130.20", 1099);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -143,7 +143,7 @@ public class ViewComunication {
     	Desenvolvedor des = new Desenvolvedor();
     	des.setEmail("coelhao@vai.pro.japao");
 		beans.TipoAtividade ati = new beans.TipoAtividade(atividade, des, des, 0,  new Date(System.currentTimeMillis()), new Date(System.currentTimeMillis()), false, null);
-		//sendPack(ati, REMOVE_ATIVIDADE);	
+		sendPack(ati, REMOVE_ATIVIDADE);	
 	}
 	
 	/**

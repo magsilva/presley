@@ -54,7 +54,9 @@ public class AdicionaAtividadeWizard extends Wizard implements INewWizard {
     		
     		String atividade = page.getNomeAtividade();
     		ArrayList<String> conhecimentos = page2.getConhecimentos();
-    		conhecimentos.remove(this.atividade.getViewComunication().getOntologia().getRaiz().getNome());
+    		
+    		/**MUDANCA*/
+    		//conhecimentos.remove(this.atividade.getViewComunication().getOntologia().getRaiz().getNome());
     		ArrayList<String> problemas = new ArrayList<String>();
     		this.atividade.adicionaAtividade(atividade, conhecimentos, problemas);
 	
