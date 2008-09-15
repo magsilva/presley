@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import sun.security.util.Password;
+
 public class CopyOfRunScript {
 
 
@@ -29,7 +31,7 @@ public class CopyOfRunScript {
 			
 			stm.execute("use presley;");
 			
-			
+						
 			
 //			stm.execute("CREATE TABLE conhecimento ( " +
 //					"nome VARCHAR(40) NOT NULL, " +

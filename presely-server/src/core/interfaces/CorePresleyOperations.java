@@ -1,12 +1,17 @@
 package core.interfaces;
 
+import java.util.ArrayList;
+
+import sun.security.util.Password;
 import beans.Conhecimento;
+import beans.Desenvolvedor;
+import beans.Problema;
 import beans.TipoAtividade;
 import beans.Tree;
 
 /**
  * 
- * @author Eduardo Serafim
+ * @author Eduardo Serafim, Joao Paulo
  * Essa interface contem metodos básicos que o Cliente e Servidor Presley devem implementar.
  * 
  * Última modificacao: 15/09/2008 por EduardoPS
@@ -40,11 +45,111 @@ public interface CorePresleyOperations {
 	
 	/**
 	 * Este método solicita a arvore de ontologia
-	 * CÓDIGO DA OPERAÇÃO -> 03
+	 * CÓDIGO DA OPERAÇÃO -> 04
 	 * @param Conhecimento conhecimento
 	 * @return true se o conhecimento foi adicionado com sucesso.
 	 */
 	public boolean AdicionaConhecimento(Conhecimento conhecimento);
 
+	/**
+	 * Este método executa autenticação no servidor
+	 * CÓDIGO DA OPERAÇÃO -> 05
+	 * @param String user
+	 * @param String passwd  
+	 * @return Desenvolvedor 
+	 */
+	public Desenvolvedor login(String user, String passwd);
+
+	/**
+	 * Este método solicita logout do servidor
+	 * CÓDIGO DA OPERAÇÃO -> 06
+	 * @param Conhecimento conhecimento
+	 * @return true se o conhecimento foi adicionado com sucesso.
+	 */
+	public boolean logout(Desenvolvedor desenvolvedor);
+
+	/**
+	 * Este método seta a atividade como encerrada
+	 * CÓDIGO DA OPERAÇÃO -> 07
+	 * @param TipoAtividade atividade
+	 * @return true se a atividade for encerrada com sucesso.
+	 */
+	public boolean encerrarAtividade(TipoAtividade atividade);
+
+	/**
+	 * Este método associa conhecimentos a uma atividade
+	 * CÓDIGO DA OPERAÇÃO -> 08
+	 * @param ArrayList<Conhecimento> listaConhecimento
+	 * @param TipoAtividade atividade
+	 * @return true se a associação foi realizada com sucesso.
+	 */
+	public boolean associaConhecimentoAtividade(ArrayList<Conhecimento> listaConhecimento, TipoAtividade atividade);
+
+	/**
+	 * Este método desassocia conhecimentos a uma atividade
+	 * CÓDIGO DA OPERAÇÃO -> 09
+	 * @param ArrayList<Conhecimento> listaConhecimento
+	 * @param TipoAtividade atividade
+	 * @return true se a desassociação foi realizada com sucesso.
+	 */
+	public boolean desassociaConhecimentoAtividade(ArrayList<Conhecimento> listaConhecimento, TipoAtividade atividade);
+
+	/**
+	 * Este método associa um problema a uma atividade
+	 * CÓDIGO DA OPERAÇÃO -> 10
+	 * @param Problema problema
+	 * @param TipoAtividade atividade
+	 * @return true se a associação foi realizada com sucesso.
+	 */
+	public boolean associaProblemaAtividade(Problema problema, TipoAtividade atividade);
+
+	/**
+	 * Este método desassocia um problema a uma atividade
+	 * CÓDIGO DA OPERAÇÃO -> 11
+	 * @param Problema problema
+	 * @param TipoAtividade atividade
+	 * @return true se a desassociação foi realizada com sucesso.
+	 */
+	public boolean desassociaProblemaAtividade(Problema problema, TipoAtividade atividade);
+
+	/**
+	 * Este método retorna uma lista de desenvolvedores para resolver um problema
+	 * CÓDIGO DA OPERAÇÃO -> 12
+	 * @param Problema problema
+	 * @param TipoAtividade atividade
+	 * @param int grauDeConfiaca varia de 1 -> 100
+	 * @return true se a desassociação foi realizada com sucesso.
+	 */
+	public ArrayList<Desenvolvedor> buscaDesenvolvedores(Problema problema, ArrayList<Conhecimento> listaConhecimento, int grauDeConfianca);
+
+	/**
+	 * Este método qualifica o desenvolvedor de acordo com as respostas dele aos problemas
+	 * CÓDIGO DA OPERAÇÃO -> 13
+	 * @param Desenvolvedor desenvolvedor
+	 * @param Problema problema
+	 * @param boolean qualificação
+	 * @return true se a desassociação foi realizada com sucesso.
+	 */
+	public boolean qualificaDesenvolvedor(Desenvolvedor desenvolvedor, Problema problema, boolean qualificacao);
+
+	/**
+	 * Este método envia uma mensagem para os desenvolvedores selecionados
+	 * CÓDIGO DA OPERAÇÃO -> 14
+	 * @param ArrayList<Desenvolvedor> desenvolvedor
+	 * @param Problema problema
+	 * @return true se a mensagem foi realizada com sucesso.
+	 */
+	public boolean enviarMensagem(ArrayList<Desenvolvedor> desenvolvedoresDestino, Problema problema);
 	
+	/**
+	 * Este método retorna uma lista com todos os desenvolvedores cadastrados
+	 * CÓDIGO DA OPERAÇÃO -> 15
+	 * @return ArrayList<Desenvolvedor> lista de desenvolvedores existentes.
+	 */
+	public ArrayList<Desenvolvedor> getListaDesenvolvedores();
+
+
+
+
+
 }
