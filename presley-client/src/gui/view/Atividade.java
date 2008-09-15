@@ -19,6 +19,7 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 import org.eclipse.ui.part.ViewPart;
@@ -28,8 +29,8 @@ import beans.Desenvolvedor;
 public class Atividade extends ViewPart {
 
 	private ArrayList<Button> buttons;
-	private HashMap<String,Tree> conhecimentosTree;
-	private HashMap<String,Tree> problemasTree;
+	private HashMap<String,List> conhecimentosList;
+	private HashMap<String,List> problemasList;
 	private ViewComunication viewComunication;
 	private Label conhecimentoLabel, problemaLabel, contatosLabel;
 	private Composite panel, panelConhecimento, panelProblema, panelContatos, parentComposite;
@@ -67,7 +68,6 @@ public class Atividade extends ViewPart {
 	public Atividade()
 	{
 		this.viewComunication = new ViewComunication();
-		//this.viewComunication.teste(); //(HABILITAR PARA FINS DE TESTE)
 
 	}	
 	
@@ -92,33 +92,35 @@ public class Atividade extends ViewPart {
 
 			public void mouseDown(MouseEvent e) {	
 				try{
-					Set<String> keys = conhecimentosTree.keySet();
+					Set<String> keys = conhecimentosList.keySet();
 					
 					for(String key : keys)
 					{
-						conhecimentosTree.get(key).setVisible(false);
-						conhecimentosTree.get(key).setEnabled(false);
+						conhecimentosList.get(key).setVisible(false);
+						conhecimentosList.get(key).setEnabled(false);
 						
-						problemasTree.get(key).setVisible(false);
-						problemasTree.get(key).setEnabled(false);
+						problemasList.get(key).setVisible(false);
+						problemasList.get(key).setEnabled(false);
 					}
 					
 					problemaLabel.setVisible(true);
 					conhecimentoLabel.setVisible(true);
 					
-					conhecimentosTree.get( button.getText()).setVisible(true);
-					conhecimentosTree.get( button.getText()).setEnabled(true);
+					conhecimentosList.get( button.getText()).setVisible(true);
+					conhecimentosList.get( button.getText()).setEnabled(true);
 					
-					problemasTree.get( button.getText()).setVisible(true);
-					problemasTree.get( button.getText()).setEnabled(true);
+					problemasList.get( button.getText()).setVisible(true);
+					problemasList.get( button.getText()).setEnabled(true);
 					
 					habilitaBotoesConhecimento();
+					habilitaBotoesProblema();
 				
 					button.getParent().redraw();
 					button.getParent().update();
 					
 				}catch(Exception e1){
-					System.out.println("ERRO ERRO :   "+e1.getMessage());
+					System.out.println("ERRO ERRO Evento Mouse:   "+e1.getMessage());
+					e1.printStackTrace();
 				}
 			}
 			
@@ -162,7 +164,6 @@ public class Atividade extends ViewPart {
 		associaProblema.setEnabled(true);
 		desassociaProblema.setEnabled(true);
 		buscaProblema.setEnabled(true);
-		buscaProblema.update();
 	}
 	
 	private void desabilitaBotoesContato(){
@@ -196,48 +197,43 @@ public class Atividade extends ViewPart {
 		
 			public void mouseDown(MouseEvent e) {
 				// TODO Auto-generated method stub
+				String ultimaAtividadeAdicionada =  viewComunication.getAtividades().get(viewComunication.getAtividades().size()-1);
 				runAdicionaWizardAction();
-				String novaAtividade =  viewComunication.getAtividades().get(viewComunication.getAtividades().size()-1);	
-		    	Desenvolvedor des = new Desenvolvedor();
-		    	des.setEmail("coelhao@vai.pro.japao");
-		    	beans.TipoAtividade ati = new beans.TipoAtividade(novaAtividade, des, des, 0,  new Date(System.currentTimeMillis()), new Date(System.currentTimeMillis()), false, null);
-		    	viewComunication.sendPack(ati, 1);
-										
-				Button novoButao = new Button(panel, SWT.RADIO);
-				novoButao.setText(novaAtividade);
-				buttons.add(novoButao);
-				int depoisButoes = 120;	
-				
-				final Tree conhecimentoTree = new Tree(panelConhecimento, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL | SWT.CHECK | SWT.SCROLL_LINE);
-				conhecimentoTree.setLocation(0, 0);
-				conhecimentoTree.setSize(larguraJanela, alturaPainelConhecimentos);
-				conhecimentoTree.setVisible(false);	
-				ArrayList<String> conhecimentos = viewComunication.getConhecimentosEnvolvidos(novaAtividade);
-				if(conhecimentos != null)
-					for(String c : conhecimentos)
-					{
-						TreeItem item = new TreeItem(conhecimentoTree, SWT.NONE);
-						item.setText(c);
-					}	
-				conhecimentosTree.put(novaAtividade, conhecimentoTree);
-				
-				final Tree problemaTree = new Tree(panelProblema, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL | SWT.CHECK | SWT.SCROLL_LINE);
-				problemaTree.setLocation(0, 0);
-				problemaTree.setSize(larguraJanela, alturaPainelProblemas);
-				problemaTree.setVisible(false);		
-				ArrayList<String> problemas = viewComunication.getProblemas(novaAtividade);
-				
-				if(problemas != null)
-					for(String c : problemas)
-					{
-						TreeItem item = new TreeItem(problemaTree, SWT.NONE);
-						item.setText(c);
+				String novaAtividade =  viewComunication.getAtividades().get(viewComunication.getAtividades().size()-1);
+				if (!ultimaAtividadeAdicionada.equals(novaAtividade)) {
+					Button novoButao = new Button(panel, SWT.RADIO);
+					novoButao.setText(novaAtividade);
+					buttons.add(novoButao);
+						
+					ArrayList<String> conhecimentosModelo = viewComunication.getConhecimentosEnvolvidos(novaAtividade);
+					final List conhecimentoList = new List(panelConhecimento, SWT.MULTI | SWT.CHECK);
+					for (String string : conhecimentosModelo) {
+						conhecimentoList.add(string);
 					}
-				problemasTree.put(novaAtividade, problemaTree);
-				
-				setListener(novoButao);		
-				atualizaPosicaoComponentes();	
-				
+					conhecimentoList.setLocation(0, 0);
+					conhecimentoList.setSize(larguraJanela, alturaPainelConhecimentos);
+					conhecimentoList.setVisible(false);
+						
+					conhecimentosList.put(novaAtividade, conhecimentoList);
+					
+					
+					final List problemaList = new List(panelProblema, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL | SWT.CHECK | SWT.SCROLL_LINE);
+					problemaList.setLocation(0, 0);
+					problemaList.setSize(larguraJanela, alturaPainelProblemas);
+					problemaList.setVisible(false);		
+					ArrayList<String> problemas = viewComunication.getProblemas(novaAtividade);
+					
+					if(problemas != null)
+						for(String c : problemas)
+						{
+							problemaList.add(c);
+						}
+					problemasList.put(novaAtividade, problemaList);
+					
+					setListener(novoButao);		
+					atualizaPosicaoComponentes();	
+	
+				}				
 			}
 		
 			public void mouseDoubleClick(MouseEvent arg0) {
@@ -262,14 +258,17 @@ public class Atividade extends ViewPart {
 			public void mouseDown(MouseEvent arg0) {
 				// TODO Auto-generated method stub
 				runRemoveWizardAction();
+				for (List conhecimentoList : conhecimentosList.values()) {
+					conhecimentoList.setEnabled(false);
+					conhecimentoList.setVisible(false);
+				}
+				for (List problemaList : problemasList.values()) {
+					problemaList.setEnabled(false);
+					problemaList.setVisible(false);
+				}
 				ArrayList<String> atividadesAtualizadas =  viewComunication.getAtividades();
 				if (!atividadesAtualizadas.isEmpty()) {
 					buttons = new ArrayList<Button>();
-					panel.dispose();
-					panel = new Composite(parentComposite, SWT.V_SCROLL | SWT.BORDER);
-					panel.setLocation(posHorPanel, posVerPainelAtividade);
-					panel.setSize(larguraJanela, alturaPainelAtividade);
-					panel.setVisible(true);
 					
 					for(int i=0; i < atividadesAtualizadas.size(); i++)
 					{
@@ -280,9 +279,6 @@ public class Atividade extends ViewPart {
 						buttons.add(b);
 						setListener(b);
 					}
-					int depoisButoes = 120;	
-					
-			    	//viewComunication.sendPack(ati, 1);
 					
 					atualizaPosicaoComponentes();
 
@@ -292,14 +288,14 @@ public class Atividade extends ViewPart {
 					}
 					buttons.clear();
 					
-					for (Tree tree : conhecimentosTree.values()) {
-						tree.dispose();
+					for (List listConhecimento : conhecimentosList.values()) {
+						listConhecimento.dispose();
 					}
-					for (Tree tree : problemasTree.values()) {
-						tree.dispose();
+					for (List list : problemasList.values()) {
+						list.dispose();
 					}
-					conhecimentosTree.clear();
-					problemasTree.clear();
+					conhecimentosList.clear();
+					problemasList.clear();
 					
 					desabilitaBotoesConhecimento();
 					desabilitaBotoesProblema();
@@ -343,12 +339,7 @@ public class Atividade extends ViewPart {
 		panel.setLocation(posHorPanel, posVerPainelAtividade);
 		panel.setSize(larguraJanela, alturaPainelAtividade);
 		panel.setVisible(true);
-		/*
-		panel.getVerticalBar().addSelectionListener(
-				SelectionListener listener = new SelectionAdapter(){
-					
-				});
-		*/
+
 		ArrayList<String> atividadesNomes = viewComunication.getAtividades();
 			
 		for(int i=0; i < atividadesNomes.size(); i++)
@@ -360,7 +351,6 @@ public class Atividade extends ViewPart {
 			this.buttons.add(b);
 			setListener(b);
 		}
-		int depoisButoes = 120;	
 	
 		conhecimentoLabel = new Label(parentComposite, SWT.BORDER | SWT.CENTER);
 		conhecimentoLabel.setText("Conhecimentos Envolvidos");
@@ -369,12 +359,12 @@ public class Atividade extends ViewPart {
 		conhecimentoLabel.setVisible(true);
 		conhecimentoLabel.setBackground(new Color(conhecimentoLabel.getDisplay(),102,204,255));
 		
-		panelConhecimento = new Composite(parentComposite, SWT.V_SCROLL | SWT.BORDER);
+		panelConhecimento = new Composite(parentComposite, SWT.BORDER);
 		panelConhecimento.setLocation(posHorPanel, posVerPainelConhecimentos);
 		panelConhecimento.setSize(larguraJanela, alturaPainelConhecimentos);
 		panelConhecimento.setVisible(true);
 						
-		conhecimentosTree = new HashMap<String, Tree>();
+		conhecimentosList = new HashMap<String, List>();
 		
 		associaConhecimento = new Button(parentComposite, SWT.NONE);
 		Image ass = new Image(addAtividade.getDisplay(),this.getClass().getResourceAsStream("/icons/associaConh.gif"));
@@ -400,31 +390,17 @@ public class Atividade extends ViewPart {
 		buscaConhecimento.setToolTipText("Busca um conhecimento");
 		buscaConhecimento.setEnabled(false);
 		
-		/*
-		Tree tree = new Tree(panel, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL | SWT.CHECK | SWT.SCROLL_LINE);
-		tree.setLocation(0, 10);
-		tree.setSize(200, 150);
-		tree.setVisible(true);
-		TreeItem item2 = new TreeItem(tree, SWT.NONE);
-		item2.setText("teste");	
-			
-		*/
-		
 		for(String selection : viewComunication.getAtividades())
 		{
-			Tree conhecimentoTree = new Tree(panelConhecimento, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL | SWT.CHECK | SWT.SCROLL_LINE);
-			conhecimentoTree.setLocation(0,0);
-			conhecimentoTree.setSize( this.larguraJanela , this.alturaPainelConhecimentos);
-			conhecimentoTree.setVisible(false);
-				ArrayList<String> conhecimentos = viewComunication.getConhecimentosEnvolvidos(selection);
-				if(conhecimentos != null)
-					for(String c : conhecimentos)
-					{
-						TreeItem item = new TreeItem(conhecimentoTree, SWT.NONE);
-						item.setText(c);
-					}	
-				
-				conhecimentosTree.put(selection, conhecimentoTree);
+			ArrayList<String> conhecimentosModelo = viewComunication.getConhecimentosEnvolvidos(selection);
+			final List conhecimentoList = new List(panelConhecimento, SWT.MULTI | SWT.CHECK);
+			for (String string : conhecimentosModelo) {
+				conhecimentoList.add(string);
+			}
+			conhecimentoList.setLocation(0,0);
+			conhecimentoList.setSize( this.larguraJanela , this.alturaPainelConhecimentos);
+			conhecimentoList.setVisible(false);
+			conhecimentosList.put(selection, conhecimentoList);
 		}
 		
 		problemaLabel = new Label(parentComposite, SWT.BORDER | SWT.CENTER);
@@ -434,12 +410,12 @@ public class Atividade extends ViewPart {
 		problemaLabel.setSize(200, 20);
 		problemaLabel.setVisible(true);
 		
-		panelProblema = new Composite(parentComposite, SWT.V_SCROLL | SWT.BORDER);
+		panelProblema = new Composite(parentComposite, SWT.BORDER);
 		panelProblema.setLocation(posHorPanel, posVerPainelProblemas);
 		panelProblema.setSize(larguraJanela, alturaPainelProblemas);
 		panelProblema.setVisible(true);
 		
-		problemasTree = new HashMap<String, Tree>();
+		problemasList = new HashMap<String, List>();
 		
 		associaProblema = new Button(parentComposite, SWT.NONE);
 		//Image ass = new Image(addAtividade.getDisplay(),this.getClass().getResourceAsStream("/icons/associaConh.gif"));
@@ -475,22 +451,21 @@ public class Atividade extends ViewPart {
 		
 		for(String selection : viewComunication.getAtividades())
 		{
-			Tree problemaTree = new Tree(panelProblema, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL | SWT.CHECK | SWT.SCROLL_LINE);
-			problemaTree.setLocation(0, 0);
-			problemaTree.setSize(this.larguraJanela, this.alturaPainelProblemas);
-			problemaTree.setVisible(false);
-			problemaTree.setEnabled(false);
+			List problemaList = new List(panelProblema, SWT.BORDER | SWT.CHECK);
+			problemaList.setLocation(0, 0);
+			problemaList.setSize(this.larguraJanela, this.alturaPainelProblemas);
+			problemaList.setVisible(false);
+			problemaList.setEnabled(false);
 			
 				ArrayList<String> problemas = viewComunication.getProblemas(selection);
 				
 				if(problemas != null)
 					for(String c : problemas)
 					{
-						TreeItem item = new TreeItem(problemaTree, SWT.NONE);
-						item.setText(c);
+						problemaList.add(c);
 					}
 				
-				problemasTree.put(selection, problemaTree);
+				problemasList.put(selection, problemaList);
 		}
 		
 		contatosLabel = new Label(parentComposite, SWT.BORDER | SWT.CENTER);
@@ -535,5 +510,9 @@ public class Atividade extends ViewPart {
 	private void runRemoveWizardAction(){
 		this.runRemoveAtividade = new RunRemoveAtividadeWizardAction(this);
 		this.runRemoveAtividade.run(null);
+	}
+	
+	public ViewComunication getViewComunication(){
+		return this.viewComunication;
 	}
 }
