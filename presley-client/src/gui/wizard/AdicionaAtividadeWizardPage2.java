@@ -27,7 +27,8 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 
-import util.Item;
+import beans.Item;
+
 
 public class AdicionaAtividadeWizardPage2 extends WizardPage {
 
@@ -36,7 +37,7 @@ public class AdicionaAtividadeWizardPage2 extends WizardPage {
 	private Tree arvoreConhecimento;
 	private Atividade atividade;
 	private ArrayList<TreeItem> conhecimentosSelecionados;
-	private util.Tree ontologia;
+	private beans.Tree ontologia;
 
     public AdicionaAtividadeWizardPage2(ISelection selection, Atividade atividade) {
         super("wizardPage");
@@ -155,7 +156,7 @@ public class AdicionaAtividadeWizardPage2 extends WizardPage {
         });
         try{
         	
-        	util.Tree conhecimentosModelo = atividade.getViewComunication().getOntologia();
+        	beans.Tree conhecimentosModelo = atividade.getViewComunication().getOntologia();
         	arvoreConhecimento = conhecimentosModelo.constroiArvoreGrafica(controls, SWT.BORDER | SWT.CHECK);
         	arvoreConhecimento.addListener(SWT.Selection, new Listener() {
 			

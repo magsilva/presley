@@ -7,10 +7,10 @@ import java.util.HashMap;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 
-import util.Item;
-import util.Tree;
 
 import beans.Desenvolvedor;
+import beans.Item;
+import beans.Tree;
 import facade.PacketStruct;
 import facade.PrincipalSUBJECT;
 
@@ -23,7 +23,7 @@ public class ViewComunication {
 	private ArrayList<String> atividades = new ArrayList<String>();	
 	private HashMap<String,ArrayList<String>> conhecimentos = new HashMap<String,ArrayList<String>>();
 	private HashMap<String,ArrayList<String>> problemas = new HashMap<String,ArrayList<String>>();
-	private util.Tree ontologia;//Armazena a ontologia
+	private beans.Tree ontologia;//Armazena a ontologia
 	
 	//Constantes
 	public final int ADICIONA_ATIVIDADE = 1; 
