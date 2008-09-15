@@ -1,6 +1,8 @@
 package core;
 
 import java.sql.Date;
+
+import core.interfaces.CorePresleyOperations;
 import server.ServerBridge;
 import validacao.ValidacaoAtividade;
 import validacao.implementacao.ValidacaoAtividadeImpl;
@@ -15,7 +17,7 @@ import facade.PacketStruct;
  * @version 1.00
  *  
  */
-public class ServerBridgeImp implements ServerBridge{
+public class ServerBridgeImp implements ServerBridge, CorePresleyOperations{
 
 	
 

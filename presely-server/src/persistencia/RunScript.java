@@ -23,8 +23,8 @@ public class RunScript {
 		}
 		
 		try {
-//			stm.execute("create database presley_bd;");
-			stm.execute("use presley_bd;"); 
+//			stm.execute("create database presley;");
+			stm.execute("use presley;"); 
 
 			stm.execute("CREATE TABLE conhecimento ( " +
 					"nome VARCHAR(40) NOT NULL, " +

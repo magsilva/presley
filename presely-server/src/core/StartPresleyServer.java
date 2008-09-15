@@ -1,6 +1,7 @@
 package core;
 
 import server.ServerBridge;
+import validacao.implementacao.ValidacaoAtividadeImpl;
 import facade.PacketStruct;
 import facade.PrincipalSUBJECT;
 import beans.TipoAtividade;
@@ -39,6 +40,7 @@ public class StartPresleyServer {
 		/* setando serverBridge no servidor. */ 
 		PrincipalSUBJECT.facade(1099, trocaMsg);
 		System.out.println("\n...Servidor Iniciado Com Sucesso!!");
+		
 		
 	}
 	
