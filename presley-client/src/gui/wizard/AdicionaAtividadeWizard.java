@@ -51,14 +51,17 @@ public class AdicionaAtividadeWizard extends Wizard implements INewWizard {
 		// TODO Auto-generated method stub
         //First save all the page data as variables.
     	try{
+    		
     		String atividade = page.getNomeAtividade();
     		ArrayList<String> conhecimentos = page2.getConhecimentos();
+    		conhecimentos.remove(this.atividade.getViewComunication().getOntologia().getRaiz().getNome());
     		ArrayList<String> problemas = new ArrayList<String>();
     		this.atividade.adicionaAtividade(atividade, conhecimentos, problemas);
 	
     	}catch (Exception e) {
 			// TODO: handle exception
     		System.out.println("ERRO ERRO:"+e.getMessage());
+    		e.printStackTrace();
 		}
     	
 		try {
@@ -86,7 +89,8 @@ public class AdicionaAtividadeWizard extends Wizard implements INewWizard {
 	public void addPages() {
         page=new AdicionaAtividadeWizardPage(selection);
         addPage(page);
-        page2=new AdicionaAtividadeWizardPage2(selection);
+        
+        page2=new AdicionaAtividadeWizardPage2(selection,this.atividade);
         addPage(page2);
     }
 
