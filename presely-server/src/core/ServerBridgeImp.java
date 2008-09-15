@@ -17,7 +17,7 @@ import facade.PacketStruct;
  * @version 1.00
  *  
  */
-public class ServerBridgeImp implements ServerBridge, CorePresleyOperations{
+public class ServerBridgeImp implements ServerBridge{
 
 	
 
