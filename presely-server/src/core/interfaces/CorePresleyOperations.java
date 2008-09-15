@@ -148,6 +148,12 @@ public interface CorePresleyOperations {
 	 */
 	public ArrayList<Desenvolvedor> getListaDesenvolvedores();
 
+	/**
+	 * Este método retorna uma lista com todos os conhecimentos cadastrados
+	 * CÓDIGO DA OPERAÇÃO -> 16
+	 * @return ArrayList<Conhecimento> lista de conhecimentos existentes.
+	 */
+	public ArrayList<Conhecimento> getListaConhecimentos();
 
 
 
