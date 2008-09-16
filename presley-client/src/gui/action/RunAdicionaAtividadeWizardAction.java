@@ -53,7 +53,7 @@ public class RunAdicionaAtividadeWizardAction extends Action implements
 	}
 
 	public void run(IAction arg0) {
-		LoginWizard wizard = new LoginWizard(this.atividade);
+		AdicionaAtividadeWizard wizard = new AdicionaAtividadeWizard(this.atividade);
 		Shell shell = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
 		WizardDialog dialog = new WizardDialog(shell,wizard);
 		dialog.create();
