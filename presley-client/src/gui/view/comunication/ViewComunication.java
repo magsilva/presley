@@ -8,8 +8,11 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 
 
+import beans.Conhecimento;
 import beans.Desenvolvedor;
 import beans.Item;
+import beans.Problema;
+import beans.TipoAtividade;
 import beans.Tree;
 import facade.PacketStruct;
 import facade.PrincipalSUBJECT;
@@ -19,15 +22,14 @@ import facade.PrincipalSUBJECT;
  * @author Leandro Carlos, Samara Martins, Alysson Diniz e Joao Paulo 
  * @since 2008
  */
-public class ViewComunication {	
+public class ViewComunication implements CorePresleyOperations{	
 	private ArrayList<String> atividades = new ArrayList<String>();	
-	private HashMap<String,ArrayList<String>> conhecimentos = new HashMap<String,ArrayList<String>>();
-	private HashMap<String,ArrayList<String>> problemas = new HashMap<String,ArrayList<String>>();
+	private ArrayList<Desenvolvedor> listaDesenvolvedores = new ArrayList<Desenvolvedor>();//Lista de todos os desenvolvedores
+	private ArrayList<Conhecimento> listaConhecimentos = new ArrayList<Conhecimento>();//Lista de todos os conhecimentos
+	private HashMap<String,ArrayList<Conhecimento>> conhecimentos = new HashMap<String,ArrayList<Conhecimento>>();
+	private HashMap<String,ArrayList<Problema>> problemas = new HashMap<String,ArrayList<Problema>>();
 	private beans.Tree ontologia;//Armazena a ontologia
-	
-	//Constantes
-	public final int ADICIONA_ATIVIDADE = 1; 
-	public final int REMOVE_ATIVIDADE = 2;
+
 	
 	/**
 	 * Construtor da classe ViewCommunication. Instancia a comunicacao como cliente, passando o ip do
@@ -37,7 +39,7 @@ public class ViewComunication {
 		///*
 		try {
 			System.out.println("instanciando cliente");
-		//	PrincipalSUBJECT.getInstance("client", "150.165.130.20", 1099);
+			PrincipalSUBJECT.getInstance("client", "150.165.130.20", 1099);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -97,7 +99,7 @@ public class ViewComunication {
 	 * @param atividade é o nome da atividade
 	 * @return ArrayList<String> é a lista de conhecimentos associados a atividade
 	 */
-	public ArrayList<String> getConhecimentosEnvolvidos(String atividade)
+	public ArrayList<Conhecimento> getConhecimentosEnvolvidos(String atividade)
 	{
 		return this.conhecimentos.get(atividade);
 	}
@@ -107,44 +109,11 @@ public class ViewComunication {
 	 * @param atividade é o nome da atividade
 	 * @return ArrayList<String> é a lista de problemas
 	 */
-	public ArrayList<String> getProblemas(String atividade)
+	public ArrayList<Problema> getProblemas(String atividade)
 	{
 		return this.problemas.get(atividade);
 	}
 	
-	/**
-	 * Adiciona uma nova atividade a lista já existente e envia um pacote para o servidor
-	 * para incluir essa ativadade no BD.
-	 * @param atividade é o nome da atividade
-	 * @param conhecimentos são os conhecimentos envolvidos em uma atividade
-	 * @param problemas são os problemas associados a uma ativadade
-	 */
-	public void addAtividade(String atividade, ArrayList<String> conhecimentos, ArrayList<String> problemas)
-	{
-		this.atividades.add(atividade);
-		this.conhecimentos.put(atividade, conhecimentos);
-		this.problemas.put(atividade, problemas);
-		String novaAtividade =  getAtividades().get(getAtividades().size()-1);	
-    	Desenvolvedor des = new Desenvolvedor();
-    	des.setEmail("coelhao@vai.pro.japao");
-    	beans.TipoAtividade ati = new beans.TipoAtividade(novaAtividade, des, des, 0,  new Date(System.currentTimeMillis()), new Date(System.currentTimeMillis()), false, null);
-    	sendPack(ati, ADICIONA_ATIVIDADE);	
-	}
-	
-	/**
-	 * Remove uma ativadade da lista existente
-	 * @param atividade é a atividade que será removida
-	 */
-	public void removeAtividade(String atividade)
-	{
-		this.atividades.remove(atividade);
-		this.conhecimentos.remove(atividade);
-		this.problemas.remove(atividade);
-    	Desenvolvedor des = new Desenvolvedor();
-    	des.setEmail("coelhao@vai.pro.japao");
-		beans.TipoAtividade ati = new beans.TipoAtividade(atividade, des, des, 0,  new Date(System.currentTimeMillis()), new Date(System.currentTimeMillis()), false, null);
-		sendPack(ati, REMOVE_ATIVIDADE);	
-	}
 	
 	/**
 	 * Mótodo de teste que cria uma ontologia e uma atividade com seus conhecimentos e problemas associados.
@@ -154,12 +123,64 @@ public class ViewComunication {
 	{
 		try {
 			
+			Conhecimento conhecimentoAtividade1 = new Conhecimento();
+			conhecimentoAtividade1.setNome("Banco de Dados");
+			conhecimentoAtividade1.setDescricao("Area geral de banco de dados");
+			Conhecimento conhecimentoAtividade2 = new Conhecimento();
+			conhecimentoAtividade2.setNome("Banco de Dados Relacional");
+			conhecimentoAtividade2.setDescricao("Tipo de Banco de Dados relacional");
+			Conhecimento conhecimentoAtividade3 = new Conhecimento();
+			conhecimentoAtividade3.setNome("LP");
+			conhecimentoAtividade3.setDescricao("Linguagem de programacao");
+			Conhecimento conhecimentoAtividade4 = new Conhecimento();
+			conhecimentoAtividade4.setNome("JAVA");
+			conhecimentoAtividade4.setDescricao("Linguagem JAVA");
+			Conhecimento conhecimentoAtividade5 = new Conhecimento();
+			conhecimentoAtividade5.setNome("C++");
+			conhecimentoAtividade5.setDescricao("Linguagem C++");
+			ArrayList<Conhecimento> listaConhecimentosAtividade = new ArrayList<Conhecimento>();
+			listaConhecimentosAtividade.add(conhecimentoAtividade1);
+			listaConhecimentosAtividade.add(conhecimentoAtividade2);
+
+			
+			
+			Conhecimento conhecimentoDesenvolvedor = new Conhecimento();
+			conhecimentoDesenvolvedor.setNome("MySQL");
+			conhecimentoDesenvolvedor.setDescricao("Banco de dados relacional gratis de otima qualidade");
+			ArrayList<Conhecimento> listaConhecimentosDesenvolvedor = new ArrayList<Conhecimento>();
+			listaConhecimentosDesenvolvedor.add(conhecimentoDesenvolvedor);
+			
+			listaConhecimentos.add(conhecimentoAtividade1);
+			listaConhecimentos.add(conhecimentoAtividade2);
+			listaConhecimentos.add(conhecimentoAtividade3);
+			listaConhecimentos.add(conhecimentoAtividade4);
+			listaConhecimentos.add(conhecimentoAtividade5);
+			listaConhecimentos.add(conhecimentoDesenvolvedor);
+			
+			Desenvolvedor desenvolvedor = new Desenvolvedor();
+			desenvolvedor.setNome("FULANO");
+			desenvolvedor.setEmail("fulano@algumDominio.com.br");
+			desenvolvedor.setLocalidade("Rua Projetada");
+			desenvolvedor.setListaConhecimento(listaConhecimentosDesenvolvedor);
+			Desenvolvedor supervisor = new Desenvolvedor();
+			supervisor.setNome("SICRANO");
+			supervisor.setEmail("sicrano@algumDominio.com.br");
+			supervisor.setLocalidade("Rua Projetada");
+			supervisor.setListaConhecimento(listaConhecimentosDesenvolvedor);
+			ArrayList<Desenvolvedor> listaDesenvolvedores = new ArrayList<Desenvolvedor>();
+			listaDesenvolvedores.add(desenvolvedor);
+			listaDesenvolvedores.add(supervisor);
+			this.listaDesenvolvedores=listaDesenvolvedores;
+			
+			TipoAtividade atividade = new TipoAtividade("Implementar Presley",desenvolvedor,supervisor,0,new Date(System.currentTimeMillis()),
+					new Date(System.currentTimeMillis()),false,listaConhecimentosAtividade);
+			
 			Tree tree = new Tree("CONHECIMENTO");
 			
 			tree.adicionaFilho("Banco de Dados");
 			
-			tree.getFilho("Banco de Dados").adicionaFilho("MySQL");
-			tree.getFilho("Banco de Dados").adicionaFilho("PostgresSQL");
+			tree.getFilho("Banco de Dados").adicionaFilho("Banco de Dados Relacional");
+			tree.getFilho("Banco de Dados").getFilho("Banco de Dados Relacional").adicionaFilho("MySQL");
 			
 			tree.adicionaFilho("LP");
 			tree.getFilho("LP").adicionaFilho("JAVA");
@@ -167,15 +188,7 @@ public class ViewComunication {
 			
 			ontologia = tree;
 			
-			ArrayList<String> prob1 = new ArrayList<String>();
-			prob1.add("RMI");
-			prob1.add("Conector JDBC");
-			
-			ArrayList<String> conh1 = new ArrayList<String>();
-			conh1.add(tree.getFilho("Banco de Dados").getFilho("MySQL").getNome());
-			conh1.add("Banco de Dados");
-			
-			this.addAtividade("Implementar Presley", conh1, prob1);
+			//this.adicionaAtividade(atividade);
 	
 
 		} catch (Exception e) {
@@ -196,6 +209,147 @@ public class ViewComunication {
 		PacketStruct packet = PrincipalSUBJECT.facade(pack);
 		System.out.println(packet.getData());
 		return packet;
+	}
+
+	public boolean AdicionaConhecimento(Conhecimento conhecimento) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	/**
+	 * Adiciona uma nova atividade a lista já existente e envia um pacote para o servidor
+	 * para incluir essa ativadade no BD.
+	 * @param atividade contem a descriçao da atividade, os conhecimentos envolvidos, os desenvolvedores e as datas
+	 */
+	public boolean adicionaAtividade(TipoAtividade atividade) {
+		// TODO Auto-generated method stub
+    	PacketStruct respostaPacket = sendPack(atividade, ADICIONA_ATIVIDADE);
+    	Boolean resposta = (Boolean)respostaPacket.getData();
+    	if (resposta.booleanValue()==true) {
+    		this.atividades.add(atividade.getDescricao());
+    		this.conhecimentos.put(atividade.getDescricao(), atividade.getListaDeConhecimentosEnvolvidos());
+		}
+    	System.out.println("Resposta: "+resposta.booleanValue());
+		return resposta.booleanValue();
+    	//return true;//TESTE
+	}
+	
+	/**
+	 * Remove uma ativadade da lista existente
+	 * @param atividade é a atividade que será removida
+	 */
+	public boolean removerAtividade(TipoAtividade atividade) {
+		// TODO Auto-generated method stub
+    	PacketStruct respostaPacket = sendPack(atividade, REMOVE_ATIVIDADE);
+    	Boolean resposta = (Boolean)respostaPacket.getData();
+    	if (resposta.booleanValue()==true) {
+    		this.atividades.remove(atividade.getDescricao());
+    		this.conhecimentos.remove(atividade.getDescricao());
+		}
+		return resposta.booleanValue();
+	}
+
+	public boolean associaConhecimentoAtividade(
+			ArrayList<Conhecimento> listaConhecimento, TipoAtividade atividade) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public boolean associaProblemaAtividade(Problema problema,
+			TipoAtividade atividade) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public ArrayList<Desenvolvedor> buscaDesenvolvedores(Problema problema,
+			ArrayList<Conhecimento> listaConhecimento, int grauDeConfianca) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public boolean desassociaConhecimentoAtividade(
+			ArrayList<Conhecimento> listaConhecimento, TipoAtividade atividade) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public boolean desassociaProblemaAtividade(Problema problema,
+			TipoAtividade atividade) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public boolean encerrarAtividade(TipoAtividade atividade) {
+		// TODO Auto-generated method stub
+		//PacketStruct respostaPacket = sendPack(atividade,ENCERRA_ATIVIDADE);
+    	//Boolean resposta = (Boolean)respostaPacket.getData();
+		//return resposta.booleanValue();
+		return false;
+	}
+
+	public boolean enviarMensagem(
+			ArrayList<Desenvolvedor> desenvolvedoresDestino, Problema problema) {
+		// TODO Auto-generated method stub
+		//PacketStruct respostaPacket = sendPack(null,ENVIA_MENSAGEM);//TESTE
+    	//Boolean resposta = (Boolean)respostaPacket.getData();
+		//return resposta.booleanValue();
+		return false;
+	}
+
+	public ArrayList<Desenvolvedor> getListaDesenvolvedores() {
+		// TODO Auto-generated method stub
+		//PacketStruct respostaPacket = sendPack(null,LISTA_DESENVOLVEDORES);
+    	//ArrayList<Desenvolvedor> resposta = (ArrayList<Desenvolvedor>)respostaPacket.getData();
+    	//listaDesenvolvedores = resposta;
+    	
+		return listaDesenvolvedores;
+	}
+
+	public Desenvolvedor login(String user, String passwd) {
+		// TODO Auto-generated method stub
+		//PacketStruct respostaPacket = sendPack(null,LOGIN);//TESTE
+    	//Desenvolvedor resposta = (Desenvolvedor)respostaPacket.getData();
+		//return resposta;
+		return null;
+	}
+
+	public boolean logout(Desenvolvedor desenvolvedor) {
+		// TODO Auto-generated method stub
+		//PacketStruct respostaPacket = sendPack(null,LOGOUT);//TESTE
+    	//Boolean resposta = (Boolean)respostaPacket.getData();
+		//return resposta.booleanValue();
+		return false;
+	}
+
+	public boolean qualificaDesenvolvedor(Desenvolvedor desenvolvedor,
+			Problema problema, boolean qualificacao) {
+		// TODO Auto-generated method stub
+		//PacketStruct respostaPacket = sendPack(null,QUALIFICA_DESENVOLVEDOR);//TESTE
+    	//Boolean resposta = (Boolean)respostaPacket.getData();
+    	//return resposta.booleanValue();
+    			
+		return false;
+	}
+
+	public ArrayList<Conhecimento> getListaConhecimentos() {
+		// TODO Auto-generated method stub
+		//PacketStruct respostaPacket = sendPack(null,LISTA_CONHECIMENTOS);
+    	//ArrayList<Desenvolvedor> resposta = (ArrayList<Desenvolvedor>)respostaPacket.getData();
+    	//listaDesenvolvedores = resposta;
+    	
+		return listaConhecimentos;
+	}
+
+	public boolean adicionaConhecimento(Conhecimento conhecimento) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public boolean enviarMensagem(Desenvolvedor desenvolvedorOrigem,
+			ArrayList<Desenvolvedor> desenvolvedoresDestino, Problema problema,
+			String mensagem) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 }
 
