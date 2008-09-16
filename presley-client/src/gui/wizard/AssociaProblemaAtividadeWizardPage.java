@@ -30,9 +30,9 @@ public class AssociaProblemaAtividadeWizardPage extends WizardPage {
 	private Atividade atividade;
 	private Text descricaoProblemaText;
 	private Text mensagemText;
-	private TipoAtividade tipoAtividadeAssociado;
+	private String tipoAtividadeAssociado;
 
-    public AssociaProblemaAtividadeWizardPage(ISelection selection, Atividade atividade, TipoAtividade tipoAtividade) {
+    public AssociaProblemaAtividadeWizardPage(ISelection selection, Atividade atividade, String tipoAtividade) {
         super("wizardPage");
         setTitle("Associa Problema a Atividade Wizard");
         setDescription("Associa problema a uma Atividade.");
@@ -108,7 +108,7 @@ public class AssociaProblemaAtividadeWizardPage extends WizardPage {
         labelMensagemExplicativo.setText("digite a mensagem que será enviada");
         
         Label labelAtividadeAssociada = new Label(controls, SWT.NULL);
-        labelAtividadeAssociada.setText("Atividade associada: "+this.tipoAtividadeAssociado.getDescricao());
+        labelAtividadeAssociada.setText("Atividade associada: "+this.tipoAtividadeAssociado);
 
         
         

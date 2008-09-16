@@ -117,7 +117,7 @@ public class AssociaProblemaAtividadeWizardPage2 extends WizardPage {
         try{
         	
         	final beans.Tree conhecimentosModelo = atividade.getViewComunication().getOntologia();
-        	arvoreConhecimento = conhecimentosModelo.constroiArvoreGrafica(controls, SWT.BORDER | SWT.CHECK);
+        	arvoreConhecimento = conhecimentosModelo.constroiArvoreGrafica(controls, SWT.BORDER | SWT.RADIO);
         	arvoreConhecimento.addListener(SWT.Selection, new Listener() {
 			
 				public void handleEvent(Event e) {

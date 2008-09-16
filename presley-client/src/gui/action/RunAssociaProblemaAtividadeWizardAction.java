@@ -20,16 +20,16 @@ import beans.TipoAtividade;
 public class RunAssociaProblemaAtividadeWizardAction extends Action implements
 		IWorkbenchWindowActionDelegate {
 	private Atividade atividade;
-	private TipoAtividade tipoAtividadeAssociada;
+	private String atividadeAssociada;
 
 	public RunAssociaProblemaAtividadeWizardAction() {
 		// TODO Auto-generated constructor stub
 	}
 	
-	public RunAssociaProblemaAtividadeWizardAction(Atividade a, TipoAtividade tipoAtividadeAssociada) {
+	public RunAssociaProblemaAtividadeWizardAction(Atividade a, String atividadeAssociada) {
 		// TODO Auto-generated constructor stub
 		this.atividade = a;
-		this.tipoAtividadeAssociada = tipoAtividadeAssociada;
+		this.atividadeAssociada = atividadeAssociada;
 	}
 
 	public RunAssociaProblemaAtividadeWizardAction(String text) {
@@ -58,7 +58,9 @@ public class RunAssociaProblemaAtividadeWizardAction extends Action implements
 	}
 
 	public void run(IAction arg0) {
-		AssociaProblemaAtividadeWizard wizard = new AssociaProblemaAtividadeWizard(this.atividade);
+		/*
+		 
+		 AssociaProblemaAtividadeWizard wizard = new AssociaProblemaAtividadeWizard(this.atividade);
 		Shell shell = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
 		WizardDialog dialog = new WizardDialog(shell,wizard);
 		dialog.create();
@@ -66,7 +68,7 @@ public class RunAssociaProblemaAtividadeWizardAction extends Action implements
 		dialog.close();
 		wizard.dispose();
 	
-
+*/
 	}
 
 	public void selectionChanged(IAction arg0, ISelection arg1) {

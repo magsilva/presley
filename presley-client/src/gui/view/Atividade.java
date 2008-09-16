@@ -1,6 +1,7 @@
 package gui.view;
 
 import gui.action.RunAdicionaAtividadeWizardAction;
+import gui.action.RunAssociaProblemaAtividadeWizardAction;
 import gui.action.RunRemoveAtividadeWizardAction;
 import gui.view.comunication.ViewComunication;
 
@@ -22,6 +23,7 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.List;
+import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 import org.eclipse.ui.part.ViewPart;
@@ -48,7 +50,10 @@ public class Atividade extends ViewPart {
 	
 	private RunAdicionaAtividadeWizardAction runAdicionaAtividade;
 	private RunRemoveAtividadeWizardAction runRemoveAtividade;
+	private RunAssociaProblemaAtividadeWizardAction runAssociaProblema;
+	
 	private Desenvolvedor desenvolvedorLogado;
+	private String atividadeSelecionada;
 	
 	private final int larguraBotao = 20;
 	private final int alturaBotao = 20;
@@ -492,6 +497,8 @@ public class Atividade extends ViewPart {
 					int index = listaAtividades.getSelectionIndex();
 					String atividade = listaAtividades.getItem(index);
 					
+					atividadeSelecionada = atividade;
+					
 					//Captura os problemas associados
 					ArrayList<Problema> problemas = viewComunication.getProblemas(atividade);
 					
@@ -626,6 +633,24 @@ public class Atividade extends ViewPart {
 		associaProblema.setImage(ass);
 		associaProblema.setToolTipText("Associa novo problema a atividade");
 		associaProblema.setEnabled(false);
+		associaProblema.addMouseListener(new MouseListener() {
+		
+			public void mouseUp(MouseEvent arg0) {
+				// TODO Auto-generated method stub
+		
+			}
+		
+			public void mouseDown(MouseEvent arg0) {
+				// TODO Auto-generated method stub
+				runAssociaProblemaAtividadeWizardAction();
+			}
+		
+			public void mouseDoubleClick(MouseEvent arg0) {
+				// TODO Auto-generated method stub
+		
+			}
+		
+		});
 		
 		desassociaProblema = new Button(parentComposite, SWT.NONE);
 		//Image ass = new Image(addAtividade.getDisplay(),this.getClass().getResourceAsStream("/icons/associaConh.gif"));
@@ -700,6 +725,11 @@ public class Atividade extends ViewPart {
 	private void runAdicionaWizardAction(){
 		this.runAdicionaAtividade = new RunAdicionaAtividadeWizardAction(this);
 		this.runAdicionaAtividade.run(null);
+	}
+	
+	private void runAssociaProblemaAtividadeWizardAction(){
+		this.runAssociaProblema = new RunAssociaProblemaAtividadeWizardAction(this,atividadeSelecionada);
+		this.runAssociaProblema.run(null);
 	}
 	
 	private void runRemoveWizardAction(){

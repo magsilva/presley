@@ -24,10 +24,11 @@ import beans.TipoAtividade;
 
 public class AssociaProblemaAtividadeWizard extends Wizard implements INewWizard {
 
-	private AdicionaAtividadeWizardPage page;
-	private AdicionaAtividadeWizardPage2 page2;
+	private AssociaProblemaAtividadeWizardPage page;
+	private AssociaProblemaAtividadeWizardPage2 page2;
     private ISelection selection;
     private Atividade atividade;
+    private String nomeAtividade;
 
     public AssociaProblemaAtividadeWizard() {
         super();
@@ -41,9 +42,10 @@ public class AssociaProblemaAtividadeWizard extends Wizard implements INewWizard
         
     }
     
-    public AssociaProblemaAtividadeWizard(Atividade a) {
+    public AssociaProblemaAtividadeWizard(Atividade a, String nome) {
         this();
         this.atividade = a;
+        
     }
     
     private void performOperation(IProgressMonitor monitor) {
@@ -55,7 +57,9 @@ public class AssociaProblemaAtividadeWizard extends Wizard implements INewWizard
 	public boolean performFinish() {
 		// TODO Auto-generated method stub
         //First save all the page data as variables.
+		/*
     	try{
+    		
     		String atividade = page.getNomeAtividade();
     		ArrayList<Conhecimento> conhecimentos = page2.getConhecimentos();
     		
@@ -78,6 +82,7 @@ public class AssociaProblemaAtividadeWizard extends Wizard implements INewWizard
     		System.out.println("ERRO ERRO:"+e.getMessage());
     		e.printStackTrace();
 		}
+		*/
     	
 		try {
 		      getContainer().run(true, true, new IRunnableWithProgress() {
@@ -102,11 +107,11 @@ public class AssociaProblemaAtividadeWizard extends Wizard implements INewWizard
 	}
 	
 	public void addPages() {
-        page=new AdicionaAtividadeWizardPage(selection, this.atividade);
-        addPage(page);
+        //page=new AssociaProblemaAtividadeWizardPage(selection, this.atividade, this.atividade.);
+        //addPage(page);
         
-        page2=new AdicionaAtividadeWizardPage2(selection,this.atividade);
-        addPage(page2);
+        //page2=new AssociaProblemaAtividadeWizardPage2(selection,this.atividade);
+        //addPage(page2);
     }
 
 	public Atividade getAtividade() {
