@@ -35,6 +35,12 @@ public class ValidacaoAtividadeImpl{
 		servicoConhecimento = new ServicoConhecimentoImplDAO();
 	}
 
+	/**
+	 * Esse método associa um conhecimento a uma atividade previamente cadastrada.
+	 * @param idAtividade Identificador da atividade.
+	 * @param nomeConhecimento Nome do conhecimento a ser associado.
+	 * @return true se a associacao foi feita.
+	 */
 	public boolean adicionarConhecimentoAAtividade(int idAtividade,
 			String nomeConhecimento) throws Exception {
 		
@@ -44,6 +50,12 @@ public class ValidacaoAtividadeImpl{
 		return servicoAtividade.adicionarConhecimentoAAtividade(idAtividade, nomeConhecimento);
 	}
 
+	/**
+	 * Esse método associa uma sub-atividade a uma atividade maior. 
+	 * @param idSubAtividade Identificador da sub-atividade 
+	 * @param idAtividadePai Identificador da atividade pai.
+	 * @return true se a associacao foi feita com sucesso.
+	 */
 	public boolean associarAtividades(int idSubAtividade, int idAtividadePai) throws Exception {
 		
 		//Verificando se a atividade pai no  filha da atividade pai.
@@ -60,21 +72,40 @@ public class ValidacaoAtividadeImpl{
 		return servicoAtividade.associarAtividades(idSubAtividade, idAtividadePai);
 	}
 
+	/**
+	 * Esse método verifica se existe uma associacao entre conhecimento e atividade.
+	 * @param idAtividade Identificador da atividade.
+	 * @param nomeConhecimento Nome do conhecimento associado a atividade.
+	 * @return true se existe associacao entre conhecimento e atividade.
+	 */
 	public boolean atividadeAssociadaAConhecimentoExiste(int idAtividade,
 			String nomeConhecimento) {
 		
 		return servicoAtividade.atividadeAssociadaAConhecimentoExiste(idAtividade, nomeConhecimento);
 	}
 
+	/**
+	 * Esse método verifica se uma atividade existe na base de dados.
+	 * @param id Identificador da atividade.
+	 * @return true se a atividade existir na base de dados.
+	 */
 	public boolean atividadeExiste(int id) {
 		
 		return servicoAtividade.atividadeExiste(id);
 	}
 
+	/**
+	 * Esse método atualiza o status se a atividade foi concluida ou
+	 * não.
+	 * @param id Identificador da atividade.
+	 * @param terminada true se a atividade foi concluida.
+	 * @return true se a operacao foi realizada com sucesso.
+	 */
 	public boolean atualizarStatusDaAtividade(int id, boolean terminada) {
 		
 		return servicoAtividade.atualizarStatusDaAtividade(id, terminada);
 	}
+	
 	
 	public boolean cadastrarAtividade(TipoAtividade tipoAtividade) throws Exception {
 		System.out.println("TipoAtividade adicionada com sucesso!");
@@ -94,6 +125,15 @@ public class ValidacaoAtividadeImpl{
 		
 	}
 
+	/**
+	 * Este método cadastra uma nova atividade na base de dados.
+	 * @param emailDesenvolvedor Email do desenvolvedor responsável pela execucao da atividade.
+	 * @param emailGerente Email do gerente que determinou a atividade para um dado desenvolvedor.
+	 * @param descricao Descricao da atividade a ser realizada
+	 * @param dataInicio Data em que a atividade foi passada ao desenvolvor
+	 * @param dataFim Data que a atividade foi terminada
+	 * @return true se a atividade foi concluida com sucesso.
+	 */
 	public boolean cadastrarAtividade(String emailDesenvolvedor,
 			String emailGerente, String descricao, Date dataInicio, Date dataFim)
 			throws Exception {
@@ -108,6 +148,12 @@ public class ValidacaoAtividadeImpl{
 		return servicoAtividade.cadastrarAtividade(emailDesenvolvedor, emailGerente, descricao, dataInicio, dataFim);
 	}
 
+	/**
+	 * Esse método retorna um objeto TipoAtividade com todos os dados de uma atividade
+	 * previamente cadastrada.
+	 * @param id Identificador da atividade
+	 * @return <TipoAtividade>
+	 */
 	public TipoAtividade getAtividade(int id) throws Exception {
 		
 		TipoAtividade tipoAtividade = servicoAtividade.getAtividade(id);
@@ -116,6 +162,12 @@ public class ValidacaoAtividadeImpl{
 		return tipoAtividade;
 	}
 
+	/**
+	 * Esse método retorna uma lista de conhecimentos que envolvem uma dada
+	 * atividade.
+	 * @param idAtividade Identificador da atividade
+	 * @return ArrayList<Conhecimento>
+	 */
 	public ArrayList<Conhecimento> getConhecimentosEnvolvidosNaAtividade(
 			int idAtividade) throws Exception {
 		
@@ -124,6 +176,12 @@ public class ValidacaoAtividadeImpl{
 		return servicoAtividade.getConhecimentosEnvolvidosNaAtividade(idAtividade);
 	}
 
+	/**
+	 * Esse método retorna uma lista de sub-atividades associadas a uma atividade
+	 * pai.
+	 * @param idPai Identificador da atividade pai
+	 * @return ArrayList<TipoAtividade>
+	 */
 	public ArrayList<TipoAtividade> getSubAtividades(int idPai) throws Exception {
 		
 		if (!servicoAtividade.atividadeExiste(idPai)) throw new Exception();
@@ -131,6 +189,11 @@ public class ValidacaoAtividadeImpl{
 		return servicoAtividade.getSubAtividades(idPai);
 	}
 
+	/**
+	 * Este metodo remove uma atividade previamente cadastrada na base de dados.
+	 * @param id Identificador da atividade
+	 * @return true se a atividade foi removida da base de dados.
+	 */
 	public boolean removerAtividade(int id) throws AtividadeInexistenteException {
 		
 		if (!servicoAtividade.atividadeExiste(id)) throw new AtividadeInexistenteException();
@@ -154,6 +217,12 @@ public class ValidacaoAtividadeImpl{
 		return servicoAtividade.removerAtividade(id);
 	}
 
+	/**
+	 * Esse metodo remove uma associacao entre um conhecimento e uma atividade.
+	 * @param idAtividade Identificador da ativiadade.
+	 * @param nomeConhecimento Nome do conhecimento
+	 * @return true se a associacao foi desfeita.
+	 */
 	public boolean removerConhecimentoDaAtividade(int idAtividade,
 			String nomeConhecimento) {
 		
