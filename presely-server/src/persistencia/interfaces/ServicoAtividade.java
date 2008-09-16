@@ -117,5 +117,11 @@ public interface ServicoAtividade {
 	 */
 	public boolean desassociarAtividades(int idSubAtividade, int idAtividadePai);
 
+	/**
+	 * 
+	 * @return
+	 */
+	public ArrayList<TipoAtividade> getTodasAtividades();
+
 }
 

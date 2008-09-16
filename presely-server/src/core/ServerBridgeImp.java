@@ -4,7 +4,6 @@ import java.sql.Date;
 
 import core.interfaces.CorePresleyOperations;
 import server.ServerBridge;
-import validacao.ValidacaoAtividade;
 import validacao.implementacao.ValidacaoAtividadeImpl;
 import beans.TipoAtividade;
 import facade.PacketStruct;

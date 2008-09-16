@@ -9,7 +9,6 @@ package core;
 
 import java.util.ArrayList;
 
-import validacao.ValidacaoAtividade;
 import validacao.excessao.AtividadeInexistenteException;
 import validacao.excessao.ConhecimentoInexistenteException;
 import validacao.excessao.DataInvalidaException;

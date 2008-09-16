@@ -162,8 +162,8 @@ public class ValidacaoAtividadeImpl implements ValidacaoAtividade{
 	}
 
 	public ArrayList<TipoAtividade> getTodasAtividades() {
-		servicoAtividade.getTodasAtividades();		
-		return null;
+		return servicoAtividade.getTodasAtividades();		
+		 
 	}
 
 }

@@ -526,8 +526,11 @@ public class ServicoAtividadeImplDAO implements ServicoAtividade{
 	}
 
 
-	public void getTodasAtividades(){
+	public ArrayList<TipoAtividade> getTodasAtividades(){
 		MySQLConnectionFactory factory = new MySQLConnectionFactory();
+		ServicoDesenvolvedor sd = new ServicoDesenvolvedorImplDAO();
+		
+		ArrayList<TipoAtividade> list = new ArrayList<TipoAtividade>();
 
 		Connection conn = factory.getConnection();
 
@@ -538,8 +541,29 @@ public class ServicoAtividadeImplDAO implements ServicoAtividade{
 
 			SQL = "SELECT * FROM atividade;";
 
-				System.out.println(SQL);
-				stm.execute(SQL);
+			System.out.println(SQL);
+			ResultSet rs = stm.executeQuery(SQL);
+			
+			while (rs.next()){
+
+
+				TipoAtividade tipoAtividade = new TipoAtividade();
+
+				tipoAtividade.setId(rs.getInt(1));
+				tipoAtividade.setDesenvolvedor(sd.getDesenvolvedor(rs.getString(2)));
+				tipoAtividade.setSupervisor(sd.getDesenvolvedor(rs.getString(3)));
+				tipoAtividade.setIdPai(rs.getInt(4));
+				tipoAtividade.setDescricao(rs.getString(5));
+				tipoAtividade.setDataInicio(rs.getDate(6));
+				tipoAtividade.setDataFinal(rs.getDate(7));
+				tipoAtividade.setConcluida(rs.getBoolean(8));
+				tipoAtividade.setListaDeConhecimentosEnvolvidos(sd.getConhecimentosDoDesenvolvedor(rs.getString(2)));
+
+
+				list.add(tipoAtividade);
+
+			}
+			return list;
 
 		} catch (SQLException e) {
 
@@ -551,6 +575,8 @@ public class ServicoAtividadeImplDAO implements ServicoAtividade{
 				onConClose.printStackTrace();	             
 			}
 		}
+
+		return list;
 	}
 }
 
