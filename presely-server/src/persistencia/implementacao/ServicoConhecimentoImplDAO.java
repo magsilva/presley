@@ -23,9 +23,9 @@ public class ServicoConhecimentoImplDAO implements ServicoConhecimento{
 	public boolean atualizarConhecimento(String nome, String novoNome,
 			String descricao) {
 		
-		MySQLConnectionFactory factory = new MySQLConnectionFactory();
+		//MySQLConnectionFactory factory = new MySQLConnectionFactory();
 		
-		Connection conn = factory.getConnection();
+		Connection conn = MySQLConnectionFactory.getConnection();
 		
 		try {
 		
@@ -55,9 +55,9 @@ public class ServicoConhecimentoImplDAO implements ServicoConhecimento{
 
 	public boolean conhecimentoExiste(String nome) {
 		
-		MySQLConnectionFactory factory = new MySQLConnectionFactory();
+		//MySQLConnectionFactory factory = new MySQLConnectionFactory();
 		
-		Connection conn = factory.getConnection();
+		Connection conn = MySQLConnectionFactory.getConnection();
 		
 		try {
 		
@@ -91,9 +91,9 @@ public class ServicoConhecimentoImplDAO implements ServicoConhecimento{
 
 	public boolean criarConhecimento(String nome, String descricao) {
 		
-		MySQLConnectionFactory factory = new MySQLConnectionFactory();
+		//MySQLConnectionFactory factory = new MySQLConnectionFactory();
 		
-		Connection conn = factory.getConnection();
+		Connection conn = MySQLConnectionFactory.getConnection();
 		
 		try {
 		
@@ -123,9 +123,9 @@ public class ServicoConhecimentoImplDAO implements ServicoConhecimento{
 
 	public boolean removerConhecimento(String nome) {
 		
-		MySQLConnectionFactory factory = new MySQLConnectionFactory();
+		//MySQLConnectionFactory factory = new MySQLConnectionFactory();
 		
-		Connection conn = factory.getConnection();
+		Connection conn = MySQLConnectionFactory.getConnection();
 		
 		try {
 		
@@ -157,9 +157,9 @@ public class ServicoConhecimentoImplDAO implements ServicoConhecimento{
 
 	public Conhecimento getConhecimento(String nome) {
 		
-		MySQLConnectionFactory factory = new MySQLConnectionFactory();
+		//MySQLConnectionFactory factory = new MySQLConnectionFactory();
 		
-		Connection conn = factory.getConnection();
+		Connection conn = MySQLConnectionFactory.getConnection();
 		
 		try {
 		

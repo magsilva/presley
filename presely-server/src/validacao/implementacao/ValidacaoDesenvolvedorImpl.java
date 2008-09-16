@@ -12,7 +12,6 @@ import persistencia.implementacao.ServicoDesenvolvedorImplDAO;
 import persistencia.interfaces.ServicoAtividade;
 import persistencia.interfaces.ServicoConhecimento;
 import persistencia.interfaces.ServicoDesenvolvedor;
-import validacao.interfaces.ValidacaoDesenvolvedor;
 
 /**
  * 
@@ -22,7 +21,7 @@ import validacao.interfaces.ValidacaoDesenvolvedor;
  * ltima modificacao: 09/09/2008 por RodrigoCMD
  */
 
-public class ValidacaoDesenvolvedorImpl implements ValidacaoDesenvolvedor{
+public class ValidacaoDesenvolvedorImpl{
 	
 	ServicoConhecimento servicoConhecimento;
 	ServicoAtividade servicoAtividade;

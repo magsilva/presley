@@ -28,9 +28,9 @@ public class ServicoDesenvolvedorImplDAO implements ServicoDesenvolvedor{
 	public boolean adicionarConhecimentoAoDesenvolvedor(
 			String emailDesenvolvedor, String nomeConhecimento) {
 
-		MySQLConnectionFactory factory = new MySQLConnectionFactory();
+		//MySQLConnectionFactory factory = new MySQLConnectionFactory();
 
-		Connection conn = factory.getConnection();
+		Connection conn = MySQLConnectionFactory.getConnection();
 
 		try {
 
@@ -60,9 +60,9 @@ public class ServicoDesenvolvedorImplDAO implements ServicoDesenvolvedor{
 	public boolean atualizarDesenvolvedor(String email, String novoEmail, String nome,
 			String localidade) {
 
-		MySQLConnectionFactory factory = new MySQLConnectionFactory();
+		//MySQLConnectionFactory factory = new MySQLConnectionFactory();
 
-		Connection conn = factory.getConnection();
+		Connection conn = MySQLConnectionFactory.getConnection();
 
 		try {
 
@@ -94,9 +94,9 @@ public class ServicoDesenvolvedorImplDAO implements ServicoDesenvolvedor{
 	public boolean criarDesenvolvedor(String email, String nome,
 			String localidade) {
 
-		MySQLConnectionFactory factory = new MySQLConnectionFactory();
+		//MySQLConnectionFactory factory = new MySQLConnectionFactory();
 
-		Connection conn = factory.getConnection();
+		Connection conn = MySQLConnectionFactory.getConnection();
 
 		try {
 
@@ -126,9 +126,9 @@ public class ServicoDesenvolvedorImplDAO implements ServicoDesenvolvedor{
 
 	public boolean desenvolvedorExiste(String email) {
 
-		MySQLConnectionFactory factory = new MySQLConnectionFactory();
+		//MySQLConnectionFactory factory = new MySQLConnectionFactory();
 
-		Connection conn = factory.getConnection();
+		Connection conn = MySQLConnectionFactory.getConnection();
 
 		try {
 
@@ -164,9 +164,9 @@ public class ServicoDesenvolvedorImplDAO implements ServicoDesenvolvedor{
 	public boolean removerConhecimentoDoDesenvolvedor(
 			String emailDesenvolvedor, String nomeConhecimento) {
 
-		MySQLConnectionFactory factory = new MySQLConnectionFactory();
+		//MySQLConnectionFactory factory = new MySQLConnectionFactory();
 
-		Connection conn = factory.getConnection();
+		Connection conn = MySQLConnectionFactory.getConnection();
 
 		try {
 
@@ -199,9 +199,9 @@ public class ServicoDesenvolvedorImplDAO implements ServicoDesenvolvedor{
 
 	public boolean conhecimentoDoDesenvolvedorExiste(String emailDesenvolvedor, String nomeConhecimento){
 
-		MySQLConnectionFactory factory = new MySQLConnectionFactory();
+		//MySQLConnectionFactory factory = new MySQLConnectionFactory();
 
-		Connection conn = factory.getConnection();
+		Connection conn = MySQLConnectionFactory.getConnection();
 
 		try {
 
@@ -238,9 +238,9 @@ public class ServicoDesenvolvedorImplDAO implements ServicoDesenvolvedor{
 
 	public boolean removerDesenvolvedor(String email) {
 
-		MySQLConnectionFactory factory = new MySQLConnectionFactory();
+		//MySQLConnectionFactory factory = new MySQLConnectionFactory();
 
-		Connection conn = factory.getConnection();
+		Connection conn = MySQLConnectionFactory.getConnection();
 
 		try {
 
@@ -273,9 +273,9 @@ public class ServicoDesenvolvedorImplDAO implements ServicoDesenvolvedor{
 	}
 
 	public Desenvolvedor getDesenvolvedor(String email) {
-		MySQLConnectionFactory factory = new MySQLConnectionFactory();
+		//MySQLConnectionFactory factory = new MySQLConnectionFactory();
 
-		Connection conn = factory.getConnection();
+		Connection conn = MySQLConnectionFactory.getConnection();
 
 		try {
 
@@ -317,12 +317,12 @@ public class ServicoDesenvolvedorImplDAO implements ServicoDesenvolvedor{
 
 	public ArrayList<Conhecimento> getConhecimentosDoDesenvolvedor(String email) {
 
-		MySQLConnectionFactory factory = new MySQLConnectionFactory();
+		//MySQLConnectionFactory factory = new MySQLConnectionFactory();
 		ArrayList<Conhecimento> list = new ArrayList<Conhecimento>();
 
 
-		Connection conn = factory.getConnection();
-
+		Connection conn = MySQLConnectionFactory.getConnection();
+		
 		try {
 
 			Statement stm = conn.createStatement();
@@ -365,11 +365,11 @@ public class ServicoDesenvolvedorImplDAO implements ServicoDesenvolvedor{
 
 	public ArrayList<TipoAtividade> getAtividadesDoDesenvolvedor(String email) {
 
-		MySQLConnectionFactory factory = new MySQLConnectionFactory();
+		//MySQLConnectionFactory factory = new MySQLConnectionFactory();
 		ArrayList<TipoAtividade> list = new ArrayList<TipoAtividade>();
 
 
-		Connection conn = factory.getConnection();
+		Connection conn = MySQLConnectionFactory.getConnection();
 
 		try {
 
@@ -420,11 +420,11 @@ public class ServicoDesenvolvedorImplDAO implements ServicoDesenvolvedor{
 
 	public ArrayList<Desenvolvedor> getTodosDesenvolvedores() {
 
-		MySQLConnectionFactory factory = new MySQLConnectionFactory();
+		//MySQLConnectionFactory factory = new MySQLConnectionFactory();
 		ArrayList<Desenvolvedor> list = new ArrayList<Desenvolvedor>();
 
 
-		Connection conn = factory.getConnection();
+		Connection conn = MySQLConnectionFactory.getConnection();
 
 		try {
 

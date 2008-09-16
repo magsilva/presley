@@ -9,13 +9,13 @@ public class MySQLConnectionFactory {
 
 	private static String user = "root";
 	private static String pwd = "presley123";
-	private Connection connection = null;
+	private static Connection connection = null;
 	
-	public MySQLConnectionFactory(){
+	private MySQLConnectionFactory(){
 		
 	}
 
-	public Connection getConnection(){
+	public static Connection getConnection(){
 		
 		if (connection == null){
 			try {

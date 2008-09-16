@@ -6,7 +6,6 @@ import persistencia.implementacao.ServicoConhecimentoImplDAO;
 import persistencia.interfaces.ServicoAtividade;
 import persistencia.interfaces.ServicoConhecimento;
 import validacao.excessao.ConhecimentoNaoEncontradoException;
-import validacao.interfaces.ValidacaoConhecimento;
 
 /**
  * 
@@ -16,7 +15,7 @@ import validacao.interfaces.ValidacaoConhecimento;
  * ltima modificacao: 09/09/2008 por RodrigoCMD
  */
 
-public class ValidacaoConhecimentoImpl implements ValidacaoConhecimento{
+public class ValidacaoConhecimentoImpl{
 	
 	ServicoConhecimento servicoConhecimento;
 	ServicoAtividade servicoAtividade;

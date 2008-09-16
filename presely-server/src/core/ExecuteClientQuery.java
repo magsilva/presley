@@ -17,16 +17,18 @@ import validacao.excessao.EmailInvalidoException;
 import validacao.implementacao.ValidacaoAtividadeImpl;
 import validacao.implementacao.ValidacaoConhecimentoImpl;
 import validacao.implementacao.ValidacaoDesenvolvedorImpl;
+import validacao.implementacao.ValidacaoMensagemImpl;
 import validacao.implementacao.ValidacaoProblemaImpl;
 import validacao.implementacao.ValidacaoUtil;
-import validacao.interfaces.ValidacaoDesenvolvedor;
-import validacao.interfaces.ValidacaoProblema;
+
+
 
 import beans.BuscaDesenvolvedores;
 import beans.Conhecimento;
 import beans.ConhecimentoAtividade;
 import beans.DadosAutenticacao;
 import beans.Desenvolvedor;
+import beans.Mensagem;
 import beans.Problema;
 import beans.ProblemaAtividade;
 import beans.TipoAtividade;
@@ -36,6 +38,22 @@ import facade.PacketStruct;
 
 public class ExecuteClientQuery implements CorePresleyOperations{
 
+	ValidacaoConhecimentoImpl  validacaoConhecimento;
+	ValidacaoAtividadeImpl 	   validacaoAtividade;
+	ValidacaoProblemaImpl 	   valProblema; 
+	ValidacaoDesenvolvedorImpl validacaoDesenvolvedor; 
+	ValidacaoMensagemImpl 	   validacaoMensagem;
+	ValidacaoConhecimentoImpl  valConhecimento; 
+		
+	public ExecuteClientQuery() {
+		validacaoConhecimento  = new ValidacaoConhecimentoImpl();
+		validacaoAtividade 	   = new ValidacaoAtividadeImpl();
+		valProblema 		   = new ValidacaoProblemaImpl();
+		validacaoDesenvolvedor = new ValidacaoDesenvolvedorImpl();
+		validacaoMensagem 	   = new ValidacaoMensagemImpl();
+		valConhecimento 	   = new ValidacaoConhecimentoImpl();
+	}
+	
 	/**
 	 * OK
 	 * @param packet
@@ -47,8 +65,6 @@ public class ExecuteClientQuery implements CorePresleyOperations{
 		return this.adicionaConhecimento(conhecimento); 
 	}
 	public boolean adicionaConhecimento(Conhecimento conhecimento) {
-
-		ValidacaoConhecimentoImpl validacaoConhecimento = new ValidacaoConhecimentoImpl();
 
 		try {
 			validacaoConhecimento.criarConhecimento( conhecimento.getNome(), conhecimento.getDescricao() );
@@ -70,9 +86,6 @@ public class ExecuteClientQuery implements CorePresleyOperations{
 		return this.adicionaAtividade(atividade); 
 	}
 	public boolean adicionaAtividade(TipoAtividade novaAtividade) {
-
-		ValidacaoAtividadeImpl validacaoAtividade = new ValidacaoAtividadeImpl();
-
 
 		try {
 			validacaoAtividade.cadastrarAtividade(novaAtividade.getDesenvolvedor().getEmail(), 
@@ -108,10 +121,9 @@ public class ExecuteClientQuery implements CorePresleyOperations{
 	public boolean associaConhecimentoAtividade(
 			ArrayList<Conhecimento> listaConhecimento, TipoAtividade atividade) {
 		
-		ValidacaoAtividadeImpl valAtivConhecimento = new ValidacaoAtividadeImpl();
 		for(Conhecimento c : listaConhecimento) {
 			try {
-				valAtivConhecimento.adicionarConhecimentoAAtividade(atividade.getId(), c.getNome());
+				validacaoAtividade.adicionarConhecimentoAAtividade(atividade.getId(), c.getNome());
 			} catch (AtividadeInexistenteException e) {
 				e.printStackTrace();
 				return false;
@@ -142,7 +154,6 @@ public class ExecuteClientQuery implements CorePresleyOperations{
 	public boolean associaProblemaAtividade(Problema problema,
 			TipoAtividade atividade) {
 
-		ValidacaoProblemaImpl valProblema = new ValidacaoProblemaImpl();
 		valProblema.cadastrarProblema(atividade.getId(), problema.getDescricao(), problema.getData(), problema.getMensagem());
 		return true;
 	}
@@ -164,7 +175,6 @@ public class ExecuteClientQuery implements CorePresleyOperations{
 	public ArrayList<Desenvolvedor> buscaDesenvolvedores(Problema problema,
 			ArrayList<Conhecimento> listaConhecimento, int grauDeConfianca) {
 		// TODO Auto-generated method stub
-		ValidacaoDesenvolvedorImpl validacaoDesenvolvedor = new ValidacaoDesenvolvedorImpl();
 		
 		ArrayList<Desenvolvedor> listaDesenvolvedores = validacaoDesenvolvedor.getListaDesenvolvedores();
 		
@@ -189,7 +199,7 @@ public class ExecuteClientQuery implements CorePresleyOperations{
 		ProblemaAtividade problemaAtividade = (ProblemaAtividade) packet.getData();
 		Problema problema = problemaAtividade.getProblema();
 		TipoAtividade atividade = problemaAtividade.getAtividade();
-		return desassociaProblemaAtividade(packet);
+		return desassociaProblemaAtividade(problema, atividade);
 	}
 	public boolean desassociaProblemaAtividade(Problema problema, TipoAtividade atividade) {
 		// TODO Auto-generated method stub
@@ -206,18 +216,25 @@ public class ExecuteClientQuery implements CorePresleyOperations{
 	}
 
 	public boolean enviarMensagem(PacketStruct packet) {
-		// TODO Auto-generated method stub
-		return false;
+		Mensagem msg = (Mensagem) packet.getData();
+		return enviarMensagem(msg.getDesenvolvedorOrigem(), msg.getDesenvolvedoresDestino(), msg.getProblema(), msg.getTexto());
+		
 	}
+	
 	public boolean enviarMensagem(Desenvolvedor desenvolvedorOrigem,
 			ArrayList<Desenvolvedor> desenvolvedoresDestino, Problema problema,
-			String mensagem) {
-		// TODO Auto-generated method stub
-		return false;
+			String texto) {
+		
+		return validacaoMensagem.adicionarMensagem(desenvolvedorOrigem, desenvolvedoresDestino, problema, texto);
+	}
+	
+	public Mensagem[] requisitaMensagens(Desenvolvedor desenvolvedorDestino) {
+		validacaoMensagem.getMensagens(desenvolvedorDestino);
+		return null;
 	}
 
 	public ArrayList<Desenvolvedor> getListaDesenvolvedores() {
-		ValidacaoDesenvolvedorImpl validacaoDesenvolvedor =  new ValidacaoDesenvolvedorImpl();
+		
 		return validacaoDesenvolvedor.getListaDesenvolvedores();
 	}
 
@@ -261,8 +278,6 @@ public class ExecuteClientQuery implements CorePresleyOperations{
 	}
 	public boolean removerAtividade(TipoAtividade atividade) {
 
-		ValidacaoAtividadeImpl validacaoAtividade = new ValidacaoAtividadeImpl();
-
 		try {
 			validacaoAtividade.removerAtividade(atividade.getId());
 		} catch (AtividadeInexistenteException e) {
@@ -274,7 +289,6 @@ public class ExecuteClientQuery implements CorePresleyOperations{
 	public ArrayList<Conhecimento> getListaConhecimentos() {
 		// TODO Auto-generated method stub
 		
-		ValidacaoConhecimentoImpl valConhecimento = new ValidacaoConhecimentoImpl();
 		try {
 			valConhecimento.getConhecimento(null);
 		} catch (Exception e) {

@@ -10,9 +10,9 @@ public class CopyOfRunScript {
 
 
 	public static void main(String [] args) {
-		MySQLConnectionFactory mySQLconnection = new MySQLConnectionFactory();
+		//MySQLConnectionFactory mySQLconnection = new MySQLConnectionFactory();
 
-		Connection conexao = mySQLconnection.getConnection();
+		Connection conexao = MySQLConnectionFactory.getConnection();
 
 		System.out.println(conexao);
 

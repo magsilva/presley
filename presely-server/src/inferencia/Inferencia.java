@@ -38,11 +38,11 @@ public class Inferencia {
 	
 	public static ArrayList<Desenvolvedor> getDesenvolvedores(String[] conhecimentos, double conf){
     
-		MySQLConnectionFactory factory = new MySQLConnectionFactory();
+		//MySQLConnectionFactory factory = new MySQLConnectionFactory();
 		int max = conhecimentos.length;
 		int cont = 1;
 		
-		Connection conn = factory.getConnection();
+		Connection conn = MySQLConnectionFactory.getConnection();
 		
 		Map<String, Double> mCand = new HashMap<String, Double>();
 		Map<String, Desenvolvedor> mDes = new HashMap<String, Desenvolvedor>();

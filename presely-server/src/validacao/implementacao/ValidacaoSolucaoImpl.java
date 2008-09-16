@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import beans.Solucao;
 import persistencia.implementacao.ServicoSolucaoImplDAO;
 import persistencia.interfaces.ServicoSolucao;
-import validacao.interfaces.ValidacaoSolucao;
 
 /**
  * 
@@ -17,7 +16,7 @@ import validacao.interfaces.ValidacaoSolucao;
  * ltima modificacao: 09/09/2008 por RodrigoCMD
  */
 
-public class ValidacaoSolucaoImpl implements ValidacaoSolucao{
+public class ValidacaoSolucaoImpl {
 	
 	ServicoSolucao servicoSolucao;
 	

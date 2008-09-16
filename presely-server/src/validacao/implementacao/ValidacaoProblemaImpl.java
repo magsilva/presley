@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import beans.Problema;
 import persistencia.implementacao.ServicoProblemaImplDAO;
 import persistencia.interfaces.ServicoProblema;
-import validacao.interfaces.ValidacaoProblema;
 
 /**
  * 
@@ -16,7 +15,7 @@ import validacao.interfaces.ValidacaoProblema;
  * ltima modificacao: 09/09/2008 por RodrigoCMD
  */
 
-public class ValidacaoProblemaImpl implements ValidacaoProblema{
+public class ValidacaoProblemaImpl {
 	
 	ServicoProblema servicoProblema;
 	

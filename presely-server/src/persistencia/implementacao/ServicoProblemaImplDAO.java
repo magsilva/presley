@@ -15,9 +15,9 @@ import persistencia.interfaces.ServicoProblema;
 public class ServicoProblemaImplDAO implements ServicoProblema{
 
 	public boolean atualizarStatusDoProblema(int id, boolean status) {
-		MySQLConnectionFactory factory = new MySQLConnectionFactory();
+		//MySQLConnectionFactory factory = new MySQLConnectionFactory();
 		
-		Connection conn = factory.getConnection();
+		Connection conn = MySQLConnectionFactory.getConnection();
 		
 		try {
 		
@@ -54,9 +54,9 @@ public class ServicoProblemaImplDAO implements ServicoProblema{
 	public boolean cadastrarProblema(int idAtividade, String descricao,
 			Date dataDoRelato, String mensagem) {
 		
-		MySQLConnectionFactory factory = new MySQLConnectionFactory();
+		//MySQLConnectionFactory factory = new MySQLConnectionFactory();
 		
-		Connection conn = factory.getConnection();
+		Connection conn = MySQLConnectionFactory.getConnection();
 		
 		try {
 		
@@ -87,11 +87,11 @@ public class ServicoProblemaImplDAO implements ServicoProblema{
 
 	public ArrayList<Problema> listarProblemasDaAtividade(int idAtividade) {
 		
-		MySQLConnectionFactory factory = new MySQLConnectionFactory();
+		//MySQLConnectionFactory factory = new MySQLConnectionFactory();
 		ArrayList<Problema> list = new ArrayList<Problema>();
 		ServicoAtividade sa = new ServicoAtividadeImplDAO();
 		
-		Connection conn = factory.getConnection();
+		Connection conn = MySQLConnectionFactory.getConnection();
 		
 		try {
 		
@@ -134,9 +134,9 @@ public class ServicoProblemaImplDAO implements ServicoProblema{
 	}
 
 	public boolean removerProblema(int id) {
-		MySQLConnectionFactory factory = new MySQLConnectionFactory();
+		//MySQLConnectionFactory factory = new MySQLConnectionFactory();
 		
-		Connection conn = factory.getConnection();
+		Connection conn = MySQLConnectionFactory.getConnection();
 		
 		try {
 		
@@ -168,9 +168,9 @@ public class ServicoProblemaImplDAO implements ServicoProblema{
 	}
 
 	public boolean problemaExiste(int id) {
-		MySQLConnectionFactory factory = new MySQLConnectionFactory();
+		//MySQLConnectionFactory factory = new MySQLConnectionFactory();
 		
-		Connection conn = factory.getConnection();
+		Connection conn = MySQLConnectionFactory.getConnection();
 		
 		try {
 		
@@ -203,9 +203,9 @@ public class ServicoProblemaImplDAO implements ServicoProblema{
 	}
 
 	public Problema getProblema(int id) {
-		MySQLConnectionFactory factory = new MySQLConnectionFactory();
+		//MySQLConnectionFactory factory = new MySQLConnectionFactory();
 		ServicoAtividade sa = new ServicoAtividadeImplDAO();
-		Connection conn = factory.getConnection();
+		Connection conn = MySQLConnectionFactory.getConnection();
 		
 		try {
 		

@@ -13,7 +13,6 @@ import validacao.excessao.ConhecimentoInexistenteException;
 import validacao.excessao.DataInvalidaException;
 import validacao.excessao.DescricaoInvalidaException;
 import validacao.excessao.EmailInvalidoException;
-import validacao.interfaces.ValidacaoAtividade;
 import beans.TipoAtividade;
 import beans.Conhecimento;
 
@@ -26,7 +25,7 @@ import beans.Conhecimento;
  * ltima modificacao: 09/09/2008 por RodrigoCMD
  */
 
-public class ValidacaoAtividadeImpl implements ValidacaoAtividade{
+public class ValidacaoAtividadeImpl{
 	
 	ServicoAtividade servicoAtividade;
 	ServicoConhecimento servicoConhecimento;
