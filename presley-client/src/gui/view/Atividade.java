@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.Set;
 
 
+import org.eclipse.jdt.ui.wizards.NewContainerWizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
@@ -565,6 +566,75 @@ public class Atividade extends ViewPart {
 		addConhecimento.setImage(add);
 		addConhecimento.setToolTipText("Cadastra um novo conhecimento");
 		addConhecimento.setEnabled(false);
+		addConhecimento.addMouseListener(new MouseListener(){
+
+			public void mouseDoubleClick(MouseEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			public void mouseDown(MouseEvent arg0) {
+				Conhecimento ultimoConhecimentoAdicionado = null;
+				String novoConhecimento = null;
+				
+				//armazena o ultimo conhecimento incluido
+				ArrayList<Conhecimento> conhecimentosAnteriores = viewComunication.getConhecimentosEnvolvidos(novoConhecimento);
+				if (conhecimentosAnteriores!=null&&!conhecimentosAnteriores.isEmpty()) {
+					ultimoConhecimentoAdicionado =  conhecimentosAnteriores.get(conhecimentosAnteriores.size()-1);	
+				}
+				
+				// exibe o wizard para adicao de novo conhecimento
+				RunAdicionaConhecimentoWizardAction();
+				
+				//captura o nome da atividade inserido pelo usuario
+				ArrayList<String> conhecimentosPosteriores = viewComunication.getAtividades();
+				if (conhecimentosPosteriores!=null&&!conhecimentosPosteriores.isEmpty()) {  
+					novoConhecimento = conhecimentosPosteriores.get(conhecimentosPosteriores.size()-1);
+				}
+				
+				//ação de adicionar atividade foi cancelada
+				if (ultimoConhecimentoAdicionado!=null&&!ultimoConhecimentoAdicionado.equals(novoConhecimento)) {
+				
+					//realiza o cadastro da nova atividade
+					//viewComunication.sendPack(new Atividade(), Event.CadastroAtividade);
+				
+					//adiciona o item na lista de atividades
+					listaConhecimentos.add(novoConhecimento);
+				
+					//captura os conhecimentos envolvidos
+					ArrayList<Conhecimento> conhecimentos = viewComunication.getConhecimentosEnvolvidos(novoConhecimento);
+				
+					
+				
+					//cria estruturas para armazenar os conhecimentos e problemas
+					ArrayList<String> conh = new ArrayList<String>();
+					ArrayList<String> prob = new ArrayList<String>();
+			
+				
+					//Preenche a lista de conhecimentos
+					if(conhecimentos != null)
+						for(Conhecimento c : conhecimentos)
+						{
+							conh.add(c.getNome());
+							listaConhecimentos.add(c.getNome());
+						}	
+
+					//Seleciona o item recem adicionado
+					listaAtividades.select(listaAtividades.indexOf(novoConhecimento));
+
+					//atualiza a vizualizacao
+					listaAtividades.getParent().redraw();
+					listaAtividades.getParent().update();
+					listaConhecimentos.getParent().redraw();
+					listaConhecimentos.getParent().update();
+			}
+			}
+			public void mouseUp(MouseEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+		});
 		
 		removeConhecimento = new Button(parentComposite, SWT.NONE);
 		removeConhecimento.setLocation(posHorBotaoNivel5, posVerBotaoNivel2);
@@ -572,6 +642,24 @@ public class Atividade extends ViewPart {
 		removeConhecimento.setImage(remove);
 		removeConhecimento.setToolTipText("Remove o conhecimento selecionado");
 		removeConhecimento.setEnabled(false);
+		removeConhecimento.addMouseListener(new MouseListener(){
+			public void mouseDoubleClick(MouseEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			public void mouseDown(MouseEvent arg0) {
+				
+				// exibe o wizard para adicao de novo conhecimento
+				RunRemoveConhecimentoWizardAction();
+				
+			}
+			
+			public void mouseUp(MouseEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
 		
 		associaConhecimento = new Button(parentComposite, SWT.NONE);
 		Image ass = new Image(addAtividade.getDisplay(),this.getClass().getResourceAsStream("/icons/associaConh.gif"));
@@ -740,6 +828,20 @@ public class Atividade extends ViewPart {
 	private void RunLoginWizardAction() {
 		// TODO Auto-generated method stub
 		gui.action.RunLoginWizardAction runLogin = new gui.action.RunLoginWizardAction(this);
+		runLogin.run(null);
+		
+	}
+	
+	private void RunAdicionaConhecimentoWizardAction() {
+		// TODO Auto-generated method stub
+		gui.action.RunAdicionaConhecimentoWizard runLogin = new gui.action.RunAdicionaConhecimentoWizard(this);
+		runLogin.run(null);
+		
+	}
+	
+	private void RunRemoveConhecimentoWizardAction() {
+		// TODO Auto-generated method stub
+		gui.action.RunRemoveConhecimentoWizardAction runLogin = new gui.action.RunRemoveConhecimentoWizardAction(this);
 		runLogin.run(null);
 		
 	}
