@@ -36,7 +36,7 @@ public interface CorePresleyOperations {
 	public static final int QUALIFICA_DESENVOLVEDOR = 13;
 	public static final int ENVIAR_MENSAGEM = 14;
 	public static final int GET_LISTA_DESENVOLVEDORES = 15;
-	
+	public static final int GET_LISTA_CONHECIMENTO = 16;
 	
 	/**
 	 * Este método cadastra uma nova atividade na base de dados.
