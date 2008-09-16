@@ -11,6 +11,8 @@ import java.util.Set;
 
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.DisposeEvent;
+import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -35,7 +37,7 @@ public class Atividade extends ViewPart {
 	private List listaAtividades, listaConhecimentos, listaProblemas; 
 	private Label conhecimentoLabel, problemaLabel, contatosLabel;
 	private Composite panelContatos, parentComposite;
-	private Button addAtividade, removeAtividade, removeAllAtividade, 
+	private Button login,logout, addAtividade, addConhecimento,removeConhecimento, removeAtividade, removeAllAtividade, 
 			buscaAtividade, encerraAtividade, associaConhecimento, desassociaConhecimento,
 			buscaConhecimento, associaProblema, desassociaProblema, buscaProblema,
 			buscaDesenvolvedor, qualificaDesenvolvedor;
@@ -50,6 +52,7 @@ public class Atividade extends ViewPart {
 	private final int posHorBotaoNivel3 = 52;
 	private final int posHorBotaoNivel4 = 76;
 	private final int posHorBotaoNivel5 = 100;
+	private final int posHorBotaoNivel6 = 124;
 	private final int posVerBotaoNivel1 = 4;
 	private final int posVerBotaoNivel2 = 113;
 	private final int posVerBotaoNivel3 = 233;
@@ -65,6 +68,7 @@ public class Atividade extends ViewPart {
 	private final int larguraJanela = 184;
 	private final int distanciaPanelLabel = 5;
 	private final int posHorPanel = 0;
+	private boolean primeiraVez = true;
 	
 	public Atividade()
 	{
@@ -183,13 +187,76 @@ public class Atividade extends ViewPart {
 		
 		buttons = new ArrayList<Button>();
 		
+		
+		login = new Button(parentComposite, SWT.NONE);
+		Image log = new Image(login.getDisplay(),this.getClass().getResourceAsStream("/icons/users.gif"));
+		login.setLocation(posHorBotaoNivel1, posVerBotaoNivel1);
+		login.setSize(larguraBotao, alturaBotao);
+		login.setImage(log);
+		login.setToolTipText("Login");
+		login.setEnabled(true);
+		login.addDisposeListener(new DisposeListener(){
+
+			public void widgetDisposed(DisposeEvent e) {
+				//Habilita o botao de logout
+				logout = new Button(parentComposite, SWT.NONE);
+				Image logoff = new Image(logout.getDisplay(),this.getClass().getResourceAsStream("/icons/logout.gif"));
+				logout.setLocation(posHorBotaoNivel1, posVerBotaoNivel1);
+				logout.setSize(larguraBotao, alturaBotao);
+				logout.setImage(logoff);
+				logout.setToolTipText("Logout");
+				logout.setEnabled(true);
+				
+				//Habilita os outros botoes
+				addAtividade.setEnabled(true);
+				removeAtividade.setEnabled(true);
+				removeAllAtividade.setEnabled(true);
+				buscaAtividade.setEnabled(true);
+				encerraAtividade.setEnabled(true);
+				associaConhecimento.setEnabled(true);
+				desassociaConhecimento.setEnabled(true);
+				buscaConhecimento.setEnabled(true);
+				associaProblema.setEnabled(true);
+				desassociaProblema.setEnabled(true);
+				buscaProblema.setEnabled(true);
+				buscaDesenvolvedor.setEnabled(true);
+				qualificaDesenvolvedor.setEnabled(true);
+				addConhecimento.setEnabled(true);
+				removeConhecimento.setEnabled(true);
+				
+			}
+			
+		});
+		login.addMouseListener(new MouseListener() {
+			
+			public void mouseDoubleClick(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			public void mouseDown(MouseEvent e) {
+				//Exibe o wizard de login
+				//runLoginWizardAction();
+				
+				//Desabilita o botao de login
+				login.dispose();
+				
+			}
+
+			public void mouseUp(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+		});
+		
 		addAtividade = new Button(parentComposite, SWT.NONE);
 		Image add = new Image(addAtividade.getDisplay(),this.getClass().getResourceAsStream("/icons/add.gif"));
-		addAtividade.setLocation(posHorBotaoNivel1, posVerBotaoNivel1);
+		addAtividade.setLocation(posHorBotaoNivel2, posVerBotaoNivel1);
 		addAtividade.setSize(larguraBotao, alturaBotao);
 		addAtividade.setImage(add);
 		addAtividade.setToolTipText("Adiciona nova atividade");
-		addAtividade.setEnabled(true);
+		addAtividade.setEnabled(false);
 		addAtividade.addMouseListener(new MouseListener() {
 			
 			public void mouseUp(MouseEvent arg0) {
@@ -197,95 +264,62 @@ public class Atividade extends ViewPart {
 			}
 		
 			public void mouseDown(MouseEvent e) {
+				String ultimaAtividadeAdicionada = null;
+				if(primeiraVez == false) 
+					ultimaAtividadeAdicionada =  viewComunication.getAtividades().get(viewComunication.getAtividades().size()-1);
+				
+				else{
+					System.out.println("Primeira vez recebendo false");
+					primeiraVez = false;
+				}
 				
 				// exibe o wizard para adicao de nova atividade
-				String ultimaAtividadeAdicionada =  viewComunication.getAtividades().get(viewComunication.getAtividades().size()-1);
-				
 				runAdicionaWizardAction();
 				
-				//captura o nome da atividade inserido pelo usuario
+				//captura o nome da atividade inserido pelo usuario			
 				String novaAtividade =  viewComunication.getAtividades().get(viewComunication.getAtividades().size()-1);
+				System.out.println("Nova Atividade = " + novaAtividade);
 				
-				if (!ultimaAtividadeAdicionada.equals(novaAtividade)) {
+			//	if (!ultimaAtividadeAdicionada.equals(novaAtividade)) {
 				
-				//realiza o cadastro da nova atividade
-				//viewComunication.sendPack(new Atividade(), Event.CadastroAtividade);
-				
-				//adiciona o item na lista de atividades
-				listaAtividades.add(novaAtividade);
-				
-				//captura os conhecimentos envolvidos
-				ArrayList<String> conhecimentos = viewComunication.getConhecimentosEnvolvidos(novaAtividade);
-				
-				//limpa as listas de conhecimentos e problemas
-				listaConhecimentos.removeAll();
-				listaProblemas.removeAll();
-				
-				//cria estruturas para armazenar os conhecimentos e problemas
-				ArrayList<String> conh = new ArrayList<String>();
-				ArrayList<String> prob = new ArrayList<String>();
-			
-				
-				//Preenche a lista de conhecimentos
-				if(conhecimentos != null)
-					for(String c : conhecimentos)
-					{
-						conh.add(c);
-						listaConhecimentos.add(c);
-					}	
-				
-				//Cria a atividade no banco
-				viewComunication.addAtividade(novaAtividade, conh, prob);
-				
-				//Seleciona o item recem adicionado
-				listaAtividades.select(listaAtividades.indexOf(novaAtividade));
-				
-				//atualiza a vizualizacao
-				listaAtividades.getParent().redraw();
-				listaAtividades.getParent().update();
-				listaConhecimentos.getParent().redraw();
-				listaConhecimentos.getParent().update();
-				
-				}
-				// TODO Auto-generated method stub
-				
-				/*String ultimaAtividadeAdicionada =  viewComunication.getAtividades().get(viewComunication.getAtividades().size()-1);
-				runAdicionaWizardAction();
-				String novaAtividade =  viewComunication.getAtividades().get(viewComunication.getAtividades().size()-1);
-				if (!ultimaAtividadeAdicionada.equals(novaAtividade)) {
-					Button novoButao = new Button(panel, SWT.RADIO);
-					novoButao.setText(novaAtividade);
-					buttons.add(novoButao);
-						
-					ArrayList<String> conhecimentosModelo = viewComunication.getConhecimentosEnvolvidos(novaAtividade);
-					final List conhecimentoList = new List(panelConhecimento, SWT.MULTI | SWT.CHECK);
-					for (String string : conhecimentosModelo) {
-						conhecimentoList.add(string);
-					}
-					conhecimentoList.setLocation(0, 0);
-					conhecimentoList.setSize(larguraJanela, alturaPainelConhecimentos);
-					conhecimentoList.setVisible(false);
-						
-					conhecimentosList.put(novaAtividade, conhecimentoList);
-					
-					
-					final List problemaList = new List(panelProblema, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL | SWT.CHECK | SWT.SCROLL_LINE);
-					problemaList.setLocation(0, 0);
-					problemaList.setSize(larguraJanela, alturaPainelProblemas);
-					problemaList.setVisible(false);		
-					ArrayList<String> problemas = viewComunication.getProblemas(novaAtividade);
-					
-					if(problemas != null)
-						for(String c : problemas)
+					//realiza o cadastro da nova atividade
+					//viewComunication.sendPack(new Atividade(), Event.CadastroAtividade);
+
+					//adiciona o item na lista de atividades
+					listaAtividades.add(novaAtividade);
+
+					//captura os conhecimentos envolvidos
+					ArrayList<String> conhecimentos = viewComunication.getConhecimentosEnvolvidos(novaAtividade);
+
+					//limpa as listas de conhecimentos e problemas
+					listaConhecimentos.removeAll();
+					listaProblemas.removeAll();
+
+					//cria estruturas para armazenar os conhecimentos e problemas
+					ArrayList<String> conh = new ArrayList<String>();
+					ArrayList<String> prob = new ArrayList<String>();
+
+
+					//Preenche a lista de conhecimentos
+					if(conhecimentos != null)
+						for(String c : conhecimentos)
 						{
-							problemaList.add(c);
-						}
-					problemasList.put(novaAtividade, problemaList);
-					
-					setListener(novoButao);		
-					atualizaPosicaoComponentes();	
-	
-				}*/				
+							conh.add(c);
+							listaConhecimentos.add(c);
+						}	
+
+					//Cria a atividade no banco
+					viewComunication.addAtividade(novaAtividade, conh, prob);
+
+					//Seleciona o item recem adicionado
+					listaAtividades.select(listaAtividades.indexOf(novaAtividade));
+
+					//atualiza a vizualizacao
+					listaAtividades.getParent().redraw();
+					listaAtividades.getParent().update();
+					listaConhecimentos.getParent().redraw();
+					listaConhecimentos.getParent().update();
+			//	}			
 			}
 		
 			public void mouseDoubleClick(MouseEvent arg0) {
@@ -295,11 +329,11 @@ public class Atividade extends ViewPart {
 		
 		removeAtividade = new Button(parentComposite, SWT.NONE);
 		Image remove = new Image(addAtividade.getDisplay(),this.getClass().getResourceAsStream("/icons/remove.gif"));
-		removeAtividade.setLocation(posHorBotaoNivel2, posVerBotaoNivel1);
+		removeAtividade.setLocation(posHorBotaoNivel3, posVerBotaoNivel1);
 		removeAtividade.setSize(larguraBotao, alturaBotao);
 		removeAtividade.setImage(remove);
 		removeAtividade.setToolTipText("Remove atividade selecionada");
-		removeAtividade.setEnabled(true);
+		removeAtividade.setEnabled(false);
 		removeAtividade.addMouseListener(new MouseListener() {
 		
 			public void mouseUp(MouseEvent arg0) {
@@ -391,11 +425,11 @@ public class Atividade extends ViewPart {
 
 		removeAllAtividade = new Button(parentComposite, SWT.NONE);
 		Image removeAll = new Image(addAtividade.getDisplay(),this.getClass().getResourceAsStream("/icons/removeAll.gif"));
-		removeAllAtividade.setLocation(posHorBotaoNivel3, posVerBotaoNivel1);
+		removeAllAtividade.setLocation(posHorBotaoNivel4, posVerBotaoNivel1);
 		removeAllAtividade.setSize(larguraBotao, alturaBotao);
 		removeAllAtividade.setImage(removeAll);
 		removeAllAtividade.setToolTipText("Remove todas as atividades");
-		removeAllAtividade.setEnabled(true);
+		removeAllAtividade.setEnabled(false);
 		removeAllAtividade.addMouseListener(new MouseListener(){
 
 			public void mouseDoubleClick(MouseEvent arg0) {
@@ -435,19 +469,19 @@ public class Atividade extends ViewPart {
 		
 		buscaAtividade = new Button(parentComposite, SWT.NONE);
 		Image busca = new Image(addAtividade.getDisplay(),this.getClass().getResourceAsStream("/icons/busca.gif"));
-		buscaAtividade.setLocation(posHorBotaoNivel4, posVerBotaoNivel1);
+		buscaAtividade.setLocation(posHorBotaoNivel5, posVerBotaoNivel1);
 		buscaAtividade.setSize(larguraBotao, alturaBotao);
 		buscaAtividade.setImage(busca);
 		buscaAtividade.setToolTipText("Busca atividades");
-		buscaAtividade.setEnabled(true);
+		buscaAtividade.setEnabled(false);
 		
 		encerraAtividade = new Button(parentComposite, SWT.NONE);
 		Image encerra = new Image(addAtividade.getDisplay(),this.getClass().getResourceAsStream("/icons/encerra.gif"));
-		encerraAtividade.setLocation(posHorBotaoNivel5, posVerBotaoNivel1);
+		encerraAtividade.setLocation(posHorBotaoNivel6, posVerBotaoNivel1);
 		encerraAtividade.setSize(larguraBotao, alturaBotao);
 		encerraAtividade.setImage(encerra);
 		encerraAtividade.setToolTipText("Encerra atividade selecionada");
-		encerraAtividade.setEnabled(true);
+		encerraAtividade.setEnabled(false);
 			
 		listaAtividades = new List(parentComposite, SWT.V_SCROLL | SWT.BORDER);
 		listaAtividades.setLocation(posHorPanel, posVerPainelAtividade);
@@ -501,24 +535,14 @@ public class Atividade extends ViewPart {
 			}
 			
 		});
+
 		
-		/*panel = new Composite(parentComposite, SWT.V_SCROLL | SWT.BORDER);
-		panel.setLocation(posHorPanel, posVerPainelAtividade);
-		panel.setSize(larguraJanela, alturaPainelAtividade);
-		panel.setVisible(true);
-		*/
 		ArrayList<String> atividadesNomes = viewComunication.getAtividades();
 			
 		for(int i=0; i < atividadesNomes.size(); i++)
 		{
 			listaAtividades.add(atividadesNomes.get(i));
-			/*
-			final Button b = new Button(panel, SWT.RADIO);
-			b.setText(atividadesNomes.get(i));
-			b.setLocation(0, i*25);
-			b.setSize(200, 25);
-			this.buttons.add(b);
-			setListener(b);*/
+			
 		}
 	
 		conhecimentoLabel = new Label(parentComposite, SWT.BORDER | SWT.CENTER);
@@ -532,15 +556,23 @@ public class Atividade extends ViewPart {
 		listaConhecimentos.setLocation(posHorPanel, posVerPainelConhecimentos);
 		listaConhecimentos.setSize(larguraJanela, alturaPainelConhecimentos);
 		listaConhecimentos.setVisible(true);
-		
-		/*
-		panelConhecimento = new Composite(parentComposite, SWT.BORDER);
-		panelConhecimento.setLocation(posHorPanel, posVerPainelConhecimentos);
-		panelConhecimento.setSize(larguraJanela, alturaPainelConhecimentos);
-		panelConhecimento.setVisible(true);
-		*/
+	
 		
 		conhecimentosList = new HashMap<String, List>();
+		
+		addConhecimento = new Button(parentComposite, SWT.NONE);
+		addConhecimento.setLocation(posHorBotaoNivel4, posVerBotaoNivel2);
+		addConhecimento.setSize(larguraBotao, alturaBotao);
+		addConhecimento.setImage(add);
+		addConhecimento.setToolTipText("Cadastra um novo conhecimento");
+		addConhecimento.setEnabled(false);
+		
+		removeConhecimento = new Button(parentComposite, SWT.NONE);
+		removeConhecimento.setLocation(posHorBotaoNivel5, posVerBotaoNivel2);
+		removeConhecimento.setSize(larguraBotao, alturaBotao);
+		removeConhecimento.setImage(remove);
+		removeConhecimento.setToolTipText("Remove o conhecimento selecionado");
+		removeConhecimento.setEnabled(false);
 		
 		associaConhecimento = new Button(parentComposite, SWT.NONE);
 		Image ass = new Image(addAtividade.getDisplay(),this.getClass().getResourceAsStream("/icons/associaConh.gif"));
@@ -572,16 +604,6 @@ public class Atividade extends ViewPart {
 			for (String string : conhecimentosModelo)
 				listaConhecimentos.add(string);
 			conhecimentosList.put(selection, listaConhecimentos);
-			/*
-			ArrayList<String> conhecimentosModelo = viewComunication.getConhecimentosEnvolvidos(selection);
-			final List conhecimentoList = new List(panelConhecimento, SWT.MULTI | SWT.CHECK);
-			for (String string : conhecimentosModelo) {
-				conhecimentoList.add(string);
-			}
-			conhecimentoList.setLocation(0,0);
-			conhecimentoList.setSize( this.larguraJanela , this.alturaPainelConhecimentos);
-			conhecimentoList.setVisible(false);
-			conhecimentosList.put(selection, conhecimentoList);*/
 		}
 		
 		problemaLabel = new Label(parentComposite, SWT.BORDER | SWT.CENTER);
@@ -596,12 +618,6 @@ public class Atividade extends ViewPart {
 		listaProblemas.setSize(larguraJanela, alturaPainelProblemas);
 		listaProblemas.setVisible(true);
 		
-		/*
-		panelProblema = new Composite(parentComposite, SWT.BORDER);
-		panelProblema.setLocation(posHorPanel, posVerPainelProblemas);
-		panelProblema.setSize(larguraJanela, alturaPainelProblemas);
-		panelProblema.setVisible(true);
-		*/
 		problemasList = new HashMap<String, List>();
 		
 		associaProblema = new Button(parentComposite, SWT.NONE);
