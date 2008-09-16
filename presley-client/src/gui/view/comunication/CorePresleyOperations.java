@@ -19,6 +19,23 @@ import beans.Tree;
 
 public interface CorePresleyOperations {
 	
+	public static final int ADICIONA_ATIVIDADE = 1;
+	public static final int REMOVE_ATIVIDADE = 2;
+	public static final int BUSCA_ATIVIDADE = 3;
+	public static final int ADICIONA_CONHECIMENTO = 4;
+	public static final int LOG_IN = 5;
+	public static final int LOG_OUT = 6;
+	public static final int ENCERRAR_ATIVIDADE = 7;
+	public static final int ASSOCIAR_CONHECIMENTO_ATIVIDADE = 8;
+	public static final int DESSASOCIAR_CONHECIMENTO_ATIVIDADE = 9;
+	public static final int ASSOCAR_PROBLEMA_ATIVIDADE = 10;
+	public static final int DESSASOCIAR_PROBLEMA_ATIVIDADE = 11;
+	public static final int BUSCA_DESENVOLVEDORES = 12;
+	public static final int QUALIFICA_DESENVOLVEDOR = 13;
+	public static final int ENVIAR_MENSAGEM = 14;
+	public static final int GET_LISTA_DESENVOLVEDORES = 15;
+	public static final int GET_LISTA_CONHECIMENTO = 16;
+	
 	/**
 	 * Este método cadastra uma nova atividade na base de dados.
 	 * CÓDIGO DA OPERAÇÃO -> 01
@@ -48,7 +65,7 @@ public interface CorePresleyOperations {
 	 * @param Conhecimento conhecimento
 	 * @return true se o conhecimento foi adicionado com sucesso.
 	 */
-	public boolean AdicionaConhecimento(Conhecimento conhecimento);
+	public boolean adicionaConhecimento(Conhecimento conhecimento);
 
 	/**
 	 * Este método executa autenticação no servidor
@@ -57,7 +74,7 @@ public interface CorePresleyOperations {
 	 * @param String passwd  
 	 * @return Desenvolvedor 
 	 */
-	public Desenvolvedor login(String user, String passwd);
+	public Desenvolvedor login(DadosAutenticacao authData);
 
 	/**
 	 * Este método solicita logout do servidor
@@ -138,7 +155,7 @@ public interface CorePresleyOperations {
 	 * @param Problema problema
 	 * @return true se a mensagem foi realizada com sucesso.
 	 */
-	public boolean enviarMensagem(ArrayList<Desenvolvedor> desenvolvedoresDestino, Problema problema);
+	public boolean enviarMensagem(Desenvolvedor desenvolvedorOrigem, ArrayList<Desenvolvedor> desenvolvedoresDestino, Problema problema, String mensagem);
 	
 	/**
 	 * Este método retorna uma lista com todos os desenvolvedores cadastrados
@@ -147,13 +164,13 @@ public interface CorePresleyOperations {
 	 */
 	public ArrayList<Desenvolvedor> getListaDesenvolvedores();
 	
+
 	/**
 	 * Este método retorna uma lista com todos os conhecimentos cadastrados
 	 * CÓDIGO DA OPERAÇÃO -> 16
 	 * @return ArrayList<Conhecimento> lista de conhecimentos existentes.
 	 */
 	public ArrayList<Conhecimento> getListaConhecimentos();
-
 
 
 
