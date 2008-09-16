@@ -164,10 +164,14 @@ public class ServicoConhecimentoImplDAO implements ServicoConhecimento{
 		try {
 		
 			Statement stm = conn.createStatement();
+			String SQL = ""; 	
+			if (nome != null) {
 		
-			String SQL = " SELECT * FROM conhecimento WHERE "+
+			SQL = " SELECT * FROM conhecimento WHERE "+
 						 " nome = '"+nome+"';";
-				
+			} else {
+				SQL = " SELECT * FROM conhecimento;";
+			}
 			
 			System.out.println(SQL);
 			ResultSet rs = stm.executeQuery(SQL);

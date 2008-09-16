@@ -107,5 +107,9 @@ public class ValidacaoDesenvolvedorImpl implements ValidacaoDesenvolvedor{
 		
 		return servicoDesenvolvedor.removerDesenvolvedor(email);
 	}
+	
+	public ArrayList<Desenvolvedor> getListaDesenvolvedores() {
+		return servicoDesenvolvedor.getTodosDesenvolvedores();
+	}
 
 }

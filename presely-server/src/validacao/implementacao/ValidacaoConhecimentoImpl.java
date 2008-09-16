@@ -5,6 +5,7 @@ import persistencia.implementacao.ServicoAtividadeImplDAO;
 import persistencia.implementacao.ServicoConhecimentoImplDAO;
 import persistencia.interfaces.ServicoAtividade;
 import persistencia.interfaces.ServicoConhecimento;
+import validacao.excessao.ConhecimentoNaoEncontradoException;
 import validacao.interfaces.ValidacaoConhecimento;
 
 /**
@@ -51,7 +52,7 @@ public class ValidacaoConhecimentoImpl implements ValidacaoConhecimento{
 	public Conhecimento getConhecimento(String nome) throws Exception {
 		
 		Conhecimento conhecimento = servicoConhecimento.getConhecimento(nome);
-		if (conhecimento == null) throw new Exception();
+		if (conhecimento == null) throw new ConhecimentoNaoEncontradoException();
 		
 		return conhecimento;
 	}

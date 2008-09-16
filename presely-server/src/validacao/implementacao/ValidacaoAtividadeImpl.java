@@ -8,6 +8,11 @@ import persistencia.implementacao.ServicoAtividadeImplDAO;
 import persistencia.implementacao.ServicoConhecimentoImplDAO;
 import persistencia.interfaces.ServicoAtividade;
 import persistencia.interfaces.ServicoConhecimento;
+import validacao.excessao.AtividadeInexistenteException;
+import validacao.excessao.ConhecimentoInexistenteException;
+import validacao.excessao.DataInvalidaException;
+import validacao.excessao.DescricaoInvalidaException;
+import validacao.excessao.EmailInvalidoException;
 import validacao.interfaces.ValidacaoAtividade;
 import beans.TipoAtividade;
 import beans.Conhecimento;
@@ -34,8 +39,8 @@ public class ValidacaoAtividadeImpl implements ValidacaoAtividade{
 	public boolean adicionarConhecimentoAAtividade(int idAtividade,
 			String nomeConhecimento) throws Exception {
 		
-		if (!servicoAtividade.atividadeExiste(idAtividade))throw new Exception();
-		if (!servicoConhecimento.conhecimentoExiste(nomeConhecimento)) throw new Exception();
+		if (!servicoAtividade.atividadeExiste(idAtividade))throw new AtividadeInexistenteException();
+		if (!servicoConhecimento.conhecimentoExiste(nomeConhecimento)) throw new ConhecimentoInexistenteException();
 		
 		return servicoAtividade.adicionarConhecimentoAAtividade(idAtividade, nomeConhecimento);
 	}
@@ -96,10 +101,10 @@ public class ValidacaoAtividadeImpl implements ValidacaoAtividade{
 		
 		System.out.println("TipoAtividade adicionada com sucesso!");
 
-		if (!ValidacaoUtil.validaEmail(emailDesenvolvedor)) throw new Exception();
-		if (!ValidacaoUtil.validaEmail(emailGerente)) throw new Exception();
-		if (!ValidacaoUtil.validaDescricao(descricao)) throw new Exception();
-		if (!ValidacaoUtil.verificaOrdemDatas(dataInicio, dataFim)) throw new Exception();
+		if (!ValidacaoUtil.validaEmail(emailDesenvolvedor)) throw new EmailInvalidoException();
+		if (!ValidacaoUtil.validaEmail(emailGerente)) throw new EmailInvalidoException();
+		if (!ValidacaoUtil.validaDescricao(descricao)) throw new DescricaoInvalidaException();
+		if (!ValidacaoUtil.verificaOrdemDatas(dataInicio, dataFim)) throw new DataInvalidaException();
 		
 		return servicoAtividade.cadastrarAtividade(emailDesenvolvedor, emailGerente, descricao, dataInicio, dataFim);
 	}
@@ -127,9 +132,9 @@ public class ValidacaoAtividadeImpl implements ValidacaoAtividade{
 		return servicoAtividade.getSubAtividades(idPai);
 	}
 
-	public boolean removerAtividade(int id) throws Exception {
+	public boolean removerAtividade(int id) throws AtividadeInexistenteException {
 		
-		if (!servicoAtividade.atividadeExiste(id)) throw new Exception();
+		if (!servicoAtividade.atividadeExiste(id)) throw new AtividadeInexistenteException();
 		
 		ArrayList<Conhecimento> conhecimentos = servicoAtividade.getConhecimentosEnvolvidosNaAtividade(id);
 		Iterator<Conhecimento> it = conhecimentos.iterator();

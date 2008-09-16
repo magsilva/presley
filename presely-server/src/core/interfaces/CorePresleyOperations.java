@@ -173,6 +173,7 @@ public interface CorePresleyOperations {
 	 * @return ArrayList<Conhecimento> lista de conhecimentos existentes.
 	 */
 	public ArrayList<Conhecimento> getListaConhecimentos();
+	
 
 
 

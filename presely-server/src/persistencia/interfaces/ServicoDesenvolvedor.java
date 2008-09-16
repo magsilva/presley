@@ -96,5 +96,11 @@ public interface ServicoDesenvolvedor {
 	 * @return true se a associacao existe.
 	 */
 	public boolean conhecimentoDoDesenvolvedorExiste(String emailDesenvolvedor, String nomeConhecimento);
+
+	/**
+	 * Esse método retorna uma lista com todos os desenvolvedores cadastrados;
+	 * @return ArrayList<Desenvolvedor> lista de todos os desenvolvedores
+	 */
+	public ArrayList<Desenvolvedor> getTodosDesenvolvedores();
 	
 }
