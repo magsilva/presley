@@ -41,10 +41,10 @@ public class Atividade extends ViewPart {
 	private List listaAtividades, listaConhecimentos, listaProblemas; 
 	private Label conhecimentoLabel, problemaLabel, contatosLabel;
 	private Composite panelContatos, parentComposite;
-	private Button login,logout, addAtividade, addConhecimento,removeConhecimento, removeAtividade, removeAllAtividade, 
+	private Button login,logout, addAtividade, addUser,removeUser, addConhecimento,removeConhecimento, removeAtividade, removeAllAtividade, 
 			buscaAtividade, encerraAtividade, associaConhecimento, desassociaConhecimento,
 			buscaConhecimento, associaProblema, desassociaProblema, buscaProblema,
-			buscaDesenvolvedor, qualificaDesenvolvedor;
+			buscaDesenvolvedor, qualificaDesenvolvedor, solicitaMensagens;
 	
 	private RunAdicionaAtividadeWizardAction runAdicionaAtividade;
 	private RunRemoveAtividadeWizardAction runRemoveAtividade;
@@ -58,6 +58,8 @@ public class Atividade extends ViewPart {
 	private final int posHorBotaoNivel4 = 76;
 	private final int posHorBotaoNivel5 = 100;
 	private final int posHorBotaoNivel6 = 124;
+	private final int posHorBotaoNivel7 = 148;
+	private final int posHorBotaoNivel8 = 172;
 	private final int posVerBotaoNivel1 = 4;
 	private final int posVerBotaoNivel2 = 113;
 	private final int posVerBotaoNivel3 = 233;
@@ -70,10 +72,9 @@ public class Atividade extends ViewPart {
 	private final int posVerPainelConhecimentos = 135;
 	private final int posVerPainelProblemas = 255;
 	private final int posVerPainelContatos = 373;
-	private final int larguraJanela = 184;
+	private final int larguraJanela = 195;
 	private final int distanciaPanelLabel = 5;
 	private final int posHorPanel = 0;
-	private boolean primeiraVez = true;
 	
 	public Atividade()
 	{
@@ -212,11 +213,13 @@ public class Atividade extends ViewPart {
 				logout.setToolTipText("Logout");
 				logout.setEnabled(true);
 				
+				System.out.println("Habilitando botoes");
 				//Habilita os outros botoes
 				addAtividade.setEnabled(true);
 				removeAtividade.setEnabled(true);
 				removeAllAtividade.setEnabled(true);
-				buscaAtividade.setEnabled(true);
+				System.out.println("Continuando");
+				try {
 				encerraAtividade.setEnabled(true);
 				associaConhecimento.setEnabled(true);
 				desassociaConhecimento.setEnabled(true);
@@ -228,12 +231,20 @@ public class Atividade extends ViewPart {
 				qualificaDesenvolvedor.setEnabled(true);
 				addConhecimento.setEnabled(true);
 				removeConhecimento.setEnabled(true);
+				addUser.setEnabled(true);
+				removeUser.setEnabled(true);
+				solicitaMensagens.setEnabled(true);
 				
+				System.out.println("Fim da habilitacao");
+				}
+				catch (Exception exceo) {
+					System.out.println("Que lixo");
+					exceo.printStackTrace();
+				}
 			}
 			
 		});
-		login.addMouseListener(new MouseListener() {
-			
+		login.addMouseListener(new MouseListener() {			
 			public void mouseDoubleClick(MouseEvent e) {
 				// TODO Auto-generated method stub
 				
@@ -255,10 +266,11 @@ public class Atividade extends ViewPart {
 			}
 			
 		});
-		
+
+				
 		addAtividade = new Button(parentComposite, SWT.NONE);
 		Image add = new Image(addAtividade.getDisplay(),this.getClass().getResourceAsStream("/icons/add.gif"));
-		addAtividade.setLocation(posHorBotaoNivel2, posVerBotaoNivel1);
+		addAtividade.setLocation(posHorBotaoNivel4, posVerBotaoNivel1);
 		addAtividade.setSize(larguraBotao, alturaBotao);
 		addAtividade.setImage(add);
 		addAtividade.setToolTipText("Adiciona nova atividade");
@@ -336,9 +348,25 @@ public class Atividade extends ViewPart {
 			}
 		});
 		
+		addUser = new Button(parentComposite, SWT.NONE);
+		Image userAdd = new Image(addUser.getDisplay(),this.getClass().getResourceAsStream("/icons/addUser.gif"));
+		addUser.setLocation(posHorBotaoNivel2, posVerBotaoNivel1);
+		addUser.setSize(larguraBotao, alturaBotao);
+		addUser.setImage(userAdd);
+		addUser.setToolTipText("Adiciona novo desenvolvedor");
+		addUser.setEnabled(false);
+		
+		removeUser = new Button(parentComposite, SWT.NONE);
+		Image userRemove = new Image(removeUser.getDisplay(),this.getClass().getResourceAsStream("/icons/removeUser.gif"));
+		removeUser.setLocation(posHorBotaoNivel3, posVerBotaoNivel1);
+		removeUser.setSize(larguraBotao, alturaBotao);
+		removeUser.setImage(userRemove);
+		removeUser.setToolTipText("Remove novo desenvolvedor");
+		removeUser.setEnabled(false);
+		
 		removeAtividade = new Button(parentComposite, SWT.NONE);
 		Image remove = new Image(addAtividade.getDisplay(),this.getClass().getResourceAsStream("/icons/remove.gif"));
-		removeAtividade.setLocation(posHorBotaoNivel3, posVerBotaoNivel1);
+		removeAtividade.setLocation(posHorBotaoNivel5, posVerBotaoNivel1);
 		removeAtividade.setSize(larguraBotao, alturaBotao);
 		removeAtividade.setImage(remove);
 		removeAtividade.setToolTipText("Remove atividade selecionada");
@@ -376,53 +404,7 @@ public class Atividade extends ViewPart {
 				listaConhecimentos.getParent().update();
 				listaProblemas.getParent().redraw();
 				listaProblemas.getParent().update();
-				// TODO Auto-generated method stub
-				/*
-				runRemoveWizardAction();
-				for (List conhecimentoList : conhecimentosList.values()) {
-					conhecimentoList.setEnabled(false);
-					conhecimentoList.setVisible(false);
-				}
-				for (List problemaList : problemasList.values()) {
-					problemaList.setEnabled(false);
-					problemaList.setVisible(false);
-				}
-				ArrayList<String> atividadesAtualizadas =  viewComunication.getAtividades();
-				if (!atividadesAtualizadas.isEmpty()) {
-					buttons = new ArrayList<Button>();
-					
-					for(int i=0; i < atividadesAtualizadas.size(); i++)
-					{
-						final Button b = new Button(panel, SWT.RADIO);
-						b.setText(atividadesAtualizadas.get(i));
-						b.setLocation(0, i*25);
-						b.setSize(200, 25);
-						buttons.add(b);
-						setListener(b);
-					}
-					
-					atualizaPosicaoComponentes();
 
-				}else{
-					for (Button button : buttons) {
-						button.dispose();
-					}
-					buttons.clear();
-					
-					for (List listConhecimento : conhecimentosList.values()) {
-						listConhecimento.dispose();
-					}
-					for (List list : problemasList.values()) {
-						list.dispose();
-					}
-					conhecimentosList.clear();
-					problemasList.clear();
-					
-					desabilitaBotoesConhecimento();
-					desabilitaBotoesProblema();
-					desabilitaBotoesContato();
-					
-				}*/
 			}
 		
 			public void mouseDoubleClick(MouseEvent arg0) {
@@ -434,7 +416,7 @@ public class Atividade extends ViewPart {
 
 		removeAllAtividade = new Button(parentComposite, SWT.NONE);
 		Image removeAll = new Image(addAtividade.getDisplay(),this.getClass().getResourceAsStream("/icons/removeAll.gif"));
-		removeAllAtividade.setLocation(posHorBotaoNivel4, posVerBotaoNivel1);
+		removeAllAtividade.setLocation(posHorBotaoNivel6, posVerBotaoNivel1);
 		removeAllAtividade.setSize(larguraBotao, alturaBotao);
 		removeAllAtividade.setImage(removeAll);
 		removeAllAtividade.setToolTipText("Remove todas as atividades");
@@ -476,17 +458,10 @@ public class Atividade extends ViewPart {
 			
 		});
 		
-		buscaAtividade = new Button(parentComposite, SWT.NONE);
-		Image busca = new Image(addAtividade.getDisplay(),this.getClass().getResourceAsStream("/icons/busca.gif"));
-		buscaAtividade.setLocation(posHorBotaoNivel5, posVerBotaoNivel1);
-		buscaAtividade.setSize(larguraBotao, alturaBotao);
-		buscaAtividade.setImage(busca);
-		buscaAtividade.setToolTipText("Busca atividades");
-		buscaAtividade.setEnabled(false);
 		
 		encerraAtividade = new Button(parentComposite, SWT.NONE);
 		Image encerra = new Image(addAtividade.getDisplay(),this.getClass().getResourceAsStream("/icons/encerra.gif"));
-		encerraAtividade.setLocation(posHorBotaoNivel6, posVerBotaoNivel1);
+		encerraAtividade.setLocation(posHorBotaoNivel7, posVerBotaoNivel1);
 		encerraAtividade.setSize(larguraBotao, alturaBotao);
 		encerraAtividade.setImage(encerra);
 		encerraAtividade.setToolTipText("Encerra atividade selecionada");
@@ -695,6 +670,14 @@ public class Atividade extends ViewPart {
 		qualificaDesenvolvedor .setImage(ok);
 		qualificaDesenvolvedor .setToolTipText("Qualifica resposta do usuario");
 		qualificaDesenvolvedor.setEnabled(false);
+		
+		solicitaMensagens = new Button(parentComposite, SWT.NONE);
+		Image solicitaMens = new Image(solicitaMensagens.getDisplay(),this.getClass().getResourceAsStream("/icons/trocaMsg.gif"));
+		solicitaMensagens.setLocation(posHorBotaoNivel2, posVerBotaoNivel4);
+		solicitaMensagens.setSize(larguraBotao, alturaBotao);
+		solicitaMensagens.setImage(solicitaMens);
+		solicitaMensagens.setToolTipText("Envia mensagem para usuario selecionado");
+		solicitaMensagens.setEnabled(false);
 	}
 
 
