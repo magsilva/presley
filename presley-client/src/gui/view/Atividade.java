@@ -15,6 +15,7 @@ import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
+import org.eclipse.swt.events.MouseMoveListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
@@ -48,7 +49,6 @@ public class Atividade extends ViewPart {
 	
 	private RunAdicionaAtividadeWizardAction runAdicionaAtividade;
 	private RunRemoveAtividadeWizardAction runRemoveAtividade;
-	private Desenvolvedor desenvolvedorLogado;
 	
 	private final int larguraBotao = 20;
 	private final int alturaBotao = 20;
@@ -73,7 +73,7 @@ public class Atividade extends ViewPart {
 	private final int larguraJanela = 184;
 	private final int distanciaPanelLabel = 5;
 	private final int posHorPanel = 0;
-	private boolean primeiraVez = true;
+
 	
 	public Atividade()
 	{
@@ -85,105 +85,6 @@ public class Atividade extends ViewPart {
 	{		
 		parent.setLayout(null);
 		initComponents(parent);
-	}
-
-	public void setFocus() {
-		// TODO Auto-generated method stub
-
-	}	
-	
-	private void setListener(final Button button)
-	{
-		button.addMouseListener(new MouseListener(){
-			
-			public void mouseDoubleClick(MouseEvent e) {
-								
-			}
-
-			public void mouseDown(MouseEvent e) {	
-				try{
-					Set<String> keys = conhecimentosList.keySet();
-					
-					for(String key : keys)
-					{
-						conhecimentosList.get(key).setVisible(false);
-						conhecimentosList.get(key).setEnabled(false);
-						
-						problemasList.get(key).setVisible(false);
-						problemasList.get(key).setEnabled(false);
-					}
-					
-					problemaLabel.setVisible(true);
-					conhecimentoLabel.setVisible(true);
-					
-					conhecimentosList.get( button.getText()).setVisible(true);
-					conhecimentosList.get( button.getText()).setEnabled(true);
-					
-					problemasList.get( button.getText()).setVisible(true);
-					problemasList.get( button.getText()).setEnabled(true);
-					
-					habilitaBotoesConhecimento();
-					habilitaBotoesProblema();
-				
-					button.getParent().redraw();
-					button.getParent().update();
-					
-				}catch(Exception e1){
-					System.out.println("ERRO ERRO Evento Mouse:   "+e1.getMessage());
-					e1.printStackTrace();
-				}
-			}
-			
-			public void mouseUp(MouseEvent e) {
-				// TODO Auto-generated method stub
-				
-			}				
-		});
-	}
-	
-	private void atualizaPosicaoComponentes()
-	{
-
-				for(int i=0; i < this.buttons.size(); i++)
-				{
-					buttons.get(i).setLocation(0, i*25);
-					buttons.get(i).setSize(200, 25);
-					this.buttons.get(i).getParent().redraw();
-				}		
-	}
-	
-	private void desabilitaBotoesConhecimento(){
-		associaConhecimento.setEnabled(false);
-	    desassociaConhecimento.setEnabled(false);
-	    buscaConhecimento.setEnabled(false);
-	}
-	
-	private void habilitaBotoesConhecimento(){
-		associaConhecimento.setEnabled(true);
-	    desassociaConhecimento.setEnabled(true);
-	    buscaConhecimento.setEnabled(true);		
-	}
-	
-	private void desabilitaBotoesProblema(){
-		associaProblema.setEnabled(false);
-		desassociaProblema.setEnabled(false);
-		buscaProblema.setEnabled(false);
-	}
-	
-	private void habilitaBotoesProblema(){
-		associaProblema.setEnabled(true);
-		desassociaProblema.setEnabled(true);
-		buscaProblema.setEnabled(true);
-	}
-	
-	private void desabilitaBotoesContato(){
-		buscaDesenvolvedor.setEnabled(false);
-		qualificaDesenvolvedor.setEnabled(false);	
-	}
-	
-	private void habilitaBotoesContato(){
-		buscaDesenvolvedor.setEnabled(true);
-		qualificaDesenvolvedor.setEnabled(true);	
 	}
 		
 	private void initComponents(Composite parent)
@@ -241,13 +142,20 @@ public class Atividade extends ViewPart {
 
 			public void mouseDown(MouseEvent e) {
 				//Exibe o wizard de login
-				RunLoginWizardAction();
+				//runLoginWizardAction();
 				
 				//Desabilita o botao de login
 				login.dispose();
 				
+				ArrayList<TipoAtividade> atividades = viewComunication.getAtividades();
+				
+				for(int i=0; i < atividades.size(); i++)
+				{
+					listaAtividades.add((atividades.get(i)).getDescricao());
+					
+				}
+				
 			}
-
 
 			public void mouseUp(MouseEvent e) {
 				// TODO Auto-generated method stub
@@ -270,65 +178,48 @@ public class Atividade extends ViewPart {
 			}
 		
 			public void mouseDown(MouseEvent e) {
-				String ultimaAtividadeAdicionada = null;
-				String novaAtividade = null;
-				
-				//armazena a ultima atividade incluida
-				ArrayList<String> atividadesAnteriores = viewComunication.getAtividades();
-				if (atividadesAnteriores!=null&&!atividadesAnteriores.isEmpty()) {
-					ultimaAtividadeAdicionada =  atividadesAnteriores.get(atividadesAnteriores.size()-1);	
-				}
 				
 				// exibe o wizard para adicao de nova atividade
 				runAdicionaWizardAction();
 				
-				//captura o nome da atividade inserido pelo usuario
-				ArrayList<String> atividadesPosteriores = viewComunication.getAtividades();
-				if (atividadesPosteriores!=null&&!atividadesPosteriores.isEmpty()) {  
-					novaAtividade = atividadesPosteriores.get(atividadesPosteriores.size()-1);
-				}
+				//cadastra a atividade no servidor
+				//viewComunication.adicionaAtividade(atividade);
 				
-				//ação de adicionar atividade foi cancelada
-				if (ultimaAtividadeAdicionada!=null&&!ultimaAtividadeAdicionada.equals(novaAtividade)) {
+				//captura o nome da atividade inserido pelo usuario	???????		
+				TipoAtividade novaAtividade =  viewComunication.getAtividades().get(viewComunication.getAtividades().size()-1);
+				System.out.println("Nova Atividade = " + novaAtividade.getDescricao());
 				
-					//realiza o cadastro da nova atividade
-					//viewComunication.sendPack(new Atividade(), Event.CadastroAtividade);
-				
-					//adiciona o item na lista de atividades
-					listaAtividades.add(novaAtividade);
-				
-					//captura os conhecimentos envolvidos
-					ArrayList<Conhecimento> conhecimentos = viewComunication.getConhecimentosEnvolvidos(novaAtividade);
-				
-					//limpa as listas de conhecimentos e problemas
-					listaConhecimentos.removeAll();
-					listaProblemas.removeAll();
-				
-					//cria estruturas para armazenar os conhecimentos e problemas
-					ArrayList<String> conh = new ArrayList<String>();
-					ArrayList<String> prob = new ArrayList<String>();
-			
-				
-					//Preenche a lista de conhecimentos
-					if(conhecimentos != null)
-						for(Conhecimento c : conhecimentos)
-						{
-							conh.add(c.getNome());
-							listaConhecimentos.add(c.getNome());
-						}	
+				//adiciona o item na lista de atividades
+				listaAtividades.add(novaAtividade.getDescricao());
 
-					//Seleciona o item recem adicionado
-					listaAtividades.select(listaAtividades.indexOf(novaAtividade));
+				//captura os conhecimentos envolvidos
+				ArrayList<Conhecimento> conhecimentos = viewComunication.getConhecimentosEnvolvidos(novaAtividade);
 
-					//atualiza a vizualizacao
-					listaAtividades.getParent().redraw();
-					listaAtividades.getParent().update();
-					listaConhecimentos.getParent().redraw();
-					listaConhecimentos.getParent().update();
-				
-				}
-				// TODO Auto-generated method stub
-		
+				//limpa as listas de conhecimentos e problemas
+				listaConhecimentos.removeAll();
+				listaProblemas.removeAll();
+
+				//cria estruturas para armazenar os conhecimentos e problemas
+				ArrayList<String> conh = new ArrayList<String>();
+				ArrayList<String> prob = new ArrayList<String>();
+
+
+				//Preenche a lista de conhecimentos
+				if(conhecimentos != null)
+					for(Conhecimento c : conhecimentos)
+					{
+						conh.add(c.getNome());
+						listaConhecimentos.add(c.getNome());
+					}	
+
+				//Seleciona o item recem adicionado
+				listaAtividades.select(listaAtividades.indexOf(novaAtividade.getDescricao()));
+
+				//atualiza a vizualizacao
+				listaAtividades.getParent().redraw();
+				listaAtividades.getParent().update();
+				listaConhecimentos.getParent().redraw();
+				listaConhecimentos.getParent().update();		
 			}
 		
 			public void mouseDoubleClick(MouseEvent arg0) {
@@ -355,12 +246,11 @@ public class Atividade extends ViewPart {
 				//captura o id da atividade selecionada
 				int idAtividade = listaAtividades.getSelectionIndex();
 				
-				
 				//exibe o wizard de confirmacao para a retirada da atividade
 				//runRemoveWizardAction();
 				
 				//realiza a remocao da atividade no servidor
-				//viewComunication.sendPack(Atividade, Event.RemocaoAtividade);
+				viewComunication.removerAtividade(listaAtividades.getItem(idAtividade));
 				
 				//realiza a remocao da atividade na lista
 				listaAtividades.remove(idAtividade);
@@ -376,53 +266,6 @@ public class Atividade extends ViewPart {
 				listaConhecimentos.getParent().update();
 				listaProblemas.getParent().redraw();
 				listaProblemas.getParent().update();
-				// TODO Auto-generated method stub
-				/*
-				runRemoveWizardAction();
-				for (List conhecimentoList : conhecimentosList.values()) {
-					conhecimentoList.setEnabled(false);
-					conhecimentoList.setVisible(false);
-				}
-				for (List problemaList : problemasList.values()) {
-					problemaList.setEnabled(false);
-					problemaList.setVisible(false);
-				}
-				ArrayList<String> atividadesAtualizadas =  viewComunication.getAtividades();
-				if (!atividadesAtualizadas.isEmpty()) {
-					buttons = new ArrayList<Button>();
-					
-					for(int i=0; i < atividadesAtualizadas.size(); i++)
-					{
-						final Button b = new Button(panel, SWT.RADIO);
-						b.setText(atividadesAtualizadas.get(i));
-						b.setLocation(0, i*25);
-						b.setSize(200, 25);
-						buttons.add(b);
-						setListener(b);
-					}
-					
-					atualizaPosicaoComponentes();
-
-				}else{
-					for (Button button : buttons) {
-						button.dispose();
-					}
-					buttons.clear();
-					
-					for (List listConhecimento : conhecimentosList.values()) {
-						listConhecimento.dispose();
-					}
-					for (List list : problemasList.values()) {
-						list.dispose();
-					}
-					conhecimentosList.clear();
-					problemasList.clear();
-					
-					desabilitaBotoesConhecimento();
-					desabilitaBotoesProblema();
-					desabilitaBotoesContato();
-					
-				}*/
 			}
 		
 			public void mouseDoubleClick(MouseEvent arg0) {
@@ -492,76 +335,71 @@ public class Atividade extends ViewPart {
 		encerraAtividade.setToolTipText("Encerra atividade selecionada");
 		encerraAtividade.setEnabled(false);
 			
-		listaAtividades = new List(parentComposite, SWT.SINGLE | SWT.BORDER);
+		listaAtividades = new List(parentComposite, SWT.V_SCROLL | SWT.BORDER);
 		listaAtividades.setLocation(posHorPanel, posVerPainelAtividade);
 		listaAtividades.setSize(larguraJanela, alturaPainelAtividade);
 		listaAtividades.setVisible(true);
-		ArrayList<String> atividadesNomes = viewComunication.getAtividades();
-		
-		if (atividadesNomes!=null) {
-			for(int i=0; i < atividadesNomes.size(); i++)
-			{
-				listaAtividades.add(atividadesNomes.get(i));
+		listaAtividades.addMouseListener(new MouseListener() {
+
+			public void mouseDoubleClick(MouseEvent arg0) {
+				// TODO Auto-generated method stub
 				
 			}
-			listaAtividades.addMouseListener(new MouseListener() {
 
-				public void mouseDoubleClick(MouseEvent arg0) {
-					// TODO Auto-generated method stub
-					
-				}
+			public void mouseDown(MouseEvent arg0) {
 
-				public void mouseDown(MouseEvent arg0) {
-					
-					//Captura atividade selecionada
-					int index = listaAtividades.getSelectionIndex();
-					String atividade = listaAtividades.getItem(index);
-					
-					//Captura os problemas associados
-					ArrayList<Problema> problemas = viewComunication.getProblemas(atividade);
-					
-					//Captura os conhecimentos associados
-					ArrayList<Conhecimento> conhecimentos = viewComunication.getConhecimentosEnvolvidos(atividade);
-					
-					//Limpa a lista de problemas
-					listaProblemas.removeAll();
-					
-					//limpa a lista de conhecimentos
-					listaConhecimentos.removeAll();
-					
-					//Adiciona os problemas a arvore
-					if (problemas!=null) {
-						for(int i=0; i < problemas.size(); i++)
-						{
-							listaProblemas.add(problemas.get(i).getDescricao());
-							listaProblemas.getParent().redraw();
-							listaProblemas.getParent().update();
-						}	
-					}
-					
-					//Adiciona os conhecimentos a lista
-					if (conhecimentos!=null) {
-						for(int i=0; i < conhecimentos.size(); i++)
-						{
-							listaConhecimentos.add(conhecimentos.get(i).getNome());
-							listaConhecimentos.getParent().redraw();
-							listaConhecimentos.getParent().update();
-						}
-		
-					}
-								
-				}
-					 
-				public void mouseUp(MouseEvent arg0) {
-					// TODO Auto-generated method stub
-					
+				//Captura atividade selecionada
+				String descricaoAtividade = listaAtividades.getItem(listaAtividades.getSelectionIndex());
+				
+				//atividade = viewComunication.getAtividade(descricaoAtividade);
+				TipoAtividade atividade = new TipoAtividade();		
+				
+				//Captura os problemas associados
+				ArrayList<Problema> problemas = viewComunication.getProblemas(atividade);
+				
+				//Captura os conhecimentos associados
+				ArrayList<Conhecimento> conhecimentos = viewComunication.getConhecimentosEnvolvidos(atividade);
+				
+				//Limpa a lista de problemas
+				listaProblemas.removeAll();
+				
+				//limpa a lista de conhecimentos
+				listaConhecimentos.removeAll();
+				
+				//Adiciona os problemas a arvore
+				for(int i=0; i < problemas.size(); i++)
+				{
+					listaProblemas.add(problemas.get(i).getDescricao());
+					listaProblemas.getParent().redraw();
+					listaProblemas.getParent().update();
 				}
 				
-			});
-	
+				//Adiciona os conhecimentos a lista
+				for(int i=0; i < conhecimentos.size(); i++)
+				{
+					listaConhecimentos.add(conhecimentos.get(i).getNome());
+					listaConhecimentos.getParent().redraw();
+					listaConhecimentos.getParent().update();
+				}
+				
+			}
+
+			public void mouseUp(MouseEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+		});
+
+		
+		ArrayList<TipoAtividade> atividades = viewComunication.getAtividades();
+			
+		for(int i=0; i < atividades.size(); i++)
+		{
+			listaAtividades.add(atividades.get(i).getDescricao());
+			
 		}
-		
-		
+	
 		conhecimentoLabel = new Label(parentComposite, SWT.BORDER | SWT.CENTER);
 		conhecimentoLabel.setText("Conhecimentos Envolvidos");
 		conhecimentoLabel.setLocation(0, posVerPainelAtividade + alturaPainelAtividade + distanciaPanelLabel);
@@ -614,22 +452,15 @@ public class Atividade extends ViewPart {
 		buscaConhecimento.setImage(buscaConh);
 		buscaConhecimento.setToolTipText("Busca um conhecimento");
 		buscaConhecimento.setEnabled(false);
-		
-		ArrayList<String> nomesAtividades = viewComunication.getAtividades();
-		if (nomesAtividades!=null) {
-			for(String selection : nomesAtividades)
-			{
-				ArrayList<Conhecimento> conhecimentos = viewComunication.getConhecimentosEnvolvidos(selection);
-				if (conhecimentos!=null) {
-					for (Conhecimento conhecimento : conhecimentos)
-						listaConhecimentos.add(conhecimento.getNome());
-					conhecimentosList.put(selection, listaConhecimentos);					
-				}
-				
-			}
-	
+		/*
+		for(String selection : viewComunication.getAtividades())
+		{
+			ArrayList<String> conhecimentosModelo = viewComunication.getConhecimentosEnvolvidos(selection);
+			for (String string : conhecimentosModelo)
+				listaConhecimentos.add(string);
+			conhecimentosList.put(selection, listaConhecimentos);
 		}
-				
+		*/
 		problemaLabel = new Label(parentComposite, SWT.BORDER | SWT.CENTER);
 		problemaLabel.setText("Problemas Encontrados");
 		problemaLabel.setBackground(new Color(conhecimentoLabel.getDisplay(),255,102,51));
@@ -675,7 +506,20 @@ public class Atividade extends ViewPart {
 		buscaDesenvolvedor.setImage(buscaDes);
 		buscaDesenvolvedor.setToolTipText("Busca desenvolvedores para resolver esse problema");
 		buscaDesenvolvedor.setEnabled(false);
-		
+		/*
+		for(String selection : viewComunication.getAtividades())
+		{
+				ArrayList<String> problemas = viewComunication.getProblemas(selection);
+				
+				if(problemas != null)
+					for(String c : problemas)
+					{
+						listaProblemas.add(c);
+					}
+				
+				problemasList.put(selection, listaProblemas);
+		}
+		*/
 		contatosLabel = new Label(parentComposite, SWT.BORDER | SWT.CENTER);
 		contatosLabel.setText("Contatos para os problemas");
 		contatosLabel.setBackground(new Color(conhecimentoLabel.getDisplay(),255,255,153));
@@ -697,41 +541,20 @@ public class Atividade extends ViewPart {
 		qualificaDesenvolvedor.setEnabled(false);
 	}
 
-
-	public void adicionaAtividade(TipoAtividade atividade){
-		this.viewComunication.adicionaAtividade(atividade);
-	}
 	
-	public void login(String nome, String senha, String ip){
-		desenvolvedorLogado = viewComunication.login(nome, senha);
-	}
-	
-	public void removeAtividade(String atividade){
-		//this.viewComunication.removeAtividade(atividade);
-	}
-	
-	public ArrayList<String> getAtividades(){
-		return this.viewComunication.getAtividades();
-	}
 	
 	private void runAdicionaWizardAction(){
 		this.runAdicionaAtividade = new RunAdicionaAtividadeWizardAction(this);
 		this.runAdicionaAtividade.run(null);
 	}
 	
-	private void runRemoveWizardAction(){
-		this.runRemoveAtividade = new RunRemoveAtividadeWizardAction(this);
-		this.runRemoveAtividade.run(null);
-	}
-	
-	private void RunLoginWizardAction() {
-		// TODO Auto-generated method stub
-		gui.action.RunLoginWizardAction runLogin = new gui.action.RunLoginWizardAction(this);
-		runLogin.run(null);
-		
-	}
-	
-	public ViewComunication getViewComunication(){
+	public ViewComunication getViewComunication() {
 		return this.viewComunication;
+	}
+
+	@Override
+	public void setFocus() {
+		// TODO Auto-generated method stub
+		
 	}
 }

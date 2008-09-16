@@ -71,7 +71,7 @@ public class AdicionaAtividadeWizard extends Wizard implements INewWizard {
     				0,dataInicio,dataFim,status,conhecimentos);
   
     		//Cria a atividade no banco
-    		this.atividade.adicionaAtividade(novaAtividade);
+    		this.atividade.getViewComunication().adicionaAtividade(novaAtividade);
 	
     	}catch (Exception e) {
 			// TODO: handle exception

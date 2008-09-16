@@ -23,7 +23,7 @@ import facade.PrincipalSUBJECT;
  * @since 2008
  */
 public class ViewComunication implements CorePresleyOperations{	
-	private ArrayList<String> atividades = new ArrayList<String>();	
+	private ArrayList<TipoAtividade> atividades = new ArrayList<TipoAtividade>();	
 	private ArrayList<Desenvolvedor> listaDesenvolvedores = new ArrayList<Desenvolvedor>();//Lista de todos os desenvolvedores
 	private ArrayList<Conhecimento> listaConhecimentos = new ArrayList<Conhecimento>();//Lista de todos os conhecimentos
 	private HashMap<String,ArrayList<Conhecimento>> conhecimentos = new HashMap<String,ArrayList<Conhecimento>>();
@@ -48,7 +48,7 @@ public class ViewComunication implements CorePresleyOperations{
 	}
 	
 	/**
-	 * Retorna a ontolgia dos conhecimentos.
+	 * Retorna a ontologia dos conhecimentos.
 	 * @return Tree é a arvore de conhecimentos.
 	 */
 	public Tree getOntologia(){
@@ -89,7 +89,7 @@ public class ViewComunication implements CorePresleyOperations{
 	 * Retorna as atividades cadastradas
 	 * @return ArrayList<String> é a lista de atividades
 	 */
-	public ArrayList<String> getAtividades()
+	public ArrayList<TipoAtividade> getAtividades()
 	{
 		return this.atividades;
 	}
@@ -99,7 +99,7 @@ public class ViewComunication implements CorePresleyOperations{
 	 * @param atividade é o nome da atividade
 	 * @return ArrayList<String> é a lista de conhecimentos associados a atividade
 	 */
-	public ArrayList<Conhecimento> getConhecimentosEnvolvidos(String atividade)
+	public ArrayList<Conhecimento> getConhecimentosEnvolvidos(TipoAtividade atividade)
 	{
 		return this.conhecimentos.get(atividade);
 	}
@@ -109,7 +109,7 @@ public class ViewComunication implements CorePresleyOperations{
 	 * @param atividade é o nome da atividade
 	 * @return ArrayList<String> é a lista de problemas
 	 */
-	public ArrayList<Problema> getProblemas(String atividade)
+	public ArrayList<Problema> getProblemas(TipoAtividade atividade)
 	{
 		return this.problemas.get(atividade);
 	}
@@ -211,10 +211,6 @@ public class ViewComunication implements CorePresleyOperations{
 		return packet;
 	}
 
-	public boolean AdicionaConhecimento(Conhecimento conhecimento) {
-		// TODO Auto-generated method stub
-		return false;
-	}
 
 	/**
 	 * Adiciona uma nova atividade a lista já existente e envia um pacote para o servidor
@@ -223,10 +219,10 @@ public class ViewComunication implements CorePresleyOperations{
 	 */
 	public boolean adicionaAtividade(TipoAtividade atividade) {
 		// TODO Auto-generated method stub
-    	PacketStruct respostaPacket = sendPack(atividade, ADICIONA_ATIVIDADE);
+    	PacketStruct respostaPacket = sendPack(atividade, CorePresleyOperations.ADICIONA_ATIVIDADE);
     	Boolean resposta = (Boolean)respostaPacket.getData();
     	if (resposta.booleanValue()==true) {
-    		this.atividades.add(atividade.getDescricao());
+    		this.atividades.add(atividade);
     		this.conhecimentos.put(atividade.getDescricao(), atividade.getListaDeConhecimentosEnvolvidos());
 		}
     	System.out.println("Resposta: "+resposta.booleanValue());
@@ -240,7 +236,7 @@ public class ViewComunication implements CorePresleyOperations{
 	 */
 	public boolean removerAtividade(TipoAtividade atividade) {
 		// TODO Auto-generated method stub
-    	PacketStruct respostaPacket = sendPack(atividade, REMOVE_ATIVIDADE);
+    	PacketStruct respostaPacket = sendPack(atividade, CorePresleyOperations.REMOVE_ATIVIDADE);
     	Boolean resposta = (Boolean)respostaPacket.getData();
     	if (resposta.booleanValue()==true) {
     		this.atividades.remove(atividade.getDescricao());
@@ -340,16 +336,27 @@ public class ViewComunication implements CorePresleyOperations{
 		return listaConhecimentos;
 	}
 
-	public boolean adicionaConhecimento(Conhecimento conhecimento) {
-		// TODO Auto-generated method stub
-		return false;
-	}
 
 	public boolean enviarMensagem(Desenvolvedor desenvolvedorOrigem,
 			ArrayList<Desenvolvedor> desenvolvedoresDestino, Problema problema,
 			String mensagem) {
 		// TODO Auto-generated method stub
 		return false;
+	}
+
+	public boolean adicionaConhecimento(Conhecimento conhecimento) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	
+	public TipoAtividade getAtividade(String descricaoAtividade) {
+		return null;
+		// TODO
+	}
+	
+	public boolean removerAtividade(String descricaoAtividade) {
+		return false;
+		// TODO
 	}
 }
 

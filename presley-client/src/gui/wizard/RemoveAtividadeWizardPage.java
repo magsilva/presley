@@ -20,6 +20,8 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Text;
 
+import beans.TipoAtividade;
+
 public class RemoveAtividadeWizardPage extends WizardPage {
 
 	private List listaAtividadesDisponiveis;
@@ -34,8 +36,10 @@ public class RemoveAtividadeWizardPage extends WizardPage {
         setDescription("Selecione as atividades que serão removidas.");
     }
 
-    public void setAtividades(ArrayList<String> atividades) {
-		this.atividades = atividades;
+    public void setAtividades(ArrayList<TipoAtividade> tipoAtividades) {
+		for(int i = 0; i < tipoAtividades.size(); i++) {
+			this.atividades.set(i,tipoAtividades.get(i).getDescricao());
+		}
 	}
 
 

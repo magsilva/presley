@@ -52,7 +52,7 @@ public class RemoveAtividadeWizard extends Wizard implements INewWizard {
     	try{
     		ArrayList<String> atividadeRemovidas = page.getAtividadeRemovidas();
     		for (String remover : atividadeRemovidas) {
-    			atividade.removeAtividade(remover);
+    			atividade.getViewComunication().removerAtividade(remover);
 			}
 	
     	}catch (Exception e) {
@@ -84,7 +84,7 @@ public class RemoveAtividadeWizard extends Wizard implements INewWizard {
 	
 	public void addPages() {
         page=new RemoveAtividadeWizardPage(selection);
-        page.setAtividades(this.atividade.getAtividades());
+        page.setAtividades(this.atividade.getViewComunication().getAtividades());
         addPage(page);
     }
 
