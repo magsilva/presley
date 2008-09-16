@@ -3,6 +3,7 @@ package gui.wizard;
 import gui.view.Atividade;
 
 import java.util.ArrayList;
+import java.util.Hashtable;
 import java.util.Iterator;
 
 import org.eclipse.jface.resource.ImageDescriptor;
@@ -27,16 +28,16 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 
+import beans.Conhecimento;
 import beans.Item;
 
 
 public class AdicionaAtividadeWizardPage2 extends WizardPage {
 
-	private Text conhecimentoText;
-	private Button addConhecimentoButton;
 	private Tree arvoreConhecimento;
 	private Atividade atividade;
-	private ArrayList<TreeItem> conhecimentosSelecionados;
+	private Hashtable<String,TreeItem> conhecimentosSelecionados;
+	private ArrayList<Conhecimento> conhecimentos;
 	private beans.Tree ontologia;
 
     public AdicionaAtividadeWizardPage2(ISelection selection, Atividade atividade) {
@@ -44,7 +45,7 @@ public class AdicionaAtividadeWizardPage2 extends WizardPage {
         this.atividade=atividade;
         setTitle("Adiciona Atividade Wizard");
         setDescription("Adiciona conhecimentos associados a Atividade.");
-        conhecimentosSelecionados = new ArrayList<TreeItem>();
+        conhecimentosSelecionados = new Hashtable<String,TreeItem>();
         ontologia = atividade.getViewComunication().getOntologia();
     }
 
@@ -53,17 +54,37 @@ public class AdicionaAtividadeWizardPage2 extends WizardPage {
         setPageComplete(message == null);
     }
     
-    public ArrayList<String> getConhecimentos(){
+    public ArrayList<Conhecimento> getConhecimentos(){
     	ArrayList<String> conhecimentosNomes = new ArrayList<String>();
-    	for (TreeItem conhecimento : conhecimentosSelecionados) {
+    	//Atualiza a lista de Conhecimetos existentes
+    	//Armazena os nomes dos conheciementos selecionados na arvore gráfica
+    	for (TreeItem conhecimento : conhecimentosSelecionados.values()) {
 			conhecimentosNomes.add(conhecimento.getText());
 		}
-    	
+    	//Se a lista de nomes de conhecimentos for vazia, então retorne null
     	if (conhecimentosNomes.isEmpty()) {
 			return null;
 		}
+    	//Fazendo um mapeamento entre o nome dos conhecimentos e o conhecimento
+    	//para agilizar a recuperação mais a frente
+    	Hashtable<String,Conhecimento> tabelaConhecimentos = new Hashtable<String, Conhecimento>();
     	
-    	return conhecimentosNomes;
+    	//Fazendo um mapeamento entre o nome dos conhecimentos e o conhecimento
+    	//para agilizar a recuperação mais a frente
+    	for (Conhecimento conh : this.atividade.getViewComunication().getListaConhecimentos()) {
+			tabelaConhecimentos.put(conh.getNome(), conh);
+		}
+    	
+    	conhecimentos = new ArrayList<Conhecimento>();
+    	//Preenche a lista de conhecimentos para resposta
+    	for (String nome : conhecimentosNomes) {
+			Conhecimento conh1 = tabelaConhecimentos.get(nome);
+			if (conh1!=null) {
+				conhecimentos.add(conh1);
+			}
+		}
+    	
+    	return conhecimentos;
     }
 
     private void dialogChanged() {
@@ -82,7 +103,7 @@ public class AdicionaAtividadeWizardPage2 extends WizardPage {
         controls.setLayout(layoutFillVertical);
         
         GridLayout layoutTopo = new GridLayout();
-        layoutTopo.numColumns = 3;
+        layoutTopo.numColumns = 1;
         layoutTopo.verticalSpacing = 9;
         
         Composite controlsTopo =
@@ -91,72 +112,11 @@ public class AdicionaAtividadeWizardPage2 extends WizardPage {
 
         Label label =
             new Label(controlsTopo, SWT.NULL);
-        label.setText("Nome do Conhecimento:");
-
-        conhecimentoText = new Text(
-            controlsTopo,
-            SWT.BORDER | SWT.SINGLE);
-        GridData gd = new GridData(
-            GridData.FILL_HORIZONTAL);
-        conhecimentoText.setLayoutData(gd);
-        conhecimentoText.addModifyListener(
-            new ModifyListener() {
-                public void modifyText(
-                        ModifyEvent e) {
-                    dialogChanged();
-                }
-             });
+        label.setText("Selecione os conhecimentos que serão associados:");
         
-        addConhecimentoButton = new Button(controlsTopo,SWT.ICON);
-        addConhecimentoButton.setVisible(true);
-        addConhecimentoButton.setLayoutData(gd);
-        addConhecimentoButton.setText("Adicionar");
-        addConhecimentoButton.addMouseListener(new MouseListener(){
-        	
-        	public void mouseDoubleClick(MouseEvent arg0) {
-				// TODO Auto-generated method stub
-				
-			}
-			public void mouseDown(MouseEvent e) {
-				// TODO Auto-generated method stub
-				//Adiciona novo nó na arvore gráfica
-				String nome=null;
-				TreeItem[] treeItem = arvoreConhecimento.getSelection();
-				treeItem[0].setChecked(true);
-				if (treeItem!=null&&treeItem[0]!=null) {
-					TreeItem novoItem = new TreeItem(treeItem[0],treeItem[0].getStyle());
-					nome = conhecimentoText.getText();
-					if (nome!=null||!nome.equals("")) {
-						novoItem.setText(nome);	
-					}else{
-						return;	
-					}
-				}
-				
-				//Adiciona novo nó na Ontologia
-				ArrayList<Item> itens = ontologia.localizaFilho(treeItem[0].getText());
-				for (Item item : itens) {
-					if (item.getPai()==null&&treeItem[0].getParentItem()==null) {
-						atividade.getViewComunication().adicionaConhecimento(itens.get(0), nome);
-					}else{
-						if (!(item.getPai()==null||treeItem[0].getParentItem()==null)) {
-							if (item.getPai().getNome().equals(treeItem[0].getParentItem().getText())) {
-								atividade.getViewComunication().adicionaConhecimento(itens.get(0), nome);		
-							}		
-						}
-						
-					}
-				}
-			}
-			public void mouseUp(MouseEvent arg0) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-        });
         try{
         	
-        	beans.Tree conhecimentosModelo = atividade.getViewComunication().getOntologia();
+        	final beans.Tree conhecimentosModelo = atividade.getViewComunication().getOntologia();
         	arvoreConhecimento = conhecimentosModelo.constroiArvoreGrafica(controls, SWT.BORDER | SWT.CHECK);
         	arvoreConhecimento.addListener(SWT.Selection, new Listener() {
 			
@@ -166,11 +126,18 @@ public class AdicionaAtividadeWizardPage2 extends WizardPage {
 					if (e.detail==SWT.CHECK) {
 						atual = (TreeItem)e.item;
 						if (atual.getChecked()) {
-							conhecimentosSelecionados.add(atual);	
+							//Verifica se é o raiz, se for, não inclui este na lista
+							if (!atual.getText().equals(conhecimentosModelo.getRaiz().getNome())) {
+									conhecimentosSelecionados.put(atual.getText(), atual);	
+									
+							}	
 						}
 						for (TreeItem pai = atual.getParentItem(); pai!=null; pai = pai.getParentItem()) {
 								pai.setChecked(true);	
-								conhecimentosSelecionados.add(pai);
+								//Verifica se é o raiz, se for, não inclui este na lista
+								if (!pai.getText().equals(conhecimentosModelo.getRaiz().getNome())) {
+										conhecimentosSelecionados.put(pai.getText(), pai);
+								}
 						}
 					}
 				}
