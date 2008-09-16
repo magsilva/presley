@@ -4,6 +4,7 @@ import gui.view.Atividade;
 import gui.view.comunication.ViewComunication;
 
 import java.lang.reflect.InvocationTargetException;
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Hashtable;
 
@@ -16,6 +17,10 @@ import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
+
+import beans.Conhecimento;
+import beans.Desenvolvedor;
+import beans.TipoAtividade;
 
 public class AdicionaAtividadeWizard extends Wizard implements INewWizard {
 
@@ -51,14 +56,22 @@ public class AdicionaAtividadeWizard extends Wizard implements INewWizard {
 		// TODO Auto-generated method stub
         //First save all the page data as variables.
     	try{
-    		
     		String atividade = page.getNomeAtividade();
-    		ArrayList<String> conhecimentos = page2.getConhecimentos();
+    		ArrayList<Conhecimento> conhecimentos = page2.getConhecimentos();
     		
-    		/**MUDANCA*/
-    		//conhecimentos.remove(this.atividade.getViewComunication().getOntologia().getRaiz().getNome());
-    		ArrayList<String> problemas = new ArrayList<String>();
-    		this.atividade.adicionaAtividade(atividade, conhecimentos, problemas);
+    		Desenvolvedor desenvolvedor = page.getDesenvolvedor();
+    		Desenvolvedor supervisor = page.getNomeSupervisor();
+    		
+    		Date dataInicio = page.getDataInicio();
+    		Date dataFim = page.getDataFim();
+    		
+    		boolean status = page.getStatus();
+    		
+    		TipoAtividade novaAtividade = new TipoAtividade(atividade,desenvolvedor,supervisor,
+    				0,dataInicio,dataFim,status,conhecimentos);
+  
+    		//Cria a atividade no banco
+    		this.atividade.adicionaAtividade(novaAtividade);
 	
     	}catch (Exception e) {
 			// TODO: handle exception
@@ -89,7 +102,7 @@ public class AdicionaAtividadeWizard extends Wizard implements INewWizard {
 	}
 	
 	public void addPages() {
-        page=new AdicionaAtividadeWizardPage(selection);
+        page=new AdicionaAtividadeWizardPage(selection, this.atividade);
         addPage(page);
         
         page2=new AdicionaAtividadeWizardPage2(selection,this.atividade);
