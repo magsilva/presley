@@ -74,7 +74,7 @@ public interface CorePresleyOperations {
 	 * @param String passwd  
 	 * @return Desenvolvedor 
 	 */
-	public Desenvolvedor login(DadosAutenticacao authData);
+	//public Desenvolvedor login(DadosAutenticacao authData);
 
 	/**
 	 * Este método solicita logout do servidor

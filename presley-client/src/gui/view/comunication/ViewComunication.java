@@ -39,12 +39,12 @@ public class ViewComunication implements CorePresleyOperations{
 		///*
 		try {
 			System.out.println("instanciando cliente");
-			PrincipalSUBJECT.getInstance("client", "150.165.130.20", 1099);
+			//PrincipalSUBJECT.getInstance("client", "150.165.130.20", 1099);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		//*/
-		//teste();//TESTE
+		teste();//TESTE
 	}
 	
 	/**

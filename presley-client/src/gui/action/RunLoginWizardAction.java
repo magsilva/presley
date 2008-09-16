@@ -14,30 +14,30 @@ import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.IWorkbenchWindowActionDelegate;
 import org.eclipse.ui.PlatformUI;
 
-public class RunAdicionaAtividadeWizardAction extends Action implements
+public class RunLoginWizardAction extends Action implements
 		IWorkbenchWindowActionDelegate {
 	private Atividade atividade;
 
-	public RunAdicionaAtividadeWizardAction() {
+	public RunLoginWizardAction() {
 		// TODO Auto-generated constructor stub
 	}
 	
-	public RunAdicionaAtividadeWizardAction(Atividade a) {
+	public RunLoginWizardAction(Atividade a) {
 		// TODO Auto-generated constructor stub
 		this.atividade = a;
 	}
 
-	public RunAdicionaAtividadeWizardAction(String text) {
+	public RunLoginWizardAction(String text) {
 		super(text);
 		// TODO Auto-generated constructor stub
 	}
 
-	public RunAdicionaAtividadeWizardAction(String text, ImageDescriptor image) {
+	public RunLoginWizardAction(String text, ImageDescriptor image) {
 		super(text, image);
 		// TODO Auto-generated constructor stub
 	}
 
-	public RunAdicionaAtividadeWizardAction(String text, int style) {
+	public RunLoginWizardAction(String text, int style) {
 		super(text, style);
 		// TODO Auto-generated constructor stub
 	}
