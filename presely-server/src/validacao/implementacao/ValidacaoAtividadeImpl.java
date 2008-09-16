@@ -161,4 +161,9 @@ public class ValidacaoAtividadeImpl implements ValidacaoAtividade{
 		return servicoAtividade.removerConhecimentoDaAtividade(idAtividade, nomeConhecimento);
 	}
 
+	public ArrayList<TipoAtividade> getTodasAtividades() {
+		servicoAtividade.getTodasAtividades();		
+		return null;
+	}
+
 }

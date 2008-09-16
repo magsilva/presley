@@ -287,7 +287,7 @@ public class ExecuteClientQuery implements CorePresleyOperations{
 	
 	// TODO procurar Rodrigo
 	public ArrayList<TipoAtividade> getListaAtividades() {
-		return new ValidacaoAtividadeImpl().getSubAtividades();
+		return new ValidacaoAtividadeImpl().getTodasAtividades();
 	}
 
 

@@ -116,5 +116,6 @@ public interface ServicoAtividade {
 	 * @return true se a associacao foi feita com sucesso.
 	 */
 	public boolean desassociarAtividades(int idSubAtividade, int idAtividadePai);
+
 }
 
