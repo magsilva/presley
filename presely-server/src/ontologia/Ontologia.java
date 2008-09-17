@@ -1,6 +1,18 @@
 package ontologia;
 
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
+import persistencia.MySQLConnectionFactory;
+
+import beans.Conhecimento;
+import beans.Desenvolvedor;
+import beans.Problema;
 
 /**
  * Esta classe relaciona uma detrminada Ontologia,
@@ -279,6 +291,76 @@ public class Ontologia {
     {
     	ArrayList<ArrayList<Integer>> caminhos = this.find_closed_paths(0, conh_id, null);
     	return this.calculaScore(usersCounts[user_id], caminhos);
+    }
+    
+    public static boolean incrementaRespostasDesenvolvedor(Desenvolvedor desenvolvedor, boolean foiUtil, ArrayList<String> conhecimentos){
+    	if(foiUtil){
+    		String email = desenvolvedor.getEmail();
+    		String conhecimentoAtividade = null;
+    		Connection conn = MySQLConnectionFactory.getConnection();
+    		
+    		for(int i = 0; i < conhecimentos.size(); i++){
+    			conhecimentoAtividade = conhecimentos.get(i);
+    			
+    			try{
+    				
+    				Statement stm = conn.createStatement();
+    				String sql = "select qtd_resposta from " +
+    							 "desenvolvedor_has_conhecimento where " +
+    							 "desenvolvedor_email = email and conhecimento_nome = " + conhecimentoAtividade;
+    				
+    				ResultSet rs = stm.executeQuery(sql);
+    				
+    				int quantidade = rs.getInt(1) + 1;
+    				
+    				String sql2 = "update desenvolvedor_has_conhecimento set qtd_resposta = " +quantidade+
+    							 " where desenvolvedor_email =" + email+ " and conhecimento_nome = " + conhecimentoAtividade;
+    				
+    				stm.execute(sql2);
+    			
+    					
+    			} catch(SQLException e){
+    				return false;
+    			}
+    			
+    		}
+    		
+    		return true;
+    		
+    	}
+    	return false;
+    }
+    
+    public static boolean atualizaConhecimentosDesenvolvedor(Desenvolvedor desenvolvedor, ArrayList<Conhecimento> conhecimentos){
+    	String email = desenvolvedor.getEmail();
+    	Connection conn = MySQLConnectionFactory.getConnection();
+		
+		for(Conhecimento conhecimento : conhecimentos){			
+			try{
+				
+				Statement stm = conn.createStatement();
+				String sql = "select grau from " +
+							 " desenvolvedor_has_conhecimento where " +
+							 " desenvolvedor_email = "+ email + " and conhecimento_nome = " + conhecimento;
+				
+				ResultSet rs = stm.executeQuery(sql);
+				
+				int grau = rs.getInt(1) + 10;
+				
+				String sql2 = "update desenvolvedor_has_conhecimento set grau = " +grau+
+							 " where desenvolvedor_email = " + email+ " and conhecimento_nome = " + conhecimento;
+				
+				stm.execute(sql2);
+			
+					
+			} catch(SQLException e){
+				return false;
+			}
+			
+		}
+		
+		return true;
+
     }
 }
 
