@@ -138,6 +138,8 @@ public class ValidacaoAtividadeImpl {
 		if (!ValidacaoUtil.validaDescricao(descricao)) throw new DescricaoInvalidaException();
 		if (!ValidacaoUtil.verificaOrdemDatas(dataInicio, dataFim)) throw new DataInvalidaException();
 		
+		System.out.println("Atividade cadastrada com sucesso!");
+		
 		return servicoAtividade.cadastrarAtividade(emailDesenvolvedor, emailGerente, descricao, dataInicio, dataFim);
 		
 	}
