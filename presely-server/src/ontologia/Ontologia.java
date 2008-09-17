@@ -9,6 +9,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import persistencia.MySQLConnectionFactory;
+import validacao.excessao.ConhecimentoInexistenteException;
+import validacao.excessao.DesenvolvedorInexistenteException;
+import validacao.implementacao.ValidacaoDesenvolvedorImpl;
 
 import beans.Conhecimento;
 import beans.Desenvolvedor;
@@ -30,6 +33,7 @@ public class Ontologia {
     boolean [][] DAG; /** DIRECT ACYCLIC GRAPH. */
     int [][] usersCounts; /** Contadores dos conhecimentos dos usuarios. */
     ArrayList<Integer> stack; /** Pilha de trabalho. */
+    static ValidacaoDesenvolvedorImpl validacaoDesenvolvedor; 
     
     /** 
      * Cria uma  nova instancia de ontologia
@@ -43,6 +47,7 @@ public class Ontologia {
         this.DAG = DAG;
         this.usersCounts = usersCounts;
         stack = new ArrayList<Integer>();
+        validacaoDesenvolvedor = new ValidacaoDesenvolvedorImpl();
     }
     
     /**
@@ -296,33 +301,21 @@ public class Ontologia {
     public static boolean incrementaRespostasDesenvolvedor(Desenvolvedor desenvolvedor, boolean foiUtil, ArrayList<String> conhecimentos){
     	if(foiUtil){
     		String email = desenvolvedor.getEmail();
-    		String conhecimentoAtividade = null;
-    		Connection conn = MySQLConnectionFactory.getConnection();
     		
-    		for(int i = 0; i < conhecimentos.size(); i++){
-    			conhecimentoAtividade = conhecimentos.get(i);
-    			
+    		for(String conhecimentoAtividade : conhecimentos){
+      				
     			try{
-    				
-    				Statement stm = conn.createStatement();
-    				String sql = "select qtd_resposta from " +
-    							 "desenvolvedor_has_conhecimento where " +
-    							 "desenvolvedor_email = email and conhecimento_nome = " + conhecimentoAtividade;
-    				
-    				ResultSet rs = stm.executeQuery(sql);
-    				
-    				int quantidade = rs.getInt(1) + 1;
-    				
-    				String sql2 = "update desenvolvedor_has_conhecimento set qtd_resposta = " +quantidade+
-    							 " where desenvolvedor_email =" + email+ " and conhecimento_nome = " + conhecimentoAtividade;
-    				
-    				stm.execute(sql2);
-    			
-    					
-    			} catch(SQLException e){
+    				int quantidade = validacaoDesenvolvedor.getQntResposta(email, conhecimentoAtividade) + 1;
+    				boolean resposta = validacaoDesenvolvedor.updateQntResposta(email, conhecimentoAtividade, quantidade);
+    				if(!resposta)
+    					return false;
+    			}
+    			catch(ConhecimentoInexistenteException e){
     				return false;
     			}
-    			
+    			catch(DesenvolvedorInexistenteException e){
+    				return false;
+    			}
     		}
     		
     		return true;
@@ -333,27 +326,17 @@ public class Ontologia {
     
     public static boolean atualizaConhecimentosDesenvolvedor(Desenvolvedor desenvolvedor, ArrayList<Conhecimento> conhecimentos){
     	String email = desenvolvedor.getEmail();
-    	Connection conn = MySQLConnectionFactory.getConnection();
 		
 		for(Conhecimento conhecimento : conhecimentos){			
 			try{
 				
-				Statement stm = conn.createStatement();
-				String sql = "select grau from " +
-							 " desenvolvedor_has_conhecimento where " +
-							 " desenvolvedor_email = "+ email + " and conhecimento_nome = " + conhecimento;
-				
-				ResultSet rs = stm.executeQuery(sql);
-				
-				int grau = rs.getInt(1) + 10;
-				
-				String sql2 = "update desenvolvedor_has_conhecimento set grau = " +grau+
-							 " where desenvolvedor_email = " + email+ " and conhecimento_nome = " + conhecimento;
-				
-				stm.execute(sql2);
-			
+				int grau = validacaoDesenvolvedor.getGrau(email, conhecimento.getNome()) + 1;
+				validacaoDesenvolvedor.updateGrau(email, conhecimento.getNome(), grau);
 					
-			} catch(SQLException e){
+			} catch(DesenvolvedorInexistenteException e){
+				return false;
+			}
+			catch(ConhecimentoInexistenteException e){
 				return false;
 			}
 			
