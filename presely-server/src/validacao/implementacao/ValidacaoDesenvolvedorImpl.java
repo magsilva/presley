@@ -3,6 +3,8 @@ package validacao.implementacao;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+
+import beans.DadosAutenticacao;
 import beans.Solucao;
 import beans.TipoAtividade;
 import beans.Conhecimento;
@@ -18,6 +20,9 @@ import persistencia.interfaces.ServicoSolucao;
 import validacao.excessao.ConhecimentoInexistenteException;
 import validacao.excessao.DescricaoInvalidaException;
 import validacao.excessao.DesenvolvedorInexistenteException;
+import validacao.excessao.EmailInvalidoException;
+import validacao.excessao.ErroDeAutenticacaoException;
+import validacao.excessao.SenhaInvalidaException;
 
 /**
  * 
@@ -67,11 +72,12 @@ public class ValidacaoDesenvolvedorImpl {
 	 * @return true se a atualizacao foi concluida com sucesso.
 	 */
 	public boolean atualizarDesenvolvedor(String email, String novoEmail,
-			String nome, String localidade) throws Exception {
+			String nome, String localidade, String senha) throws Exception {
 		
 		if (!servicoDesenvolvedor.desenvolvedorExiste(email)) throw new Exception();
+		if (!ValidacaoUtil.validaSenha(senha)) throw new Exception();
 		
-		return servicoDesenvolvedor.atualizarDesenvolvedor(email, novoEmail, nome, localidade);
+		return servicoDesenvolvedor.atualizarDesenvolvedor(email, novoEmail, nome, localidade, senha);
 	}
 	
 	/**
@@ -97,11 +103,11 @@ public class ValidacaoDesenvolvedorImpl {
 	 * @return true se o desenvolvedor foi criado com sucesso.
 	 */
 	public boolean criarDesenvolvedor(String email, String nome,
-			String localidade) throws Exception {
+			String localidade, String senha) throws Exception {
 		
 		if (servicoDesenvolvedor.desenvolvedorExiste(email)) throw new Exception();
 		
-		return servicoDesenvolvedor.criarDesenvolvedor(email, nome, localidade);
+		return servicoDesenvolvedor.criarDesenvolvedor(email, nome, localidade, senha);
 	}
 	
 	/**
@@ -260,6 +266,32 @@ public class ValidacaoDesenvolvedorImpl {
 		
 		return servicoDesenvolvedor.updateGrau(email, nomeConhecimento, grau);
 		
+	}
+	
+	/**
+	 * Metodo que autentica um usuario para acesso ao sistema.
+	 * @param email Email do desenvolvedor
+	 * @param senha Senha do desenvolvedor
+	 * @return Desenvolvedor. Retorna o objeto desenvolvedor em caso positivo.
+	 * @throws ErroDeAutenticacaoException EmailInvalidoException, 
+	 * SenhaInvalidaException, DesenvolvedorInexistenteException
+	 */
+	public Desenvolvedor autenticaDesenvolvedor(DadosAutenticacao dados) throws DesenvolvedorInexistenteException,
+			EmailInvalidoException, SenhaInvalidaException, ErroDeAutenticacaoException {
+		
+		String email = dados.getUser();
+		String senha = dados.getPasswd();
+		
+		if (!ValidacaoUtil.validaEmail(email)) throw new EmailInvalidoException();
+		if (!ValidacaoUtil.validaSenha(senha)) throw new SenhaInvalidaException();
+		
+		if (!servicoDesenvolvedor.desenvolvedorExiste(email)) throw new DesenvolvedorInexistenteException();
+		
+		Desenvolvedor desenvolvedor = servicoDesenvolvedor.autenticaDesenvolvedor(email, senha);
+		
+		if (desenvolvedor == null) throw new ErroDeAutenticacaoException();
+		
+		return desenvolvedor;
 	}
 
 }
