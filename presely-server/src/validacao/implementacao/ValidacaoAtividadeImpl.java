@@ -120,9 +120,12 @@ public class ValidacaoAtividadeImpl {
 	 * Este método cadastra uma nova atividade na base de dados.
 	 * @param tipoAtividade Objeto atividade.
 	 * @return true se a atividade foi concluida com sucesso.
+	 * @throws EmailInvalidoException 
+	 * @throws DescricaoInvalidaException 
+	 * @throws DataInvalidaException 
 	 */
-	public boolean cadastrarAtividade(TipoAtividade tipoAtividade) throws Exception {
-		System.out.println("TipoAtividade adicionada com sucesso!");
+	public boolean cadastrarAtividade(TipoAtividade tipoAtividade) throws EmailInvalidoException, 
+			DescricaoInvalidaException, DataInvalidaException{
 		
 		String emailDesenvolvedor = tipoAtividade.getDesenvolvedor().getEmail();
 		String emailGerente = tipoAtividade.getSupervisor().getEmail();
@@ -130,10 +133,10 @@ public class ValidacaoAtividadeImpl {
 		Date dataInicio = tipoAtividade.getDataInicio();
 		Date dataFim = tipoAtividade.getDataFinal();
 		
-		if (!ValidacaoUtil.validaEmail(emailDesenvolvedor)) throw new Exception();
-		if (!ValidacaoUtil.validaEmail(emailGerente)) throw new Exception();
-		if (!ValidacaoUtil.validaDescricao(descricao)) throw new Exception();
-		if (!ValidacaoUtil.verificaOrdemDatas(dataInicio, dataFim)) throw new Exception();
+		if (!ValidacaoUtil.validaEmail(emailDesenvolvedor)) throw new EmailInvalidoException();
+		if (!ValidacaoUtil.validaEmail(emailGerente)) throw new EmailInvalidoException();
+		if (!ValidacaoUtil.validaDescricao(descricao)) throw new DescricaoInvalidaException();
+		if (!ValidacaoUtil.verificaOrdemDatas(dataInicio, dataFim)) throw new DataInvalidaException();
 		
 		return servicoAtividade.cadastrarAtividade(emailDesenvolvedor, emailGerente, descricao, dataInicio, dataFim);
 		
