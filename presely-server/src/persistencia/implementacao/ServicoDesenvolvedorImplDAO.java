@@ -283,6 +283,7 @@ public class ServicoDesenvolvedorImplDAO implements ServicoDesenvolvedor{
 				desenvolvedor.setNome(rs.getString(2));
 				desenvolvedor.setLocalidade(rs.getString(3));
 				desenvolvedor.setListaConhecimento(this.getConhecimentosDoDesenvolvedor(rs.getString(1), 1));
+				desenvolvedor.setSenha("");
 
 				return desenvolvedor;
 			}else{
