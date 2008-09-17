@@ -304,7 +304,7 @@ public class ExecuteClientQuery implements CorePresleyOperations{
 
 		boolean retorno = false;
 
-			validacaoDesenvolvedor.criarDesenvolvedor(desenvolvedor.getEmail(), desenvolvedor.getNome(), desenvolvedor.getLocalidade());
+			validacaoDesenvolvedor.criarDesenvolvedor(desenvolvedor.getEmail(), desenvolvedor.getNome(), desenvolvedor.getLocalidade(), desenvolvedor.getSenha());
 		return true;
 	}
 
