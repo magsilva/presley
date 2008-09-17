@@ -103,4 +103,20 @@ public interface ServicoDesenvolvedor {
 	 */
 	public ArrayList<Desenvolvedor> getTodosDesenvolvedores();
 	
+	/**
+	 * Esse método retorna a quantidade de respostas que um desenvolvedor tem em um conhecimento/
+	 * @param email Email do desenvolvedor que possui tal conhecimento.
+	 * @param conhecimento Nome do conhecimento associado ao desenvolvedor. 
+	 * @return quantidade de respostas.
+	 */
+	public int getQntResposta(String email, String conhecimento);
+	
+	/**
+	 * Esse método altera a quantidade de respostas que um desenvolvedor possui em um conhecimento/
+	 * @param email Email do desenvolvedor que possui tal conhecimento.
+	 * @param conhecimento Nome do conhecimento associado ao desenvolvedor. 
+	 * @return true se a atualização foi feita com sucesso.
+	 */
+	public boolean updateQntResposta(String email, String conhecimento, int quantidade);
+	
 }
