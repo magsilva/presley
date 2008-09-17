@@ -23,7 +23,7 @@ import beans.Desenvolvedor;
  */
 public class Inferencia {
 	
-	private ValidacaoInferenciaImpl validaInf;
+	private static ValidacaoInferenciaImpl validaInf;
 	
 //	public static void main(String args[]){
 //		ArrayList<Desenvolvedor> lDesenv = getDesenvolvedores(new String[]{"java", "conector"}, 50);
@@ -38,7 +38,7 @@ public class Inferencia {
 		validaInf = new ValidacaoInferenciaImpl();
 	}
 	
-	public ArrayList<Desenvolvedor> getDesenvolvedores(String[] conhecimentos, double conf){
+	public static ArrayList<Desenvolvedor> getDesenvolvedores(String[] conhecimentos, double conf){
 		
 		int max = conhecimentos.length;
 		int cont = 1;
@@ -63,7 +63,7 @@ public class Inferencia {
 		
 	}
 	
-	public ArrayList<Desenvolvedor> getDesenvolvedoresAptos(HashMap<Desenvolvedor, Double> cand, double conf){
+	public static ArrayList<Desenvolvedor> getDesenvolvedoresAptos(HashMap<Desenvolvedor, Double> cand, double conf){
 		int pos = 0;
 		ArrayList<Desenvolvedor> arDes = new ArrayList<Desenvolvedor>();
 		
@@ -78,7 +78,7 @@ public class Inferencia {
 		return arDes;
 	}
 
-	public void atualizaPossiveisDesenvolvedores(HashMap<Desenvolvedor, Double> cand, HashMap<Desenvolvedor, Double> aux, double peso){
+	public static void atualizaPossiveisDesenvolvedores(HashMap<Desenvolvedor, Double> cand, HashMap<Desenvolvedor, Double> aux, double peso){
 		
 		Set<Entry<Desenvolvedor, Double>> conj = aux.entrySet();
 		
@@ -92,7 +92,7 @@ public class Inferencia {
 		}
 	}
 	
-	public Object[] getMaiorCandidato(HashMap<Desenvolvedor, Double> cand){
+	public static Object[] getMaiorCandidato(HashMap<Desenvolvedor, Double> cand){
 		double temp = 0.0;
 		
 		Desenvolvedor d = null;
