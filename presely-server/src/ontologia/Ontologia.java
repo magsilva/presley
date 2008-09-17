@@ -6,16 +6,19 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 import persistencia.MySQLConnectionFactory;
 import validacao.excessao.ConhecimentoInexistenteException;
 import validacao.excessao.DesenvolvedorInexistenteException;
+import validacao.implementacao.ValidacaoConhecimentoImpl;
 import validacao.implementacao.ValidacaoDesenvolvedorImpl;
 
 import beans.Conhecimento;
 import beans.Desenvolvedor;
 import beans.Problema;
+import beans.Tree;
 
 /**
  * Esta classe relaciona uma detrminada Ontologia,
@@ -33,7 +36,8 @@ public class Ontologia {
     boolean [][] DAG; /** DIRECT ACYCLIC GRAPH. */
     int [][] usersCounts; /** Contadores dos conhecimentos dos usuarios. */
     ArrayList<Integer> stack; /** Pilha de trabalho. */
-    static ValidacaoDesenvolvedorImpl validacaoDesenvolvedor; 
+    static ValidacaoDesenvolvedorImpl validacaoDesenvolvedor;
+    static ValidacaoConhecimentoImpl validacaoConhecimento;
     
     /** 
      * Cria uma  nova instancia de ontologia
@@ -48,6 +52,7 @@ public class Ontologia {
         this.usersCounts = usersCounts;
         stack = new ArrayList<Integer>();
         validacaoDesenvolvedor = new ValidacaoDesenvolvedorImpl();
+        validacaoConhecimento = new ValidacaoConhecimentoImpl();
     }
     
     /**
@@ -344,6 +349,30 @@ public class Ontologia {
 		
 		return true;
 
+    }
+    
+    /**
+     * Este metodo retorna um objeto do tipo Tree que representa a arvore de 
+     * conhecumentos utilizada pela ontologia.
+     * 
+     * @return Retorna a arvode de conhecimentos da ontologia.
+     */
+    public Tree getArvoreDeConhecimentos() {
+    	Tree arvore = new Tree("Raiz");
+    	
+    	ArrayList<Conhecimento> conhecimentos = validacaoConhecimento.getListaConhecimento();
+    	
+    	while (conhecimentos.size() > 0) {
+    		Iterator<Conhecimento> it = conhecimentos.iterator();
+    		ArrayList<Conhecimento> conhecimentosPais = new ArrayList<Conhecimento>();
+    		
+    		while (it.hasNext()) {
+    			
+    		}
+    		
+    	}
+    	
+    	return arvore;
     }
 }
 
