@@ -203,7 +203,7 @@ public class ViewComunication implements CorePresleyOperations{
 			ontologia = tree;
 			
 			this.adicionaAtividade(atividade);
-	
+			//this.adicionaDesenvolvedor(desenvolvedor);
 
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -389,7 +389,11 @@ public class ViewComunication implements CorePresleyOperations{
 	}
 
 	public Desenvolvedor login(DadosAutenticacao authData) {
-		// TODO Auto-generated method stub
+		PacketStruct respostaPacket = sendPack(authData, CorePresleyOperations.LOG_IN);
+		if(respostaPacket.getData() != null) {
+			Desenvolvedor user = (Desenvolvedor)respostaPacket.getData();
+			return user;
+		}
 		return null;
 	}
 }
