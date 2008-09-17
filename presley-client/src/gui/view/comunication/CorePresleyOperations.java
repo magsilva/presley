@@ -35,6 +35,7 @@ public interface CorePresleyOperations {
 	public static final int ENVIAR_MENSAGEM = 14;
 	public static final int GET_LISTA_DESENVOLVEDORES = 15;
 	public static final int GET_LISTA_CONHECIMENTO = 16;
+	public static final int ADICIONA_DESENVOLVEDOR = 17;
 	
 	/**
 	 * Este método cadastra uma nova atividade na base de dados.
@@ -172,6 +173,13 @@ public interface CorePresleyOperations {
 	 */
 	public ArrayList<Conhecimento> getListaConhecimentos();
 
+	/**
+	 * Este método adiciona um desenvolvedor no banco de dados
+	 * CÓDIGO DA OPERAÇÃO -> 17
+	 * @param Desenvolvedor desenvolvedor
+	 * @return true se o desenvolvedor foi adicionado com sucesso.
+	 */
+	public boolean adicionaDesenvolvedor(Desenvolvedor desenvolvedor);
 
 
 
