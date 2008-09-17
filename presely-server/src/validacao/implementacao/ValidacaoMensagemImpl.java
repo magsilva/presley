@@ -29,9 +29,8 @@ public class ValidacaoMensagemImpl {
 		 * @param desenvolvedorDestino Desenvolvedor que irá receber as mensagens.
 		 * @return Coleção com todas as mensagens referentes ao desenvolvedorDestino.
 		 */
-		public Mensagem[] getMensagens(Desenvolvedor desenvolvedorDestino) {
+		public String[] getMensagens(Desenvolvedor desenvolvedorDestino) {
 			return null;
 		}
 		
 }
-
