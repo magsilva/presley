@@ -22,6 +22,7 @@ public class Desenvolvedor implements Serializable {
 	private String nome;
 	private String localidade;
 	private ArrayList<Conhecimento> listaConhecimento;
+	private String senha;
 	
 	public String getEmail() {
 		return email;
@@ -46,6 +47,12 @@ public class Desenvolvedor implements Serializable {
 	}
 	public void setListaConhecimento(ArrayList<Conhecimento> listaConhecimento) {
 		this.listaConhecimento = listaConhecimento;
+	}
+	public void setSenha(String senha) {
+		this.senha = senha;
+	}
+	public String getSenha() {
+		return senha;
 	}
 	
 }
