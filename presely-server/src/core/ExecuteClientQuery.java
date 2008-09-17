@@ -7,7 +7,11 @@ package core;
  */
 
 
+import inferencia.Inferencia;
+
 import java.util.ArrayList;
+
+import ontologia.Ontologia;
 
 import validacao.excessao.AtividadeInexistenteException;
 import validacao.excessao.ConhecimentoInexistenteException;
@@ -31,6 +35,7 @@ import beans.Desenvolvedor;
 import beans.Mensagem;
 import beans.Problema;
 import beans.ProblemaAtividade;
+import beans.QualificacaoDesenvolvedor;
 import beans.TipoAtividade;
 import beans.Tree;
 import core.interfaces.CorePresleyOperations;
@@ -175,10 +180,12 @@ public class ExecuteClientQuery implements CorePresleyOperations{
 	public ArrayList<Desenvolvedor> buscaDesenvolvedores(Problema problema,
 			ArrayList<Conhecimento> listaConhecimento, int grauDeConfianca) {
 		// TODO Auto-generated method stub
+		String[] conhecimentos = new String[problema.getConhecimentos().size()];
+		for(int i = 0; i < listaConhecimento.size(); i++)
+			conhecimentos[i] = listaConhecimento.get(i).getNome();
 		
-		ArrayList<Desenvolvedor> listaDesenvolvedores = validacaoDesenvolvedor.getListaDesenvolvedores();
+		ArrayList<Desenvolvedor> listaDesenvolvedores = Inferencia.getDesenvolvedores(conhecimentos, grauDeConfianca);
 		
-		// TODO ontologia e inferencia.
 		return listaDesenvolvedores;
 	}
 
@@ -263,13 +270,16 @@ public class ExecuteClientQuery implements CorePresleyOperations{
 
 
 	public boolean qualificaDesenvolvedor(PacketStruct packet) {
-
-		return false;
+		QualificacaoDesenvolvedor qualDes = (QualificacaoDesenvolvedor) packet.getData();
+		Problema problema = qualDes.getProblema();
+		Desenvolvedor desenvolvedor = qualDes.getDesenvolvedor();
+		boolean foiUtil = qualDes.isFoiUtil();
+		return qualificaDesenvolvedor(desenvolvedor, problema, foiUtil);
 	}
 	public boolean qualificaDesenvolvedor(Desenvolvedor desenvolvedor,
 			Problema problema, boolean qualificacao) {
-		// TODO Auto-generated method stub
-		return false;
+		ArrayList<String> conhecimentos = problema.getConhecimentos();
+		return Ontologia.incrementaRespostasDesenvolvedor(desenvolvedor, qualificacao, conhecimentos);
 	}
 
 	public boolean removerAtividade(PacketStruct packet) {
