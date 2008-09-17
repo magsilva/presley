@@ -152,7 +152,8 @@ public class ValidacaoAtividadeImpl {
 	 * @throws DataInvalidaException 
 	 */
 	public boolean cadastrarAtividade(String emailDesenvolvedor,
-			String emailGerente, String descricao, Date dataInicio, Date dataFim) throws EmailInvalidoException, DescricaoInvalidaException, DataInvalidaException {
+			String emailGerente, String descricao, Date dataInicio, Date dataFim) 
+			throws EmailInvalidoException, DescricaoInvalidaException, DataInvalidaException {
 		
 		System.out.println("TipoAtividade adicionada com sucesso!");
 
