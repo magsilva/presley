@@ -299,6 +299,42 @@ public class ServicoDesenvolvedorImplDAO implements ServicoDesenvolvedor{
 			}
 		}
 	}
+	
+	public int getQntResposta(String email, String conhecimento){
+		Connection conn = MySQLConnectionFactory.getConnection();
+		try{
+			
+			Statement stm = conn.createStatement();
+			String sql = "select qtd_resposta from " +
+						 "desenvolvedor_has_conhecimento where " +
+						 "desenvolvedor_email = email and conhecimento_nome = " + conhecimento;
+			
+			ResultSet rs = stm.executeQuery(sql);
+			
+			return rs.getInt(1);
+				
+		} catch(SQLException e){
+			return -1;
+		}
+	}
+	
+	public boolean updateQntResposta(String email, String conhecimento, int quantidade){
+		Connection conn = MySQLConnectionFactory.getConnection();
+		try{
+			
+			Statement stm = conn.createStatement();
+			
+			String sql2 = "update desenvolvedor_has_conhecimento set qtd_resposta = " +quantidade+
+			 " where desenvolvedor_email = '" + email+ "' and conhecimento_nome = '" + conhecimento + "'";
+
+			stm.execute(sql2);
+			
+			return true;
+				
+		} catch(SQLException e){
+			return false;
+		}
+	}
 
 	public ArrayList<Conhecimento> getConhecimentosDoDesenvolvedor(String email) {
 
