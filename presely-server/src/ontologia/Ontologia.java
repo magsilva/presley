@@ -305,6 +305,13 @@ public class Ontologia {
     	return this.calculaScore(usersCounts[user_id], caminhos);
     }
     
+    /**
+     * Este método incrementa o número de respostas que um desenvolvedor possui em um conhecimento.
+     * @param desenvolvedor o desenvolvedor que terá a quantidade de respostas incrementadas.
+     * @param foiUtil qualificação da resposta dada pelo desenvolvedor.
+     * @param conhecimentos os conhecimentos que terão o número de respostas incrementadas.
+     * @return true se a quantidade de respostas foi incrementada.
+     */
     public static boolean incrementaRespostasDesenvolvedor(Desenvolvedor desenvolvedor, boolean foiUtil, ArrayList<String> conhecimentos){
     	if(foiUtil){
     		String email = desenvolvedor.getEmail();
@@ -331,6 +338,13 @@ public class Ontologia {
     	return false;
     }
     
+    
+    /**
+     * Este método incrementa o grua de conhecimento que um desenvolvedor possui em um conhecimento.
+     * @param desenvolvedor o desenvolvedor em questão.
+     * @param conhecimentos os conhecimentos que terão o grau incrementado.
+     * @return true se o grau foi incrementado.
+     */
     public static boolean atualizaConhecimentosDesenvolvedor(Desenvolvedor desenvolvedor, ArrayList<Conhecimento> conhecimentos){
     	String email = desenvolvedor.getEmail();
 		
