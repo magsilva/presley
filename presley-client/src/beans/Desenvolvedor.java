@@ -22,7 +22,7 @@ public class Desenvolvedor implements Serializable {
 	private String email;
 	private String nome;
 	private String localidade;
-	private HashMap<Conhecimento, Double> listaConhecimento;
+	private HashMap<Conhecimento,Double> listaConhecimento;
 	private String senha;
 	
 	public String getEmail() {
@@ -43,11 +43,11 @@ public class Desenvolvedor implements Serializable {
 	public void setLocalidade(String localidade) {
 		this.localidade = localidade;
 	}
-	public HashMap<Conhecimento, Double> getListaConhecimento() {
+	public HashMap<Conhecimento,Double> getListaConhecimento() {
 		return listaConhecimento;
 	}
-	public void setListaConhecimento(HashMap<Conhecimento, Double> listaConhecimento) {
-		this.listaConhecimento = listaConhecimento;
+	public void setListaConhecimento(HashMap<Conhecimento,Double> listaConhecimentosDesenvolvedor) {
+		this.listaConhecimento = listaConhecimentosDesenvolvedor;
 	}
 	public void setSenha(String senha) {
 		this.senha = senha;

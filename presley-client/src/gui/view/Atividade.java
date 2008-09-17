@@ -314,7 +314,7 @@ public class Atividade extends ViewPart {
 				if (ultimaAtividadeAdicionada!=null&&!ultimaAtividadeAdicionada.equals(novaAtividade)) {
 				
 					//realiza o cadastro da nova atividade
-					//viewComunication.sendPack(new Atividade(), Event.CadastroAtividade);
+					//viewComunication.adicionaAtividade(atividade)
 				
 					//adiciona o item na lista de atividades
 					listaAtividades.add(novaAtividade);
@@ -774,6 +774,16 @@ public class Atividade extends ViewPart {
 			public void mouseDown(MouseEvent arg0) {
 				// TODO Auto-generated method stub
 				runAssociaProblemaAtividadeWizardAction();
+				
+				ArrayList<Problema> problemasAssocidos;
+				problemasAssocidos = getViewComunication().getProblemas(atividadeSelecionada);
+				if (problemasAssocidos!=null) {
+					for (Problema problema : problemasAssocidos) {
+						listaProblemas.add(problema.getDescricao());
+					}
+				}
+				//Adiciona o problema criado e associado a atividade na lista de problemas
+				
 			}
 		
 			public void mouseDoubleClick(MouseEvent arg0) {

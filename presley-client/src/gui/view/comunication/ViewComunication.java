@@ -178,12 +178,12 @@ public class ViewComunication implements CorePresleyOperations{
 			desenvolvedor.setNome("FULANO");
 			desenvolvedor.setEmail("fulano1@algumDominio.com.br");
 			desenvolvedor.setLocalidade("Rua Projetada");
-			desenvolvedor.setListaConhecimento(listaConhecimentosDesenvolvedor);
+			//desenvolvedor.setListaConhecimento(listaConhecimentosDesenvolvedor);
 			Desenvolvedor supervisor = new Desenvolvedor();
 			supervisor.setNome("SICRANO");
 			supervisor.setEmail("sicrano1@algumDominio.com.br");
 			supervisor.setLocalidade("Rua Projetada");
-			supervisor.setListaConhecimento(listaConhecimentosDesenvolvedor);
+			//supervisor.setListaConhecimento(listaConhecimentosDesenvolvedor);
 			ArrayList<Desenvolvedor> listaDesenvolvedores = new ArrayList<Desenvolvedor>();
 			listaDesenvolvedores.add(desenvolvedor);
 			listaDesenvolvedores.add(supervisor);
@@ -240,15 +240,15 @@ public class ViewComunication implements CorePresleyOperations{
 	 */
 	public boolean adicionaAtividade(TipoAtividade atividade) {
 		// TODO Auto-generated method stub
-    	PacketStruct respostaPacket = sendPack(atividade, ADICIONA_ATIVIDADE);
-    	Boolean resposta = (Boolean)respostaPacket.getData();
-    	if (resposta.booleanValue()==true) {
+    	//PacketStruct respostaPacket = sendPack(atividade, ADICIONA_ATIVIDADE);
+    	//Boolean resposta = (Boolean)respostaPacket.getData();
+    	//if (resposta.booleanValue()==true) {
     		this.atividades.add(atividade);
     		this.conhecimentos.put(atividade.getDescricao(), atividade.getListaDeConhecimentosEnvolvidos());
-		}
-    	System.out.println("Resposta: "+resposta.booleanValue());
-		return resposta.booleanValue();
-    	//return true;//TESTE
+		//}
+    	//System.out.println("Resposta: "+resposta.booleanValue());
+		//return resposta.booleanValue();
+    	return true;//TESTE
 	}
 	
 	/**
