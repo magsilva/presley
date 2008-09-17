@@ -138,7 +138,7 @@ public interface CorePresleyOperations {
 	 * @param int grauDeConfiaca varia de 1 -> 100
 	 * @return true se a desassociação foi realizada com sucesso.
 	 */
-	public ArrayList<Desenvolvedor> buscaDesenvolvedores(Problema problema, ArrayList<String> listaConhecimento, int grauDeConfianca);
+	public ArrayList<Desenvolvedor> buscaDesenvolvedores(Problema problema, ArrayList<Conhecimento> listaConhecimento, int grauDeConfianca);
 
 	/**
 	 * Este método qualifica o desenvolvedor de acordo com as respostas dele aos problemas
