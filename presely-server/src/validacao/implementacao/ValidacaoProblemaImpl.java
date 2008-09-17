@@ -3,9 +3,19 @@ package validacao.implementacao;
 
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.Iterator;
+
 import beans.Problema;
+import beans.Solucao;
+import persistencia.implementacao.ServicoAtividadeImplDAO;
 import persistencia.implementacao.ServicoProblemaImplDAO;
+import persistencia.implementacao.ServicoSolucaoImplDAO;
+import persistencia.interfaces.ServicoAtividade;
 import persistencia.interfaces.ServicoProblema;
+import persistencia.interfaces.ServicoSolucao;
+import validacao.excessao.AtividadeInexistenteException;
+import validacao.excessao.DescricaoInvalidaException;
+import validacao.excessao.ProblemaInexistenteException;
 
 /**
  * 
@@ -17,10 +27,14 @@ import persistencia.interfaces.ServicoProblema;
 
 public class ValidacaoProblemaImpl {
 	
+	ServicoAtividade servicoAtividade;
+	ServicoSolucao servicoSolucao;
 	ServicoProblema servicoProblema;
 	
 	public ValidacaoProblemaImpl() {
 		servicoProblema = new ServicoProblemaImplDAO();
+		servicoAtividade = new ServicoAtividadeImplDAO();
+		servicoSolucao = new ServicoSolucaoImplDAO();
 	}
 	
 	/**
@@ -30,7 +44,9 @@ public class ValidacaoProblemaImpl {
 	 * @param status Situacao do problema.
 	 * @return true se a atualizacao foi concluida com sucesso.
 	 */
-	public boolean atualizarStatusDoProblema(int id, boolean status) {
+	public boolean atualizarStatusDoProblema(int id, boolean status) throws ProblemaInexistenteException{
+		
+		if (!servicoProblema.problemaExiste(id)) throw new ProblemaInexistenteException();
 		
 		return servicoProblema.atualizarStatusDoProblema(id, status);
 	}
@@ -44,7 +60,11 @@ public class ValidacaoProblemaImpl {
 	 * @return true se o problema foi cadastrado com sucesso.
 	 */
 	public boolean cadastrarProblema(int idAtividade, String descricao,
-			Date dataDoRelato, String mensagem) {
+			Date dataDoRelato, String mensagem) throws DescricaoInvalidaException, AtividadeInexistenteException {
+		
+		if (!servicoAtividade.atividadeExiste(idAtividade)) throw new AtividadeInexistenteException();
+		
+		if (!ValidacaoUtil.validaDescricao(descricao)) throw new DescricaoInvalidaException();
 
 		return servicoProblema.cadastrarProblema(idAtividade, descricao, dataDoRelato, mensagem);
 	}
@@ -54,7 +74,9 @@ public class ValidacaoProblemaImpl {
 	 * @param id Identificador do problema.
 	 * @return <Problema>
 	 */	
-	public Problema getProblema(int id) {
+	public Problema getProblema(int id) throws ProblemaInexistenteException {
+		
+		if (!servicoProblema.problemaExiste(id)) throw new ProblemaInexistenteException();
 
 		return servicoProblema.getProblema(id);
 	}
@@ -65,8 +87,10 @@ public class ValidacaoProblemaImpl {
 	 * @param idAtividade Identificador da atividade
 	 * @return ArrayList<Problema>
 	 */
-	public ArrayList<Problema> listarProblemasDaAtividade(int idAtividade) {
-
+	public ArrayList<Problema> listarProblemasDaAtividade(int idAtividade) throws AtividadeInexistenteException {
+		
+		if (!servicoAtividade.atividadeExiste(idAtividade)) throw new AtividadeInexistenteException();
+		
 		return servicoProblema.listarProblemasDaAtividade(idAtividade);
 	}
 	
@@ -86,6 +110,15 @@ public class ValidacaoProblemaImpl {
 	 * @return true se o problema foi removido da base de dados.
 	 */
 	public boolean removerProblema(int id) {
+		
+		// Remover Solucoes do Problema
+		ArrayList<Solucao> solucoes = servicoSolucao.getSolucoesDoProblema(id);
+		Iterator<Solucao> it1 = solucoes.iterator();
+		
+		while (it1.hasNext()) {
+			Solucao solucao = it1.next();
+			servicoSolucao.removerSolucao(solucao.getId());
+		}
 
 		return servicoProblema.removerProblema(id);
 	}
