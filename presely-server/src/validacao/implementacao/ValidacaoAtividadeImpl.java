@@ -147,10 +147,12 @@ public class ValidacaoAtividadeImpl {
 	 * @param dataInicio Data em que a atividade foi passada ao desenvolvor
 	 * @param dataFim Data que a atividade foi terminada
 	 * @return true se a atividade foi concluida com sucesso.
+	 * @throws EmailInvalidoException 
+	 * @throws DescricaoInvalidaException 
+	 * @throws DataInvalidaException 
 	 */
 	public boolean cadastrarAtividade(String emailDesenvolvedor,
-			String emailGerente, String descricao, Date dataInicio, Date dataFim)
-			throws Exception {
+			String emailGerente, String descricao, Date dataInicio, Date dataFim) throws EmailInvalidoException, DescricaoInvalidaException, DataInvalidaException {
 		
 		System.out.println("TipoAtividade adicionada com sucesso!");
 
