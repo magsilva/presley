@@ -124,6 +124,7 @@ public class ValidacaoAtividadeImpl {
 	 * @throws DescricaoInvalidaException 
 	 * @throws DataInvalidaException 
 	 */
+	public boolean cadastrarAtividade(TipoAtividade tipoAtividade) throws Exception {
 	public boolean cadastrarAtividade(TipoAtividade tipoAtividade) throws EmailInvalidoException, 
 			DescricaoInvalidaException, DataInvalidaException{
 		
