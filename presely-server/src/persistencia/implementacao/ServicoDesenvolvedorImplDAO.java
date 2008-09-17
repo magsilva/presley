@@ -56,7 +56,7 @@ public class ServicoDesenvolvedorImplDAO implements ServicoDesenvolvedor{
 	}
 
 	public boolean atualizarDesenvolvedor(String email, String novoEmail, String nome,
-			String localidade) {
+			String localidade, String senha) {
 
 		Connection conn = MySQLConnectionFactory.getConnection();
 
@@ -65,8 +65,8 @@ public class ServicoDesenvolvedorImplDAO implements ServicoDesenvolvedor{
 			Statement stm = conn.createStatement();
 
 			String SQL = " UPDATE desenvolvedor SET email = '"+novoEmail+"',"+
-			" nome = '"+nome+"', localidade = '"+localidade+"'"+
-			" WHERE email = '"+email+"';";
+			" nome = '"+nome+"', localidade = '"+localidade+"', senha = '"+senha+
+			"' WHERE email = '"+email+"';";
 
 			System.out.println(SQL);
 			stm.execute(SQL);
@@ -88,7 +88,7 @@ public class ServicoDesenvolvedorImplDAO implements ServicoDesenvolvedor{
 	}
 
 	public boolean criarDesenvolvedor(String email, String nome,
-			String localidade) {
+			String localidade, String senha) {
 
 		Connection conn = MySQLConnectionFactory.getConnection();
 
@@ -98,7 +98,7 @@ public class ServicoDesenvolvedorImplDAO implements ServicoDesenvolvedor{
 
 			String SQL = " INSERT INTO desenvolvedor " +
 			" VALUES('"+email+"','"+
-			nome+"','"+localidade+"');";
+			nome+"','"+localidade+"','"+senha+"');";
 
 			System.out.println(SQL);
 			stm.execute(SQL);
@@ -504,6 +504,48 @@ public class ServicoDesenvolvedorImplDAO implements ServicoDesenvolvedor{
 		}
 		return list;
 
+	}
+
+	public Desenvolvedor autenticaDesenvolvedor(String email, String senha) {
+		
+		Connection conn = MySQLConnectionFactory.getConnection();
+
+		try {
+
+			Statement stm = conn.createStatement();
+
+			String SQL = " SELECT * FROM desenvolvedor WHERE "+
+			" email = '"+email+"' AND senha = '"+senha+"';";
+
+
+			System.out.println(SQL);
+			ResultSet rs = stm.executeQuery(SQL);
+
+			if (rs.next()){
+
+				Desenvolvedor desenvolvedor = new Desenvolvedor();
+
+				desenvolvedor.setEmail(rs.getString(1));
+				desenvolvedor.setNome(rs.getString(2));
+				desenvolvedor.setLocalidade(rs.getString(3));
+				desenvolvedor.setListaConhecimento(this.getConhecimentosDoDesenvolvedor(rs.getString(1)));
+
+				return desenvolvedor;
+			}else{
+				return null;
+			}
+
+		} catch (SQLException e) {
+			//e.printStackTrace();
+			return null;
+		} finally {
+			try {
+				conn.close();
+			} catch (SQLException onConClose) {
+				System.out.println(" Houve erro no fechamento da conexão ");
+				onConClose.printStackTrace();	             
+			}
+		}
 	}
 
 }
