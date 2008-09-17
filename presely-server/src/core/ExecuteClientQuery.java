@@ -245,28 +245,15 @@ public class ExecuteClientQuery implements CorePresleyOperations{
 		return validacaoDesenvolvedor.getListaDesenvolvedores();
 	}
 
-	public Desenvolvedor login(PacketStruct packet) {
+	public Desenvolvedor login(PacketStruct packet) throws DesenvolvedorInexistenteException, EmailInvalidoException, SenhaInvalidaException, ErroDeAutenticacaoException {
 		DadosAutenticacao authData = (DadosAutenticacao) packet.getData();
-		try {
-			return validacaoDesenvolvedor.autenticaDesenvolvedor(authData);
-		} catch (DesenvolvedorInexistenteException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (EmailInvalidoException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (SenhaInvalidaException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (ErroDeAutenticacaoException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return null;
+		Desenvolvedor desenvolvedor = validacaoDesenvolvedor.autenticaDesenvolvedor(authData);
+		
+		return desenvolvedor;
 	}
-	public Desenvolvedor login(DadosAutenticacao authData) {
+	public Desenvolvedor login(DadosAutenticacao authData) throws DesenvolvedorInexistenteException, EmailInvalidoException, SenhaInvalidaException, ErroDeAutenticacaoException {
 		// TODO Auto-generated method stub
-		return null;
+		return validacaoDesenvolvedor.autenticaDesenvolvedor(authData);
 	}
 
 	public boolean logout(PacketStruct packet) {
@@ -322,7 +309,7 @@ public class ExecuteClientQuery implements CorePresleyOperations{
 
 		boolean retorno = false;
 
-			validacaoDesenvolvedor.criarDesenvolvedor(desenvolvedor.getEmail(), desenvolvedor.getNome(), desenvolvedor.getLocalidade(), desenvolvedor.getSenha());
+		validacaoDesenvolvedor.criarDesenvolvedor(desenvolvedor.getEmail(), desenvolvedor.getNome(), desenvolvedor.getLocalidade(), desenvolvedor.getSenha());
 		return true;
 	}
 

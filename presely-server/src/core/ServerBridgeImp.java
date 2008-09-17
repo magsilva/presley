@@ -8,7 +8,10 @@ import validacao.excessao.AtividadeInexistenteException;
 import validacao.excessao.ConhecimentoInexistenteException;
 import validacao.excessao.DataInvalidaException;
 import validacao.excessao.DescricaoInvalidaException;
+import validacao.excessao.DesenvolvedorInexistenteException;
 import validacao.excessao.EmailInvalidoException;
+import validacao.excessao.ErroDeAutenticacaoException;
+import validacao.excessao.SenhaInvalidaException;
 import validacao.implementacao.ValidacaoAtividadeImpl;
 import beans.TipoAtividade;
 import facade.PacketStruct;
@@ -48,17 +51,13 @@ public class ServerBridgeImp implements ServerBridge {
 			try {
 				retorno = executeClientQuery.adicionaAtividade(packet);
 			} catch (EmailInvalidoException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
+				retorno = e1;
 			} catch (DescricaoInvalidaException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
+				retorno = e1;
 			} catch (DataInvalidaException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
+				retorno = e1;
 			} catch (Exception e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
+				retorno = e1;
 			}
 			pktRetorno = new PacketStruct(retorno, CorePresleyOperations.ADICIONA_ATIVIDADE);
 			break;				
@@ -67,10 +66,9 @@ public class ServerBridgeImp implements ServerBridge {
 		case CorePresleyOperations.REMOVE_ATIVIDADE:
 			System.out.println("REMOVE_ATIVIDADE");
 			try {
-					retorno = executeClientQuery.removerAtividade(packet);
+				retorno = executeClientQuery.removerAtividade(packet);
 			} catch (AtividadeInexistenteException e2) {
-					// TODO Auto-generated catch block
-					e2.printStackTrace();
+				retorno = e2;
 			}
 			pktRetorno = new PacketStruct(retorno, CorePresleyOperations.REMOVE_ATIVIDADE);
 			break;				
@@ -88,14 +86,11 @@ public class ServerBridgeImp implements ServerBridge {
 			try {
 				retorno = executeClientQuery.adicionaConhecimento(packet);
 			} catch (DescricaoInvalidaException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				retorno = e;
 			} catch (ConhecimentoInexistenteException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				retorno = e;
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				retorno = e;
 			}
 			pktRetorno = new PacketStruct(retorno, CorePresleyOperations.ADICIONA_CONHECIMENTO);
 			break;				
@@ -103,7 +98,21 @@ public class ServerBridgeImp implements ServerBridge {
 			// Packet tipo 5: LOG_IN
 		case CorePresleyOperations.LOG_IN:
 			System.out.println("LOG_IN");
-			retorno = executeClientQuery.login(packet);
+			try {
+					retorno = executeClientQuery.login(packet);
+				} catch (DesenvolvedorInexistenteException e2) {
+					e2.printStackTrace();
+					retorno = e2;
+				} catch (EmailInvalidoException e2) {
+					e2.printStackTrace();
+					retorno = e2;
+				} catch (SenhaInvalidaException e2) {
+					e2.printStackTrace();
+					retorno = e2;
+				} catch (ErroDeAutenticacaoException e2) {
+					e2.printStackTrace();
+					retorno = e2;
+				}
 			pktRetorno = new PacketStruct(retorno, CorePresleyOperations.LOG_IN);
 			break;				
 
@@ -128,14 +137,11 @@ public class ServerBridgeImp implements ServerBridge {
 			try {
 				retorno = executeClientQuery.associaConhecimentoAtividade(packet);
 			} catch (AtividadeInexistenteException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				retorno = e;
 			} catch (ConhecimentoInexistenteException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				retorno = e;
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				retorno = e;
 			}
 
 			pktRetorno = new PacketStruct(retorno, CorePresleyOperations.ASSOCIAR_CONHECIMENTO_ATIVIDADE);
@@ -147,10 +153,9 @@ public class ServerBridgeImp implements ServerBridge {
 			try {
 				retorno = executeClientQuery.desassociaConhecimentoAtividade(packet);
 			} catch (ConhecimentoInexistenteException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
+				retorno = e1;
 			} catch (AtividadeInexistenteException e1) {
-				// TODO Auto-generated catch block
+				retorno = e1;
 				e1.printStackTrace();
 			}
 			pktRetorno = new PacketStruct(retorno, CorePresleyOperations.DESSASOCIAR_CONHECIMENTO_ATIVIDADE);
@@ -162,11 +167,9 @@ public class ServerBridgeImp implements ServerBridge {
 			try {
 				retorno = executeClientQuery.associaProblemaAtividade(packet);
 			} catch (DescricaoInvalidaException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				retorno = e;
 			} catch (AtividadeInexistenteException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				retorno = e;
 			}
 			pktRetorno= new PacketStruct(retorno, CorePresleyOperations.ASSOCAR_PROBLEMA_ATIVIDADE);
 			break;				
@@ -221,14 +224,14 @@ public class ServerBridgeImp implements ServerBridge {
 		case CorePresleyOperations.ADICIONA_DESENVOLVEDOR:
 			System.out.println("ADICIONA_DESENVOLVEDOR");
 			try {
-					retorno = executeClientQuery.adicionaDesenvolvedor(packet);
-				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+				retorno = executeClientQuery.adicionaDesenvolvedor(packet);
+			} catch (Exception e) {
+				retorno = e;
+				e.printStackTrace();
+			}
 			pktRetorno = new PacketStruct(retorno, CorePresleyOperations.ADICIONA_DESENVOLVEDOR);
 			break;				
-			
+
 		}
 		return pktRetorno;
 	}

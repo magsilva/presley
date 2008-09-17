@@ -6,6 +6,10 @@ import sun.security.util.Password;
 import validacao.excessao.AtividadeInexistenteException;
 import validacao.excessao.ConhecimentoInexistenteException;
 import validacao.excessao.DescricaoInvalidaException;
+import validacao.excessao.DesenvolvedorInexistenteException;
+import validacao.excessao.EmailInvalidoException;
+import validacao.excessao.ErroDeAutenticacaoException;
+import validacao.excessao.SenhaInvalidaException;
 import beans.Conhecimento;
 import beans.DadosAutenticacao;
 import beans.Desenvolvedor;
@@ -86,8 +90,12 @@ public interface CorePresleyOperations {
 	 * @param String user
 	 * @param String passwd  
 	 * @return Desenvolvedor 
+	 * @throws ErroDeAutenticacaoException 
+	 * @throws SenhaInvalidaException 
+	 * @throws EmailInvalidoException 
+	 * @throws DesenvolvedorInexistenteException 
 	 */
-	public Desenvolvedor login(DadosAutenticacao authData);
+	public Desenvolvedor login(DadosAutenticacao authData) throws DesenvolvedorInexistenteException, EmailInvalidoException, SenhaInvalidaException, ErroDeAutenticacaoException;
 
 	/**
 	 * Este método solicita logout do servidor
