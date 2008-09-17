@@ -147,6 +147,11 @@ public class ServerBridgeImp implements ServerBridge {
 					System.out.println("GET_LISTA_CONHECIMENTOS");
 					retorno = executeClientQuery.getListaConhecimentos();
 					pktRetorno = new PacketStruct(retorno, CorePresleyOperations.GET_LISTA_CONHECIMENTO);
+				break;
+				case CorePresleyOperations.GET_ONTOLOGIA:
+					System.out.println("GET_ONTOLOGIA");
+					retorno = executeClientQuery.getOntologia();
+					pktRetorno = new PacketStruct(retorno, CorePresleyOperations.GET_ONTOLOGIA);
 				break;				
 
 		}

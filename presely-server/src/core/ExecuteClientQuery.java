@@ -14,6 +14,7 @@ import java.util.Iterator;
 
 import ontologia.Ontologia;
 
+import sun.security.krb5.internal.crypto.Des;
 import validacao.excessao.AtividadeInexistenteException;
 import validacao.excessao.ConhecimentoInexistenteException;
 import validacao.excessao.DataInvalidaException;
@@ -270,11 +271,6 @@ public class ExecuteClientQuery implements CorePresleyOperations{
 		return validacaoDesenvolvedor.getListaDesenvolvedores();
 	}
 
-	public Tree getOntologia() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 	public Desenvolvedor login(PacketStruct packet) {
 		DadosAutenticacao authData = (DadosAutenticacao) packet.getData();
 		return login(authData);
@@ -338,12 +334,21 @@ public class ExecuteClientQuery implements CorePresleyOperations{
 		return new ValidacaoAtividadeImpl().listarAtividades();
 	}
 
+	public boolean adicionaDesenvolvedor(PacketStruct packet) {
+		Desenvolvedor desenvolvedor = (Desenvolvedor)packet.getData();
+		return adicionaDesenvolvedor(desenvolvedor);
+	}
 	public boolean adicionaDesenvolvedor(Desenvolvedor desenvolvedor) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
 	public ArrayList<TipoAtividade> buscaAtividades() {
+		return validacaoAtividade.listarAtividades();
+	}
+	
+
+	public Tree getOntologia() {
 		// TODO Auto-generated method stub
 		return null;
 	}
