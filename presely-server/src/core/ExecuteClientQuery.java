@@ -188,7 +188,6 @@ public class ExecuteClientQuery implements CorePresleyOperations{
 	public ArrayList<Desenvolvedor> buscaDesenvolvedores(Problema problema,
 			ArrayList<Conhecimento> listaConhecimento, int grauDeConfianca) {
 
-		// TODO Auto-generated method stub
 		String[] conhecimentos = new String[problema.getConhecimentos().size()];
 		for(int i = 0; i < listaConhecimento.size(); i++)
 			conhecimentos[i] = listaConhecimento.get(i).getNome();
