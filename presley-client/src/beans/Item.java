@@ -107,11 +107,12 @@ public class Item {
 	public boolean removeFilho(String nome){
 		int index = 0;
 		for (Item item : filhos) {
-			index++;
+			
 			if (item.getNome().equals(nome)) {
 				filhos.remove(index);
 				return true;
 			}
+			index++;
 		}
 		return false;
 	}
