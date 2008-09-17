@@ -9,6 +9,7 @@ import org.eclipse.swt.widgets.Composite;
 
 
 import beans.Conhecimento;
+import beans.DadosAutenticacao;
 import beans.Desenvolvedor;
 import beans.Item;
 import beans.Problema;
@@ -358,6 +359,16 @@ public class ViewComunication implements CorePresleyOperations{
     	//Boolean resposta = (Boolean)respostaPacket.getData();
     	//return resposta.booleanValue();
 		return true;
+	}
+
+	public ArrayList<TipoAtividade> buscaAtividades() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public Desenvolvedor login(DadosAutenticacao authData) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
 
