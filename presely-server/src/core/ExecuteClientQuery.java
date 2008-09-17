@@ -44,7 +44,7 @@ public class ExecuteClientQuery implements CorePresleyOperations{
 
 	ValidacaoConhecimentoImpl  validacaoConhecimento;
 	ValidacaoAtividadeImpl 	   validacaoAtividade;
-	ValidacaoProblemaImpl 	   valProblema; 
+	ValidacaoProblemaImpl 	   validacaoProblema; 
 	ValidacaoDesenvolvedorImpl validacaoDesenvolvedor; 
 	ValidacaoMensagemImpl 	   validacaoMensagem;
 	ValidacaoConhecimentoImpl  valConhecimento; 
@@ -52,7 +52,7 @@ public class ExecuteClientQuery implements CorePresleyOperations{
 	public ExecuteClientQuery() {
 		validacaoConhecimento  = new ValidacaoConhecimentoImpl();
 		validacaoAtividade 	   = new ValidacaoAtividadeImpl();
-		valProblema 		   = new ValidacaoProblemaImpl();
+		validacaoProblema 		   = new ValidacaoProblemaImpl();
 		validacaoDesenvolvedor = new ValidacaoDesenvolvedorImpl();
 		validacaoMensagem 	   = new ValidacaoMensagemImpl();
 		valConhecimento 	   = new ValidacaoConhecimentoImpl();
@@ -159,7 +159,7 @@ public class ExecuteClientQuery implements CorePresleyOperations{
 			TipoAtividade atividade) {
 
 		try {
-			return valProblema.cadastrarProblema(atividade.getId(), problema.getDescricao(), problema.getData(), problema.getMensagem());
+			return validacaoProblema.cadastrarProblema(atividade.getId(), problema.getDescricao(), problema.getData(), problema.getMensagem());
 		} catch (DescricaoInvalidaException e) {
 			e.printStackTrace();
 			return false;
