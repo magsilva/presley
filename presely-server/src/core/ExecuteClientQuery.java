@@ -252,7 +252,6 @@ public class ExecuteClientQuery implements CorePresleyOperations{
 		return desenvolvedor;
 	}
 	public Desenvolvedor login(DadosAutenticacao authData) throws DesenvolvedorInexistenteException, EmailInvalidoException, SenhaInvalidaException, ErroDeAutenticacaoException {
-		// TODO Auto-generated method stub
 		return validacaoDesenvolvedor.autenticaDesenvolvedor(authData);
 	}
 
@@ -264,7 +263,6 @@ public class ExecuteClientQuery implements CorePresleyOperations{
 		// TODO Auto-generated method stub
 		return false;
 	}
-
 
 	public boolean qualificaDesenvolvedor(PacketStruct packet) {
 		QualificacaoDesenvolvedor qualDes = (QualificacaoDesenvolvedor) packet.getData();
@@ -284,10 +282,7 @@ public class ExecuteClientQuery implements CorePresleyOperations{
 		return removerAtividade(atividade);
 	}
 	public boolean removerAtividade(TipoAtividade atividade) throws AtividadeInexistenteException {
-
-
 		validacaoAtividade.removerAtividade(atividade.getId());
-
 		return true;
 	}
 
@@ -324,8 +319,10 @@ public class ExecuteClientQuery implements CorePresleyOperations{
 	}
 
 	public ArrayList<Problema> getListaProblemas() {
-		// TODO Auto-generated method stub
+		// TODO Auto-generated method stub`
 		return null;
+//		ArrayList<Problema> listaProblemas = validacaoProblema.getListaProblema();
+//		return listaProblemas;
 	}
 
 }
