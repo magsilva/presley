@@ -12,6 +12,7 @@ CREATE TABLE desenvolvedor (
   email VARCHAR(40) NOT NULL,
   nome VARCHAR(40) NULL,
   localidade VARCHAR(50) NULL,
+  senha VARCHAR(40) NOT NULL,
   PRIMARY KEY(email)
 );
 
