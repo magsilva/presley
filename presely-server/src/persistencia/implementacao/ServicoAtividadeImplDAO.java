@@ -80,10 +80,12 @@ public class ServicoAtividadeImplDAO implements ServicoAtividade{
 			stm.execute(SQL);
 
 		} catch (SQLException e) {
-			//e.printStackTrace();
+			e.printStackTrace();
 			return false;
 		} finally {
 			try {
+				
+				System.out.println("AQUI");
 				conn.close();
 			} catch (SQLException onConClose) {
 				System.out.println(" Houve erro no fechamento da conexo ");
