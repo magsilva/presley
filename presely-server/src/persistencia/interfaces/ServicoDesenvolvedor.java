@@ -23,7 +23,7 @@ public interface ServicoDesenvolvedor {
 	 * @param localidade Local onde o desenvolvedor reside.
 	 * @return true se o desenvolvedor foi criado com sucesso.
 	 */
-	public boolean criarDesenvolvedor(String email, String nome, String localidade);
+	public boolean criarDesenvolvedor(String email, String nome, String localidade, String senha);
 	
 	/**
 	 * Esse método remove um desenvolvedor da base de dados. 
@@ -41,7 +41,8 @@ public interface ServicoDesenvolvedor {
 	 * @param localidade Local onde o desenvolvedor reside.
 	 * @return true se a atualizacao foi concluida com sucesso.
 	 */
-	public boolean atualizarDesenvolvedor(String email, String novoEmail, String nome, String localidade);
+	public boolean atualizarDesenvolvedor(String email, String novoEmail, String nome, String localidade,
+			String senha);
 	
 	/**
 	 * Esse método verifica se um dado desenvolvedor está cadastrado no sistema.
@@ -134,5 +135,13 @@ public interface ServicoDesenvolvedor {
 	 * @return true se a atualização foi feita com sucesso.
 	 */
 	public boolean updateGrau(String email, String conhecimento, int grau);
+	
+	/**
+	 * Metodo que autentica um desenvolvedor e retorna o objeto desenvolvedor
+	 * @param email Email do desenvolvedor
+	 * @param senha Senha do Desenvolvedor
+	 * @return
+	 */
+	public Desenvolvedor autenticaDesenvolvedor(String email, String senha);
 	
 }
