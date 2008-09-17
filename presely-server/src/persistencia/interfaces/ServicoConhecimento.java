@@ -1,5 +1,8 @@
 package persistencia.interfaces;
 
+import java.util.ArrayList;
+
+import validacao.excessao.ConhecimentoInexistenteException;
 import beans.Conhecimento;
 
 /**
@@ -51,6 +54,40 @@ public interface ServicoConhecimento {
 	 * @return <Conhecimento>
 	 */
 	public Conhecimento getConhecimento(String nome);
+	
+	/**
+	 * Esse metodo cria uma associacao de herança entre dois conhecimentos
+	 * passados por parametro.
+	 * @param nomeConhecimentoPai Nome do conhecimento Pai.
+	 * @param nomeConhecimentoFilho Nome do conhecimento Filho.
+	 * @return true de a associacao foi realizada com sucesso.
+	 */
+	public boolean associaConhecimentos(String nomeConhecimentoPai, String nomeConhecimentoFilho);
+	
+	/**
+	 * Esse metodo desfaz uma associacao de herança entre dois conhecimentos
+	 * passados por parametro.
+	 * @param nomeConhecimentoPai Nome do conhecimento Pai.
+	 * @param nomeConhecimentoFilho Nome do conhecimento Filho.
+	 * @return true de a desassociacao foi realizada com sucesso.
+	 */
+	public boolean desassociaConhecimentos(String nomeConhecimentoPai, String nomeConhecimentoFilho);
+	
+	/**
+	 * Metodo que retorna os conhecimentos filhos de um conhecimento.
+	 * @param idConhecimentoPai
+	 * @return ArrayList<Conhecimento> Lista dos conhecimentos filhos.
+	 * @throws ConhecimentoInexistenteException
+	 */
+	public ArrayList<Conhecimento> getFilhos(String nomeConhecimentoPai) throws ConhecimentoInexistenteException;
+	
+	/**
+	 * Metodo que retorna os conhecimentos pais de um conhecimento.
+	 * @param idConhecimentoPai
+	 * @return ArrayList<Conhecimento> Lista dos conhecimentos filhos.
+	 * @throws ConhecimentoInexistenteException
+	 */
+	public ArrayList<Conhecimento> getPais(String nomeConhecimentoFilho) throws ConhecimentoInexistenteException;
 	
 }
 

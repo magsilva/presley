@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+import beans.Problema;
 import beans.TipoAtividade;
 import beans.Conhecimento;
 import persistencia.MySQLConnectionFactory;
@@ -26,8 +27,6 @@ import persistencia.interfaces.ServicoDesenvolvedor;
 public class ServicoAtividadeImplDAO implements ServicoAtividade{
 
 	public boolean atualizarStatusDaAtividade(int id,boolean terminada) {
-
-		//MySQLConnectionFactory factory = new MySQLConnectionFactory();
 
 		Connection conn = MySQLConnectionFactory.getConnection();
 
@@ -66,8 +65,6 @@ public class ServicoAtividadeImplDAO implements ServicoAtividade{
 	public boolean cadastrarAtividade(String emailDesenvolvedor,
 			String emailGerente, String descricao, Date dataInicio, Date dataFim) {
 
-		//MySQLConnectionFactory factory = new MySQLConnectionFactory();
-
 		Connection conn = MySQLConnectionFactory.getConnection();
 
 		try {
@@ -99,8 +96,6 @@ public class ServicoAtividadeImplDAO implements ServicoAtividade{
 	}
 
 	public TipoAtividade getAtividade(int id) {
-
-		//MySQLConnectionFactory factory = new MySQLConnectionFactory();
 
 		Connection conn = MySQLConnectionFactory.getConnection();
 
@@ -154,11 +149,9 @@ public class ServicoAtividadeImplDAO implements ServicoAtividade{
 	public ArrayList<Conhecimento> getConhecimentosEnvolvidosNaAtividade(
 			int idAtividade) {
 
-		//MySQLConnectionFactory factory = new MySQLConnectionFactory();
-		ArrayList<Conhecimento> list = new ArrayList<Conhecimento>();
-
-
 		Connection conn = MySQLConnectionFactory.getConnection();
+		
+		ArrayList<Conhecimento> list = new ArrayList<Conhecimento>();
 
 		try {
 
@@ -204,14 +197,11 @@ public class ServicoAtividadeImplDAO implements ServicoAtividade{
 
 	public ArrayList<TipoAtividade> getSubAtividades(int idPai) {
 
-		//MySQLConnectionFactory factory = new MySQLConnectionFactory();
+		Connection conn = MySQLConnectionFactory.getConnection();
 
 		ServicoDesenvolvedor sd = new ServicoDesenvolvedorImplDAO();
 
 		ArrayList<TipoAtividade> list = new ArrayList<TipoAtividade>();
-
-
-		Connection conn = MySQLConnectionFactory.getConnection();
 
 		try {
 
@@ -263,8 +253,6 @@ public class ServicoAtividadeImplDAO implements ServicoAtividade{
 
 	public boolean removerAtividade(int id) {
 
-		//MySQLConnectionFactory factory = new MySQLConnectionFactory();
-
 		Connection conn = MySQLConnectionFactory.getConnection();
 
 		try {
@@ -298,8 +286,6 @@ public class ServicoAtividadeImplDAO implements ServicoAtividade{
 	}
 
 	public boolean atividadeExiste(int id){
-
-		//MySQLConnectionFactory factory = new MySQLConnectionFactory();
 
 		Connection conn = MySQLConnectionFactory.getConnection();
 
@@ -337,8 +323,6 @@ public class ServicoAtividadeImplDAO implements ServicoAtividade{
 	public boolean adicionarConhecimentoAAtividade(int idAtividade,
 			String nomeConhecimento) {
 
-		//MySQLConnectionFactory factory = new MySQLConnectionFactory();
-
 		Connection conn = MySQLConnectionFactory.getConnection();
 
 		try {
@@ -369,8 +353,6 @@ public class ServicoAtividadeImplDAO implements ServicoAtividade{
 
 	public boolean removerConhecimentoDaAtividade(int idAtividade,
 			String nomeConhecimento) {
-
-		//MySQLConnectionFactory factory = new MySQLConnectionFactory();
 
 		Connection conn = MySQLConnectionFactory.getConnection();
 
@@ -409,8 +391,6 @@ public class ServicoAtividadeImplDAO implements ServicoAtividade{
 	public boolean atividadeAssociadaAConhecimentoExiste(int idAtividade,
 			String nomeConhecimento) {
 
-		//MySQLConnectionFactory factory = new MySQLConnectionFactory();
-
 		Connection conn = MySQLConnectionFactory.getConnection();
 
 		try {
@@ -447,8 +427,6 @@ public class ServicoAtividadeImplDAO implements ServicoAtividade{
 
 	public boolean associarAtividades(int idSubAtividade, int idAtividadePai) {
 
-		//MySQLConnectionFactory factory = new MySQLConnectionFactory();
-
 		Connection conn = MySQLConnectionFactory.getConnection();
 
 		try {
@@ -461,7 +439,8 @@ public class ServicoAtividadeImplDAO implements ServicoAtividade{
 					this.atividadeExiste(idAtividadePai)){
 
 
-				SQL = " SELECT * FROM atividade ;";
+				SQL = " UPDATE atividade SET atividadePai = '"+idAtividadePai+
+				"' WHERE id = '"+idSubAtividade+"';";
 
 				System.out.println(SQL);
 				stm.execute(SQL);
@@ -486,8 +465,7 @@ public class ServicoAtividadeImplDAO implements ServicoAtividade{
 	}
 
 	public boolean desassociarAtividades(int idSubAtividade, int idAtividadePai) {
-		//MySQLConnectionFactory factory = new MySQLConnectionFactory();
-
+		
 		Connection conn = MySQLConnectionFactory.getConnection();
 
 		try {
@@ -525,28 +503,26 @@ public class ServicoAtividadeImplDAO implements ServicoAtividade{
 		}
 	}
 
-
-	public ArrayList<TipoAtividade> getTodasAtividades(){
-		//MySQLConnectionFactory factory = new MySQLConnectionFactory();
-		ServicoDesenvolvedor sd = new ServicoDesenvolvedorImplDAO();
+	public ArrayList<TipoAtividade> listarAtividades() {
 		
-		ArrayList<TipoAtividade> list = new ArrayList<TipoAtividade>();
-
 		Connection conn = MySQLConnectionFactory.getConnection();
 
+		ServicoDesenvolvedor sd = new ServicoDesenvolvedorImplDAO();
+
+		ArrayList<TipoAtividade> list = new ArrayList<TipoAtividade>();
+
 		try {
+
 			Statement stm = conn.createStatement();
 
-			String SQL;
+			String SQL = " SELECT * FROM atividade";
 
-			SQL = "SELECT * FROM atividade;";
 
 			System.out.println(SQL);
 			ResultSet rs = stm.executeQuery(SQL);
-			
+
 			while (rs.next()){
-
-
+				
 				TipoAtividade tipoAtividade = new TipoAtividade();
 
 				tipoAtividade.setId(rs.getInt(1));
@@ -559,14 +535,15 @@ public class ServicoAtividadeImplDAO implements ServicoAtividade{
 				tipoAtividade.setConcluida(rs.getBoolean(8));
 				tipoAtividade.setListaDeConhecimentosEnvolvidos(sd.getConhecimentosDoDesenvolvedor(rs.getString(2)));
 
-
 				list.add(tipoAtividade);
 
 			}
 			return list;
 
-		} catch (SQLException e) {
 
+		} catch (SQLException e) {
+			//e.printStackTrace();
+			return null;
 		} finally {
 			try {
 				conn.close();
@@ -575,8 +552,6 @@ public class ServicoAtividadeImplDAO implements ServicoAtividade{
 				onConClose.printStackTrace();	             
 			}
 		}
-
-		return list;
 	}
 }
 

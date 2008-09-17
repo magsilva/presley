@@ -3,6 +3,7 @@ package persistencia.interfaces;
 import java.sql.Date;
 import java.util.ArrayList;
 
+import beans.Problema;
 import beans.TipoAtividade;
 import beans.Conhecimento;
 
@@ -116,12 +117,11 @@ public interface ServicoAtividade {
 	 * @return true se a associacao foi feita com sucesso.
 	 */
 	public boolean desassociarAtividades(int idSubAtividade, int idAtividadePai);
-
+	
 	/**
-	 * 
-	 * @return
+	 * Metodo que retorna todas as atividades cadastradas no banco.
+	 * @return ArrayList<TipoAtividade> lista com todas as atividades do banco.
 	 */
-	public ArrayList<TipoAtividade> getTodasAtividades();
-
+	public ArrayList<TipoAtividade> listarAtividades();
 }
 
