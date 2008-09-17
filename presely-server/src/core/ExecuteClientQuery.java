@@ -241,11 +241,10 @@ public class ExecuteClientQuery implements CorePresleyOperations{
 
 	public boolean encerrarAtividade(PacketStruct packet) {
 		TipoAtividade atividade = (TipoAtividade) packet.getData();
-		return false;
+		return encerrarAtividade(atividade);
 	}
 	public boolean encerrarAtividade(TipoAtividade atividade) {
-		// TODO Auto-generated method stub
-		return false;
+		return validacaoAtividade.atualizarStatusDaAtividade(atividade.getId(), true);
 	}
 
 	public boolean enviarMensagem(PacketStruct packet) {
@@ -339,8 +338,17 @@ public class ExecuteClientQuery implements CorePresleyOperations{
 		return adicionaDesenvolvedor(desenvolvedor);
 	}
 	public boolean adicionaDesenvolvedor(Desenvolvedor desenvolvedor) {
-		// TODO Auto-generated method stub
-		return false;
+		
+		boolean retorno = false;
+		
+		try {
+			validacaoDesenvolvedor.criarDesenvolvedor(desenvolvedor.getEmail(), desenvolvedor.getNome(), desenvolvedor.getLocalidade());
+			retorno = true;
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return retorno;
 	}
 
 	public ArrayList<TipoAtividade> buscaAtividades() {
