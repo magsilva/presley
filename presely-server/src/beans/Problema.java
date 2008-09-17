@@ -27,6 +27,7 @@ public class Problema implements Serializable {
 	private TipoAtividade tipoAtividade;
 	private Date data;
 	private String mensagem;
+	private ArrayList<String> conhecimentos;
 	
 	public int getId() {
 		return id;
@@ -69,6 +70,12 @@ public class Problema implements Serializable {
 	}
 	public void setMensagem(String mensagem) {
 		this.mensagem = mensagem;
+	}
+	public ArrayList<String> getConhecimentos() {
+		return conhecimentos;
+	}
+	public void setConhecimentos(ArrayList<String> conhecimentos) {
+		this.conhecimentos = conhecimentos;
 	}
 	
 }

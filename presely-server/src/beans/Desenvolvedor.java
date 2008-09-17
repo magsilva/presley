@@ -48,6 +48,5 @@ public class Desenvolvedor implements Serializable {
 		this.listaConhecimento = listaConhecimento;
 	}
 	
-
 }
 
