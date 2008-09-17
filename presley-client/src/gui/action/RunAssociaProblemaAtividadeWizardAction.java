@@ -58,9 +58,9 @@ public class RunAssociaProblemaAtividadeWizardAction extends Action implements
 	}
 
 	public void run(IAction arg0) {
-		/*
+		
 		 
-		 AssociaProblemaAtividadeWizard wizard = new AssociaProblemaAtividadeWizard(this.atividade);
+		AssociaProblemaAtividadeWizard wizard = new AssociaProblemaAtividadeWizard(this.atividade, this.atividadeAssociada);
 		Shell shell = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
 		WizardDialog dialog = new WizardDialog(shell,wizard);
 		dialog.create();
@@ -68,7 +68,7 @@ public class RunAssociaProblemaAtividadeWizardAction extends Action implements
 		dialog.close();
 		wizard.dispose();
 	
-*/
+
 	}
 
 	public void selectionChanged(IAction arg0, ISelection arg1) {

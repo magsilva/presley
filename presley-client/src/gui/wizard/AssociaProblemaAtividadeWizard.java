@@ -20,6 +20,7 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 import beans.Conhecimento;
 import beans.Desenvolvedor;
+import beans.Problema;
 import beans.TipoAtividade;
 
 public class AssociaProblemaAtividadeWizard extends Wizard implements INewWizard {
@@ -45,6 +46,7 @@ public class AssociaProblemaAtividadeWizard extends Wizard implements INewWizard
     public AssociaProblemaAtividadeWizard(Atividade a, String nome) {
         this();
         this.atividade = a;
+        this.nomeAtividade = nome;
         
     }
     
@@ -57,32 +59,40 @@ public class AssociaProblemaAtividadeWizard extends Wizard implements INewWizard
 	public boolean performFinish() {
 		// TODO Auto-generated method stub
         //First save all the page data as variables.
-		/*
+
     	try{
     		
-    		String atividade = page.getNomeAtividade();
+    		
+    		String descricao = page.getDescricao();
+    		String msg = page.getMensagem();
+    		
     		ArrayList<Conhecimento> conhecimentos = page2.getConhecimentos();
     		
-    		Desenvolvedor desenvolvedor = page.getDesenvolvedor();
-    		Desenvolvedor supervisor = page.getNomeSupervisor();
+    		Problema problema = new Problema();
+    		problema.setDescricao(descricao);
+    		problema.setMensagem(msg);
+    		problema.setData(new Date(System.currentTimeMillis()));
+    		problema.setResolvido(false);
     		
-    		Date dataInicio = page.getDataInicio();
-    		Date dataFim = page.getDataFim();
+    		TipoAtividade atividadeAssociada = null;
     		
-    		boolean status = page.getStatus();
-    		
-    		TipoAtividade novaAtividade = new TipoAtividade(atividade,desenvolvedor,supervisor,
-    				0,dataInicio,dataFim,status,conhecimentos);
+    		ArrayList<TipoAtividade> listaAtividades = atividade.getViewComunication().buscaAtividades();
+    		for (TipoAtividade tipoAtividade : listaAtividades) {
+				if (tipoAtividade.getDescricao().equals(nomeAtividade)) {
+					atividadeAssociada = tipoAtividade;
+					problema.setAtividade(tipoAtividade);
+				}
+			}
   
     		//Cria a atividade no banco
- //   		this.atividade.adicionaAtividade(novaAtividade);
+    		atividade.getViewComunication().associaProblemaAtividade(problema, atividadeAssociada);
+ 
 	
     	}catch (Exception e) {
 			// TODO: handle exception
     		System.out.println("ERRO ERRO:"+e.getMessage());
     		e.printStackTrace();
 		}
-		*/
     	
 		try {
 		      getContainer().run(true, true, new IRunnableWithProgress() {
@@ -107,11 +117,11 @@ public class AssociaProblemaAtividadeWizard extends Wizard implements INewWizard
 	}
 	
 	public void addPages() {
-        //page=new AssociaProblemaAtividadeWizardPage(selection, this.atividade, this.atividade.);
-        //addPage(page);
+        page=new AssociaProblemaAtividadeWizardPage(selection, this.atividade, nomeAtividade);
+        addPage(page);
         
-        //page2=new AssociaProblemaAtividadeWizardPage2(selection,this.atividade);
-        //addPage(page2);
+        page2=new AssociaProblemaAtividadeWizardPage2(selection,this.atividade);
+        addPage(page2);
     }
 
 	public Atividade getAtividade() {

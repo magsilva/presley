@@ -13,6 +13,7 @@ import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -63,7 +64,7 @@ public class AssociaProblemaAtividadeWizardPage extends WizardPage {
         GridLayout layout = new GridLayout();
         controls.setLayout(layout);
         layout.numColumns = 3;
-        layout.verticalSpacing = 6;
+        layout.verticalSpacing = 2;
 
         Label label =
             new Label(controls, SWT.NULL);
@@ -71,9 +72,9 @@ public class AssociaProblemaAtividadeWizardPage extends WizardPage {
 
         descricaoProblemaText = new Text(
             controls,
-            SWT.BORDER | SWT.SINGLE);
+            SWT.MULTI | SWT.BORDER | SWT.V_SCROLL | SWT.H_SCROLL);
         GridData gd = new GridData(
-            GridData.FILL_HORIZONTAL);
+            GridData.FILL_BOTH);
         descricaoProblemaText.setLayoutData(gd);
         descricaoProblemaText.addModifyListener(
             new ModifyListener() {
@@ -82,6 +83,7 @@ public class AssociaProblemaAtividadeWizardPage extends WizardPage {
                     dialogChanged();
                 }
              });
+        
 
         Label labelExplicativo = new Label(controls, SWT.NULL);
         labelExplicativo.setText("digite a descrição do problema");
@@ -92,9 +94,9 @@ public class AssociaProblemaAtividadeWizardPage extends WizardPage {
         
         mensagemText = new Text(
                 controls,
-                SWT.BORDER | SWT.SINGLE);
+                SWT.MULTI | SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
             GridData gdMens = new GridData(
-                GridData.FILL_HORIZONTAL);
+                GridData.FILL_BOTH);
             mensagemText.setLayoutData(gdMens);
             mensagemText.addModifyListener(
                 new ModifyListener() {
@@ -105,10 +107,15 @@ public class AssociaProblemaAtividadeWizardPage extends WizardPage {
                  });
         
         Label labelMensagemExplicativo = new Label(controls, SWT.NULL);
-        labelMensagemExplicativo.setText("digite a mensagem que será enviada");
+        labelMensagemExplicativo.setText(" mensagem que será enviada");
         
-        Label labelAtividadeAssociada = new Label(controls, SWT.NULL);
-        labelAtividadeAssociada.setText("Atividade associada: "+this.tipoAtividadeAssociado);
+        Label labelAtividadeAssociada1 = new Label(controls, SWT.NULL);
+        labelAtividadeAssociada1.setText("Atividade associada: ");
+        
+        Text labelAtividadeAssociada2 = new Text(controls, SWT.NULL);
+        labelAtividadeAssociada2.setText(this.tipoAtividadeAssociado);
+        labelAtividadeAssociada2.setEditable(false);
+    
 
         
         
