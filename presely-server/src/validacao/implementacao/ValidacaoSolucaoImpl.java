@@ -3,11 +3,9 @@ package validacao.implementacao;
 
 import java.sql.Date;
 import java.util.ArrayList;
-
 import beans.Solucao;
 import persistencia.implementacao.ServicoSolucaoImplDAO;
 import persistencia.interfaces.ServicoSolucao;
-import validacao.interfaces.ValidacaoSolucao;
 
 /**
  * 

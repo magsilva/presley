@@ -15,8 +15,6 @@ import validacao.excessao.ConhecimentoInexistenteException;
 import validacao.excessao.DataInvalidaException;
 import validacao.excessao.DescricaoInvalidaException;
 import validacao.excessao.EmailInvalidoException;
-import validacao.interfaces.ValidacaoAtividade;
-import validacao.interfaces.ValidacaoProblema;
 import beans.Problema;
 import beans.TipoAtividade;
 import beans.Conhecimento;
@@ -35,7 +33,7 @@ public class ValidacaoAtividadeImpl {
 	ServicoAtividade servicoAtividade;
 	ServicoConhecimento servicoConhecimento;
 	ServicoProblema servicoProblema;
-	ValidacaoProblema validacaoProblema;
+	ValidacaoProblemaImpl validacaoProblema;
 	
 	public ValidacaoAtividadeImpl() {
 		servicoAtividade = new ServicoAtividadeImplDAO();

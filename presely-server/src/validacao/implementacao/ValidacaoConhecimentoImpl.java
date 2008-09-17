@@ -2,7 +2,6 @@ package validacao.implementacao;
 
 import java.util.ArrayList;
 import java.util.Iterator;
-
 import beans.Conhecimento;
 import beans.Desenvolvedor;
 import beans.TipoAtividade;
@@ -15,7 +14,6 @@ import persistencia.interfaces.ServicoDesenvolvedor;
 import validacao.excessao.ConhecimentoInexistenteException;
 import validacao.excessao.ConhecimentoNaoEncontradoException;
 import validacao.excessao.DescricaoInvalidaException;
-import validacao.interfaces.ValidacaoConhecimento;
 
 /**
  * 

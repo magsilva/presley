@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import beans.Problema;
 import persistencia.implementacao.ServicoProblemaImplDAO;
 import persistencia.interfaces.ServicoProblema;
-import validacao.interfaces.ValidacaoProblema;
 
 /**
  * 
