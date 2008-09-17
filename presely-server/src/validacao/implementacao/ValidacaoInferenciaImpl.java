@@ -15,15 +15,11 @@ public class ValidacaoInferenciaImpl {
 		servico = new ServicoInferenciaDAO();
 	}
 	
-	public HashMap<Desenvolvedor, Double> getDesenvolvedoresByConhecimento(String c){
+	public HashMap<Desenvolvedor, Double> getDesenvolvedoresByConhecimento(String c) throws DesenvolvedorInexistenteException{
 		
 		HashMap<Desenvolvedor, Double> m;
 		
-		try{
-			m = servico.getDesenvolvedoresByConhecimento(c);
-		} catch(DesenvolvedorInexistenteException e){
-			return null;
-		}
+		m = servico.getDesenvolvedoresByConhecimento(c);
 		
 		return m;
 	}
