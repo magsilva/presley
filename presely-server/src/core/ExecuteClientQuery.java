@@ -336,4 +336,9 @@ public class ExecuteClientQuery implements CorePresleyOperations{
 		return null;
 	}
 
+	public ArrayList<Problema> getListaProblemas() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }
