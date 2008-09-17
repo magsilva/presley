@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import beans.Problema;
 import persistencia.implementacao.ServicoProblemaImplDAO;
 import persistencia.interfaces.ServicoProblema;
+import validacao.interfaces.ValidacaoProblema;
 
 /**
  * 
@@ -22,7 +23,7 @@ public class ValidacaoProblemaImpl {
 	public ValidacaoProblemaImpl() {
 		servicoProblema = new ServicoProblemaImplDAO();
 	}
-
+	
 	/**
 	 * Esse método atualiza o status do problema, ou seja, se ele foi resolvido
 	 * ou não.
@@ -34,7 +35,7 @@ public class ValidacaoProblemaImpl {
 		
 		return servicoProblema.atualizarStatusDoProblema(id, status);
 	}
-
+	
 	/**
 	 * Esse método cadastra um novo problema associado a um atividade na base de dados.
 	 * @param idAtividade Identificador da atividade.
@@ -48,7 +49,7 @@ public class ValidacaoProblemaImpl {
 
 		return servicoProblema.cadastrarProblema(idAtividade, descricao, dataDoRelato, mensagem);
 	}
-
+	
 	/**
 	 * Esse método retorna o objeto problema que possui tal id.
 	 * @param id Identificador do problema.
@@ -58,7 +59,7 @@ public class ValidacaoProblemaImpl {
 
 		return servicoProblema.getProblema(id);
 	}
-
+	
 	/**
 	 * Esse método recupera uma lista de problemas relatados durante o desenvolvimento
 	 * de uma atividade.
@@ -69,7 +70,7 @@ public class ValidacaoProblemaImpl {
 
 		return servicoProblema.listarProblemasDaAtividade(idAtividade);
 	}
-
+	
 	/**
 	 * Esse método verifica se um dado problema existe na base de dados.
 	 * @param id Identificador do problema
@@ -79,7 +80,7 @@ public class ValidacaoProblemaImpl {
 
 		return servicoProblema.problemaExiste(id);
 	}
-
+	
 	/**
 	 * Esse método remove um problema relatado da base de dados.
 	 * @param id Identificador do problema

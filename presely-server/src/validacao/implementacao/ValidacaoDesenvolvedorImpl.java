@@ -2,16 +2,23 @@ package validacao.implementacao;
 
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
+import beans.Solucao;
 import beans.TipoAtividade;
 import beans.Conhecimento;
 import beans.Desenvolvedor;
 import persistencia.implementacao.ServicoAtividadeImplDAO;
 import persistencia.implementacao.ServicoConhecimentoImplDAO;
 import persistencia.implementacao.ServicoDesenvolvedorImplDAO;
+import persistencia.implementacao.ServicoSolucaoImplDAO;
 import persistencia.interfaces.ServicoAtividade;
 import persistencia.interfaces.ServicoConhecimento;
 import persistencia.interfaces.ServicoDesenvolvedor;
+import persistencia.interfaces.ServicoSolucao;
+import validacao.excessao.ConhecimentoInexistenteException;
+import validacao.excessao.DescricaoInvalidaException;
+import validacao.interfaces.ValidacaoDesenvolvedor;
 
 /**
  * 
@@ -21,16 +28,18 @@ import persistencia.interfaces.ServicoDesenvolvedor;
  * ltima modificacao: 09/09/2008 por RodrigoCMD
  */
 
-public class ValidacaoDesenvolvedorImpl{
+public class ValidacaoDesenvolvedorImpl {
 	
 	ServicoConhecimento servicoConhecimento;
 	ServicoAtividade servicoAtividade;
+	ServicoSolucao servicoSolucao;
 	ServicoDesenvolvedor servicoDesenvolvedor;
 	
 	public ValidacaoDesenvolvedorImpl() {
 		servicoAtividade = new ServicoAtividadeImplDAO();
 		servicoConhecimento = new ServicoConhecimentoImplDAO();
 		servicoDesenvolvedor = new ServicoDesenvolvedorImplDAO();
+		servicoSolucao = new ServicoSolucaoImplDAO();
 	}
 	
 	/**
@@ -43,12 +52,12 @@ public class ValidacaoDesenvolvedorImpl{
 			String emailDesenvolvedor, String nomeConhecimento) throws Exception {
 		
 		if (!servicoDesenvolvedor.desenvolvedorExiste(emailDesenvolvedor)) throw new Exception();
-		if (!servicoConhecimento.conhecimentoExiste(nomeConhecimento)) throw new Exception();
+		if (!servicoConhecimento.conhecimentoExiste(nomeConhecimento)) throw new ConhecimentoInexistenteException();
 		
 		return servicoDesenvolvedor.adicionarConhecimentoAoDesenvolvedor(
 				emailDesenvolvedor, nomeConhecimento);
 	}
-
+	
 	/**
 	 * Esse mtodo atualiza os dados de um desenvolvedor previamente cadastrado na
 	 * base de dados.
@@ -65,7 +74,7 @@ public class ValidacaoDesenvolvedorImpl{
 		
 		return servicoDesenvolvedor.atualizarDesenvolvedor(email, novoEmail, nome, localidade);
 	}
-
+	
 	/**
 	 * Esse mtodo verifica se existe relacao entre um conhecimento e um desenvolvedor/
 	 * @param emailDesenvolvedor Email do desenvolvedor que possui tal conhecimento.
@@ -80,7 +89,7 @@ public class ValidacaoDesenvolvedorImpl{
 		
 		return servicoDesenvolvedor.conhecimentoDoDesenvolvedorExiste(emailDesenvolvedor, nomeConhecimento);
 	}
-
+	
 	/**
 	 * Esse mtodo adiciona um novo desenvolvedor na base de dados.
 	 * @param email Email do novo desenvolvedor.
@@ -95,7 +104,7 @@ public class ValidacaoDesenvolvedorImpl{
 		
 		return servicoDesenvolvedor.criarDesenvolvedor(email, nome, localidade);
 	}
-
+	
 	/**
 	 * Esse mtodo verifica se um dado desenvolvedor est cadastrado no sistema.
 	 * @param email Email do desenvolvedor
@@ -105,7 +114,7 @@ public class ValidacaoDesenvolvedorImpl{
 		
 		return servicoDesenvolvedor.desenvolvedorExiste(email);
 	}
-
+	
 	/**
 	 * Esse mtodo retorna uma lista de atividades atribuidas a um desenvolvedor
 	 * @param email Email do desenvolvedor
@@ -117,7 +126,7 @@ public class ValidacaoDesenvolvedorImpl{
 		
 		return servicoDesenvolvedor.getAtividadesDoDesenvolvedor(email);
 	}
-
+	
 	/**
 	 * Esse mtodo retorna uma lista de conhecimentos que o desenvolvedor possui
 	 * @param email Email do desenvolvedor
@@ -130,7 +139,7 @@ public class ValidacaoDesenvolvedorImpl{
 		
 		return servicoDesenvolvedor.getConhecimentosDoDesenvolvedor(email);
 	}
-
+	
 	/**
 	 * Este mtodo retorna o desenvolvedor que possui o email passado no parametro.
 	 * @param email Email do desenvolvedor.
@@ -143,7 +152,7 @@ public class ValidacaoDesenvolvedorImpl{
 		
 		return desenvolvedor;
 	}
-
+	
 	/**
 	 * Esse mtodo remove um conhecimento associado a um desenvolvedor especfico.
 	 * @param emailDesenvolvedor Email do desenvolvedor.
@@ -155,13 +164,31 @@ public class ValidacaoDesenvolvedorImpl{
 		
 		return servicoDesenvolvedor.removerConhecimentoDoDesenvolvedor(emailDesenvolvedor, nomeConhecimento);
 	}
-
+	
 	/**
 	 * Esse mtodo remove um desenvolvedor da base de dados. 
 	 * @param email Email do desenvolvedor.
 	 * @return true se o desenvolvedor foi removido com sucesso.
 	 */
 	public boolean removerDesenvolvedor(String email) {
+		
+		// Remover Solucoes do Desenvolvedor
+		ArrayList<Solucao> solucoes = servicoSolucao.listarSolucoesDoDesenvolvedor(email);
+		Iterator<Solucao> it1 = solucoes.iterator();
+		
+		while (it1.hasNext()) {
+			Solucao solucao = it1.next();
+			servicoSolucao.removerSolucao(solucao.getId());
+		}
+		
+		// Desassociar Conhecimentos
+		ArrayList<Conhecimento> conhecimentos = servicoDesenvolvedor.getConhecimentosDoDesenvolvedor(email);
+		Iterator<Conhecimento> it2 = conhecimentos.iterator();
+		
+		while (it2.hasNext()) {
+			Conhecimento conhecimento = it2.next();
+			servicoDesenvolvedor.removerConhecimentoDoDesenvolvedor(email, conhecimento.getNome());
+		}
 		
 		return servicoDesenvolvedor.removerDesenvolvedor(email);
 	}

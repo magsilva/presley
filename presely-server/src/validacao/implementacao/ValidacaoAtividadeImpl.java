@@ -6,13 +6,18 @@ import java.util.Iterator;
 
 import persistencia.implementacao.ServicoAtividadeImplDAO;
 import persistencia.implementacao.ServicoConhecimentoImplDAO;
+import persistencia.implementacao.ServicoProblemaImplDAO;
 import persistencia.interfaces.ServicoAtividade;
 import persistencia.interfaces.ServicoConhecimento;
+import persistencia.interfaces.ServicoProblema;
 import validacao.excessao.AtividadeInexistenteException;
 import validacao.excessao.ConhecimentoInexistenteException;
 import validacao.excessao.DataInvalidaException;
 import validacao.excessao.DescricaoInvalidaException;
 import validacao.excessao.EmailInvalidoException;
+import validacao.interfaces.ValidacaoAtividade;
+import validacao.interfaces.ValidacaoProblema;
+import beans.Problema;
 import beans.TipoAtividade;
 import beans.Conhecimento;
 
@@ -25,16 +30,20 @@ import beans.Conhecimento;
  * ltima modificacao: 09/09/2008 por RodrigoCMD
  */
 
-public class ValidacaoAtividadeImpl{
+public class ValidacaoAtividadeImpl {
 	
 	ServicoAtividade servicoAtividade;
 	ServicoConhecimento servicoConhecimento;
+	ServicoProblema servicoProblema;
+	ValidacaoProblema validacaoProblema;
 	
 	public ValidacaoAtividadeImpl() {
 		servicoAtividade = new ServicoAtividadeImplDAO();
 		servicoConhecimento = new ServicoConhecimentoImplDAO();
+		validacaoProblema = new ValidacaoProblemaImpl();
+		servicoProblema = new ServicoProblemaImplDAO();
 	}
-
+	
 	/**
 	 * Esse método associa um conhecimento a uma atividade previamente cadastrada.
 	 * @param idAtividade Identificador da atividade.
@@ -49,7 +58,7 @@ public class ValidacaoAtividadeImpl{
 		
 		return servicoAtividade.adicionarConhecimentoAAtividade(idAtividade, nomeConhecimento);
 	}
-
+	
 	/**
 	 * Esse método associa uma sub-atividade a uma atividade maior. 
 	 * @param idSubAtividade Identificador da sub-atividade 
@@ -71,7 +80,7 @@ public class ValidacaoAtividadeImpl{
 		
 		return servicoAtividade.associarAtividades(idSubAtividade, idAtividadePai);
 	}
-
+	
 	/**
 	 * Esse método verifica se existe uma associacao entre conhecimento e atividade.
 	 * @param idAtividade Identificador da atividade.
@@ -79,11 +88,14 @@ public class ValidacaoAtividadeImpl{
 	 * @return true se existe associacao entre conhecimento e atividade.
 	 */
 	public boolean atividadeAssociadaAConhecimentoExiste(int idAtividade,
-			String nomeConhecimento) {
+			String nomeConhecimento) throws AtividadeInexistenteException, ConhecimentoInexistenteException {
+		
+		if (!servicoAtividade.atividadeExiste(idAtividade)) throw new AtividadeInexistenteException();
+		if (!servicoConhecimento.conhecimentoExiste(nomeConhecimento)) throw new ConhecimentoInexistenteException();
 		
 		return servicoAtividade.atividadeAssociadaAConhecimentoExiste(idAtividade, nomeConhecimento);
 	}
-
+	
 	/**
 	 * Esse método verifica se uma atividade existe na base de dados.
 	 * @param id Identificador da atividade.
@@ -93,7 +105,7 @@ public class ValidacaoAtividadeImpl{
 		
 		return servicoAtividade.atividadeExiste(id);
 	}
-
+	
 	/**
 	 * Esse método atualiza o status se a atividade foi concluida ou
 	 * não.
@@ -106,7 +118,11 @@ public class ValidacaoAtividadeImpl{
 		return servicoAtividade.atualizarStatusDaAtividade(id, terminada);
 	}
 	
-	
+	/**
+	 * Este método cadastra uma nova atividade na base de dados.
+	 * @param tipoAtividade Objeto atividade.
+	 * @return true se a atividade foi concluida com sucesso.
+	 */
 	public boolean cadastrarAtividade(TipoAtividade tipoAtividade) throws Exception {
 		System.out.println("TipoAtividade adicionada com sucesso!");
 		
@@ -124,7 +140,7 @@ public class ValidacaoAtividadeImpl{
 		return servicoAtividade.cadastrarAtividade(emailDesenvolvedor, emailGerente, descricao, dataInicio, dataFim);
 		
 	}
-
+	
 	/**
 	 * Este método cadastra uma nova atividade na base de dados.
 	 * @param emailDesenvolvedor Email do desenvolvedor responsável pela execucao da atividade.
@@ -147,7 +163,7 @@ public class ValidacaoAtividadeImpl{
 		
 		return servicoAtividade.cadastrarAtividade(emailDesenvolvedor, emailGerente, descricao, dataInicio, dataFim);
 	}
-
+	
 	/**
 	 * Esse método retorna um objeto TipoAtividade com todos os dados de uma atividade
 	 * previamente cadastrada.
@@ -161,7 +177,7 @@ public class ValidacaoAtividadeImpl{
 		
 		return tipoAtividade;
 	}
-
+	
 	/**
 	 * Esse método retorna uma lista de conhecimentos que envolvem uma dada
 	 * atividade.
@@ -175,7 +191,7 @@ public class ValidacaoAtividadeImpl{
 		
 		return servicoAtividade.getConhecimentosEnvolvidosNaAtividade(idAtividade);
 	}
-
+	
 	/**
 	 * Esse método retorna uma lista de sub-atividades associadas a uma atividade
 	 * pai.
@@ -188,7 +204,7 @@ public class ValidacaoAtividadeImpl{
 		
 		return servicoAtividade.getSubAtividades(idPai);
 	}
-
+	
 	/**
 	 * Este metodo remove uma atividade previamente cadastrada na base de dados.
 	 * @param id Identificador da atividade
@@ -198,6 +214,7 @@ public class ValidacaoAtividadeImpl{
 		
 		if (!servicoAtividade.atividadeExiste(id)) throw new AtividadeInexistenteException();
 		
+		// Desassociando os conhecimentos da atividade.
 		ArrayList<Conhecimento> conhecimentos = servicoAtividade.getConhecimentosEnvolvidosNaAtividade(id);
 		Iterator<Conhecimento> it = conhecimentos.iterator();
 		
@@ -206,6 +223,7 @@ public class ValidacaoAtividadeImpl{
 			servicoAtividade.removerConhecimentoDaAtividade(id, conhecimento.getDescricao());
 		}
 		
+		// Desassociando as atividades com associacao
 		ArrayList<TipoAtividade> filhos = servicoAtividade.getSubAtividades(id);
 		Iterator<TipoAtividade> it2 = filhos.iterator();
 		
@@ -214,9 +232,18 @@ public class ValidacaoAtividadeImpl{
 			servicoAtividade.desassociarAtividades(subAtividade.getId(), id);
 		}
 		
+		// Removendo problemas associados a atividade
+		ArrayList<Problema> problemas = servicoProblema.listarProblemasDaAtividade(id);
+		Iterator<Problema> it3 = problemas.iterator();
+		
+		while (it3.hasNext()) {
+			Problema problema = it3.next();
+			validacaoProblema.removerProblema(problema.getId());
+		}
+		
 		return servicoAtividade.removerAtividade(id);
 	}
-
+	
 	/**
 	 * Esse metodo remove uma associacao entre um conhecimento e uma atividade.
 	 * @param idAtividade Identificador da ativiadade.
@@ -224,14 +251,47 @@ public class ValidacaoAtividadeImpl{
 	 * @return true se a associacao foi desfeita.
 	 */
 	public boolean removerConhecimentoDaAtividade(int idAtividade,
-			String nomeConhecimento) {
+			String nomeConhecimento) throws ConhecimentoInexistenteException, AtividadeInexistenteException {
+		
+		if (!servicoConhecimento.conhecimentoExiste(nomeConhecimento)) throw new ConhecimentoInexistenteException();
+		if (!servicoAtividade.atividadeExiste(idAtividade)) throw new AtividadeInexistenteException();
 		
 		return servicoAtividade.removerConhecimentoDaAtividade(idAtividade, nomeConhecimento);
 	}
+	
+	/**
+	 * Esse método desassocia duas atividades. 
+	 * @param idSubAtividade Identificador da sub-atividade 
+	 * @param idAtividadePai Identificador da atividade pai.
+	 * @return true se a desassociacao foi feita com sucesso.
+	 */
+	public boolean desassociarAtividades(int idSubAtividade, int idAtividadePai)
+			throws AtividadeInexistenteException {
 
-	public ArrayList<TipoAtividade> getTodasAtividades() {
-		return servicoAtividade.getTodasAtividades();		
-		 
+		if (!servicoAtividade.atividadeExiste(idAtividadePai)) throw new AtividadeInexistenteException();
+		if (!servicoAtividade.atividadeExiste(idSubAtividade)) throw new AtividadeInexistenteException();
+		
+		return servicoAtividade.desassociarAtividades(idSubAtividade, idAtividadePai);
 	}
-
+	
+	/**
+	 * Método que retorna todos os problemas associados a uma atividade.
+	 * @return ArrayList<Problema> lista de todos os problemas da atividade.
+	 */
+	public ArrayList<Problema> getProblemas(int idAtividade)
+			throws AtividadeInexistenteException {
+		
+		if (!servicoAtividade.atividadeExiste(idAtividade)) throw new AtividadeInexistenteException();
+		
+		return servicoProblema.listarProblemasDaAtividade(idAtividade);
+	}
+	
+	/**
+	 * Metodo que retorna todas as atividades cadastradas no banco.
+	 * @return ArrayList<TipoAtividade> lista com todas as atividades do banco.
+	 */
+	public ArrayList<TipoAtividade> listarAtividades() {
+		
+		return servicoAtividade.listarAtividades();
+	}
 }
