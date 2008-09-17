@@ -348,4 +348,51 @@ public class ServicoSolucaoImplDAO implements ServicoSolucao{
 	         }
 	}
 
+	public ArrayList<Solucao> getSolucoesDoProblema(int idProblema) {
+		Connection conn = MySQLConnectionFactory.getConnection();
+		ServicoDesenvolvedor sd = new ServicoDesenvolvedorImplDAO();
+		ServicoProblema sp = new ServicoProblemaImplDAO();
+		
+		ArrayList<Solucao> list = new ArrayList<Solucao>();
+		
+		try {
+		
+			Statement stm = conn.createStatement();
+		
+			String SQL = " SELECT * FROM solucao WHERE "+
+						 " problema_id = "+idProblema+";";
+				
+			
+			System.out.println(SQL);
+			ResultSet rs = stm.executeQuery(SQL);
+			
+			while (rs.next()){
+				
+				Solucao s = new Solucao();
+				
+				s.setId(rs.getInt(1));
+				s.setDesenvolvedor(sd.getDesenvolvedor(rs.getString(2)));
+				s.setProblema(sp.getProblema(rs.getInt(3)));
+				s.setAjudou(rs.getBoolean(4));
+				s.setData(rs.getDate(5));
+				s.setMensagem(rs.getString(6));
+				
+				list.add(s);
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		} finally {
+	         try {
+	             conn.close();
+	           } catch (SQLException onConClose) {
+	             System.out.println(" Houve erro no fechamento da conexão ");
+	             onConClose.printStackTrace();	             
+	           }
+	         }
+		
+		return list;
+	}
+
 }

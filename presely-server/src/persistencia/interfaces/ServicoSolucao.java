@@ -74,5 +74,12 @@ public interface ServicoSolucao {
 	 */
 	public Solucao getSolucao(int id);
 	
+	/**
+	 * Esse metodo retorna todas as solucoes propostas para um problema.
+	 * @Param idProblema identificador do problema.
+	 * @return ArrayList<Solucao> Uma lista com todas as solucoes propostas para o problema.
+	 */
+	public ArrayList<Solucao> getSolucoesDoProblema(int idProblema);
+	
 }
 
