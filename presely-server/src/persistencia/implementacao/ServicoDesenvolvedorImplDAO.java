@@ -307,7 +307,25 @@ public class ServicoDesenvolvedorImplDAO implements ServicoDesenvolvedor{
 			Statement stm = conn.createStatement();
 			String sql = "select qtd_resposta from " +
 						 "desenvolvedor_has_conhecimento where " +
-						 "desenvolvedor_email = email and conhecimento_nome = " + conhecimento;
+						 "desenvolvedor_email = '" + email + "' and conhecimento_nome = " + conhecimento;
+			
+			ResultSet rs = stm.executeQuery(sql);
+			
+			return rs.getInt(1);
+				
+		} catch(SQLException e){
+			return -1;
+		}
+	}
+	
+	public int getGrau(String email, String conhecimento){
+		Connection conn = MySQLConnectionFactory.getConnection();
+		try{
+			
+			Statement stm = conn.createStatement();
+			String sql = "select grau from " +
+						 "desenvolvedor_has_conhecimento where " +
+						 "desenvolvedor_email = '" + email + "' and conhecimento_nome = " + conhecimento;
 			
 			ResultSet rs = stm.executeQuery(sql);
 			
@@ -324,10 +342,28 @@ public class ServicoDesenvolvedorImplDAO implements ServicoDesenvolvedor{
 			
 			Statement stm = conn.createStatement();
 			
-			String sql2 = "update desenvolvedor_has_conhecimento set qtd_resposta = " +quantidade+
+			String sql = "update desenvolvedor_has_conhecimento set qtd_resposta = " +quantidade+
 			 " where desenvolvedor_email = '" + email+ "' and conhecimento_nome = '" + conhecimento + "'";
 
-			stm.execute(sql2);
+			stm.execute(sql);
+			
+			return true;
+				
+		} catch(SQLException e){
+			return false;
+		}
+	}
+	
+	public boolean updateGrau(String email, String conhecimento, int grau){
+		Connection conn = MySQLConnectionFactory.getConnection();
+		try{
+			
+			Statement stm = conn.createStatement();
+			
+			String sql = "update desenvolvedor_has_conhecimento set grau = " +grau+
+			 " where desenvolvedor_email = '" + email+ "' and conhecimento_nome = '" + conhecimento + "'";
+
+			stm.execute(sql);
 			
 			return true;
 				

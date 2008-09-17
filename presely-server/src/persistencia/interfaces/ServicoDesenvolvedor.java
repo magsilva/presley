@@ -112,11 +112,27 @@ public interface ServicoDesenvolvedor {
 	public int getQntResposta(String email, String conhecimento);
 	
 	/**
+	 * Esse método retorna o grau de conhecimento que um desenvolvedor tem em um conhecimento/
+	 * @param email Email do desenvolvedor que possui tal conhecimento.
+	 * @param conhecimento Nome do conhecimento associado ao desenvolvedor. 
+	 * @return grau de conhecimento.
+	 */
+	public int getGrau(String email, String conhecimento);
+	
+	/**
 	 * Esse método altera a quantidade de respostas que um desenvolvedor possui em um conhecimento/
 	 * @param email Email do desenvolvedor que possui tal conhecimento.
 	 * @param conhecimento Nome do conhecimento associado ao desenvolvedor. 
 	 * @return true se a atualização foi feita com sucesso.
 	 */
 	public boolean updateQntResposta(String email, String conhecimento, int quantidade);
+	
+	/**
+	 * Esse método altera o grau de conhecimento de um desenvolvedor em um determinado conhecimento/
+	 * @param email Email do desenvolvedor que possui tal conhecimento.
+	 * @param conhecimento Nome do conhecimento associado ao desenvolvedor. 
+	 * @return true se a atualização foi feita com sucesso.
+	 */
+	public boolean updateGrau(String email, String conhecimento, int grau);
 	
 }
