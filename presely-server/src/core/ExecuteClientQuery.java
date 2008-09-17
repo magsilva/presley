@@ -19,7 +19,10 @@ import validacao.excessao.AtividadeInexistenteException;
 import validacao.excessao.ConhecimentoInexistenteException;
 import validacao.excessao.DataInvalidaException;
 import validacao.excessao.DescricaoInvalidaException;
+import validacao.excessao.DesenvolvedorInexistenteException;
 import validacao.excessao.EmailInvalidoException;
+import validacao.excessao.ErroDeAutenticacaoException;
+import validacao.excessao.SenhaInvalidaException;
 import validacao.implementacao.ValidacaoAtividadeImpl;
 import validacao.implementacao.ValidacaoConhecimentoImpl;
 import validacao.implementacao.ValidacaoDesenvolvedorImpl;
@@ -244,7 +247,22 @@ public class ExecuteClientQuery implements CorePresleyOperations{
 
 	public Desenvolvedor login(PacketStruct packet) {
 		DadosAutenticacao authData = (DadosAutenticacao) packet.getData();
-		return login(authData);
+		try {
+			return validacaoDesenvolvedor.autenticaDesenvolvedor(authData);
+		} catch (DesenvolvedorInexistenteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (EmailInvalidoException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SenhaInvalidaException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ErroDeAutenticacaoException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
 	}
 	public Desenvolvedor login(DadosAutenticacao authData) {
 		// TODO Auto-generated method stub
