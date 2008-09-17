@@ -5,14 +5,16 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Set;
+import java.util.Map.Entry;
 
-import beans.TipoAtividade;
-import beans.Conhecimento;
-import beans.Desenvolvedor;
 import persistencia.MySQLConnectionFactory;
-import persistencia.interfaces.ServicoAtividade;
 import persistencia.interfaces.ServicoConhecimento;
 import persistencia.interfaces.ServicoDesenvolvedor;
+import beans.Conhecimento;
+import beans.Desenvolvedor;
+import beans.TipoAtividade;
 
 /**
  * 
@@ -280,7 +282,7 @@ public class ServicoDesenvolvedorImplDAO implements ServicoDesenvolvedor{
 				desenvolvedor.setEmail(rs.getString(1));
 				desenvolvedor.setNome(rs.getString(2));
 				desenvolvedor.setLocalidade(rs.getString(3));
-				desenvolvedor.setListaConhecimento(this.getConhecimentosDoDesenvolvedor(rs.getString(1)));
+				desenvolvedor.setListaConhecimento(this.getConhecimentosDoDesenvolvedor(rs.getString(1), 1));
 
 				return desenvolvedor;
 			}else{
@@ -372,11 +374,12 @@ public class ServicoDesenvolvedorImplDAO implements ServicoDesenvolvedor{
 		}
 	}
 
+	// Modificado por Francisco - 16/09 - 18:50
 	public ArrayList<Conhecimento> getConhecimentosDoDesenvolvedor(String email) {
-
 		Connection conn = MySQLConnectionFactory.getConnection();
 		
 		ArrayList<Conhecimento> list = new ArrayList<Conhecimento>();
+		HashMap<Conhecimento, Double> map = new HashMap<Conhecimento, Double>();
 
 		try {
 
@@ -394,15 +397,17 @@ public class ServicoDesenvolvedorImplDAO implements ServicoDesenvolvedor{
 
 				//pegar chave do conhecimento
 				String nomeConhecimento = rs.getString(2);
+				Double grau = new Double(rs.getInt(3));
+				
 				ServicoConhecimento sc = new ServicoConhecimentoImplDAO();
 
 				Conhecimento conhecimento = sc.getConhecimento(nomeConhecimento);
 
-				list.add(conhecimento);
+				//list.add(conhecimento);
+				map.put(conhecimento, grau);
 
 			}
-			return list;
-
+			//return list;
 
 		} catch (SQLException e) {
 			//e.printStackTrace();
@@ -415,9 +420,64 @@ public class ServicoDesenvolvedorImplDAO implements ServicoDesenvolvedor{
 				onConClose.printStackTrace();	             
 			}
 		}
+		
+		Set<Entry<Conhecimento, Double>> set = map.entrySet();
+		
+		for(Entry<Conhecimento, Double> c : set)
+			list.add(c.getKey());
+		return list;
+	}
+	
+	public HashMap<Conhecimento, Double> getConhecimentosDoDesenvolvedor(String email, int x) {
+		Connection conn = MySQLConnectionFactory.getConnection();
+		
+		ArrayList<Conhecimento> list = new ArrayList<Conhecimento>();
+		HashMap<Conhecimento, Double> map = new HashMap<Conhecimento, Double>();
 
+		try {
+
+			Statement stm = conn.createStatement();
+
+			String SQL = " SELECT * FROM desenvolvedor_has_conhecimento WHERE "+
+			" desenvolvedor_email = '"+email+"' ORDER BY conhecimento_nome;";
+
+
+			System.out.println(SQL);
+			ResultSet rs = stm.executeQuery(SQL);
+
+
+			while (rs.next()){
+
+				//pegar chave do conhecimento
+				String nomeConhecimento = rs.getString(2);
+				Double grau = new Double(rs.getInt(3));
+				
+				ServicoConhecimento sc = new ServicoConhecimentoImplDAO();
+
+				Conhecimento conhecimento = sc.getConhecimento(nomeConhecimento);
+
+				//list.add(conhecimento);
+				map.put(conhecimento, grau);
+
+			}
+			//return list;
+
+		} catch (SQLException e) {
+			//e.printStackTrace();
+			return null;
+		} finally {
+			try {
+				conn.close();
+			} catch (SQLException onConClose) {
+				System.out.println(" Houve erro no fechamento da conexão ");
+				onConClose.printStackTrace();	             
+			}
+		}
+		
+		return map;
 	}
 
+	// Modificado por Francisco - 16/09 -- 18:53
 	public ArrayList<TipoAtividade> getAtividadesDoDesenvolvedor(String email) {
 
 		Connection conn = MySQLConnectionFactory.getConnection();
@@ -437,8 +497,6 @@ public class ServicoDesenvolvedorImplDAO implements ServicoDesenvolvedor{
 
 
 			while (rs.next()){
-
-
 				TipoAtividade tipoAtividade = new TipoAtividade();
 
 				tipoAtividade.setId(rs.getInt(1));
@@ -494,7 +552,7 @@ public class ServicoDesenvolvedorImplDAO implements ServicoDesenvolvedor{
 				desenvolvedor.setEmail(rs.getString(1));
 				desenvolvedor.setNome(rs.getString(2));
 				desenvolvedor.setLocalidade(rs.getString(3));
-				desenvolvedor.setListaConhecimento(this.getConhecimentosDoDesenvolvedor(rs.getString(1)));				
+				desenvolvedor.setListaConhecimento(this.getConhecimentosDoDesenvolvedor(rs.getString(1), 1));				
 
 				list.add(desenvolvedor);
 			}
@@ -528,7 +586,7 @@ public class ServicoDesenvolvedorImplDAO implements ServicoDesenvolvedor{
 				desenvolvedor.setEmail(rs.getString(1));
 				desenvolvedor.setNome(rs.getString(2));
 				desenvolvedor.setLocalidade(rs.getString(3));
-				desenvolvedor.setListaConhecimento(this.getConhecimentosDoDesenvolvedor(rs.getString(1)));
+				desenvolvedor.setListaConhecimento(this.getConhecimentosDoDesenvolvedor(rs.getString(1), 1));
 
 				return desenvolvedor;
 			}else{
