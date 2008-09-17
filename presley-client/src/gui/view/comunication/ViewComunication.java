@@ -351,6 +351,14 @@ public class ViewComunication implements CorePresleyOperations{
 		// TODO Auto-generated method stub
 		return false;
 	}
+
+	public boolean adicionaDesenvolvedor(Desenvolvedor desenvolvedor) {
+		// TODO Auto-generated method stub
+		//PacketStruct respostaPacket = sendPack(desenvolvedor,ADICIONA_DESENVOLVEDOR);//TESTE
+    	//Boolean resposta = (Boolean)respostaPacket.getData();
+    	//return resposta.booleanValue();
+		return true;
+	}
 }
 
 
