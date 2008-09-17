@@ -672,6 +672,45 @@ public class Atividade extends ViewPart {
 		associaConhecimento.setImage(ass);
 		associaConhecimento.setToolTipText("Associa novo conhecimento a atividade");
 		associaConhecimento.setEnabled(false);
+		associaConhecimento.addMouseListener(new MouseListener(){
+			public void mouseDoubleClick(MouseEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			public void mouseDown(MouseEvent arg0) {
+				Conhecimento novoConhecimento = null;
+				Conhecimento ultimoCohecimentoAdicionado = null;
+				
+				//armazena a ultima atividade incluida
+				ArrayList<Conhecimento> conhecimentosAnteriores = viewComunication.getConhecimentosEnvolvidos(atividadeSelecionada);
+				if (conhecimentosAnteriores!=null&&!conhecimentosAnteriores.isEmpty()) {
+					ultimoCohecimentoAdicionado =  conhecimentosAnteriores.get(conhecimentosAnteriores.size()-1);	
+				}
+				
+				
+				// exibe o wizard para adicao de novo conhecimento
+				RunAssociaConhecimentoAtividade();
+				
+				//captura os nomes dos conhecimentos selecionados pelo usuario
+				ArrayList<Conhecimento> conhecimentosPosteriores = viewComunication.getConhecimentosEnvolvidos(atividadeSelecionada);
+				if (conhecimentosPosteriores!=null&&!conhecimentosPosteriores.isEmpty()) {  
+					novoConhecimento = conhecimentosPosteriores.get(conhecimentosPosteriores.size()-1);
+					listaConhecimentos.add(novoConhecimento.getNome());
+				}
+			
+			
+			}
+			
+			public void mouseUp(MouseEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+
+			
+		});
+
 		
 		desassociaConhecimento = new Button(parentComposite, SWT.NONE);
 		Image desass = new Image(addAtividade.getDisplay(),this.getClass().getResourceAsStream("/icons/desassociaConh.gif"));
@@ -853,8 +892,16 @@ public class Atividade extends ViewPart {
 		runLogin.run(null);
 		
 	}
+	private void RunAssociaConhecimentoAtividade(){
+		gui.action.RunAssociaConhecimentoAtividadeWizardAction runLogin = new gui.action.RunAssociaConhecimentoAtividadeWizardAction(this);
+		runLogin.run(null);
+	}
 	
 	public ViewComunication getViewComunication(){
 		return this.viewComunication;
+	}
+	
+	public String getAtividadeSelecionada(){
+		return this.atividadeSelecionada;
 	}
 }
