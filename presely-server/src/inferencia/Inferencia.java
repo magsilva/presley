@@ -1,15 +1,10 @@
 package inferencia;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.Set;
 import java.util.Map.Entry;
 
-import persistencia.MySQLConnectionFactory;
+import validacao.implementacao.ValidacaoInferenciaImpl;
 import beans.Desenvolvedor;
 
 /*
@@ -27,115 +22,92 @@ import beans.Desenvolvedor;
  */
 public class Inferencia {
 	
-	public static void main(String args[]){
-		ArrayList<Desenvolvedor> lDesenv = getDesenvolvedores(new String[]{"java", "conector"}, 50);
-		
-		for(Desenvolvedor d : lDesenv){
-			System.out.println(d);
-		}
-		
+	private ValidacaoInferenciaImpl validaInf;
+	
+//	public static void main(String args[]){
+//		ArrayList<Desenvolvedor> lDesenv = getDesenvolvedores(new String[]{"java", "conector"}, 50);
+//		
+//		for(Desenvolvedor d : lDesenv){
+//			System.out.println(d);
+//		}
+//		
+//	}
+	
+	public Inferencia(){
+		validaInf = new ValidacaoInferenciaImpl();
 	}
 	
-	public static ArrayList<Desenvolvedor> getDesenvolvedores(String[] conhecimentos, double conf){
-    
-		//MySQLConnectionFactory factory = new MySQLConnectionFactory();
+	public ArrayList<Desenvolvedor> getDesenvolvedores(String[] conhecimentos, double conf){
+		
 		int max = conhecimentos.length;
 		int cont = 1;
 		
-		Connection conn = MySQLConnectionFactory.getConnection();
-		
-		Map<String, Double> mCand = new HashMap<String, Double>();
-		Map<String, Desenvolvedor> mDes = new HashMap<String, Desenvolvedor>();
+		HashMap<Desenvolvedor, Double> mCand = new HashMap<Desenvolvedor, Double>();
 		
 		for(String c : conhecimentos){
-		
-			try{
-				
-				Statement stm = conn.createStatement();
-				
-				String sql = "select email, nome, localidade, grau, qtd_resposta from " +
-							 "desenvolvedor_has_conhecimento as dc, desenvolvedor where " +
-							 "dc.conhecimento_nome = '"+c+"' and dc.desenvolvedor_email = email and " +
-							 		" grau > 0";
-				
-				ResultSet rs = stm.executeQuery(sql);
-				
-				while(rs.next()){
-					
-					/* Instanciando e iniciando valores do Desenvolvedor */
-					Desenvolvedor d = new Desenvolvedor();
-					d.setEmail(rs.getString(1));
-					d.setNome(rs.getString(2));
-					d.setLocalidade(rs.getString(3));
-					/* -------------------------------------------------- */
-					
-					mDes.put(d.getEmail(), d);
-					
-					/* Ajustando o 'valor' de seu conhecimento em um dado conhecimento */
-					int grau = rs.getInt(4);
-					int qtd = rs.getInt(5);
-					double valor = ((double)((qtd*4)+(grau*6)))/10;
-					valor = valor * ((double)cont/max);
-					/* -------- */
-
-					/* Verifica se o candidato ja existe na tabela */
-					if(mCand.containsKey(d.getEmail())){
-						mCand.put(d.getEmail(), mCand.get(d.getEmail())+valor);
-					} else{
-						mCand.put(d.getEmail(), valor);
-					}
-					/* --------- */
-				}
-				
-			} catch(SQLException e){
-				
-			}
+			
+			HashMap<Desenvolvedor, Double> mCandidatos = validaInf.getDesenvolvedoresByConhecimento(c);
+			
+			atualizaPossiveisDesenvolvedores(mCand, mCandidatos, ((double)cont)/max);
  
 			cont++; // Proximo conhecimento
 		}
 		
-		/* Ordenando os candidatos pelo conhecimento */
-		ArrayList<Desenvolvedor> l = new ArrayList<Desenvolvedor>();
-		double confianca = 0.0;
+		return (getDesenvolvedoresAptos(mCand, conf));
 		
-		while(true){
-			String chave = getMaiorCandidato(mCand, conf);
-			
-			if(chave == null) break;			
-			l.add(mDes.get(chave));
-		}
-		/* --------------------- */
-		
-		Set<Entry<String, Double>> s = mCand.entrySet();
-		
-		/* Adicionando apenas os candidatos aptos na lista */
-		for(Entry<String, Double> e : s){
-			System.out.println(e.getKey() + " -- " + e.getValue());
-		}
-		/* ----------- */
-		
-		System.out.println(l.size());
-		
-		return l;
 	}
 	
-	public static String getMaiorCandidato(Map cand, double conf){
-		double temp = 0.0;
-		String email = null;
+	public ArrayList<Desenvolvedor> getDesenvolvedoresAptos(HashMap<Desenvolvedor, Double> cand, double conf){
+		int pos = 0;
+		ArrayList<Desenvolvedor> arDes = new ArrayList<Desenvolvedor>();
 		
-		Set<Entry<String, Double>> s = cand.entrySet();
+		while(cand.size() != 0){
+			Object[] obj = getMaiorCandidato(cand);
+			
+			if(((Double)obj[1] > conf)){
+				arDes.add(pos++, (Desenvolvedor)obj[0]);
+			}
+		}
+		
+		return arDes;
+	}
+
+	public void atualizaPossiveisDesenvolvedores(HashMap<Desenvolvedor, Double> cand, HashMap<Desenvolvedor, Double> aux, double peso){
+		
+		Set<Entry<Desenvolvedor, Double>> conj = aux.entrySet();
+		
+		for(Entry<Desenvolvedor, Double> d : conj){
+			double value = peso*d.getValue();
+			if(cand.containsKey(d.getKey())){
+				cand.put(d.getKey(), cand.get(d.getKey())+value);
+			} else{
+				cand.put(d.getKey(), value);
+			}
+		}
+	}
+	
+	public Object[] getMaiorCandidato(HashMap<Desenvolvedor, Double> cand){
+		double temp = 0.0;
+		
+		Desenvolvedor d = null;
+		
+		Set<Entry<Desenvolvedor, Double>> s = cand.entrySet();
 		
 		/* Buscando o maior candidato da tabela */
-		for(Entry<String, Double> row : s){
+		for(Entry<Desenvolvedor, Double> row : s){
 			if(row.getValue() > temp){
-				email = row.getKey();
+				temp = row.getValue();
+				d = row.getKey();
 			}
 		}
 		/* ---------------- */
 		
-		cand.remove(email);
+		cand.remove(d);
+		Object[] obj = new Object[2];
+		obj[0] = d;
+		obj[1] = temp;
 		
-		return (temp>=conf)?email:null;
+		return (obj[0]==null)?null:obj;
 		
 	}
     
