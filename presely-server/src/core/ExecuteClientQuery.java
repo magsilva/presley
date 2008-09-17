@@ -158,7 +158,15 @@ public class ExecuteClientQuery implements CorePresleyOperations{
 	public boolean associaProblemaAtividade(Problema problema,
 			TipoAtividade atividade) {
 
-		return valProblema.cadastrarProblema(atividade.getId(), problema.getDescricao(), problema.getData(), problema.getMensagem());
+		try {
+			return valProblema.cadastrarProblema(atividade.getId(), problema.getDescricao(), problema.getData(), problema.getMensagem());
+		} catch (DescricaoInvalidaException e) {
+			e.printStackTrace();
+			return false;
+		} catch (AtividadeInexistenteException e) {
+			e.printStackTrace();
+			return false;
+		}
 	}
 
 	/**
@@ -207,9 +215,17 @@ public class ExecuteClientQuery implements CorePresleyOperations{
 		Iterator it = listaConhecimento.iterator();
 		while(it.hasNext()) {
 			Conhecimento conhecimento = (Conhecimento) it.next();
-			retorno = validacaoAtividade.removerConhecimentoDaAtividade(atividade.getId(), conhecimento.getNome());
+			try {
+				return retorno = validacaoAtividade.removerConhecimentoDaAtividade(atividade.getId(), conhecimento.getNome());
+			} catch (ConhecimentoInexistenteException e) {
+				e.printStackTrace();
+				return false;
+			} catch (AtividadeInexistenteException e) {
+				e.printStackTrace();
+				return false;
+			}
 		}
-		return retorno;
+		return true;
 	}
 
 	public boolean desassociaProblemaAtividade(PacketStruct packet) {
@@ -320,7 +336,17 @@ public class ExecuteClientQuery implements CorePresleyOperations{
 	
 	// TODO procurar Rodrigo
 	public ArrayList<TipoAtividade> getListaAtividades() {
-		return new ValidacaoAtividadeImpl().getTodasAtividades();
+		return new ValidacaoAtividadeImpl().listarAtividades();
+	}
+
+	public boolean adicionaDesenvolvedor(Desenvolvedor desenvolvedor) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public ArrayList<TipoAtividade> buscaAtividades() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	
