@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Set;
 import java.util.Map.Entry;
 
+import validacao.excessao.DesenvolvedorInexistenteException;
 import validacao.implementacao.ValidacaoInferenciaImpl;
 import beans.Desenvolvedor;
 
@@ -46,9 +47,14 @@ public class Inferencia {
 		
 		for(String c : conhecimentos){
 			
-			HashMap<Desenvolvedor, Double> mCandidatos = validaInf.getDesenvolvedoresByConhecimento(c);
-			
-			atualizaPossiveisDesenvolvedores(mCand, mCandidatos, ((double)cont)/max);
+			try{
+				
+				HashMap<Desenvolvedor, Double> mCandidatos = validaInf.getDesenvolvedoresByConhecimento(c);
+				atualizaPossiveisDesenvolvedores(mCand, mCandidatos, ((double)cont)/max);
+				
+			} catch(DesenvolvedorInexistenteException e){
+				
+			}
  
 			cont++; // Proximo conhecimento
 		}
