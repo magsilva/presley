@@ -55,5 +55,15 @@ public class Desenvolvedor implements Serializable {
 		return senha;
 	}
 	
+	@Override
+	public boolean equals(Object arg){
+		return this.nome.equals(((Desenvolvedor)arg).nome);
+	}
+	
+	@Override
+	public int hashCode(){
+		return this.email.hashCode();
+	}
+	
 }
 
