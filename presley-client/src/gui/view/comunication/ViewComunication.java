@@ -24,7 +24,7 @@ import facade.PrincipalSUBJECT;
  * @since 2008
  */
 public class ViewComunication implements CorePresleyOperations{	
-	private ArrayList<String> atividades = new ArrayList<String>();	
+	private ArrayList<TipoAtividade> atividades = new ArrayList<TipoAtividade>();	
 	private ArrayList<Desenvolvedor> listaDesenvolvedores = new ArrayList<Desenvolvedor>();//Lista de todos os desenvolvedores
 	private ArrayList<Conhecimento> listaConhecimentos = new ArrayList<Conhecimento>();//Lista de todos os conhecimentos
 	private HashMap<String,ArrayList<Conhecimento>> conhecimentos = new HashMap<String,ArrayList<Conhecimento>>();
@@ -53,6 +53,12 @@ public class ViewComunication implements CorePresleyOperations{
 	 * @return Tree é a arvore de conhecimentos.
 	 */
 	public Tree getOntologia(){
+		//PacketStruct respostaPacket = sendPack(null, GET_ONTOLOGIA);
+    	//Tree resposta = (Tree)respostaPacket.getData();
+    	//if (resposta!=null) {
+    	//	this.ontologia = resposta;
+		//}
+    	
 		return ontologia;
 	}
 	
@@ -87,12 +93,19 @@ public class ViewComunication implements CorePresleyOperations{
 	}
 	
 	/**
-	 * Retorna as atividades cadastradas
+	 * Retorna os nomes das atividades cadastradas
 	 * @return ArrayList<String> é a lista de atividades
 	 */
 	public ArrayList<String> getAtividades()
 	{
-		return this.atividades;
+		ArrayList<String> retorno = new ArrayList<String>();
+		if (this.atividades!=null) {
+			for (TipoAtividade atividade : this.atividades) {
+				retorno.add(atividade.getDescricao());
+			}
+			
+		}
+		return retorno;
 	}
 	
 	/**
@@ -227,7 +240,7 @@ public class ViewComunication implements CorePresleyOperations{
     	PacketStruct respostaPacket = sendPack(atividade, ADICIONA_ATIVIDADE);
     	Boolean resposta = (Boolean)respostaPacket.getData();
     	if (resposta.booleanValue()==true) {
-    		this.atividades.add(atividade.getDescricao());
+    		this.atividades.add(atividade);
     		this.conhecimentos.put(atividade.getDescricao(), atividade.getListaDeConhecimentosEnvolvidos());
 		}
     	System.out.println("Resposta: "+resposta.booleanValue());
@@ -355,15 +368,24 @@ public class ViewComunication implements CorePresleyOperations{
 
 	public boolean adicionaDesenvolvedor(Desenvolvedor desenvolvedor) {
 		// TODO Auto-generated method stub
-		//PacketStruct respostaPacket = sendPack(desenvolvedor,ADICIONA_DESENVOLVEDOR);//TESTE
-    	//Boolean resposta = (Boolean)respostaPacket.getData();
-    	//return resposta.booleanValue();
-		return true;
+		PacketStruct respostaPacket = sendPack(desenvolvedor,ADICIONA_DESENVOLVEDOR);//TESTE
+    	Boolean resposta = (Boolean)respostaPacket.getData();
+    	return resposta.booleanValue();
 	}
 
+	/**
+	 * Retorna uma lista de Atividades
+	 * @return ArrayList<TipoAtividade> é a lista de atividades cadastradas
+	 */
 	public ArrayList<TipoAtividade> buscaAtividades() {
 		// TODO Auto-generated method stub
-		return null;
+		PacketStruct respostaPacket = sendPack(null, BUSCA_ATIVIDADE);
+		ArrayList<TipoAtividade> resposta = (ArrayList<TipoAtividade>)respostaPacket.getData();
+    	if (resposta!=null) {
+    		atividades = resposta;
+		}
+    	
+		return atividades;
 	}
 
 	public Desenvolvedor login(DadosAutenticacao authData) {
