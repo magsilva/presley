@@ -88,6 +88,8 @@ public interface ServicoConhecimento {
 	 * @throws ConhecimentoInexistenteException
 	 */
 	public ArrayList<Conhecimento> getPais(String nomeConhecimentoFilho) throws ConhecimentoInexistenteException;
+
+	public ArrayList<Conhecimento> getListaConhecimento();
 	
 }
 

@@ -215,4 +215,9 @@ public class ValidacaoConhecimentoImpl {
 		return servicoConhecimento.getPais(nomeConhecimentoFilho);
 	}
 
+	public ArrayList<Conhecimento> getListaConhecimento() {
+		// TODO Auto-generated method stub
+		return servicoConhecimento.getListaConhecimento();
+	}
+
 }

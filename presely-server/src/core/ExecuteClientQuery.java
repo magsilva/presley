@@ -308,29 +308,29 @@ public class ExecuteClientQuery implements CorePresleyOperations{
 	}
 	public boolean removerAtividade(TipoAtividade atividade) {
 
+		boolean retorno = false;
+		
 		try {
 			validacaoAtividade.removerAtividade(atividade.getId());
+			retorno = true;
 		} catch (AtividadeInexistenteException e) {
-			return false;
 		}
-		return true;
+		return retorno;
 	}
 
 	public ArrayList<Conhecimento> getListaConhecimentos() {
-		// TODO Auto-generated method stub
-		
+		ArrayList<Conhecimento> retorno = null;
 		try {
-			valConhecimento.getConhecimento(null);
+			retorno = validacaoConhecimento.getListaConhecimento();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return null;
+		return retorno;
 	}
 	
-	// TODO procurar Rodrigo
 	public ArrayList<TipoAtividade> getListaAtividades() {
-		return new ValidacaoAtividadeImpl().listarAtividades();
+		return validacaoAtividade.listarAtividades();
 	}
 
 	public boolean adicionaDesenvolvedor(PacketStruct packet) {
