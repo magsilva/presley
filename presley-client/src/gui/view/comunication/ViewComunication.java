@@ -382,8 +382,8 @@ public class ViewComunication implements CorePresleyOperations{
 		//PacketStruct respostaPacket = sendPack(null, BUSCA_ATIVIDADE);
 		//ArrayList<TipoAtividade> resposta = (ArrayList<TipoAtividade>)respostaPacket.getData();
     	//if (resposta!=null) {
-    	//	atividades = resposta;
-		//}
+    		//atividades = resposta;
+	//	}
     	
 		return atividades;
 	}

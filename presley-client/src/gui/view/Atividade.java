@@ -308,6 +308,8 @@ public class Atividade extends ViewPart {
 					novaAtividade = atividadesPosteriores.get(atividadesPosteriores.size()-1);
 				}
 				
+				//viewComunication.buscaAtividades();
+				
 				//ação de adicionar atividade foi cancelada
 				if (ultimaAtividadeAdicionada!=null&&!ultimaAtividadeAdicionada.equals(novaAtividade)) {
 				
