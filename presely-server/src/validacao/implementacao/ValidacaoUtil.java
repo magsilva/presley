@@ -13,14 +13,19 @@ public class ValidacaoUtil {
 	}
 	
 	public static boolean validaEmail(String email) {
-		
+
+		if(email == null){
+			return false;
+		}
+		if(email.length() == 0){
+			return false;
+		}
 		if (email.indexOf("@") == -1) {
 			return false;
 		}
 		if (email.indexOf(".") == -1) {
 			return false;
 		}
-		
 		return true;
 	}
 	
