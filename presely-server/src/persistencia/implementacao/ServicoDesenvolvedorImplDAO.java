@@ -22,7 +22,7 @@ import beans.TipoAtividade;
  * Essa classe contem a implementacao das operacoes que um desenvolvedor
  * pode realizar sobre o sistema.
  * 
- * Última modificacao: 03/09/2008 por Amilcar Jr
+ * Última modificacao: 17/09/2008 por RodrigoCMD
  */
 
 public class ServicoDesenvolvedorImplDAO implements ServicoDesenvolvedor{
