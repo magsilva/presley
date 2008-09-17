@@ -8,6 +8,7 @@ import gui.view.comunication.ViewComunication;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Hashtable;
 import java.util.Set;
 
 
@@ -53,8 +54,9 @@ public class Atividade extends ViewPart {
 	private RunRemoveAtividadeWizardAction runRemoveAtividade;
 	private RunAssociaProblemaAtividadeWizardAction runAssociaProblema;
 	
-	private Desenvolvedor desenvolvedorLogado;
-	private String atividadeSelecionada;
+	private Desenvolvedor desenvolvedorLogado = null;
+	private String atividadeSelecionada = null;
+	private Hashtable<String, ArrayList<Conhecimento>> problemaAssociadoConhecimentos = new Hashtable<String, ArrayList<Conhecimento>>();
 	
 	private final int larguraBotao = 20;
 	private final int alturaBotao = 20;
@@ -796,6 +798,10 @@ public class Atividade extends ViewPart {
 
 	public void adicionaAtividade(TipoAtividade atividade){
 		this.viewComunication.adicionaAtividade(atividade);
+	}
+	
+	public void associaConhecimentosProblema(Problema problema, ArrayList<Conhecimento> conhecimentos){
+		this.problemaAssociadoConhecimentos.put(problema.getDescricao(), conhecimentos);
 	}
 	
 	public void login(String nome, String senha, String ip){

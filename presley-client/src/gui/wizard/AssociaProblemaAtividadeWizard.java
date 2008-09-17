@@ -84,6 +84,11 @@ public class AssociaProblemaAtividadeWizard extends Wizard implements INewWizard
 				}
 			}
   
+    		//Associa os conhecimentos ao problema
+    		//Essa lista de conhecimetos será enviada quando for buscar
+    		//a lista de desenvolvedores que ajudarão no problema
+    		atividade.associaConhecimentosProblema(problema, conhecimentos);
+    		
     		//Cria a atividade no banco
     		atividade.getViewComunication().associaProblemaAtividade(problema, atividadeAssociada);
  

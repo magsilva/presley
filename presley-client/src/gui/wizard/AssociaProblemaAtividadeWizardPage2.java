@@ -123,24 +123,19 @@ public class AssociaProblemaAtividadeWizardPage2 extends WizardPage {
 				public void handleEvent(Event e) {
 					// TODO Auto-generated method stub
 					TreeItem atual=null;
-					if (e.detail==SWT.CHECK) {
-						atual = (TreeItem)e.item;
-						if (atual.getChecked()) {
-							//Verifica se é o raiz, se for, não inclui este na lista
-							if (!atual.getText().equals(conhecimentosModelo.getRaiz().getNome())) {
-									conhecimentosSelecionados.put(atual.getText(), atual);	
-									
-							}	
-						}
-						for (TreeItem pai = atual.getParentItem(); pai!=null; pai = pai.getParentItem()) {
-								pai.setChecked(true);	
-								//Verifica se é o raiz, se for, não inclui este na lista
-								if (!pai.getText().equals(conhecimentosModelo.getRaiz().getNome())) {
-										conhecimentosSelecionados.put(pai.getText(), pai);
-								}
+					atual = (TreeItem)e.item;
+					//Verifica se é o raiz, se for, não inclui este na lista
+					if (!atual.getText().equals(conhecimentosModelo.getRaiz().getNome())) {
+						conhecimentosSelecionados.put(atual.getText(), atual);	
+					}	
+					for (TreeItem pai = atual.getParentItem(); pai!=null; pai = pai.getParentItem()) {
+						//Verifica se é o raiz, se for, não inclui este na lista
+						if (!pai.getText().equals(conhecimentosModelo.getRaiz().getNome())) {
+							conhecimentosSelecionados.put(pai.getText(), pai);
 						}
 					}
-				}
+					}
+				
 			
 			});
             

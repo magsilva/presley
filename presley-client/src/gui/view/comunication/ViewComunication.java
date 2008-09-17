@@ -379,11 +379,11 @@ public class ViewComunication implements CorePresleyOperations{
 	 */
 	public ArrayList<TipoAtividade> buscaAtividades() {
 		// TODO Auto-generated method stub
-		PacketStruct respostaPacket = sendPack(null, BUSCA_ATIVIDADE);
-		ArrayList<TipoAtividade> resposta = (ArrayList<TipoAtividade>)respostaPacket.getData();
-    	if (resposta!=null) {
-    		atividades = resposta;
-		}
+		//PacketStruct respostaPacket = sendPack(null, BUSCA_ATIVIDADE);
+		//ArrayList<TipoAtividade> resposta = (ArrayList<TipoAtividade>)respostaPacket.getData();
+    	//if (resposta!=null) {
+    	//	atividades = resposta;
+		//}
     	
 		return atividades;
 	}
