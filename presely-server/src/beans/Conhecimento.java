@@ -33,5 +33,15 @@ public class Conhecimento implements Serializable {
 		this.descricao = descricao;
 	}
 	
+	@Override
+	public boolean equals(Object obj){
+		return this.nome.equals(((Conhecimento)obj).nome);
+	}
+	
+	@Override
+	public int hashCode(){
+		return this.nome.hashCode();
+	}
+	
 }
 
