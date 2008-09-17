@@ -17,6 +17,7 @@ import persistencia.interfaces.ServicoDesenvolvedor;
 import persistencia.interfaces.ServicoSolucao;
 import validacao.excessao.ConhecimentoInexistenteException;
 import validacao.excessao.DescricaoInvalidaException;
+import validacao.excessao.DesenvolvedorInexistenteException;
 
 /**
  * 
@@ -191,8 +192,43 @@ public class ValidacaoDesenvolvedorImpl {
 		return servicoDesenvolvedor.removerDesenvolvedor(email);
 	}
 	
+	/**
+	 * Lista todos os desenvolvedores do banco.
+	 * @return
+	 */
 	public ArrayList<Desenvolvedor> getListaDesenvolvedores() {
 		return servicoDesenvolvedor.getTodosDesenvolvedores();
+	}
+	
+	/**
+	 * Esse método retorna a quantidade de respostas que um desenvolvedor tem em um conhecimento/
+	 * @param email Email do desenvolvedor que possui tal conhecimento.
+	 * @param nomeConhecimento Nome do conhecimento associado ao desenvolvedor. 
+	 * @return quantidade de respostas.
+	 */
+	public int getQntResposta(String email, String nomeConhecimento) 
+		throws ConhecimentoInexistenteException, DesenvolvedorInexistenteException {
+		
+		if (!servicoDesenvolvedor.desenvolvedorExiste(email)) throw new DesenvolvedorInexistenteException();
+		if (!servicoConhecimento.conhecimentoExiste(nomeConhecimento)) throw new ConhecimentoInexistenteException();
+		
+		return servicoDesenvolvedor.getQntResposta(email, nomeConhecimento);
+	}
+	
+	/**
+	 * Esse método altera a quantidade de respostas que um desenvolvedor possui em um conhecimento/
+	 * @param email Email do desenvolvedor que possui tal conhecimento.
+	 * @param nomeConhecimento Nome do conhecimento associado ao desenvolvedor. 
+	 * @return true se a atualização foi feita com sucesso.
+	 */
+	public boolean updateQntResposta(String email, String nomeConhecimento, int quantidade)
+		throws DesenvolvedorInexistenteException, ConhecimentoInexistenteException{
+		
+		if (!servicoDesenvolvedor.desenvolvedorExiste(email)) throw new DesenvolvedorInexistenteException();
+		if (!servicoConhecimento.conhecimentoExiste(nomeConhecimento)) throw new ConhecimentoInexistenteException();
+		
+		return servicoDesenvolvedor.updateQntResposta(email, nomeConhecimento, quantidade);
+		
 	}
 
 }
