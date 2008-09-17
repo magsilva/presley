@@ -40,7 +40,7 @@ public class ViewComunication implements CorePresleyOperations{
 		///*
 		try {
 			System.out.println("instanciando cliente");
-			//PrincipalSUBJECT.getInstance("client", "150.165.130.196", 1099);
+			PrincipalSUBJECT.getInstance("client", "150.165.130.196", 1099);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -173,12 +173,12 @@ public class ViewComunication implements CorePresleyOperations{
 			
 			Desenvolvedor desenvolvedor = new Desenvolvedor();
 			desenvolvedor.setNome("FULANO");
-			desenvolvedor.setEmail("fulano@algumDominio.com.br");
+			desenvolvedor.setEmail("fulano1@algumDominio.com.br");
 			desenvolvedor.setLocalidade("Rua Projetada");
 			desenvolvedor.setListaConhecimento(listaConhecimentosDesenvolvedor);
 			Desenvolvedor supervisor = new Desenvolvedor();
 			supervisor.setNome("SICRANO");
-			supervisor.setEmail("sicrano@algumDominio.com.br");
+			supervisor.setEmail("sicrano1@algumDominio.com.br");
 			supervisor.setLocalidade("Rua Projetada");
 			supervisor.setListaConhecimento(listaConhecimentosDesenvolvedor);
 			ArrayList<Desenvolvedor> listaDesenvolvedores = new ArrayList<Desenvolvedor>();
@@ -237,15 +237,15 @@ public class ViewComunication implements CorePresleyOperations{
 	 */
 	public boolean adicionaAtividade(TipoAtividade atividade) {
 		// TODO Auto-generated method stub
-    	//PacketStruct respostaPacket = sendPack(atividade, ADICIONA_ATIVIDADE);
-    	//Boolean resposta = (Boolean)respostaPacket.getData();
-    	//if (resposta.booleanValue()==true) {
+    	PacketStruct respostaPacket = sendPack(atividade, ADICIONA_ATIVIDADE);
+    	Boolean resposta = (Boolean)respostaPacket.getData();
+    	if (resposta.booleanValue()==true) {
     		this.atividades.add(atividade);
     		this.conhecimentos.put(atividade.getDescricao(), atividade.getListaDeConhecimentosEnvolvidos());
-		//}
-    	//System.out.println("Resposta: "+resposta.booleanValue());
-		//return resposta.booleanValue();
-    	return true;//TESTE
+		}
+    	System.out.println("Resposta: "+resposta.booleanValue());
+		return resposta.booleanValue();
+    	//return true;//TESTE
 	}
 	
 	/**
