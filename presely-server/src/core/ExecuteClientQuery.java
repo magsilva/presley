@@ -10,6 +10,7 @@ package core;
 import inferencia.Inferencia;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import ontologia.Ontologia;
 
@@ -174,8 +175,10 @@ public class ExecuteClientQuery implements CorePresleyOperations{
 
 		return buscaDesenvolvedores(problema, listaConhecimento, grauDeConfianca);
 	}	
+
 	public ArrayList<Desenvolvedor> buscaDesenvolvedores(Problema problema,
 			ArrayList<Conhecimento> listaConhecimento, int grauDeConfianca) {
+
 		// TODO Auto-generated method stub
 		String[] conhecimentos = new String[problema.getConhecimentos().size()];
 		for(int i = 0; i < listaConhecimento.size(); i++)
@@ -184,7 +187,9 @@ public class ExecuteClientQuery implements CorePresleyOperations{
 		ArrayList<Desenvolvedor> listaDesenvolvedores = Inferencia.getDesenvolvedores(conhecimentos, grauDeConfianca);
 		
 		return listaDesenvolvedores;
+	
 	}
+		
 
 	public boolean desassociaConhecimentoAtividade(PacketStruct packet) {
 		ConhecimentoAtividade conhecimentoAtividade = (ConhecimentoAtividade)packet.getData();
@@ -193,10 +198,18 @@ public class ExecuteClientQuery implements CorePresleyOperations{
 
 		return desassociaConhecimentoAtividade(listaConhecimento, atividade);
 	}
+	
 	public boolean desassociaConhecimentoAtividade(
 			ArrayList<Conhecimento> listaConhecimento, TipoAtividade atividade) {
-		// TODO Auto-generated method stub
-		return false;
+		
+		boolean retorno = true;
+		
+		Iterator it = listaConhecimento.iterator();
+		while(it.hasNext()) {
+			Conhecimento conhecimento = (Conhecimento) it.next();
+			retorno = validacaoAtividade.removerConhecimentoDaAtividade(atividade.getId(), conhecimento.getNome());
+		}
+		return retorno;
 	}
 
 	public boolean desassociaProblemaAtividade(PacketStruct packet) {
@@ -310,7 +323,6 @@ public class ExecuteClientQuery implements CorePresleyOperations{
 		return new ValidacaoAtividadeImpl().getTodasAtividades();
 	}
 
-
-
+	
 
 }
