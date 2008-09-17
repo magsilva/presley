@@ -54,15 +54,7 @@ public class RemoveConhecimentoWizard extends Wizard implements INewWizard {
 	public boolean performFinish() {
 		// TODO Auto-generated method stub
         //First save all the page data as variables.
-    	try{
-    		String atividade = page.getNomeConhecimento();
-    		
-    	}catch (Exception e) {
-			// TODO: handle exception
-    		System.out.println("ERRO ERRO:"+e.getMessage());
-    		e.printStackTrace();
-		}
-    	
+        	
 		try {
 		      getContainer().run(true, true, new IRunnableWithProgress() {
 		         public void run(IProgressMonitor monitor)
