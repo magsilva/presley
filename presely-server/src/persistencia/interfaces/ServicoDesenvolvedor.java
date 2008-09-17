@@ -3,9 +3,9 @@ package persistencia.interfaces;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import beans.TipoAtividade;
 import beans.Conhecimento;
 import beans.Desenvolvedor;
+import beans.TipoAtividade;
 
 /**
  * 
@@ -82,7 +82,14 @@ public interface ServicoDesenvolvedor {
 	 * @param email Email do desenvolvedor
 	 * @return ArrayList<Conhecimento>
 	 */
-	public HashMap<Conhecimento, Double> getConhecimentosDoDesenvolvedor(String email);
+	public ArrayList<Conhecimento> getConhecimentosDoDesenvolvedor(String email);
+	
+	/**
+	 * Esse método retorna uma lista de conhecimentos que o desenvolvedor possui
+	 * @param email Email do desenvolvedor
+	 * @return ArrayList<Conhecimento>
+	 */
+	public HashMap<Conhecimento, Double> getConhecimentosDoDesenvolvedor(String email, int x);
 	
 	/**
 	 * Esse método retorna uma lista de atividades atribuidas a um desenvolvedor
