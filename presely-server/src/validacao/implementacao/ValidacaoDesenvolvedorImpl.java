@@ -216,6 +216,21 @@ public class ValidacaoDesenvolvedorImpl {
 	}
 	
 	/**
+	 * Esse método retorna o grau de conhecimento que um desenvolvedor tem em um conhecimento/
+	 * @param email Email do desenvolvedor que possui tal conhecimento.
+	 * @param nomeConhecimento Nome do conhecimento associado ao desenvolvedor. 
+	 * @return grau de conhecimento.
+	 */
+	public int getGrau(String email, String nomeConhecimento) 
+		throws ConhecimentoInexistenteException, DesenvolvedorInexistenteException {
+		
+		if (!servicoDesenvolvedor.desenvolvedorExiste(email)) throw new DesenvolvedorInexistenteException();
+		if (!servicoConhecimento.conhecimentoExiste(nomeConhecimento)) throw new ConhecimentoInexistenteException();
+		
+		return servicoDesenvolvedor.getGrau(email, nomeConhecimento);
+	}
+	
+	/**
 	 * Esse método altera a quantidade de respostas que um desenvolvedor possui em um conhecimento/
 	 * @param email Email do desenvolvedor que possui tal conhecimento.
 	 * @param nomeConhecimento Nome do conhecimento associado ao desenvolvedor. 
@@ -228,6 +243,22 @@ public class ValidacaoDesenvolvedorImpl {
 		if (!servicoConhecimento.conhecimentoExiste(nomeConhecimento)) throw new ConhecimentoInexistenteException();
 		
 		return servicoDesenvolvedor.updateQntResposta(email, nomeConhecimento, quantidade);
+		
+	}
+	
+	/**
+	 * Esse método altera o grau de conhecimento de um desenvolvedor em um determinado conhecimento/
+	 * @param email Email do desenvolvedor que possui tal conhecimento.
+	 * @param nomeConhecimento Nome do conhecimento associado ao desenvolvedor. 
+	 * @return true se a atualização foi feita com sucesso.
+	 */
+	public boolean updateGrau(String email, String nomeConhecimento, int grau)
+		throws DesenvolvedorInexistenteException, ConhecimentoInexistenteException{
+		
+		if (!servicoDesenvolvedor.desenvolvedorExiste(email)) throw new DesenvolvedorInexistenteException();
+		if (!servicoConhecimento.conhecimentoExiste(nomeConhecimento)) throw new ConhecimentoInexistenteException();
+		
+		return servicoDesenvolvedor.updateGrau(email, nomeConhecimento, grau);
 		
 	}
 
