@@ -39,6 +39,7 @@ public interface CorePresleyOperations {
 	public static final int GET_LISTA_CONHECIMENTO = 16;
 	public static final int ADICIONA_DESENVOLVEDOR = 17;
 	public static final int GET_ONTOLOGIA = 18;
+	public static final int GET_LISTA_PROBLEMAS = 19;
 	
 	/**
 	 * Este método cadastra uma nova atividade na base de dados.
@@ -192,4 +193,11 @@ public interface CorePresleyOperations {
 	 * @return Tree Arvore de ontologia do sistema.
 	 */
 	public Tree getOntologia();	
+	
+	/**
+	 * Este método uma lista com todos os problemas cadastrados
+	 * CÓDIGO DA OPERAÇÃO -> 19
+	 * @return ArrayList<Problema> lista de problemas.
+	 */
+	public ArrayList<Problema> getListaProblemas();
 }
