@@ -231,12 +231,11 @@ public class ExecuteClientQuery implements CorePresleyOperations{
 	public boolean desassociaProblemaAtividade(PacketStruct packet) {
 		ProblemaAtividade problemaAtividade = (ProblemaAtividade) packet.getData();
 		Problema problema = problemaAtividade.getProblema();
-		TipoAtividade atividade = problemaAtividade.getAtividade();
-		return desassociaProblemaAtividade(problema, atividade);
+		return desassociaProblemaAtividade(problema);
 	}
-	public boolean desassociaProblemaAtividade(Problema problema, TipoAtividade atividade) {
-		// TODO Auto-generated method stub
-		return false;
+	
+	public boolean desassociaProblemaAtividade(Problema problema) {
+		return validacaoProblema.removerProblema(problema.getId());
 	}
 
 	public boolean encerrarAtividade(PacketStruct packet) {

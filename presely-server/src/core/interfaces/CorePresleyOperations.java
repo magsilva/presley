@@ -127,10 +127,9 @@ public interface CorePresleyOperations {
 	 * Este método desassocia um problema a uma atividade
 	 * CÓDIGO DA OPERAÇÃO -> 11
 	 * @param Problema problema
-	 * @param TipoAtividade atividade
 	 * @return true se a desassociação foi realizada com sucesso.
 	 */
-	public boolean desassociaProblemaAtividade(Problema problema, TipoAtividade atividade);
+	public boolean desassociaProblemaAtividade(Problema problema);
 
 	/**
 	 * Este método retorna uma lista de desenvolvedores para resolver um problema
