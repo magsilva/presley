@@ -39,7 +39,6 @@ import beans.Item;
 public class RemoveConhecimentoWizardPage extends WizardPage {
 
 	private Atividade atividade;
-	private Text nomeConhecimentoText;
 	private Text descricaoConhecimentoText;
 	private Button remConhecimentoButton;
 	private Tree arvoreConhecimento;
@@ -47,7 +46,7 @@ public class RemoveConhecimentoWizardPage extends WizardPage {
 	private beans.Tree ontologia;
 	
 	
-	private ArrayList<Desenvolvedor> desenvolvedores;
+
 
     public RemoveConhecimentoWizardPage(ISelection selection, Atividade atividade) {
         super("wizardPage");
@@ -64,10 +63,7 @@ public class RemoveConhecimentoWizardPage extends WizardPage {
         setPageComplete(message == null);
     }
 
-    public String getNomeConhecimento() {
-        return nomeConhecimentoText.getText();
-    }
-    
+     
     public String getDescricaoConhecimento() {
         return descricaoConhecimentoText.getText();
     }
@@ -124,33 +120,15 @@ public class RemoveConhecimentoWizardPage extends WizardPage {
 			public void mouseDown(MouseEvent e) {
 				// TODO Auto-generated method stub
 				//Remove nó na arvore gráfica
-				String nome=null;
 				TreeItem[] treeItem = arvoreConhecimento.getSelection();
-				treeItem[0].setChecked(true);
-				if (treeItem!=null&&treeItem[0]!=null) {
-					TreeItem novoItem = new TreeItem(treeItem[0],treeItem[0].getStyle());
-					nome = nomeConhecimentoText.getText();
-					if (nome!=null||!nome.equals("")) {
-						novoItem.setText(nome);	
-					}else{
-						return;	
-					}
-				}
-				
+											
 				//Remove nó na Ontologia
 				ArrayList<Item> itens = ontologia.localizaFilho(treeItem[0].getText());
 				for (Item item : itens) {
-					if (item.getPai()==null&&treeItem[0].getParentItem()==null) {
-						atividade.getViewComunication().adicionaConhecimento(itens.get(0), nome);
-					}else{
-						if (!(item.getPai()==null||treeItem[0].getParentItem()==null)) {
-							if (item.getPai().getNome().equals(treeItem[0].getParentItem().getText())) {
-								atividade.getViewComunication().adicionaConhecimento(itens.get(0), nome);		
-							}		
-						}
-						
+					item.getPai().removeFilho(treeItem[0].getText());
 					} 
-				} 
+				
+				treeItem[0].dispose();
 			}
 			public void mouseUp(MouseEvent arg0) {
 				// TODO Auto-generated method stub
