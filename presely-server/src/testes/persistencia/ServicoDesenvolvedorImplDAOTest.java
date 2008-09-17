@@ -61,13 +61,13 @@ public class ServicoDesenvolvedorImplDAOTest extends TestCase {
 	
 	public void testCriarDesenvolvedor() {
 		
-		assertTrue(sd.criarDesenvolvedor("amilcarsj@gmail.com", "Amilcar Soares", "João Pessoa"));
+		assertTrue(sd.criarDesenvolvedor("amilcarsj@gmail.com", "Amilcar Soares", "João Pessoa", "123456"));
 		
-		assertTrue(sd.criarDesenvolvedor("asju@gmail.com", "ASJU", "Matsuyama"));
+		assertTrue(sd.criarDesenvolvedor("asju@gmail.com", "ASJU", "Matsuyama", "654321"));
 		
-		assertTrue(sd.criarDesenvolvedor("teste@gmail.com", "Email de teste", "USA"));
+		assertTrue(sd.criarDesenvolvedor("teste@gmail.com", "Email de teste", "USA", "1234567"));
 		
-		if (sd.criarDesenvolvedor("amilcarsj@gmail.com", "Amilcar", "PB"))
+		if (sd.criarDesenvolvedor("amilcarsj@gmail.com", "Amilcar", "PB", "000000"))
 			fail("Usuário devia existir!");
 	}
 	
@@ -99,10 +99,10 @@ public class ServicoDesenvolvedorImplDAOTest extends TestCase {
 	public void testAtualizarDesenvolvedor() {
 		
 		assertTrue(sd.atualizarDesenvolvedor("amilcarsj@gmail.com", "amilcarpiox@hotmail.com",
-				"Amilcar Soares Jr.", "João Pessoa"));
+				"Amilcar Soares Jr.", "João Pessoa", "123456"));
 		
 		assertTrue(sd.atualizarDesenvolvedor("asju@gmail.com", "asju@gmail.com",
-				"ASJU", "Matsuyama-Ehime"));
+				"ASJU", "Matsuyama-Ehime", "123456"));
 				
 		assertTrue(sd.getDesenvolvedor("amilcarpiox@hotmail.com").getLocalidade().equals("João Pessoa"));
 	

@@ -38,9 +38,9 @@ public class ServicoSolucaoImplDAOTest extends TestCase {
 
 	private void criarDesenvolvedores() {
 		
-		assertTrue(sd.criarDesenvolvedor("amilcarsj@gmail.com", "Amilcar Soares", "João Pessoa"));
+		assertTrue(sd.criarDesenvolvedor("amilcarsj@gmail.com", "Amilcar Soares", "João Pessoa", "000000"));
 		
-		assertTrue(sd.criarDesenvolvedor("asju@gmail.com", "ASJU", "Matsuyama"));
+		assertTrue(sd.criarDesenvolvedor("asju@gmail.com", "ASJU", "Matsuyama", "123456"));
 		
 	}
 	
