@@ -38,6 +38,7 @@ public interface CorePresleyOperations {
 	public static final int GET_LISTA_DESENVOLVEDORES = 15;
 	public static final int GET_LISTA_CONHECIMENTO = 16;
 	public static final int ADICIONA_DESENVOLVEDOR = 17;
+	public static final int GET_ONTOLOGIA = 18;
 	
 	/**
 	 * Este método cadastra uma nova atividade na base de dados.
@@ -56,11 +57,11 @@ public interface CorePresleyOperations {
 	public boolean removerAtividade(TipoAtividade atividade);
 
 	/**
-	 * Este método solicita a arvore de ontologia
+	 * Este método retorna as atividades cadastradas
 	 * CÓDIGO DA OPERAÇÃO -> 03
-	 * @return Tree Arvore de ontologia do sistema.
+	 * @return ArrayList<TipoAtividade> lista de atividades.
 	 */
-	public Tree getOntologia();	
+	public ArrayList<TipoAtividade> buscaAtividades();
 	
 	/**
 	 * Este método solicita a arvore de ontologia
@@ -185,4 +186,10 @@ public interface CorePresleyOperations {
 	public boolean adicionaDesenvolvedor(Desenvolvedor desenvolvedor);
 
 
+	/**
+	 * Este método solicita a arvore de ontologia
+	 * CÓDIGO DA OPERAÇÃO -> 18
+	 * @return Tree Arvore de ontologia do sistema.
+	 */
+	public Tree getOntologia();	
 }
