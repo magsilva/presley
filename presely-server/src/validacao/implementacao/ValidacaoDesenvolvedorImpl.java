@@ -101,12 +101,14 @@ public class ValidacaoDesenvolvedorImpl {
 	 * @param nome Nome do novo desenvolvedor.
 	 * @param localidade Local onde o desenvolvedor reside.
 	 * @return true se o desenvolvedor foi criado com sucesso.
+	 * @throws DesenvolvedorInexistenteException 
+	 * @throws SenhaInvalidaException 
 	 */
 	public boolean criarDesenvolvedor(String email, String nome,
-			String localidade, String senha) throws Exception {
+			String localidade, String senha) throws DesenvolvedorInexistenteException, SenhaInvalidaException {
 		
-		if (servicoDesenvolvedor.desenvolvedorExiste(email)) throw new Exception();
-		if (!ValidacaoUtil.validaSenha(senha)) throw new Exception();
+		if (servicoDesenvolvedor.desenvolvedorExiste(email)) throw new DesenvolvedorInexistenteException();
+		if (!ValidacaoUtil.validaSenha(senha)) throw new SenhaInvalidaException();
 		
 		return servicoDesenvolvedor.criarDesenvolvedor(email, nome, localidade, senha);
 	}
