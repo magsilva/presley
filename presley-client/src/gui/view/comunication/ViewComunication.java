@@ -13,10 +13,12 @@ import beans.DadosAutenticacao;
 import beans.Desenvolvedor;
 import beans.Item;
 import beans.Problema;
+import beans.ProblemaAtividade;
 import beans.TipoAtividade;
 import beans.Tree;
 import facade.PacketStruct;
 import facade.PrincipalSUBJECT;
+import excecao.*;
 
 /**
  * Esta classe controla a comunicacao entre o cliente e o servidor.
@@ -27,8 +29,9 @@ public class ViewComunication implements CorePresleyOperations{
 	private ArrayList<TipoAtividade> atividades = new ArrayList<TipoAtividade>();	
 	private ArrayList<Desenvolvedor> listaDesenvolvedores = new ArrayList<Desenvolvedor>();//Lista de todos os desenvolvedores
 	private ArrayList<Conhecimento> listaConhecimentos = new ArrayList<Conhecimento>();//Lista de todos os conhecimentos
-	private HashMap<String,ArrayList<Conhecimento>> conhecimentos = new HashMap<String,ArrayList<Conhecimento>>();
-	private HashMap<String,ArrayList<Problema>> problemas = new HashMap<String,ArrayList<Problema>>();
+	private ArrayList<Problema> listaProblemas = new ArrayList<Problema>();//Lista de todos os problemas
+	private HashMap<String,ArrayList<Conhecimento>> conhecimentos = new HashMap<String,ArrayList<Conhecimento>>();//mapeamento nome de atividade e seus conhecimentos associados
+	private HashMap<String,ArrayList<Problema>> problemas = new HashMap<String,ArrayList<Problema>>();//mapeamento nome de atividade e seus problemas associados
 	private beans.Tree ontologia;//Armazena a ontologia
 
 	
@@ -40,7 +43,7 @@ public class ViewComunication implements CorePresleyOperations{
 		///*
 		try {
 			System.out.println("instanciando cliente");
-		//	PrincipalSUBJECT.getInstance("client", "150.165.130.196", 1099);
+			PrincipalSUBJECT.getInstance("client", "150.165.130.196", 1099);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -237,15 +240,15 @@ public class ViewComunication implements CorePresleyOperations{
 	 */
 	public boolean adicionaAtividade(TipoAtividade atividade) {
 		// TODO Auto-generated method stub
-//    	PacketStruct respostaPacket = sendPack(atividade, ADICIONA_ATIVIDADE);
-//    	Boolean resposta = (Boolean)respostaPacket.getData();
-//    	if (resposta.booleanValue()==true) {
+    	PacketStruct respostaPacket = sendPack(atividade, ADICIONA_ATIVIDADE);
+    	Boolean resposta = (Boolean)respostaPacket.getData();
+    	if (resposta.booleanValue()==true) {
     		this.atividades.add(atividade);
     		this.conhecimentos.put(atividade.getDescricao(), atividade.getListaDeConhecimentosEnvolvidos());
-//		}
-//    	System.out.println("Resposta: "+resposta.booleanValue());
-//		return resposta.booleanValue();
-    	return true;//TESTE
+		}
+    	System.out.println("Resposta: "+resposta.booleanValue());
+		return resposta.booleanValue();
+    	//return true;//TESTE
 	}
 	
 	/**
@@ -266,16 +269,24 @@ public class ViewComunication implements CorePresleyOperations{
 	public boolean associaConhecimentoAtividade(
 			ArrayList<Conhecimento> listaConhecimento, TipoAtividade atividade) {
 		// TODO Auto-generated method stub
-		ArrayList<Conhecimento> conhecimentosAssociados = this.conhecimentos.get(atividade.getDescricao());
-		for (Conhecimento conhecimento : listaConhecimento) {
-			conhecimentosAssociados.add(conhecimento);//ALTERAR PARA NÃO INCLUIR CONHECIMENTOS REPETIDOS
-		}
 		return false;
 	}
 
 	public boolean associaProblemaAtividade(Problema problema,
 			TipoAtividade atividade) {
 		// TODO Auto-generated method stub
+		ProblemaAtividade problemaAtividade = new ProblemaAtividade();
+		problemaAtividade.setAtividade(atividade);
+		problemaAtividade.setProblema(problema);
+		PacketStruct respostaPacket = sendPack(problemaAtividade,ASSOCAR_PROBLEMA_ATIVIDADE);
+    	Boolean resposta = (Boolean)respostaPacket.getData();
+    	//listaDesenvolvedores = resposta;
+    	if (resposta!=null&&resposta.booleanValue()==true) {
+    		this.listaProblemas.add(problema);
+    		ArrayList<Problema> problemasAssociados = this.problemas.get(atividade.getDescricao());
+    		problemasAssociados.add(problema);	
+		}
+		
 		return false;
 	}
 
@@ -357,6 +368,15 @@ public class ViewComunication implements CorePresleyOperations{
     	
 		return listaConhecimentos;
 	}
+	
+	public ArrayList<Problema> getListaProblemas() {
+		// TODO Auto-generated method stub
+		//PacketStruct respostaPacket = sendPack(null,GET_LISTA_PROBLEMAS);
+    	//ArrayList<Problema> resposta = (ArrayList<Problema>)respostaPacket.getData();
+    	//listaProblemas = resposta;
+    	
+		return listaProblemas;
+	}
 
 	public boolean adicionaConhecimento(Conhecimento conhecimento) {
 		// TODO Auto-generated method stub
@@ -386,8 +406,8 @@ public class ViewComunication implements CorePresleyOperations{
 		//PacketStruct respostaPacket = sendPack(null, BUSCA_ATIVIDADE);
 		//ArrayList<TipoAtividade> resposta = (ArrayList<TipoAtividade>)respostaPacket.getData();
     	//if (resposta!=null) {
-    		//atividades = resposta;
-	//	}
+    	//	atividades = resposta;
+		//}
     	
 		return atividades;
 	}
@@ -399,6 +419,11 @@ public class ViewComunication implements CorePresleyOperations{
 			return user;
 		}
 		return null;
+	}
+
+	public boolean desassociaProblemaAtividade(Problema problema) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 }
 
