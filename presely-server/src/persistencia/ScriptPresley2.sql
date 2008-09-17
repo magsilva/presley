@@ -70,7 +70,17 @@ CREATE TABLE solucao (
   mensagem VARCHAR(250) NULL,
   PRIMARY KEY(id),
   INDEX solucao_FKIndex1(problema_id),
-  FOREIGN KEY (desenvolvedor_email) REFERENCES desenvolvedor (email)  
+  FOREIGN KEY (desenvolvedor_email) REFERENCES desenvolvedor (email)
 );
 
+CREATE TABLE mensagem (
+  id INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
+  desenvolvedor_origem_email VARCHAR (40) NOT NULL,
+  desenvolvedor_destino_email VARCHAR (40) NOT NULL,
+  problema	VARCHAR (40) NOT NULL,
+  mensagem VARCHAR (250) NOT NULL,
+  PRIMARY KEY (id),
+  FOREIGN KEY (desenvolvedor_origem_email) REFERENCES desenvolvedor (email),
+  FOREIGN KEY (desenvolvedor_destino_email) REFERENCES desenvolvedor (email)
+);
 
