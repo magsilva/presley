@@ -106,6 +106,7 @@ public class ValidacaoDesenvolvedorImpl {
 			String localidade, String senha) throws Exception {
 		
 		if (servicoDesenvolvedor.desenvolvedorExiste(email)) throw new Exception();
+		if (!ValidacaoUtil.validaSenha(senha)) throw new Exception();
 		
 		return servicoDesenvolvedor.criarDesenvolvedor(email, nome, localidade, senha);
 	}
