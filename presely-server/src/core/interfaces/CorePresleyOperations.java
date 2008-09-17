@@ -3,6 +3,9 @@ package core.interfaces;
 import java.util.ArrayList;
 
 import sun.security.util.Password;
+import validacao.excessao.AtividadeInexistenteException;
+import validacao.excessao.ConhecimentoInexistenteException;
+import validacao.excessao.DescricaoInvalidaException;
 import beans.Conhecimento;
 import beans.DadosAutenticacao;
 import beans.Desenvolvedor;
@@ -45,16 +48,18 @@ public interface CorePresleyOperations {
 	 * CÓDIGO DA OPERAÇÃO -> 01
 	 * @param TipoAtividade atividade 
 	 * @return true se a atividade foi adicionada com sucesso.
+	 * @throws Exception 
 	 */
-	public boolean adicionaAtividade(TipoAtividade atividade);
+	public boolean adicionaAtividade(TipoAtividade atividade) throws Exception;
 	
 	/**
 	 * Este método remove a atividade da base de dados.
 	 * CÓDIGO DA OPERAÇÃO -> 02
 	 * @param TipoAtividade atividade 
 	 * @return true se a atividade foi removida com sucesso.
+	 * @throws AtividadeInexistenteException 
 	 */
-	public boolean removerAtividade(TipoAtividade atividade);
+	public boolean removerAtividade(TipoAtividade atividade) throws AtividadeInexistenteException;
 
 	/**
 	 * Este método retorna as atividades cadastradas
@@ -68,8 +73,11 @@ public interface CorePresleyOperations {
 	 * CÓDIGO DA OPERAÇÃO -> 04
 	 * @param Conhecimento conhecimento
 	 * @return true se o conhecimento foi adicionado com sucesso.
+	 * @throws Exception 
+	 * @throws ConhecimentoInexistenteException 
+	 * @throws DescricaoInvalidaException 
 	 */
-	public boolean adicionaConhecimento(Conhecimento conhecimento);
+	public boolean adicionaConhecimento(Conhecimento conhecimento) throws DescricaoInvalidaException, ConhecimentoInexistenteException, Exception;
 
 	/**
 	 * Este método executa autenticação no servidor
@@ -102,8 +110,11 @@ public interface CorePresleyOperations {
 	 * @param ArrayList<Conhecimento> listaConhecimento
 	 * @param TipoAtividade atividade
 	 * @return true se a associação foi realizada com sucesso.
+	 * @throws ConhecimentoInexistenteException 
+	 * @throws AtividadeInexistenteException 
+	 * @throws Exception 
 	 */
-	public boolean associaConhecimentoAtividade(ArrayList<Conhecimento> listaConhecimento, TipoAtividade atividade);
+	public boolean associaConhecimentoAtividade(ArrayList<Conhecimento> listaConhecimento, TipoAtividade atividade) throws AtividadeInexistenteException, ConhecimentoInexistenteException, Exception;
 
 	/**
 	 * Este método desassocia conhecimentos a uma atividade
@@ -111,8 +122,10 @@ public interface CorePresleyOperations {
 	 * @param ArrayList<Conhecimento> listaConhecimento
 	 * @param TipoAtividade atividade
 	 * @return true se a desassociação foi realizada com sucesso.
+	 * @throws AtividadeInexistenteException 
+	 * @throws ConhecimentoInexistenteException 
 	 */
-	public boolean desassociaConhecimentoAtividade(ArrayList<Conhecimento> listaConhecimento, TipoAtividade atividade);
+	public boolean desassociaConhecimentoAtividade(ArrayList<Conhecimento> listaConhecimento, TipoAtividade atividade) throws ConhecimentoInexistenteException, AtividadeInexistenteException;
 
 	/**
 	 * Este método associa um problema a uma atividade
@@ -120,8 +133,10 @@ public interface CorePresleyOperations {
 	 * @param Problema problema
 	 * @param TipoAtividade atividade
 	 * @return true se a associação foi realizada com sucesso.
+	 * @throws AtividadeInexistenteException 
+	 * @throws DescricaoInvalidaException 
 	 */
-	public boolean associaProblemaAtividade(Problema problema, TipoAtividade atividade);
+	public boolean associaProblemaAtividade(Problema problema, TipoAtividade atividade) throws DescricaoInvalidaException, AtividadeInexistenteException;
 
 	/**
 	 * Este método desassocia um problema a uma atividade
@@ -181,8 +196,9 @@ public interface CorePresleyOperations {
 	 * CÓDIGO DA OPERAÇÃO -> 17
 	 * @param Desenvolvedor desenvolvedor
 	 * @return true se o desenvolvedor foi adicionado com sucesso.
+	 * @throws Exception 
 	 */
-	public boolean adicionaDesenvolvedor(Desenvolvedor desenvolvedor);
+	public boolean adicionaDesenvolvedor(Desenvolvedor desenvolvedor) throws Exception;
 
 
 	/**
