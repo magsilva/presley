@@ -25,8 +25,6 @@ import validacao.implementacao.ValidacaoMensagemImpl;
 import validacao.implementacao.ValidacaoProblemaImpl;
 import validacao.implementacao.ValidacaoUtil;
 
-
-
 import beans.BuscaDesenvolvedores;
 import beans.Conhecimento;
 import beans.ConhecimentoAtividade;
@@ -159,8 +157,7 @@ public class ExecuteClientQuery implements CorePresleyOperations{
 	public boolean associaProblemaAtividade(Problema problema,
 			TipoAtividade atividade) {
 
-		valProblema.cadastrarProblema(atividade.getId(), problema.getDescricao(), problema.getData(), problema.getMensagem());
-		return true;
+		return valProblema.cadastrarProblema(atividade.getId(), problema.getDescricao(), problema.getData(), problema.getMensagem());
 	}
 
 	/**
