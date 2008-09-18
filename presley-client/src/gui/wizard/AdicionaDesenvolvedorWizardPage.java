@@ -31,12 +31,8 @@ public class AdicionaDesenvolvedorWizardPage extends WizardPage {
 	private Text emailText;
 	private Text senhaText;
 	private Text localidadeText;
-	private Text conhecimentoText;
 	private Combo listaDesenvolvedores;
-	private Combo listaSupervisores;
-	private Button naoConcluidoradioButton;
-	private Button concluidoradioButton;
-	private List grupoButoesStatus;
+	
 	
 	
 	private ArrayList<Desenvolvedor> desenvolvedores;
@@ -65,8 +61,8 @@ public class AdicionaDesenvolvedorWizardPage extends WizardPage {
         return senhaText.getText();
     }
     
-    public String getConhecimentoDesenvolvedor() {
-        return conhecimentoText.getText();
+    public String getLocalidadeDesenvolvedor() {
+        return localidadeText.getText();
     }
     
     public Desenvolvedor getDesenvolvedor(){
@@ -83,40 +79,19 @@ public class AdicionaDesenvolvedorWizardPage extends WizardPage {
 
     }
     
-    public Desenvolvedor getNomeSupervisor(){
-    	Desenvolvedor supervisorRetorno = null; 
-    	String selecao = listaDesenvolvedores.getText();
-    	for (Desenvolvedor desenvolvedor : desenvolvedores) {
-			if (desenvolvedor.getNome().equals(selecao)) {
-				supervisorRetorno = desenvolvedor;
-				break;
-			}
-		}
-
-    	return supervisorRetorno;
-    }
-    
-        
-    public boolean getStatus(){
-    	String selecao = this.grupoButoesStatus.getSelection()[0];
-    	if (selecao.equals("Concluído"))
-			return true;
-		else
-			return false;
-    }
-
-    private void dialogChanged() {
+       
+   private void dialogChanged() {
 		// TODO Auto-generated method stub
     }
 
     
     public void createControl(Composite parent) {
-        Composite controls =
-            new Composite(parent, SWT.NULL);
-        GridLayout layout = new GridLayout();
-        controls.setLayout(layout);
-        layout.numColumns = 3;
-        layout.verticalSpacing = 5;
+    	 Composite controls =
+             new Composite(parent, SWT.NULL);
+         GridLayout layout = new GridLayout();
+         controls.setLayout(layout);
+         layout.numColumns = 3;
+         layout.verticalSpacing = 5;
 
         Label label =
             new Label(controls, SWT.NULL);

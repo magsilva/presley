@@ -6,10 +6,10 @@ import gui.view.comunication.ViewComunication;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Hashtable;
 
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.ISelection;
@@ -26,6 +26,7 @@ import beans.TipoAtividade;
 public class AdicionaDesenvolvedorWizard extends Wizard implements INewWizard {
 
 	private AdicionaDesenvolvedorWizardPage page;
+	private AdicionaDesenvolvedorWizardPage2 page2;
 	private ISelection selection;
     private Atividade atividade;
 
@@ -55,29 +56,32 @@ public class AdicionaDesenvolvedorWizard extends Wizard implements INewWizard {
 	public boolean performFinish() {
 		// TODO Auto-generated method stub
         //First save all the page data as variables.
-    	try{
-    		/*String atividade = page.getNomeDesenvolvedor();
-    		
-    		Desenvolvedor desenvolvedor = page.getDesenvolvedor();
-    		Desenvolvedor supervisor = page.getNomeSupervisor();
-    		
-    		    		
-    		TipoAtividade novaAtividade = new TipoAtividade(atividade,desenvolvedor,supervisor,
-    				0,dataInicio,dataFim,status,conhecimentos);
-  
-    		//Cria a atividade no banco
-    		//this.atividade.getViewComunication().adicionaAtividade(novaAtividade);
-	*/
-    		Desenvolvedor desenvolvedor = page.getDesenvolvedor();
-    		this.atividade.getViewComunication().adicionaDesenvolvedor(desenvolvedor);
-    		
-    	}catch (Exception e) {
-    		
-    		MessageDialog.openError(this.getShell(), "ERRO", e.getMessage());
-    		System.out.println("ERRO ERRO:"+e.getMessage());
-    		e.printStackTrace();
+    	  
+		String nome = page.getNomeDesenvolvedor();
+		String email = page.getEmailDesenvolvedor();
+		String local = page.getLocalidadeDesenvolvedor();
+		String senha = page.getSenhaDesenvolvedor();
+		ArrayList<Double> graus = page2.pegaGraus();
+		ArrayList<String> conhecimentos = page2.pegaConhecimentos();
+		ArrayList<Conhecimento> listaConhecimentos = this.atividade.getViewComunication().getListaConhecimentos();
+		ArrayList<Conhecimento> listaConhecimentosSelecionados = new ArrayList<Conhecimento>();
+		HashMap<Conhecimento,Double> mapConhecimentoGrau = new HashMap<Conhecimento, Double>();
+		for (String nomeConhecimento : conhecimentos) {
+			for (Conhecimento conhecimento : listaConhecimentos) {
+				if(conhecimento.getNome().equals(nomeConhecimento)){
+					mapConhecimentoGrau.put(conhecimento, graus.get(conhecimentos.indexOf(nomeConhecimento)));
+				}
+			}
 		}
-    	
+		
+		Desenvolvedor novoDesenvolvedor = new Desenvolvedor();
+		novoDesenvolvedor.setEmail(email);
+		novoDesenvolvedor.setListaConhecimento(mapConhecimentoGrau);
+		novoDesenvolvedor.setLocalidade(local);
+		novoDesenvolvedor.setNome(nome);
+		novoDesenvolvedor.setSenha(senha);
+		this.atividade.getViewComunication().adicionaDesenvolvedor(novoDesenvolvedor);
+		
 		try {
 		      getContainer().run(true, true, new IRunnableWithProgress() {
 		         public void run(IProgressMonitor monitor)
@@ -104,6 +108,8 @@ public class AdicionaDesenvolvedorWizard extends Wizard implements INewWizard {
         page=new AdicionaDesenvolvedorWizardPage(selection, this.atividade);
         addPage(page);
         
+        page2=new AdicionaDesenvolvedorWizardPage2(selection, this.atividade);
+        addPage(page2);
       }
 
 	public Atividade getAtividade() {
