@@ -105,6 +105,8 @@ public class ServicoConhecimentoImplDAO implements ServicoConhecimento{
 		try {
 
 			stm = conn.createStatement();
+			
+			/*Gambiarra*/ descricao = "";
 
 			String SQL = " INSERT INTO conhecimento " +
 			" VALUES('"+nome+"','"+
