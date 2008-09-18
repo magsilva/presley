@@ -28,6 +28,7 @@ import excessao.SenhaInvalidaException;
 
 public interface CorePresleyOperations {
 	
+	public static final int ERRO = -1;
 	public static final int ADICIONA_ATIVIDADE = 1;
 	public static final int REMOVE_ATIVIDADE = 2;
 	public static final int BUSCA_ATIVIDADE = 3;
@@ -47,6 +48,7 @@ public interface CorePresleyOperations {
 	public static final int ADICIONA_DESENVOLVEDOR = 17;
 	public static final int GET_ONTOLOGIA = 18;
 	public static final int GET_LISTA_PROBLEMAS = 19;
+	
 	
 	/**
 	 * Este método cadastra uma nova atividade na base de dados.
