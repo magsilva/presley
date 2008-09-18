@@ -15,7 +15,7 @@ public class MySQLConnectionFactory {
 		
 	}
 
-	public static Connection getConnection(){
+	/*public static Connection getConnection(){
 		
 		try {
 			if (connection == null){
@@ -55,9 +55,9 @@ public class MySQLConnectionFactory {
 		}
 		
 		return connection;
-	}
+	}*/
 	
-	public static Connection newConnection() {
+	public static Connection open() {
 		Connection novaConexao = null;
 		try {
 			
