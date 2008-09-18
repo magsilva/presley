@@ -3,7 +3,7 @@ package validacao.implementacao;
 import java.util.HashMap;
 
 import persistencia.implementacao.ServicoInferenciaDAO;
-import validacao.excessao.DesenvolvedorInexistenteException;
+import excessao.DesenvolvedorInexistenteException;
 
 import beans.Desenvolvedor;
 

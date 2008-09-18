@@ -13,9 +13,9 @@ import persistencia.implementacao.ServicoSolucaoImplDAO;
 import persistencia.interfaces.ServicoAtividade;
 import persistencia.interfaces.ServicoProblema;
 import persistencia.interfaces.ServicoSolucao;
-import validacao.excessao.AtividadeInexistenteException;
-import validacao.excessao.DescricaoInvalidaException;
-import validacao.excessao.ProblemaInexistenteException;
+import excessao.AtividadeInexistenteException;
+import excessao.DescricaoInvalidaException;
+import excessao.ProblemaInexistenteException;
 
 /**
  * 

@@ -7,7 +7,7 @@ import java.sql.Statement;
 import java.util.HashMap;
 
 import persistencia.MySQLConnectionFactory;
-import validacao.excessao.DesenvolvedorInexistenteException;
+import excessao.DesenvolvedorInexistenteException;
 import beans.Conhecimento;
 import beans.Desenvolvedor;
 

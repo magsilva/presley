@@ -11,9 +11,9 @@ import persistencia.implementacao.ServicoDesenvolvedorImplDAO;
 import persistencia.interfaces.ServicoAtividade;
 import persistencia.interfaces.ServicoConhecimento;
 import persistencia.interfaces.ServicoDesenvolvedor;
-import validacao.excessao.ConhecimentoInexistenteException;
-import validacao.excessao.ConhecimentoNaoEncontradoException;
-import validacao.excessao.DescricaoInvalidaException;
+import excessao.ConhecimentoInexistenteException;
+import excessao.ConhecimentoNaoEncontradoException;
+import excessao.DescricaoInvalidaException;
 
 /**
  * 

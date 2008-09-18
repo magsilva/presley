@@ -10,7 +10,7 @@ import beans.Conhecimento;
 
 import persistencia.MySQLConnectionFactory;
 import persistencia.interfaces.ServicoConhecimento;
-import validacao.excessao.ConhecimentoInexistenteException;
+import excessao.ConhecimentoInexistenteException;
 
 /**
  * 

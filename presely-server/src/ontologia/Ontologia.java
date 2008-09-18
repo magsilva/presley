@@ -11,8 +11,8 @@ import java.util.Map;
 
 import persistencia.MySQLConnectionFactory;
 import persistencia.interfaces.ServicoConhecimento;
-import validacao.excessao.ConhecimentoInexistenteException;
-import validacao.excessao.DesenvolvedorInexistenteException;
+import excessao.ConhecimentoInexistenteException;
+import excessao.DesenvolvedorInexistenteException;
 import validacao.implementacao.ValidacaoConhecimentoImpl;
 import validacao.implementacao.ValidacaoDesenvolvedorImpl;
 

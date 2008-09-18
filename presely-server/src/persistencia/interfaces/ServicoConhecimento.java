@@ -2,7 +2,7 @@ package persistencia.interfaces;
 
 import java.util.ArrayList;
 
-import validacao.excessao.ConhecimentoInexistenteException;
+import excessao.ConhecimentoInexistenteException;
 import beans.Conhecimento;
 
 /**

@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Set;
 import java.util.Map.Entry;
 
-import validacao.excessao.DesenvolvedorInexistenteException;
+import excessao.DesenvolvedorInexistenteException;
 import validacao.implementacao.ValidacaoInferenciaImpl;
 import beans.Desenvolvedor;
 

@@ -17,12 +17,12 @@ import persistencia.interfaces.ServicoAtividade;
 import persistencia.interfaces.ServicoConhecimento;
 import persistencia.interfaces.ServicoDesenvolvedor;
 import persistencia.interfaces.ServicoSolucao;
-import validacao.excessao.ConhecimentoInexistenteException;
-import validacao.excessao.DescricaoInvalidaException;
-import validacao.excessao.DesenvolvedorInexistenteException;
-import validacao.excessao.EmailInvalidoException;
-import validacao.excessao.ErroDeAutenticacaoException;
-import validacao.excessao.SenhaInvalidaException;
+import excessao.ConhecimentoInexistenteException;
+import excessao.DescricaoInvalidaException;
+import excessao.DesenvolvedorInexistenteException;
+import excessao.EmailInvalidoException;
+import excessao.ErroDeAutenticacaoException;
+import excessao.SenhaInvalidaException;
 
 /**
  * 
