@@ -2,6 +2,7 @@ package gui.view;
 
 import gui.action.RunAdicionaAtividadeWizardAction;
 import gui.action.RunAssociaProblemaAtividadeWizardAction;
+import gui.action.RunBuscaDesenvolvedorWizardAction;
 import gui.action.RunRemoveAtividadeWizardAction;
 import gui.view.comunication.ViewComunication;
 
@@ -54,9 +55,11 @@ public class Atividade extends ViewPart {
 	private RunAdicionaAtividadeWizardAction runAdicionaAtividade;
 	private RunRemoveAtividadeWizardAction runRemoveAtividade;
 	private RunAssociaProblemaAtividadeWizardAction runAssociaProblema;
+	private RunBuscaDesenvolvedorWizardAction runBuscaDesenvolvedor;
 	
 	private Desenvolvedor desenvolvedorLogado = null;
 	private String atividadeSelecionada = null;
+	private String problemaSelecionada = null;
 	private Hashtable<String, ArrayList<Conhecimento>> problemaAssociadoConhecimentos = new Hashtable<String, ArrayList<Conhecimento>>();
 	
 	private final int larguraBotao = 20;
@@ -904,6 +907,34 @@ public class Atividade extends ViewPart {
 		buscaDesenvolvedor.setImage(buscaDes);
 		buscaDesenvolvedor.setToolTipText("Busca desenvolvedores para resolver esse problema");
 		buscaDesenvolvedor.setEnabled(false);
+		buscaDesenvolvedor.addMouseListener(new MouseListener() {
+			
+			public void mouseUp(MouseEvent arg0) {
+				// TODO Auto-generated method stub
+		
+			}
+		
+			public void mouseDown(MouseEvent arg0) {
+				// TODO Auto-generated method stub
+				runBuscaDesenvolvedorWizardAction();
+				
+//				ArrayList<Problema> problemasAssocidos;
+//				problemasAssocidos = getViewComunication().getProblemas(atividadeSelecionada);
+//				if (problemasAssocidos!=null) {
+//					for (Problema problema : problemasAssocidos) {
+//						listaProblemas.add(problema.getDescricao());
+//					}
+//				}
+				//Adiciona o problema criado e associado a atividade na lista de problemas
+				
+			}
+		
+			public void mouseDoubleClick(MouseEvent arg0) {
+				// TODO Auto-generated method stub
+		
+			}
+		
+		});
 		
 		contatosLabel = new Label(parentComposite, SWT.BORDER | SWT.CENTER);
 		contatosLabel.setText("Contatos para os problemas");
@@ -963,6 +994,11 @@ public class Atividade extends ViewPart {
 	private void runAssociaProblemaAtividadeWizardAction(){
 		this.runAssociaProblema = new RunAssociaProblemaAtividadeWizardAction(this,atividadeSelecionada);
 		this.runAssociaProblema.run(null);
+	}
+	
+	private void runBuscaDesenvolvedorWizardAction(){
+		this.runBuscaDesenvolvedor = new RunBuscaDesenvolvedorWizardAction(this);
+		this.runBuscaDesenvolvedor.run(null);
 	}
 	
 	private void runRemoveWizardAction(){
