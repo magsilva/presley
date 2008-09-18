@@ -55,5 +55,26 @@ public class MySQLConnectionFactory {
 		}
 		
 		return connection;
-	}	
+	}
+	
+	public static Connection newConnection() {
+		Connection novaConexao = null;
+		try {
+			
+            Class.forName("com.mysql.jdbc.Driver");
+            novaConexao = DriverManager.getConnection(
+            		"jdbc:mysql://150.165.130.20/presley", 
+            		user, 
+            		pwd);
+            
+            System.out.println("\n-------------- Nova Conexao Criada!-----------\n");
+            
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+			e.printStackTrace();
+		}
+        
+        return novaConexao;
+	}
 }
