@@ -25,6 +25,7 @@ import org.eclipse.swt.widgets.Text;
 
 import beans.Conhecimento;
 import beans.Desenvolvedor;
+import beans.Problema;
 
 public class BuscaDesenvolvedoresWizardPage extends WizardPage {
 
@@ -45,16 +46,7 @@ public class BuscaDesenvolvedoresWizardPage extends WizardPage {
     }
     
     public ArrayList<String> getConhecimentos(){
-    	
-    	ArrayList<Conhecimento> conhecimentos = this.atividade.getViewComunication().getConhecimentosEnvolvidos(atividade.getAtividadeSelecionada());
-        ArrayList<String> nomesConhecimentos = new ArrayList<String>();
-        if (conhecimentos!=null) {
-			for (Conhecimento conhecimento : conhecimentos) {
-				nomesConhecimentos.add(conhecimento.getNome());
-			}
-		}
-    	
-    	return nomesConhecimentos;
+    	return this.atividade.getConhecimentosDoProblema();
     }
     
 
