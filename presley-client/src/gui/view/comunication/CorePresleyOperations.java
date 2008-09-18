@@ -2,10 +2,10 @@ package gui.view.comunication;
 
 import java.util.ArrayList;
 
-import excessao.*;
-import excessao.AtividadeInexistenteException;
-import excessao.ConhecimentoInexistenteException;
-import excessao.DescricaoInvalidaException;
+import excecao.*;
+import excecao.AtividadeInexistenteException;
+import excecao.ConhecimentoInexistenteException;
+import excecao.DescricaoInvalidaException;
 import beans.Conhecimento;
 import beans.DadosAutenticacao;
 import beans.Desenvolvedor;
