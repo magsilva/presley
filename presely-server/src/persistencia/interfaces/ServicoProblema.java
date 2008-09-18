@@ -64,5 +64,12 @@ public interface ServicoProblema {
 	 * @return <Problema>
 	 */	
 	public Problema getProblema(int id);
+
+	/**
+	 * Esse método retorna o todos os problemas cadastrados no banco
+	 * @param id Identificador do problema.
+	 * @return <Problema>
+	 */	
+	public ArrayList<Problema> getListaProblemas();
 }
 

@@ -123,4 +123,9 @@ public class ValidacaoProblemaImpl {
 		return servicoProblema.removerProblema(id);
 	}
 
+	public ArrayList<Problema> getListaProblema() {
+		servicoProblema.getListaProblemas();
+		return null;
+	}
+
 }

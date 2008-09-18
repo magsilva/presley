@@ -7,10 +7,10 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
-import beans.Problema;
 import persistencia.MySQLConnectionFactory;
 import persistencia.interfaces.ServicoAtividade;
 import persistencia.interfaces.ServicoProblema;
+import beans.Problema;
 
 public class ServicoProblemaImplDAO implements ServicoProblema{
 
@@ -240,6 +240,50 @@ public class ServicoProblemaImplDAO implements ServicoProblema{
 	             onConClose.printStackTrace();	             
 	           }
 	         }
+	}
+	
+	public ArrayList<Problema> getListaProblemas() {
+		Connection conn = MySQLConnectionFactory.getConnection();
+
+		ArrayList<Problema> list = new ArrayList<Problema>();
+		ServicoAtividade sa = new ServicoAtividadeImplDAO();
+
+		try {
+
+			Statement stm = conn.createStatement();
+
+			String SQL = " SELECT * FROM problema";
+
+
+			System.out.println(SQL);
+			ResultSet rs = stm.executeQuery(SQL);
+
+			while (rs.next()){
+
+				Problema p = new Problema();
+
+				p.setId(rs.getInt(1));
+				p.setAtividade(sa.getAtividade(rs.getInt(2)));
+				p.setDescricao(rs.getString(3));
+				p.setResolvido(rs.getBoolean(4));
+				p.setData(rs.getDate(5));
+				p.setMensagem(rs.getString(6));
+
+				list.add(p);
+
+			}
+			return list;
+		} catch (SQLException e) {
+			//e.printStackTrace();
+			return null;
+		} finally {
+			try {
+				conn.close();
+			} catch (SQLException onConClose) {
+				System.out.println(" Houve erro no fechamento da conexão ");
+				onConClose.printStackTrace();	             
+			}
+		}
 	}
 
 }
