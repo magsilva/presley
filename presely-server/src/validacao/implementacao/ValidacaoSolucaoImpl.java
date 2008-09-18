@@ -3,8 +3,16 @@ package validacao.implementacao;
 
 import java.sql.Date;
 import java.util.ArrayList;
+
+import excessao.DescricaoInvalidaException;
+import excessao.ProblemaInexistenteException;
+import excessao.SolucaoIniexistenteException;
 import beans.Solucao;
+import persistencia.implementacao.ServicoDesenvolvedorImplDAO;
+import persistencia.implementacao.ServicoProblemaImplDAO;
 import persistencia.implementacao.ServicoSolucaoImplDAO;
+import persistencia.interfaces.ServicoDesenvolvedor;
+import persistencia.interfaces.ServicoProblema;
 import persistencia.interfaces.ServicoSolucao;
 
 /**
@@ -18,9 +26,13 @@ import persistencia.interfaces.ServicoSolucao;
 public class ValidacaoSolucaoImpl {
 	
 	ServicoSolucao servicoSolucao;
+	ServicoProblema servicoProblema;
+	ServicoDesenvolvedor servicoDesenvolvedor;
 	
 	public ValidacaoSolucaoImpl() {
 		servicoSolucao = new ServicoSolucaoImplDAO();
+		servicoProblema = new ServicoProblemaImplDAO();
+		servicoDesenvolvedor = new ServicoDesenvolvedorImplDAO();
 	}
 	
 	/**
@@ -29,8 +41,11 @@ public class ValidacaoSolucaoImpl {
 	 * @param id Identificador da solução.
 	 * @param status Situacao da solução.
 	 * @return true se a atualizacao foi realizada com sucesso.
+	 * @throws SolucaoIniexistenteException 
 	 */
-	public boolean atualizarStatusDaSolucao(int id, boolean status) {
+	public boolean atualizarStatusDaSolucao(int id, boolean status) throws SolucaoIniexistenteException {
+		
+		if (!servicoSolucao.solucaoExiste(id)) throw new SolucaoIniexistenteException();
 		
 		return servicoSolucao.atualizarStatusDaSolucao(id, status);
 	}
@@ -43,9 +58,12 @@ public class ValidacaoSolucaoImpl {
 	 * @param dataDaProposta Data em que a solucao foi proposta.
 	 * @param mensagem Mensagem da solução sugerida.
 	 * @return true se a solucao foi cadastrada na base de dados.
+	 * @throws ProblemaInexistenteException 
 	 */
 	public boolean cadastrarSolucao(String emailDesenvolvedor, int idProblema,
-			Date dataDaProposta, String mensagem) {
+			Date dataDaProposta, String mensagem) throws ProblemaInexistenteException {
+		
+		if (!servicoProblema.problemaExiste(idProblema)) throw new ProblemaInexistenteException();
 
 		return servicoSolucao.cadastrarSolucao(emailDesenvolvedor, idProblema, dataDaProposta, mensagem);
 	}
@@ -66,9 +84,12 @@ public class ValidacaoSolucaoImpl {
 	 * para uma todos os problemas cadastrados no banco.
 	 * @param emailDesenvolvedor Email do desenvolvedor.
 	 * @return ArrayList<Solucao>
+	 * @throws DescricaoInvalidaException 
 	 */
 	public ArrayList<Solucao> listarSolucoesAceitasDoDesenvolvedor(
-			String emailDesenvolvedor) {
+			String emailDesenvolvedor) throws DescricaoInvalidaException {
+		
+		if (!servicoDesenvolvedor.desenvolvedorExiste(emailDesenvolvedor)) throw new DescricaoInvalidaException();
 
 		return servicoSolucao.listarSolucoesAceitasDoDesenvolvedor(emailDesenvolvedor);
 	}
