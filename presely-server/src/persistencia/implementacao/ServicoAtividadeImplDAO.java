@@ -27,7 +27,8 @@ public class ServicoAtividadeImplDAO implements ServicoAtividade{
 
 	public boolean atualizarStatusDaAtividade(int id,boolean terminada) {
 
-		Connection conn = MySQLConnectionFactory.getConnection();
+		//Connection conn = MySQLConnectionFactory.getConnection();
+		Connection conn = MySQLConnectionFactory.open();
 
 		try {
 
@@ -64,7 +65,8 @@ public class ServicoAtividadeImplDAO implements ServicoAtividade{
 	public boolean cadastrarAtividade(String emailDesenvolvedor,
 			String emailGerente, String descricao, Date dataInicio, Date dataFim) {
 
-		Connection conn = MySQLConnectionFactory.getConnection();
+		//Connection conn = MySQLConnectionFactory.getConnection();
+		Connection conn = MySQLConnectionFactory.open();
 
 		try {
 
@@ -91,14 +93,14 @@ public class ServicoAtividadeImplDAO implements ServicoAtividade{
 				onConClose.printStackTrace();	             
 			}
 		}
-
 		return true;
 
 	}
 
 	public TipoAtividade getAtividade(int id) {
 
-		Connection conn = MySQLConnectionFactory.getConnection();
+		//Connection conn = MySQLConnectionFactory.getConnection();
+		Connection conn = MySQLConnectionFactory.open();
 
 		ServicoDesenvolvedor sd = new ServicoDesenvolvedorImplDAO();
 
@@ -125,7 +127,7 @@ public class ServicoAtividadeImplDAO implements ServicoAtividade{
 				tipoAtividade.setDataInicio(rs.getDate(6));
 				tipoAtividade.setDataFinal(rs.getDate(7));
 				tipoAtividade.setConcluida(rs.getBoolean(8));
-				tipoAtividade.setListaDeConhecimentosEnvolvidos(this.getConhecimentosEnvolvidosNaAtividade(rs.getInt(1)));
+				//tipoAtividade.setListaDeConhecimentosEnvolvidos(this.getConhecimentosEnvolvidosNaAtividade(rs.getInt(1)));
 
 				return tipoAtividade;
 
@@ -150,7 +152,8 @@ public class ServicoAtividadeImplDAO implements ServicoAtividade{
 	public ArrayList<Conhecimento> getConhecimentosEnvolvidosNaAtividade(
 			int idAtividade) {
 
-		Connection conn = MySQLConnectionFactory.getConnection();
+		//Connection conn = MySQLConnectionFactory.getConnection();
+		Connection conn = MySQLConnectionFactory.open();
 		
 		ArrayList<Conhecimento> list = new ArrayList<Conhecimento>();
 
@@ -178,8 +181,8 @@ public class ServicoAtividadeImplDAO implements ServicoAtividade{
 				list.add(conhecimento);
 
 			}
+			
 			return list;
-
 
 		} catch (SQLException e) {
 			//e.printStackTrace();
@@ -192,13 +195,12 @@ public class ServicoAtividadeImplDAO implements ServicoAtividade{
 				onConClose.printStackTrace();	             
 			}
 		}
-
-
 	}
 
 	public ArrayList<TipoAtividade> getSubAtividades(int idPai) {
 
-		Connection conn = MySQLConnectionFactory.getConnection();
+		//Connection conn = MySQLConnectionFactory.getConnection();
+		Connection conn = MySQLConnectionFactory.open();
 
 		ServicoDesenvolvedor sd = new ServicoDesenvolvedorImplDAO();
 
@@ -229,14 +231,14 @@ public class ServicoAtividadeImplDAO implements ServicoAtividade{
 				tipoAtividade.setDataInicio(rs.getDate(6));
 				tipoAtividade.setDataFinal(rs.getDate(7));
 				tipoAtividade.setConcluida(rs.getBoolean(8));
-				tipoAtividade.setListaDeConhecimentosEnvolvidos(sd.getConhecimentosDoDesenvolvedor(rs.getString(2)));
+				//tipoAtividade.setListaDeConhecimentosEnvolvidos(sd.getConhecimentosDoDesenvolvedor(rs.getString(2)));
 
 
 				list.add(tipoAtividade);
 
 			}
+			
 			return list;
-
 
 		} catch (SQLException e) {
 			//e.printStackTrace();
@@ -254,8 +256,9 @@ public class ServicoAtividadeImplDAO implements ServicoAtividade{
 
 	public boolean removerAtividade(int id) {
 
-		Connection conn = MySQLConnectionFactory.getConnection();
-
+		//Connection conn = MySQLConnectionFactory.getConnection();
+		Connection conn = MySQLConnectionFactory.open();
+		
 		try {
 
 			Statement stm = conn.createStatement();
@@ -288,7 +291,8 @@ public class ServicoAtividadeImplDAO implements ServicoAtividade{
 
 	public boolean atividadeExiste(int id){
 
-		Connection conn = MySQLConnectionFactory.getConnection();
+		//Connection conn = MySQLConnectionFactory.getConnection();
+		Connection conn = MySQLConnectionFactory.open();
 
 		try {
 
@@ -324,7 +328,8 @@ public class ServicoAtividadeImplDAO implements ServicoAtividade{
 	public boolean adicionarConhecimentoAAtividade(int idAtividade,
 			String nomeConhecimento) {
 
-		Connection conn = MySQLConnectionFactory.getConnection();
+		//Connection conn = MySQLConnectionFactory.getConnection();
+		Connection conn = MySQLConnectionFactory.open();
 
 		try {
 
@@ -355,7 +360,8 @@ public class ServicoAtividadeImplDAO implements ServicoAtividade{
 	public boolean removerConhecimentoDaAtividade(int idAtividade,
 			String nomeConhecimento) {
 
-		Connection conn = MySQLConnectionFactory.getConnection();
+		//Connection conn = MySQLConnectionFactory.getConnection();
+		Connection conn = MySQLConnectionFactory.open();
 
 		try {
 
@@ -392,7 +398,8 @@ public class ServicoAtividadeImplDAO implements ServicoAtividade{
 	public boolean atividadeAssociadaAConhecimentoExiste(int idAtividade,
 			String nomeConhecimento) {
 
-		Connection conn = MySQLConnectionFactory.getConnection();
+		//Connection conn = MySQLConnectionFactory.getConnection();
+		Connection conn = MySQLConnectionFactory.open();
 
 		try {
 
@@ -428,7 +435,8 @@ public class ServicoAtividadeImplDAO implements ServicoAtividade{
 
 	public boolean associarAtividades(int idSubAtividade, int idAtividadePai) {
 
-		Connection conn = MySQLConnectionFactory.getConnection();
+		//Connection conn = MySQLConnectionFactory.getConnection();
+		Connection conn = MySQLConnectionFactory.open();
 
 		try {
 
@@ -467,7 +475,8 @@ public class ServicoAtividadeImplDAO implements ServicoAtividade{
 
 	public boolean desassociarAtividades(int idSubAtividade, int idAtividadePai) {
 		
-		Connection conn = MySQLConnectionFactory.getConnection();
+		//Connection conn = MySQLConnectionFactory.getConnection();
+		Connection conn = MySQLConnectionFactory.open();
 
 		try {
 
@@ -506,7 +515,8 @@ public class ServicoAtividadeImplDAO implements ServicoAtividade{
 
 	public ArrayList<TipoAtividade> listarAtividades() {
 		
-		Connection conn = MySQLConnectionFactory.getConnection();
+		//Connection conn = MySQLConnectionFactory.getConnection();
+		Connection conn = MySQLConnectionFactory.open();
 
 		ServicoDesenvolvedor sd = new ServicoDesenvolvedorImplDAO();
 
@@ -534,7 +544,7 @@ public class ServicoAtividadeImplDAO implements ServicoAtividade{
 				tipoAtividade.setDataInicio(rs.getDate(6));
 				tipoAtividade.setDataFinal(rs.getDate(7));
 				tipoAtividade.setConcluida(rs.getBoolean(8));
-				tipoAtividade.setListaDeConhecimentosEnvolvidos(sd.getConhecimentosDoDesenvolvedor(rs.getString(2)));
+				//tipoAtividade.setListaDeConhecimentosEnvolvidos(sd.getConhecimentosDoDesenvolvedor(rs.getString(2)));
 
 				list.add(tipoAtividade);
 
