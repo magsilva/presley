@@ -307,10 +307,27 @@ public class ServerBridgeImp implements ServerBridge {
 			} catch (DesenvolvedorInexistenteException e) {
 				retorno = "ERRO: Desenvolvedor inexistente.";
 				e.printStackTrace();
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 
 			pktRetorno = new PacketStruct(retorno, typeRetorno);
-			break;				
+			break;	
+			
+		case CorePresleyOperations.BUSCA_CONHECIMENTOS_RELACIONADOS:
+			System.out.println("BUSCA_CONHECIMENTOS_RELACIONADOS");
+
+				try {
+					retorno = executeClientQuery.getListaConhecimentosEnvolvidos(packet);
+				} catch (ConhecimentoInexistenteException e) {
+
+				}
+				typeRetorno = CorePresleyOperations.BUSCA_CONHECIMENTOS_RELACIONADOS;
+
+
+			pktRetorno = new PacketStruct(retorno, typeRetorno);
+			break;
 
 		}
 		return pktRetorno;

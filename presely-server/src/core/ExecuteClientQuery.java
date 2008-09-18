@@ -118,10 +118,10 @@ public class ExecuteClientQuery implements CorePresleyOperations{
 	 * @throws Exception 
 	 */
 	public boolean associaConhecimentoAtividade(PacketStruct packet) throws 
-						AtividadeInexistenteException, 
-						ConhecimentoInexistenteException, 
-						Exception{
-		
+	AtividadeInexistenteException, 
+	ConhecimentoInexistenteException, 
+	Exception{
+
 		ConhecimentoAtividade conhecimentoAtividade = new ConhecimentoAtividade();
 		ArrayList<Conhecimento> listaConhecimento = conhecimentoAtividade.getConhecimentos();
 		TipoAtividade atividade = conhecimentoAtividade.getAtividade();
@@ -252,7 +252,7 @@ public class ExecuteClientQuery implements CorePresleyOperations{
 	public Desenvolvedor login(PacketStruct packet) throws DesenvolvedorInexistenteException, EmailInvalidoException, SenhaInvalidaException, ErroDeAutenticacaoException {
 		DadosAutenticacao authData = (DadosAutenticacao) packet.getData();
 		Desenvolvedor desenvolvedor = validacaoDesenvolvedor.autenticaDesenvolvedor(authData);
-		
+
 		return desenvolvedor;
 	}
 	public Desenvolvedor login(DadosAutenticacao authData) throws DesenvolvedorInexistenteException, EmailInvalidoException, SenhaInvalidaException, ErroDeAutenticacaoException {
@@ -289,7 +289,7 @@ public class ExecuteClientQuery implements CorePresleyOperations{
 		if(atividade == null) {
 			System.out.println("atividade null");
 		}
-			System.out.println("ID ativiadade " + atividade.getId());
+		System.out.println("ID ativiadade " + atividade.getId());
 		validacaoAtividade.removerAtividade(atividade.getId());
 		return true;
 	}
@@ -320,13 +320,32 @@ public class ExecuteClientQuery implements CorePresleyOperations{
 
 	public Tree getOntologia() throws ConhecimentoInexistenteException {
 		//Ontologia ontologia = new Ontologia(null, null);
-		
+
 		return Ontologia.getArvoreDeConhecimentos();
 	}
 
 	public ArrayList<Problema> getListaProblemas() {
 		ArrayList<Problema> listaProblemas = validacaoProblema.getListaProblema();
 		return listaProblemas;
+	}
+
+
+	public ArrayList<Conhecimento> getListaConhecimentosEnvolvidos(
+			PacketStruct packet) throws ConhecimentoInexistenteException {
+		TipoAtividade atividade = (TipoAtividade) packet.getData();
+
+		return getListaConhecimentosEnvolvidos(atividade);
+	}	
+
+	public ArrayList<Conhecimento> getListaConhecimentosEnvolvidos(
+			TipoAtividade atividade) throws ConhecimentoInexistenteException {
+
+		ArrayList<Conhecimento> listaConhecimento = new ArrayList<Conhecimento>();
+		for(Conhecimento c: atividade.getListaDeConhecimentosEnvolvidos()) {
+			Conhecimento conhecimentoAssociado = validacaoConhecimento.getConhecimento(c.getNome());
+			listaConhecimento.add(c);
+		}
+		return null;
 	}
 
 }
