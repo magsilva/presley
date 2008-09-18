@@ -6,6 +6,7 @@ import excessao.AtividadeInexistenteException;
 import excessao.ConhecimentoInexistenteException;
 import excessao.DataInvalidaException;
 import excessao.DescricaoInvalidaException;
+import excessao.DesenvolvedorExisteException;
 import excessao.DesenvolvedorInexistenteException;
 import excessao.EmailInvalidoException;
 import excessao.ErroDeAutenticacaoException;
@@ -80,12 +81,8 @@ public class ServerBridgeImp implements ServerBridge {
 		case CorePresleyOperations.BUSCA_ATIVIDADE:
 			System.out.println("BUSCA_ATIVIDADE");
 			typeRetorno = CorePresleyOperations.BUSCA_ATIVIDADE;
-			try {
-				retorno = executeClientQuery.buscaDesenvolvedores(packet);
-				typeRetorno = CorePresleyOperations.BUSCA_ATIVIDADE;
-			} catch (DesenvolvedorInexistenteException e3) {
-				retorno = "ERRO: Desenvolvedor Inexistente.";
-			}
+			retorno = executeClientQuery.buscaAtividades();
+			typeRetorno = CorePresleyOperations.BUSCA_ATIVIDADE;
 			pktRetorno = new PacketStruct(retorno, typeRetorno);
 			break;				
 
@@ -289,13 +286,20 @@ public class ServerBridgeImp implements ServerBridge {
 
 		case CorePresleyOperations.ADICIONA_DESENVOLVEDOR:
 			System.out.println("ADICIONA_DESENVOLVEDOR");
+
 			try {
 				retorno = executeClientQuery.adicionaDesenvolvedor(packet);
-				typeRetorno = CorePresleyOperations.ADICIONA_DESENVOLVEDOR;
-			} catch (Exception e) {
-				retorno = "ERRO: Problema inexistente.";
+			} catch (DesenvolvedorExisteException e) {
+				retorno = "ERRO: Desenvolvedor já Cadastrado no Banco.";
+				e.printStackTrace();
+			} catch (SenhaInvalidaException e) {
+				retorno = "ERRO: Senha Invalida.";
 				e.printStackTrace();
 			}
+			typeRetorno = CorePresleyOperations.ADICIONA_DESENVOLVEDOR;
+
+				
+
 			pktRetorno = new PacketStruct(retorno, typeRetorno);
 			break;				
 
