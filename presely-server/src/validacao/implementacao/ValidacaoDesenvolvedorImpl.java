@@ -298,7 +298,7 @@ public class ValidacaoDesenvolvedorImpl {
 //		if (!ValidacaoUtil.validaEmail(email)) throw new EmailInvalidoException();
 //		if (!ValidacaoUtil.validaSenha(senha)) throw new SenhaInvalidaException();
 //		
-		if (!servicoDesenvolvedor.desenvolvedorExiste(email)) throw new DesenvolvedorInexistenteException();
+//		if (!servicoDesenvolvedor.desenvolvedorExiste(email)) throw new DesenvolvedorInexistenteException();
 		
 		Desenvolvedor desenvolvedor = servicoDesenvolvedor.autenticaDesenvolvedor(email, senha);
 		

@@ -75,7 +75,7 @@ public class ValidacaoConhecimentoImpl {
 		DescricaoInvalidaException,	ConhecimentoInexistenteException {
 		
 		if (!ValidacaoUtil.validaNome(nome)) throw new NomeInvalidoException();
-		if (!ValidacaoUtil.validaDescricao(descricao)) throw new DescricaoInvalidaException();
+		//if (!ValidacaoUtil.validaDescricao(descricao)) throw new DescricaoInvalidaException();
 		
 		if (servicoConhecimento.conhecimentoExiste(nome)) throw new ConhecimentoInexistenteException();
 		
