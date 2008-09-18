@@ -14,6 +14,7 @@ import persistencia.interfaces.ServicoDesenvolvedor;
 import excessao.ConhecimentoInexistenteException;
 import excessao.ConhecimentoNaoEncontradoException;
 import excessao.DescricaoInvalidaException;
+import excessao.NomeInvalidoException;
 
 /**
  * 
@@ -41,12 +42,14 @@ public class ValidacaoConhecimentoImpl {
 	 * @param novoNome Novo nome do conhecimento.
 	 * @param descricao Nova descricao do conhecimento.
 	 * @return true se o conhecimento foi atualizado.
+	 * @throws NomeInvalidoException 
 	 */
 	public boolean atualizarConhecimento(String nome, String novoNome,
-			String descricao) throws Exception, ConhecimentoInexistenteException, DescricaoInvalidaException {
+			String descricao) throws ConhecimentoInexistenteException, DescricaoInvalidaException, 
+			NomeInvalidoException {
 		
 		if (!ValidacaoUtil.validaDescricao(descricao)) throw new DescricaoInvalidaException();
-		if (!ValidacaoUtil.validaNome(novoNome)) throw new Exception();
+		if (!ValidacaoUtil.validaNome(novoNome)) throw new NomeInvalidoException();
 		
 		if (!servicoConhecimento.conhecimentoExiste(nome)) throw new ConhecimentoInexistenteException();
 		
@@ -69,10 +72,10 @@ public class ValidacaoConhecimentoImpl {
 	 * @param descricao Descricao do novo conhecimento
 	 * @return true se o conhecimento foi inserido na base de dados.
 	 */
-	public boolean criarConhecimento(String nome, String descricao) throws Exception, DescricaoInvalidaException,
-		ConhecimentoInexistenteException {
+	public boolean criarConhecimento(String nome, String descricao) throws NomeInvalidoException,
+		DescricaoInvalidaException,	ConhecimentoInexistenteException {
 		
-		if (!ValidacaoUtil.validaNome(nome)) throw new Exception();
+		if (!ValidacaoUtil.validaNome(nome)) throw new NomeInvalidoException();
 		if (!ValidacaoUtil.validaDescricao(descricao)) throw new DescricaoInvalidaException();
 		
 		if (servicoConhecimento.conhecimentoExiste(nome)) throw new ConhecimentoInexistenteException();
