@@ -551,16 +551,15 @@ public class ServicoDesenvolvedorImplDAO implements ServicoDesenvolvedor{
 				desenvolvedor.setEmail(rs.getString(1));
 				desenvolvedor.setNome(rs.getString(2));
 				desenvolvedor.setLocalidade(rs.getString(3));
-				desenvolvedor.setListaConhecimento(this.getConhecimentosDoDesenvolvedor(rs.getString(1), 1));				
+				//desenvolvedor.setListaConhecimento(this.getConhecimentosDoDesenvolvedor(rs.getString(1), 1));				
 
 				list.add(desenvolvedor);
 			}
+			return list;
 
 		} catch (Exception e) {
 			return null;
 		}
-		return list;
-
 	}
 
 	public Desenvolvedor autenticaDesenvolvedor(String email, String senha) {
