@@ -107,42 +107,50 @@ public class ValidacaoConhecimentoImpl {
 		
 		// Desassociar e excluir conhecimentos filhos:
 		ArrayList<Conhecimento> conhecimentosFilhos = servicoConhecimento.getFilhos(nome);
-		Iterator<Conhecimento> it1 = conhecimentosFilhos.iterator();
-		
-		while (it1.hasNext()) {
-			Conhecimento conhecimentoFilho = it1.next();
-			servicoConhecimento.desassociaConhecimentos(nome, conhecimentoFilho.getNome());
-			servicoConhecimento.removerConhecimento(conhecimentoFilho.getNome());
+		if (conhecimentosFilhos != null) {
+			Iterator<Conhecimento> it1 = conhecimentosFilhos.iterator();
+			
+			while (it1.hasNext()) {
+				Conhecimento conhecimentoFilho = it1.next();
+				servicoConhecimento.desassociaConhecimentos(nome, conhecimentoFilho.getNome());
+				servicoConhecimento.removerConhecimento(conhecimentoFilho.getNome());
+			}
 		}
 		
 		// Desassociar conhecimentos pais:
 		ArrayList<Conhecimento> conhecimentosPais = servicoConhecimento.getFilhos(nome);
-		Iterator<Conhecimento> it2 = conhecimentosPais.iterator();
-		
-		while (it2.hasNext()) {
-			Conhecimento conhecimentoPai = it2.next();
-			servicoConhecimento.desassociaConhecimentos(conhecimentoPai.getNome(), nome);
+		if (conhecimentosPais != null) {
+			Iterator<Conhecimento> it2 = conhecimentosPais.iterator();
+			
+			while (it2.hasNext()) {
+				Conhecimento conhecimentoPai = it2.next();
+				servicoConhecimento.desassociaConhecimentos(conhecimentoPai.getNome(), nome);
+			}
 		}
 		
 		// Desassociar atividades:
 		ArrayList<TipoAtividade> atividades = servicoAtividade.listarAtividades();
-		Iterator<TipoAtividade> it3 = atividades.iterator();
-		
-		while (it3.hasNext()) {
-			TipoAtividade atividade = it3.next();
-			if (servicoAtividade.atividadeAssociadaAConhecimentoExiste(atividade.getId(), nome)) {
-				servicoAtividade.removerConhecimentoDaAtividade(atividade.getId(), nome);
+		if (atividades != null) {
+			Iterator<TipoAtividade> it3 = atividades.iterator();
+			
+			while (it3.hasNext()) {
+				TipoAtividade atividade = it3.next();
+				if (servicoAtividade.atividadeAssociadaAConhecimentoExiste(atividade.getId(), nome)) {
+					servicoAtividade.removerConhecimentoDaAtividade(atividade.getId(), nome);
+				}
 			}
 		}
 		
 		// Desassociar desenvolvedores:
 		ArrayList<Desenvolvedor> desenvolvedores = servicoDesenvolvedor.getTodosDesenvolvedores();
-		Iterator<Desenvolvedor> it4 = desenvolvedores.iterator();
-		
-		while (it4.hasNext()) {
-			Desenvolvedor desenvolvedor = it4.next();
-			if (servicoDesenvolvedor.conhecimentoDoDesenvolvedorExiste(desenvolvedor.getEmail(), nome)) {
-				servicoDesenvolvedor.removerConhecimentoDoDesenvolvedor(desenvolvedor.getEmail(), nome);
+		if (desenvolvedores != null) {
+			Iterator<Desenvolvedor> it4 = desenvolvedores.iterator();
+			
+			while (it4.hasNext()) {
+				Desenvolvedor desenvolvedor = it4.next();
+				if (servicoDesenvolvedor.conhecimentoDoDesenvolvedorExiste(desenvolvedor.getEmail(), nome)) {
+					servicoDesenvolvedor.removerConhecimentoDoDesenvolvedor(desenvolvedor.getEmail(), nome);
+				}
 			}
 		}
 		
