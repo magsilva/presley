@@ -135,11 +135,14 @@ public class ValidacaoAtividadeImpl {
 		Date dataFim = tipoAtividade.getDataFinal();
 		
 		if (!ValidacaoUtil.validaEmail(emailDesenvolvedor)) throw new EmailInvalidoException();
+		System.out.println("Atividade cadastrada com sucesso!1");
 		if (!ValidacaoUtil.validaEmail(emailGerente)) throw new EmailInvalidoException();
+		System.out.println("Atividade cadastrada com sucesso!2");
 		if (!ValidacaoUtil.validaDescricao(descricao)) throw new DescricaoInvalidaException();
+		System.out.println("Atividade cadastrada com sucesso!3");
 		if (!ValidacaoUtil.verificaOrdemDatas(dataInicio, dataFim)) throw new DataInvalidaException();
 		
-		System.out.println("Atividade cadastrada com sucesso!");
+		System.out.println("Atividade cadastrada com sucesso!4");
 		
 		return servicoAtividade.cadastrarAtividade(emailDesenvolvedor, emailGerente, descricao, dataInicio, dataFim);
 		

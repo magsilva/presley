@@ -100,7 +100,7 @@ public class ExecuteClientQuery implements CorePresleyOperations{
 	public boolean adicionaAtividade(PacketStruct packet) throws EmailInvalidoException, DescricaoInvalidaException, DataInvalidaException, Exception {
 		TipoAtividade atividade = (TipoAtividade) packet.getData();
 
-		this.adicionaAtividade(atividade);
+		validacaoAtividade.cadastrarAtividade(atividade);
 		return true;
 	}
 	public boolean adicionaAtividade(TipoAtividade novaAtividade) throws EmailInvalidoException, DescricaoInvalidaException, DataInvalidaException, Exception {

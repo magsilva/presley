@@ -9,6 +9,8 @@ public class ValidacaoUtil {
 	}
 	
 	public static boolean validaDescricao(String descricao) {
+		if(descricao == null)
+			return false;
 		return true;
 	}
 	
@@ -30,6 +32,9 @@ public class ValidacaoUtil {
 	}
 	
 	public static boolean verificaOrdemDatas(Date dataInicio, Date dataFim) {
+		
+		if(dataInicio == null || dataFim == null)
+			return false;
 		
 		long timeInicio = dataInicio.getTime();
 		long timeFim = dataFim.getTime();
