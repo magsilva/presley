@@ -452,7 +452,7 @@ public class ViewComunication implements CorePresleyOperations{
 	public boolean adicionaDesenvolvedor(Desenvolvedor desenvolvedor) throws Exception{
 		boolean retorno = true;
 		
-		PacketStruct respostaPacket = sendPack(desenvolvedor,ADICIONA_DESENVOLVEDOR);//TESTE
+		PacketStruct respostaPacket = sendPack(desenvolvedor, CorePresleyOperations.ADICIONA_DESENVOLVEDOR);//TESTE
     	Boolean resposta = (Boolean)respostaPacket.getData();
     	//return resposta.booleanValue();
     	
