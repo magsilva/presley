@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Hashtable;
 
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.ISelection;
@@ -59,6 +60,7 @@ public class LoginWizard extends Wizard implements INewWizard {
     		String senha = page.getSenha();
     		String ip = page.getIP();
     		
+    		MessageDialog.openError(this.getShell(), "Erro", "Fudeu");
     		this.atividade.getViewComunication().login(login, senha);
 	
     	}catch (Exception e) {

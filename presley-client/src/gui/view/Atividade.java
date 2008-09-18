@@ -13,6 +13,7 @@ import java.util.Set;
 
 
 import org.eclipse.jdt.ui.wizards.NewContainerWizardPage;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
@@ -365,6 +366,23 @@ public class Atividade extends ViewPart {
 		addUser.setImage(userAdd);
 		addUser.setToolTipText("Adiciona novo desenvolvedor");
 		addUser.setEnabled(false);
+		addUser.addMouseListener(new MouseListener() {
+
+			public void mouseDoubleClick(MouseEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			public void mouseDown(MouseEvent arg0) {
+				
+			}
+
+			public void mouseUp(MouseEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+		});
 		
 		removeUser = new Button(parentComposite, SWT.NONE);
 		Image userRemove = new Image(removeUser.getDisplay(),this.getClass().getResourceAsStream("/icons/removeUser.gif"));

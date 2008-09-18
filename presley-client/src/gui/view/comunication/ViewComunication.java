@@ -1,11 +1,13 @@
 package gui.view.comunication;
 
+import java.awt.Dialog;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Shell;
 
 
 import beans.Conhecimento;
@@ -19,6 +21,9 @@ import beans.Tree;
 import facade.PacketStruct;
 import facade.PrincipalSUBJECT;
 import excecao.*;
+import excessao.EmailInvalidoException;
+import excessao.ErroDeAutenticacaoException;
+import excessao.SenhaInvalidaException;
 
 /**
  * Esta classe controla a comunicacao entre o cliente e o servidor.
@@ -44,10 +49,10 @@ public class ViewComunication implements CorePresleyOperations{
 		try {
 			System.out.println("instanciando cliente");
 			PrincipalSUBJECT.getInstance("client", "150.165.130.196", 1099);
+			System.out.println("Passou do getInstance");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		//*/
 		teste();//TESTE
 	}
 	
@@ -176,9 +181,11 @@ public class ViewComunication implements CorePresleyOperations{
 			
 			Desenvolvedor desenvolvedor = new Desenvolvedor();
 			desenvolvedor.setNome("FULANO");
-			desenvolvedor.setEmail("fulano1@algumDominio.com.br");
+			desenvolvedor.setEmail("fulano22@algumDominio.com.br");
 			desenvolvedor.setLocalidade("Rua Projetada");
+			desenvolvedor.setSenha("12345");
 			//desenvolvedor.setListaConhecimento(listaConhecimentosDesenvolvedor);
+			
 			Desenvolvedor supervisor = new Desenvolvedor();
 			supervisor.setNome("SICRANO");
 			supervisor.setEmail("sicrano1@algumDominio.com.br");
@@ -205,8 +212,10 @@ public class ViewComunication implements CorePresleyOperations{
 			
 			ontologia = tree;
 			
+			System.out.println("Adicionando atividade no banco");
 			this.adicionaAtividade(atividade);
-			//this.adicionaDesenvolvedor(desenvolvedor);
+			System.out.println("Passou da adicao");
+			this.adicionaDesenvolvedor(desenvolvedor);
 
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -240,15 +249,14 @@ public class ViewComunication implements CorePresleyOperations{
 	 */
 	public boolean adicionaAtividade(TipoAtividade atividade) {
 		// TODO Auto-generated method stub
-    	//PacketStruct respostaPacket = sendPack(atividade, ADICIONA_ATIVIDADE);
-    	//Boolean resposta = (Boolean)respostaPacket.getData();
-    	//if (resposta.booleanValue()==true) {
+    	PacketStruct respostaPacket = sendPack(atividade, ADICIONA_ATIVIDADE);
+    	Boolean resposta = (Boolean)respostaPacket.getData();
+    	if (resposta.booleanValue()==true) {
     		this.atividades.add(atividade);
     		this.conhecimentos.put(atividade.getDescricao(), atividade.getListaDeConhecimentosEnvolvidos());
-		//}
-    	//System.out.println("Resposta: "+resposta.booleanValue());
-		//return resposta.booleanValue();
-    	return true;//TESTE
+		}
+    	System.out.println("Resposta: "+resposta.booleanValue());
+		return resposta.booleanValue();
 	}
 	
 	/**
@@ -335,11 +343,16 @@ public class ViewComunication implements CorePresleyOperations{
 	}
 
 	public Desenvolvedor login(String user, String passwd) {
-		// TODO Auto-generated method stub
-		//PacketStruct respostaPacket = sendPack(null,LOGIN);//TESTE
-    	//Desenvolvedor resposta = (Desenvolvedor)respostaPacket.getData();
-		//return resposta;
-		return null;
+		DadosAutenticacao auth = new DadosAutenticacao();
+		auth.setUser(user);
+		auth.setPasswd(passwd);
+		PacketStruct respostaPacket = sendPack(auth, CorePresleyOperations.LOG_IN);
+		if(respostaPacket.getId() == CorePresleyOperations.ERRO) {
+			System.out.println(respostaPacket.getData());
+			return null;
+		}
+		Desenvolvedor resposta = (Desenvolvedor)respostaPacket.getData();
+		return resposta;
 	}
 
 	public boolean logout(Desenvolvedor desenvolvedor) {
@@ -391,10 +404,26 @@ public class ViewComunication implements CorePresleyOperations{
 	}
 
 	public boolean adicionaDesenvolvedor(Desenvolvedor desenvolvedor) {
-		// TODO Auto-generated method stub
+		boolean retorno = true;
+		
 		PacketStruct respostaPacket = sendPack(desenvolvedor,ADICIONA_DESENVOLVEDOR);//TESTE
-    	Boolean resposta = (Boolean)respostaPacket.getData();
-    	return resposta.booleanValue();
+    	
+		/*if (respostaPacket.getData() instanceof SenhaInvalidaException) {
+			System.out.println("Senha Invalida");
+			retorno = false;
+		}
+    	
+    	if (respostaPacket.getData() instanceof EmailInvalidoException) {
+			System.out.println("Login Invalido");
+			retorno = false;
+		}*/
+		if(respostaPacket.getId() == CorePresleyOperations.ERRO) {
+			System.out.println(respostaPacket.getData());
+			retorno =  false;
+		}
+		else 
+			retorno = (Boolean)respostaPacket.getData();
+    	return retorno;
 	}
 
 	/**

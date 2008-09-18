@@ -3,6 +3,9 @@ package gui.view.comunication;
 import java.util.ArrayList;
 
 import excecao.*;
+import excessao.AtividadeInexistenteException;
+import excessao.ConhecimentoInexistenteException;
+import excessao.DescricaoInvalidaException;
 import beans.Conhecimento;
 import beans.DadosAutenticacao;
 import beans.Desenvolvedor;
@@ -21,6 +24,7 @@ import beans.Tree;
 
 public interface CorePresleyOperations {
 	
+	public static final int ERRO = -1;
 	public static final int ADICIONA_ATIVIDADE = 1;
 	public static final int REMOVE_ATIVIDADE = 2;
 	public static final int BUSCA_ATIVIDADE = 3;
