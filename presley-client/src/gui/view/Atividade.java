@@ -342,6 +342,7 @@ public class Atividade extends ViewPart {
 
 					//Seleciona o item recem adicionado
 					listaAtividades.select(listaAtividades.indexOf(novaAtividade));
+					atividadeSelecionada = novaAtividade;
 
 					//atualiza a vizualizacao
 					listaAtividades.getParent().redraw();
@@ -410,16 +411,26 @@ public class Atividade extends ViewPart {
 				
 				//captura o id da atividade selecionada
 				int idAtividade = listaAtividades.getSelectionIndex();
+				String nomeAtividade = listaAtividades.getItem(idAtividade);
+				TipoAtividade atividadeLocalizada = null;
 				
-				
-				//exibe o wizard de confirmacao para a retirada da atividade
-				//runRemoveWizardAction();
+				ArrayList<TipoAtividade> atividades = getViewComunication().buscaAtividades();
+				if (atividades!=null) {
+					for (TipoAtividade tipoAtividade : atividades) {
+						if (tipoAtividade.equals(nomeAtividade)) {
+							atividadeLocalizada = tipoAtividade;
+						}
+					}
+				}
 				
 				//realiza a remocao da atividade no servidor
 				//viewComunication.sendPack(Atividade, Event.RemocaoAtividade);
 				
-				//realiza a remocao da atividade na lista
+				//realiza a remocao da atividade na lista grafica
 				listaAtividades.remove(idAtividade);
+				
+				//realiza a remocao da atividade no BD
+				getViewComunication().removerAtividade(atividadeLocalizada);
 				
 				//limpa as listas de problemas e conhecimentos
 				listaConhecimentos.removeAll();
@@ -849,6 +860,10 @@ public class Atividade extends ViewPart {
 				// TODO Auto-generated method stub
 				runAssociaProblemaAtividadeWizardAction();
 				
+				//limpando a lista de problemas para incluir o novo
+				listaProblemas.removeAll();
+				
+				//Adiciona o problema criado e associado a atividade na lista de problemas
 				ArrayList<Problema> problemasAssocidos;
 				problemasAssocidos = getViewComunication().getProblemas(atividadeSelecionada);
 				if (problemasAssocidos!=null) {
@@ -856,7 +871,6 @@ public class Atividade extends ViewPart {
 						listaProblemas.add(problema.getDescricao());
 					}
 				}
-				//Adiciona o problema criado e associado a atividade na lista de problemas
 				
 			}
 		
