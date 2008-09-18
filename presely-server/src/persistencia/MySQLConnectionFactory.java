@@ -27,6 +27,8 @@ public class MySQLConnectionFactory {
 		            		user, 
 		            		pwd);
 		            
+		            System.out.println("\n-------------- Nova Conexao Criada!-----------\n");
+		            
 		        } catch (ClassNotFoundException e) {
 		            e.printStackTrace();
 		        } catch (SQLException e) {

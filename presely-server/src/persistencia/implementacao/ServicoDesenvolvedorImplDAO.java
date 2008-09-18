@@ -282,7 +282,7 @@ public class ServicoDesenvolvedorImplDAO implements ServicoDesenvolvedor{
 				desenvolvedor.setEmail(rs.getString(1));
 				desenvolvedor.setNome(rs.getString(2));
 				desenvolvedor.setLocalidade(rs.getString(3));
-				desenvolvedor.setListaConhecimento(this.getConhecimentosDoDesenvolvedor(rs.getString(1), 1));
+				//desenvolvedor.setListaConhecimento(this.getConhecimentosDoDesenvolvedor(rs.getString(1), 1));
 				desenvolvedor.setSenha("");
 
 				return desenvolvedor;
@@ -507,7 +507,7 @@ public class ServicoDesenvolvedorImplDAO implements ServicoDesenvolvedor{
 				tipoAtividade.setDataInicio(rs.getDate(6));
 				tipoAtividade.setDataFinal(rs.getDate(7));
 				tipoAtividade.setConcluida(rs.getBoolean(8));
-				tipoAtividade.setListaDeConhecimentosEnvolvidos(this.getConhecimentosDoDesenvolvedor(rs.getString(2)));
+				//tipoAtividade.setListaDeConhecimentosEnvolvidos(this.getConhecimentosDoDesenvolvedor(rs.getString(2)));
 
 
 				list.add(tipoAtividade);
@@ -584,7 +584,7 @@ public class ServicoDesenvolvedorImplDAO implements ServicoDesenvolvedor{
 				desenvolvedor.setEmail(rs.getString(1));
 				desenvolvedor.setNome(rs.getString(2));
 				desenvolvedor.setLocalidade(rs.getString(3));
-				desenvolvedor.setListaConhecimento(this.getConhecimentosDoDesenvolvedor(rs.getString(1), 1));
+				//desenvolvedor.setListaConhecimento(this.getConhecimentosDoDesenvolvedor(rs.getString(1), 1));
 
 				return desenvolvedor;
 			}else{
