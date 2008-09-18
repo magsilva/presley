@@ -240,8 +240,10 @@ public class ValidacaoAtividadeImpl {
 		
 		// Desassociando os conhecimentos da atividade.
 		ArrayList<Conhecimento> conhecimentos = servicoAtividade.getConhecimentosEnvolvidosNaAtividade(id);
-		if(conhecimentos != null || !conhecimentos.isEmpty()){
+
+		if (conhecimentos != null) {
 			Iterator<Conhecimento> it = conhecimentos.iterator();
+			
 			while (it.hasNext()) {
 				Conhecimento conhecimento = it.next();
 				servicoAtividade.removerConhecimentoDaAtividade(id, conhecimento.getDescricao());
@@ -250,7 +252,8 @@ public class ValidacaoAtividadeImpl {
 		
 		// Desassociando as atividades com associacao
 		ArrayList<TipoAtividade> filhos = servicoAtividade.getSubAtividades(id);
-		if(filhos != null || !filhos.isEmpty()){
+
+		if (filhos != null) {
 			Iterator<TipoAtividade> it2 = filhos.iterator();
 			
 			while (it2.hasNext()) {
@@ -261,7 +264,8 @@ public class ValidacaoAtividadeImpl {
 		
 		// Removendo problemas associados a atividade
 		ArrayList<Problema> problemas = servicoProblema.listarProblemasDaAtividade(id);
-		if(problemas != null || !problemas.isEmpty()){
+
+		if (problemas != null) {
 			Iterator<Problema> it3 = problemas.iterator();
 			
 			while (it3.hasNext()) {
