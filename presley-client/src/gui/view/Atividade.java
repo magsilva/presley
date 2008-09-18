@@ -33,8 +33,6 @@ import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 import org.eclipse.ui.part.ViewPart;
 
-import com.sun.org.apache.bcel.internal.generic.NEW;
-
 import beans.Conhecimento;
 import beans.Desenvolvedor;
 import beans.Problema;
@@ -50,7 +48,7 @@ public class Atividade extends ViewPart {
 	private List listaAtividades, listaConhecimentos, listaProblemas, listaDesenvolvedores; 
 	private Label conhecimentoLabel, problemaLabel, contatosLabel;
 	private Composite panelContatos, parentComposite;
-	private Button login,logout, addAtividade, addUser,removeUser, addConhecimento,removeConhecimento, removeAtividade, removeAllAtividade, 
+	private Button login,logout, addAtividade, addUser,removeUser, addConhecimento,removeConhecimento, removeAtividade, 
 			buscaAtividade, encerraAtividade, associaConhecimento, desassociaConhecimento,
 			buscaConhecimento, associaProblema, desassociaProblema, buscaProblema,
 			buscaDesenvolvedor, qualificaDesenvolvedor, solicitaMensagens;
@@ -92,10 +90,11 @@ public class Atividade extends ViewPart {
 	private final int larguraJanela = 195;
 	private final int distanciaPanelLabel = 5;
 	private final int posHorPanel = 0;
+	private String ipServidor = "150.165.130.196";
 	
 	public Atividade()
 	{
-		this.viewComunication = new ViewComunication();
+		this.viewComunication = new ViewComunication(ipServidor);
 
 	}	
 	
@@ -234,7 +233,6 @@ public class Atividade extends ViewPart {
 				//Habilita os outros botoes
 				addAtividade.setEnabled(true);
 				removeAtividade.setEnabled(true);
-				removeAllAtividade.setEnabled(true);
 				System.out.println("Continuando");
 				try {
 					encerraAtividade.setEnabled(true);
@@ -322,41 +320,6 @@ public class Atividade extends ViewPart {
 				//ação de adicionar atividade foi cancelada
 				if (ultimaAtividadeAdicionada!=null&&!ultimaAtividadeAdicionada.equals(novaAtividade)) {
 				
-					//realiza o cadastro da nova atividade
-					//viewComunication.sendPack(new Atividade(), Event.CadastroAtividade);
-				
-					//adiciona o item na lista de atividades
-					listaAtividades.add(novaAtividade);
-				
-					//captura os conhecimentos envolvidos
-					ArrayList<Conhecimento> conhecimentos = viewComunication.getConhecimentosEnvolvidos(novaAtividade);
-				
-					//limpa as listas de conhecimentos e problemas
-					listaConhecimentos.removeAll();
-					listaProblemas.removeAll();
-				
-					//cria estruturas para armazenar os conhecimentos e problemas
-					ArrayList<String> conh = new ArrayList<String>();
-					ArrayList<String> prob = new ArrayList<String>();
-			
-				
-					//Preenche a lista de conhecimentos
-					if(conhecimentos != null)
-						for(Conhecimento c : conhecimentos)
-						{
-							conh.add(c.getNome());
-							listaConhecimentos.add(c.getNome());
-						}	
-
-					//Seleciona o item recem adicionado
-					listaAtividades.select(listaAtividades.indexOf(novaAtividade));
-
-					//atualiza a vizualizacao
-					listaAtividades.getParent().redraw();
-					listaAtividades.getParent().update();
-					listaConhecimentos.getParent().redraw();
-					listaConhecimentos.getParent().update();
-				
 				}
 				else {
 					//adiciona o item na lista de atividades
@@ -417,31 +380,10 @@ public class Atividade extends ViewPart {
 
 			public void mouseDown(MouseEvent arg0) {
 					
-				//exibe o wizard de confirmacao para a retirada da atividade
+				//exibe o wizard de confirmacao para a adicao de desenvolvedor
 				RunAdicionaDesenvolvedorWizard();
 			}
-				//runAdicionaDesenvolvedorWizardAction();
-				//captura o id da atividade selecionada
 				
-				
-				//realiza a remocao da atividade no servidor
-				//viewComunication.sendPack(Atividade, Event.RemocaoAtividade);
-				
-				//realiza a remocao da atividade na lista
-				//listaAtividades.remove(idAtividade);
-				
-				//limpa as listas de problemas e conhecimentos
-				//listaConhecimentos.removeAll();
-				//listaProblemas.removeAll();
-				
-				//atualiza as listas
-				//listaAtividades.getParent().redraw();
-				//listaAtividades.getParent().update();
-				//listaConhecimentos.getParent().redraw();
-				//listaConhecimentos.getParent().update();
-				//listaProblemas.getParent().redraw();
-				//listaProblemas.getParent().update();
-
 			public void mouseUp(MouseEvent arg0) {
 				// TODO Auto-generated method stub
 				
@@ -456,6 +398,24 @@ public class Atividade extends ViewPart {
 		removeUser.setImage(userRemove);
 		removeUser.setToolTipText("Remove novo desenvolvedor");
 		removeUser.setEnabled(false);
+		removeUser.addMouseListener(new MouseListener() {
+
+			public void mouseDoubleClick(MouseEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			public void mouseDown(MouseEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			public void mouseUp(MouseEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+		});
 		
 		removeAtividade = new Button(parentComposite, SWT.NONE);
 		Image remove = new Image(addAtividade.getDisplay(),this.getClass().getResourceAsStream("/icons/remove.gif"));
@@ -478,7 +438,7 @@ public class Atividade extends ViewPart {
 				String nomeAtividade = listaAtividades.getItem(idAtividade);
 				TipoAtividade atividadeLocalizada = null;
 				
-				ArrayList<TipoAtividade> atividades = getViewComunication().buscaAtividades();
+				ArrayList<TipoAtividade> atividades = viewComunication.buscaAtividades();
 				if (atividades!=null) {
 					for (TipoAtividade tipoAtividade : atividades) {
 						if (tipoAtividade.getDescricao().equals(nomeAtividade)) {
@@ -500,8 +460,6 @@ public class Atividade extends ViewPart {
 				//realiza a remocao da atividade na lista grafica
 				listaAtividades.remove(idAtividade);
 				
-				//realiza a remocao da atividade no BD
-				getViewComunication().removerAtividade(atividadeLocalizada);
 				
 				//limpa as listas de problemas e conhecimentos
 				listaConhecimentos.removeAll();
@@ -524,54 +482,11 @@ public class Atividade extends ViewPart {
 		
 		});
 
-		removeAllAtividade = new Button(parentComposite, SWT.NONE);
-		Image removeAll = new Image(addAtividade.getDisplay(),this.getClass().getResourceAsStream("/icons/removeAll.gif"));
-		removeAllAtividade.setLocation(posHorBotaoNivel6, posVerBotaoNivel1);
-		removeAllAtividade.setSize(larguraBotao, alturaBotao);
-		removeAllAtividade.setImage(removeAll);
-		removeAllAtividade.setToolTipText("Remove todas as atividades");
-		removeAllAtividade.setEnabled(false);
-		removeAllAtividade.addMouseListener(new MouseListener(){
 
-			public void mouseDoubleClick(MouseEvent arg0) {
-				// TODO Auto-generated method stub
-				
-			}
-
-			public void mouseDown(MouseEvent arg0) {
-				// exibe o wizard para confirmacao de exclusao
-				//runRemoveAllWizardAction();
-				
-			
-				//realiza a exclusao das atividades
-				//viewComunication.sendPack(new Atividade(), 1);
-				
-				//limpa as listas
-				listaAtividades.removeAll();
-				listaConhecimentos.removeAll();
-				listaProblemas.removeAll();
-				
-				//atualiza a vizualizacao
-				listaAtividades.getParent().redraw();
-				listaAtividades.getParent().update();
-				listaConhecimentos.getParent().redraw();
-				listaConhecimentos.getParent().update();
-				listaProblemas.getParent().redraw();
-				listaProblemas.getParent().update();
-				
-			}
-
-			public void mouseUp(MouseEvent arg0) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-		});
-		
 		
 		encerraAtividade = new Button(parentComposite, SWT.NONE);
 		Image encerra = new Image(addAtividade.getDisplay(),this.getClass().getResourceAsStream("/icons/encerra.gif"));
-		encerraAtividade.setLocation(posHorBotaoNivel7, posVerBotaoNivel1);
+		encerraAtividade.setLocation(posHorBotaoNivel6, posVerBotaoNivel1);
 		encerraAtividade.setSize(larguraBotao, alturaBotao);
 		encerraAtividade.setImage(encerra);
 		encerraAtividade.setToolTipText("Encerra atividade selecionada");

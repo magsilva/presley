@@ -60,7 +60,6 @@ public class LoginWizard extends Wizard implements INewWizard {
     		String senha = page.getSenha();
     		String ip = page.getIP();
     		
-    		
     		this.atividade.getViewComunication().login(login, senha);
 	
     	}catch (Exception e) {

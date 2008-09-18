@@ -41,12 +41,12 @@ public class ViewComunication implements CorePresleyOperations{
 	 * Construtor da classe ViewCommunication. Instancia a comunicacao como cliente, passando o ip do
 	 * servidor e a porta para acesso remoto (1099 padrao RMI)
 	 */
-	public ViewComunication() {
+	public ViewComunication(String ipServidor) {
 		///*
 		try {
 			
 			System.out.println("instanciando cliente");
-			PrincipalSUBJECT.getInstance("client", "150.165.130.196", 1099);
+			PrincipalSUBJECT.getInstance("client", ipServidor , 1099);
 			
 			System.out.println("Passou do getInstance");
 		} catch (Exception e) {
@@ -209,7 +209,7 @@ public class ViewComunication implements CorePresleyOperations{
 			
 			ontologia = tree;
 			
-			this.adicionaAtividade(atividade);
+			//this.adicionaAtividade(atividade);
 			//this.adicionaDesenvolvedor(desenvolvedor);
 			System.out.println("Adicionando atividade no banco");
 			//this.adicionaAtividade(atividade);
@@ -456,11 +456,11 @@ public class ViewComunication implements CorePresleyOperations{
 	 */
 	public ArrayList<TipoAtividade> buscaAtividades() {
 		// TODO Auto-generated method stub
-		//PacketStruct respostaPacket = sendPack(null, BUSCA_ATIVIDADE);
-		//ArrayList<TipoAtividade> resposta = (ArrayList<TipoAtividade>)respostaPacket.getData();
-    	//if (resposta!=null) {
-    	//	atividades = resposta;
-		//}
+		PacketStruct respostaPacket = sendPack(null, BUSCA_ATIVIDADE);
+		ArrayList<TipoAtividade> resposta = (ArrayList<TipoAtividade>)respostaPacket.getData();
+    	if (resposta!=null) {
+    		atividades = resposta;
+		}
     	
 		return atividades;
 	}
