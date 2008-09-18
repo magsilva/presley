@@ -19,6 +19,7 @@ import persistencia.interfaces.ServicoDesenvolvedor;
 import persistencia.interfaces.ServicoSolucao;
 import excessao.ConhecimentoInexistenteException;
 import excessao.DescricaoInvalidaException;
+import excessao.DesenvolvedorExisteException;
 import excessao.DesenvolvedorInexistenteException;
 import excessao.EmailInvalidoException;
 import excessao.ErroDeAutenticacaoException;
@@ -111,9 +112,9 @@ public class ValidacaoDesenvolvedorImpl {
 	 * @throws SenhaInvalidaException 
 	 */
 	public boolean criarDesenvolvedor(String email, String nome,
-			String localidade, String senha) throws DesenvolvedorInexistenteException, SenhaInvalidaException {
+			String localidade, String senha) throws DesenvolvedorExisteException, SenhaInvalidaException {
 		
-		if (servicoDesenvolvedor.desenvolvedorExiste(email)) throw new DesenvolvedorInexistenteException();
+		if (servicoDesenvolvedor.desenvolvedorExiste(email)) throw new DesenvolvedorExisteException();
 		if (!ValidacaoUtil.validaSenha(senha)) throw new SenhaInvalidaException();
 		
 		return servicoDesenvolvedor.criarDesenvolvedor(email, nome, localidade, senha);
