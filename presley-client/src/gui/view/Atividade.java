@@ -33,6 +33,8 @@ import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 import org.eclipse.ui.part.ViewPart;
 
+import com.sun.org.apache.bcel.internal.generic.NEW;
+
 import beans.Conhecimento;
 import beans.Desenvolvedor;
 import beans.Problema;
@@ -45,13 +47,14 @@ public class Atividade extends ViewPart {
 	private HashMap<String,List> conhecimentosList;
 	private HashMap<String,List> problemasList;
 	private ViewComunication viewComunication;
-	private List listaAtividades, listaConhecimentos, listaProblemas; 
+	private List listaAtividades, listaConhecimentos, listaProblemas, listaDesenvolvedores; 
 	private Label conhecimentoLabel, problemaLabel, contatosLabel;
 	private Composite panelContatos, parentComposite;
 	private Button login,logout, addAtividade, addUser,removeUser, addConhecimento,removeConhecimento, removeAtividade, removeAllAtividade, 
 			buscaAtividade, encerraAtividade, associaConhecimento, desassociaConhecimento,
 			buscaConhecimento, associaProblema, desassociaProblema, buscaProblema,
 			buscaDesenvolvedor, qualificaDesenvolvedor, solicitaMensagens;
+	private ArrayList<Desenvolvedor> desenvolvedoresHabilitados;
 	
 	private RunAdicionaAtividadeWizardAction runAdicionaAtividade;
 	private RunRemoveAtividadeWizardAction runRemoveAtividade;
@@ -645,6 +648,33 @@ public class Atividade extends ViewPart {
 	
 		}
 		
+		listaDesenvolvedores = new List(parentComposite, SWT.V_SCROLL | SWT.BORDER);
+		listaDesenvolvedores.setLocation(posHorPanel, posVerPainelContatos);
+		listaDesenvolvedores.setSize(larguraJanela, alturaPainelContatos);
+		listaDesenvolvedores.setVisible(true);
+		
+		
+		
+			listaDesenvolvedores.addMouseListener(new MouseListener() {
+
+				public void mouseDoubleClick(MouseEvent arg0) {
+					// TODO Auto-generated method stub
+					
+				}
+
+				public void mouseDown(MouseEvent arg0) {
+					
+					//Captura os desenvolvedores selecionados
+					String[] nomesDesenvolvedoresSelecionados = nomesDesenvolvedoresSelecionados = listaDesenvolvedores.getSelection();
+								
+				}
+					 
+				public void mouseUp(MouseEvent arg0) {
+					// TODO Auto-generated method stub
+					
+				}
+				
+			});
 		
 		conhecimentoLabel = new Label(parentComposite, SWT.BORDER | SWT.CENTER);
 		conhecimentoLabel.setText("Conhecimentos Envolvidos");
@@ -952,6 +982,14 @@ public class Atividade extends ViewPart {
 				problemaSelecionado = listaProblemas.getItem(listaProblemas.getSelectionIndex());
 				runBuscaDesenvolvedorWizardAction();
 				
+				ArrayList<String> desenvolvedoresNomes = new ArrayList<String>();
+				for(Desenvolvedor d : desenvolvedoresHabilitados)
+					desenvolvedoresNomes.add(d.getNome());
+				
+				if (desenvolvedoresNomes != null) {
+					for(String nome : desenvolvedoresNomes)
+						listaDesenvolvedores.add(nome);
+				}
 //				ArrayList<Problema> problemasAssocidos;
 //				problemasAssocidos = getViewComunication().getProblemas(atividadeSelecionada);
 //				if (problemasAssocidos!=null) {
@@ -976,11 +1014,6 @@ public class Atividade extends ViewPart {
 		contatosLabel.setLocation(0, posVerPainelProblemas + alturaPainelProblemas + distanciaPanelLabel);
 		contatosLabel.setSize(200, 20);
 		contatosLabel.setVisible(true);
-		
-		panelContatos = new Composite(parentComposite, SWT.V_SCROLL | SWT.BORDER);
-		panelContatos.setLocation(posHorPanel, posVerPainelContatos);
-		panelContatos.setSize(larguraJanela, alturaPainelContatos);
-		panelContatos.setVisible(true);
 		
 		qualificaDesenvolvedor = new Button(parentComposite, SWT.NONE);
 		Image ok = new Image(addAtividade.getDisplay(),this.getClass().getResourceAsStream("/icons/ok.gif"));
@@ -1083,8 +1116,6 @@ public class Atividade extends ViewPart {
 	public ArrayList<String> getConhecimentosDoProblema(){
 		ArrayList<String> conhecimentosDoProblema = new ArrayList<String>();
 		
-		System.out.println("problemaSelecionado = " + problemaSelecionado);
-		
 		if(!problemaAssociadoConhecimentos.isEmpty()){
 			ArrayList<Conhecimento> conhecimentos = problemaAssociadoConhecimentos.get(problemaSelecionado);
 			for(Conhecimento c : conhecimentos){
@@ -1094,5 +1125,14 @@ public class Atividade extends ViewPart {
 		else
 			System.out.println("hashtable de problemas e conhecimentos é null");
 		return conhecimentosDoProblema;
+	}
+
+	public ArrayList<Desenvolvedor> getDesenvolvedores() {
+		return desenvolvedoresHabilitados;
+	}
+
+	public void setDesenvolvedores(ArrayList<Desenvolvedor> desenvolvedores) {
+		desenvolvedoresHabilitados = new ArrayList<Desenvolvedor>();
+		this.desenvolvedoresHabilitados.addAll(desenvolvedores);
 	}
 }
