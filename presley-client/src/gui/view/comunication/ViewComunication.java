@@ -20,7 +20,7 @@ import beans.TipoAtividade;
 import beans.Tree;
 import facade.PacketStruct;
 import facade.PrincipalSUBJECT;
-import excecao.*;
+import excessao.*;
 
 /**
  * Esta classe controla a comunicacao entre o cliente e o servidor.
