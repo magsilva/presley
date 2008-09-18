@@ -213,7 +213,7 @@ public class ViewComunication implements CorePresleyOperations{
 			System.out.println("Adicionando atividade no banco");
 			//this.adicionaAtividade(atividade);
 			System.out.println("Passou da adicao");
-			this.adicionaDesenvolvedor(desenvolvedor);
+			//this.adicionaDesenvolvedor(desenvolvedor);
 
 		} catch (Exception e) {
 			// TODO: handle exception
