@@ -30,7 +30,8 @@ public class ServicoDesenvolvedorImplDAO implements ServicoDesenvolvedor{
 	public boolean adicionarConhecimentoAoDesenvolvedor(
 			String emailDesenvolvedor, String nomeConhecimento) {
 
-		Connection conn = MySQLConnectionFactory.getConnection();
+		//Connection conn = MySQLConnectionFactory.getConnection();
+		Connection conn = MySQLConnectionFactory.open();
 
 		try {
 
@@ -60,8 +61,9 @@ public class ServicoDesenvolvedorImplDAO implements ServicoDesenvolvedor{
 	public boolean atualizarDesenvolvedor(String email, String novoEmail, String nome,
 			String localidade, String senha) {
 
-		Connection conn = MySQLConnectionFactory.getConnection();
-
+		//Connection conn = MySQLConnectionFactory.getConnection();
+		Connection conn = MySQLConnectionFactory.open();
+		
 		try {
 
 			Statement stm = conn.createStatement();
@@ -92,8 +94,9 @@ public class ServicoDesenvolvedorImplDAO implements ServicoDesenvolvedor{
 	public boolean criarDesenvolvedor(String email, String nome,
 			String localidade, String senha) {
 
-		Connection conn = MySQLConnectionFactory.getConnection();
-
+		//Connection conn = MySQLConnectionFactory.getConnection();
+		Connection conn = MySQLConnectionFactory.open();
+		
 		try {
 
 			Statement stm = conn.createStatement();
@@ -122,7 +125,8 @@ public class ServicoDesenvolvedorImplDAO implements ServicoDesenvolvedor{
 
 	public boolean desenvolvedorExiste(String email) {
 
-		Connection conn = MySQLConnectionFactory.getConnection();
+		//Connection conn = MySQLConnectionFactory.getConnection();
+		Connection conn = MySQLConnectionFactory.open();
 
 		try {
 
@@ -158,7 +162,8 @@ public class ServicoDesenvolvedorImplDAO implements ServicoDesenvolvedor{
 	public boolean removerConhecimentoDoDesenvolvedor(
 			String emailDesenvolvedor, String nomeConhecimento) {
 
-		Connection conn = MySQLConnectionFactory.getConnection();
+		//Connection conn = MySQLConnectionFactory.getConnection();
+		Connection conn = MySQLConnectionFactory.open();
 
 		try {
 
@@ -191,7 +196,8 @@ public class ServicoDesenvolvedorImplDAO implements ServicoDesenvolvedor{
 
 	public boolean conhecimentoDoDesenvolvedorExiste(String emailDesenvolvedor, String nomeConhecimento){
 
-		Connection conn = MySQLConnectionFactory.getConnection();
+		//Connection conn = MySQLConnectionFactory.getConnection();
+		Connection conn = MySQLConnectionFactory.open();
 
 		try {
 
@@ -228,8 +234,9 @@ public class ServicoDesenvolvedorImplDAO implements ServicoDesenvolvedor{
 
 	public boolean removerDesenvolvedor(String email) {
 
-		Connection conn = MySQLConnectionFactory.getConnection();
-
+		//Connection conn = MySQLConnectionFactory.getConnection();
+		Connection conn = MySQLConnectionFactory.open();
+		
 		try {
 
 			Statement stm = conn.createStatement();
@@ -262,8 +269,9 @@ public class ServicoDesenvolvedorImplDAO implements ServicoDesenvolvedor{
 
 	public Desenvolvedor getDesenvolvedor(String email) {
 		
-		Connection conn = MySQLConnectionFactory.getConnection();
-
+		//Connection conn = MySQLConnectionFactory.getConnection();
+		Connection conn = MySQLConnectionFactory.open();
+			
 		try {
 
 			Statement stm = conn.createStatement();
@@ -304,7 +312,9 @@ public class ServicoDesenvolvedorImplDAO implements ServicoDesenvolvedor{
 	}
 	
 	public int getQntResposta(String email, String conhecimento){
-		Connection conn = MySQLConnectionFactory.getConnection();
+		//Connection conn = MySQLConnectionFactory.getConnection();
+		Connection conn = MySQLConnectionFactory.open();
+		
 		try{
 			
 			Statement stm = conn.createStatement();
@@ -318,11 +328,20 @@ public class ServicoDesenvolvedorImplDAO implements ServicoDesenvolvedor{
 				
 		} catch(SQLException e){
 			return -1;
+		} finally {
+			try {
+				conn.close();
+			} catch (SQLException onConClose) {
+				System.out.println(" Houve erro no fechamento da conexão ");
+				onConClose.printStackTrace();	             
+			}
 		}
 	}
 	
 	public int getGrau(String email, String conhecimento){
-		Connection conn = MySQLConnectionFactory.getConnection();
+		//Connection conn = MySQLConnectionFactory.getConnection();
+		Connection conn = MySQLConnectionFactory.open();
+		
 		try{
 			
 			Statement stm = conn.createStatement();
@@ -336,11 +355,20 @@ public class ServicoDesenvolvedorImplDAO implements ServicoDesenvolvedor{
 				
 		} catch(SQLException e){
 			return -1;
+		} finally {
+			try {
+				conn.close();
+			} catch (SQLException onConClose) {
+				System.out.println(" Houve erro no fechamento da conexão ");
+				onConClose.printStackTrace();	             
+			}
 		}
 	}
 	
 	public boolean updateQntResposta(String email, String conhecimento, int quantidade){
-		Connection conn = MySQLConnectionFactory.getConnection();
+		//Connection conn = MySQLConnectionFactory.getConnection();
+		Connection conn = MySQLConnectionFactory.open();		
+		
 		try{
 			
 			Statement stm = conn.createStatement();
@@ -354,11 +382,20 @@ public class ServicoDesenvolvedorImplDAO implements ServicoDesenvolvedor{
 				
 		} catch(SQLException e){
 			return false;
+		} finally {
+			try {
+				conn.close();
+			} catch (SQLException onConClose) {
+				System.out.println(" Houve erro no fechamento da conexão ");
+				onConClose.printStackTrace();	             
+			}
 		}
 	}
 	
 	public boolean updateGrau(String email, String conhecimento, int grau){
-		Connection conn = MySQLConnectionFactory.getConnection();
+		//Connection conn = MySQLConnectionFactory.getConnection();
+		Connection conn = MySQLConnectionFactory.open();
+		
 		try{
 			
 			Statement stm = conn.createStatement();
@@ -372,12 +409,20 @@ public class ServicoDesenvolvedorImplDAO implements ServicoDesenvolvedor{
 				
 		} catch(SQLException e){
 			return false;
+		} finally {
+			try {
+				conn.close();
+			} catch (SQLException onConClose) {
+				System.out.println(" Houve erro no fechamento da conexão ");
+				onConClose.printStackTrace();	             
+			}
 		}
 	}
 
 	// Modificado por Francisco - 16/09 - 18:50
 	public ArrayList<Conhecimento> getConhecimentosDoDesenvolvedor(String email) {
-		Connection conn = MySQLConnectionFactory.getConnection();
+		//Connection conn = MySQLConnectionFactory.getConnection();
+		Connection conn = MySQLConnectionFactory.open();
 		
 		ArrayList<Conhecimento> list = new ArrayList<Conhecimento>();
 		HashMap<Conhecimento, Double> map = new HashMap<Conhecimento, Double>();
@@ -430,7 +475,8 @@ public class ServicoDesenvolvedorImplDAO implements ServicoDesenvolvedor{
 	}
 	
 	public HashMap<Conhecimento, Double> getConhecimentosDoDesenvolvedor(String email, int x) {
-		Connection conn = MySQLConnectionFactory.getConnection();
+		//Connection conn = MySQLConnectionFactory.getConnection();
+		Connection conn = MySQLConnectionFactory.open();
 		
 		HashMap<Conhecimento, Double> map = new HashMap<Conhecimento, Double>();
 
@@ -480,7 +526,8 @@ public class ServicoDesenvolvedorImplDAO implements ServicoDesenvolvedor{
 	// Modificado por Francisco - 16/09 -- 18:53
 	public ArrayList<TipoAtividade> getAtividadesDoDesenvolvedor(String email) {
 
-		Connection conn = MySQLConnectionFactory.getConnection();
+		//Connection conn = MySQLConnectionFactory.getConnection();
+		Connection conn = MySQLConnectionFactory.open();
 		
 		ArrayList<TipoAtividade> list = new ArrayList<TipoAtividade>();
 
@@ -531,7 +578,7 @@ public class ServicoDesenvolvedorImplDAO implements ServicoDesenvolvedor{
 
 	public ArrayList<Desenvolvedor> getTodosDesenvolvedores() {
 
-		Connection conn = MySQLConnectionFactory.getConnection();
+		Connection conn = MySQLConnectionFactory.open();
 		
 		ArrayList<Desenvolvedor> list = new ArrayList<Desenvolvedor>();
 
@@ -559,12 +606,20 @@ public class ServicoDesenvolvedorImplDAO implements ServicoDesenvolvedor{
 
 		} catch (Exception e) {
 			return null;
+		} finally {
+			try {
+				conn.close();
+			} catch (SQLException onConClose) {
+				System.out.println(" Houve erro no fechamento da conexão ");
+				onConClose.printStackTrace();	             
+			}
 		}
 	}
 
 	public Desenvolvedor autenticaDesenvolvedor(String email, String senha) {
 		
-		Connection conn = MySQLConnectionFactory.getConnection();
+		//Connection conn = MySQLConnectionFactory.getConnection();
+		Connection conn = MySQLConnectionFactory.open();
 
 		try {
 
