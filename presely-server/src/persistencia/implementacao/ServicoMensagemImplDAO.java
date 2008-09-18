@@ -16,7 +16,9 @@ public class ServicoMensagemImplDAO {
 		
 		//MySQLConnectionFactory factory = new MySQLConnectionFactory();
 
-		Connection conn = MySQLConnectionFactory.getConnection();
+		//Connection conn = MySQLConnectionFactory.getConnection();
+		Connection conn = MySQLConnectionFactory.open();
+		
 
 		try {
 			Statement stm = conn.createStatement();
@@ -45,7 +47,9 @@ public class ServicoMensagemImplDAO {
 	
 	public String[] getMensagens(Desenvolvedor desenvolvedorDestino) {
 		
-		Connection conn = MySQLConnectionFactory.getConnection();
+		//Connection conn = MySQLConnectionFactory.getConnection();
+		Connection conn = MySQLConnectionFactory.open();
+		
 		String[] m;
 
 		try {

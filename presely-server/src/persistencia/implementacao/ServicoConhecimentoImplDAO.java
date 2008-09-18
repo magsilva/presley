@@ -25,7 +25,8 @@ public class ServicoConhecimentoImplDAO implements ServicoConhecimento{
 	public boolean atualizarConhecimento(String nome, String novoNome,
 			String descricao) {
 
-		Connection conn = MySQLConnectionFactory.getConnection();
+		//Connection conn = MySQLConnectionFactory.getConnection();
+		Connection conn = MySQLConnectionFactory.open();
 
 		try {
 
@@ -55,7 +56,8 @@ public class ServicoConhecimentoImplDAO implements ServicoConhecimento{
 
 	public boolean conhecimentoExiste(String nome) {
 
-		Connection conn = MySQLConnectionFactory.getConnection();
+		//Connection conn = MySQLConnectionFactory.getConnection();
+		Connection conn = MySQLConnectionFactory.open();
 
 		try {
 
@@ -89,7 +91,8 @@ public class ServicoConhecimentoImplDAO implements ServicoConhecimento{
 
 	public boolean criarConhecimento(String nome, String descricao) {
 
-		Connection conn = MySQLConnectionFactory.getConnection();
+		//Connection conn = MySQLConnectionFactory.getConnection();
+		Connection conn = MySQLConnectionFactory.open();
 
 		try {
 
@@ -119,7 +122,8 @@ public class ServicoConhecimentoImplDAO implements ServicoConhecimento{
 
 	public boolean removerConhecimento(String nome) {
 
-		Connection conn = MySQLConnectionFactory.getConnection();
+		//Connection conn = MySQLConnectionFactory.getConnection();
+		Connection conn = MySQLConnectionFactory.open();
 
 		try {
 
@@ -151,7 +155,8 @@ public class ServicoConhecimentoImplDAO implements ServicoConhecimento{
 
 	public Conhecimento getConhecimento(String nome) {
 
-		Connection conn = MySQLConnectionFactory.getConnection();
+		//Connection conn = MySQLConnectionFactory.getConnection();
+		Connection conn = MySQLConnectionFactory.open();
 
 		try {
 
@@ -197,7 +202,8 @@ public class ServicoConhecimentoImplDAO implements ServicoConhecimento{
 	public boolean associaConhecimentos(String nomeConhecimentoPai,
 			String nomeConhecimentoFilho) {
 
-		Connection conn = MySQLConnectionFactory.getConnection();
+		//Connection conn = MySQLConnectionFactory.getConnection();
+		Connection conn = MySQLConnectionFactory.open();
 
 		try {
 
@@ -228,7 +234,8 @@ public class ServicoConhecimentoImplDAO implements ServicoConhecimento{
 	public boolean desassociaConhecimentos(String nomeConhecimentoPai,
 			String nomeConhecimentoFilho) {
 
-		Connection conn = MySQLConnectionFactory.getConnection();
+		//Connection conn = MySQLConnectionFactory.getConnection();
+		Connection conn = MySQLConnectionFactory.open();
 
 		try {
 
@@ -259,7 +266,8 @@ public class ServicoConhecimentoImplDAO implements ServicoConhecimento{
 	public ArrayList<Conhecimento> getFilhos(String nomeConhecimentoPai)
 	throws ConhecimentoInexistenteException {
 
-		Connection conn = MySQLConnectionFactory.getConnection();
+		//Connection conn = MySQLConnectionFactory.getConnection();
+		Connection conn = MySQLConnectionFactory.open();
 
 		ArrayList<Conhecimento> list = new ArrayList<Conhecimento>();
 
@@ -300,7 +308,8 @@ public class ServicoConhecimentoImplDAO implements ServicoConhecimento{
 	public ArrayList<Conhecimento> getPais(String nomeConhecimentoFilho)
 	throws ConhecimentoInexistenteException {
 
-		Connection conn = MySQLConnectionFactory.getConnection();
+		//Connection conn = MySQLConnectionFactory.getConnection();
+		Connection conn = MySQLConnectionFactory.open();
 
 		ArrayList<Conhecimento> list = new ArrayList<Conhecimento>();
 
@@ -339,7 +348,8 @@ public class ServicoConhecimentoImplDAO implements ServicoConhecimento{
 	}
 
 	public ArrayList<Conhecimento> getListaConhecimento() {
-		Connection conn = MySQLConnectionFactory.getConnection();
+		//Connection conn = MySQLConnectionFactory.getConnection();
+		Connection conn = MySQLConnectionFactory.open();
 
 		ArrayList<Conhecimento> list = new ArrayList<Conhecimento>();
 

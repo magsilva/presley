@@ -17,7 +17,8 @@ public class ServicoSolucaoImplDAO implements ServicoSolucao{
 
 	public boolean atualizarStatusDaSolucao(int id, boolean status) {
 		
-		Connection conn = MySQLConnectionFactory.getConnection();
+		//Connection conn = MySQLConnectionFactory.getConnection();
+		Connection conn = MySQLConnectionFactory.open();
 		
 		try {
 		
@@ -54,7 +55,8 @@ public class ServicoSolucaoImplDAO implements ServicoSolucao{
 	public boolean cadastrarSolucao(String emailDesenvolvedor, int idProblema,
 			Date dataDaProposta, String mensagem) {
 
-		Connection conn = MySQLConnectionFactory.getConnection();
+		//Connection conn = MySQLConnectionFactory.getConnection();
+		Connection conn = MySQLConnectionFactory.open();
 		
 		try {
 		
@@ -86,7 +88,8 @@ public class ServicoSolucaoImplDAO implements ServicoSolucao{
 	public ArrayList<Solucao> listarSolucoesAceitasDoDesenvolvedor(
 			String emailDesenvolvedor) {
 		
-		Connection conn = MySQLConnectionFactory.getConnection();
+		//Connection conn = MySQLConnectionFactory.getConnection();
+		Connection conn = MySQLConnectionFactory.open();
 		
 		ArrayList<Solucao> list = new ArrayList<Solucao>();
 		ServicoDesenvolvedor sd = new ServicoDesenvolvedorImplDAO();
@@ -136,7 +139,8 @@ public class ServicoSolucaoImplDAO implements ServicoSolucao{
 	public ArrayList<Solucao> listarSolucoesDoDesenvolvedor(
 			String emailDesenvolvedor) {
 		
-		Connection conn = MySQLConnectionFactory.getConnection();
+		//Connection conn = MySQLConnectionFactory.getConnection();
+		Connection conn = MySQLConnectionFactory.open();
 		
 		ArrayList<Solucao> list = new ArrayList<Solucao>();
 		ServicoDesenvolvedor sd = new ServicoDesenvolvedorImplDAO();
@@ -185,7 +189,8 @@ public class ServicoSolucaoImplDAO implements ServicoSolucao{
 	public ArrayList<Solucao> listarSolucoesRejeitadasDoDesenvolvedor(
 			String emailDesenvolvedor) {
 		
-		Connection conn = MySQLConnectionFactory.getConnection();
+		//Connection conn = MySQLConnectionFactory.getConnection();
+		Connection conn = MySQLConnectionFactory.open();
 		
 		ArrayList<Solucao> list = new ArrayList<Solucao>();
 		ServicoDesenvolvedor sd = new ServicoDesenvolvedorImplDAO();
@@ -234,7 +239,8 @@ public class ServicoSolucaoImplDAO implements ServicoSolucao{
 
 	public boolean removerSolucao(int id) {
 		
-		Connection conn = MySQLConnectionFactory.getConnection();
+		//Connection conn = MySQLConnectionFactory.getConnection();
+		Connection conn = MySQLConnectionFactory.open();
 		
 		try {
 		
@@ -267,7 +273,8 @@ public class ServicoSolucaoImplDAO implements ServicoSolucao{
 
 	public boolean solucaoExiste(int id) {
 		
-		Connection conn = MySQLConnectionFactory.getConnection();
+		//Connection conn = MySQLConnectionFactory.getConnection();
+		Connection conn = MySQLConnectionFactory.open();
 		
 		try {
 		
@@ -301,7 +308,9 @@ public class ServicoSolucaoImplDAO implements ServicoSolucao{
 
 	public Solucao getSolucao(int id) {
 		
-		Connection conn = MySQLConnectionFactory.getConnection();
+		//Connection conn = MySQLConnectionFactory.getConnection();
+		Connection conn = MySQLConnectionFactory.open();
+		
 		ServicoDesenvolvedor sd = new ServicoDesenvolvedorImplDAO();
 		ServicoProblema sp = new ServicoProblemaImplDAO();
 		
@@ -346,7 +355,9 @@ public class ServicoSolucaoImplDAO implements ServicoSolucao{
 	}
 
 	public ArrayList<Solucao> getSolucoesDoProblema(int idProblema) {
-		Connection conn = MySQLConnectionFactory.getConnection();
+		//Connection conn = MySQLConnectionFactory.getConnection();
+		Connection conn = MySQLConnectionFactory.open();
+		
 		ServicoDesenvolvedor sd = new ServicoDesenvolvedorImplDAO();
 		ServicoProblema sp = new ServicoProblemaImplDAO();
 		

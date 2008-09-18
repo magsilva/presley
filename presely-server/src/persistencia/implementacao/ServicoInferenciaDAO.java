@@ -14,7 +14,9 @@ public class ServicoInferenciaDAO {
 	
 	public HashMap<Desenvolvedor, Double> getDesenvolvedoresByConhecimento(String conhecimento) throws DesenvolvedorInexistenteException{
 		
-		Connection conn = MySQLConnectionFactory.getConnection();
+		//Connection conn = MySQLConnectionFactory.getConnection();
+		Connection conn = MySQLConnectionFactory.open();
+		
 		HashMap<Desenvolvedor, Double> mCand = new HashMap<Desenvolvedor, Double>();
 		
 		try{

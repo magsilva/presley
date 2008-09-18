@@ -10,7 +10,8 @@ public class RunScript {
 	public static void main(String [] args) {
 		//MySQLConnectionFactory mySQLconnection = new MySQLConnectionFactory();
 
-		Connection conexao = MySQLConnectionFactory.getConnection();
+		//Connection conexao = MySQLConnectionFactory.getConnection();
+		Connection conexao = MySQLConnectionFactory.open();
 		
 		System.out.println(conexao);
 		
