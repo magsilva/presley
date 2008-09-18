@@ -47,8 +47,7 @@ public class BuscaDesenvolvedoresWizardPage extends WizardPage {
     
     
     public ArrayList<String> getConhecimentos(){
-    	return null;
-    	//return this.atividade.getConhecimentosDoProblema();
+    	return this.atividade.getConhecimentosDoProblema();
     }
     
 
