@@ -73,10 +73,17 @@ public class ValidacaoSolucaoImpl {
 	 * no parametro.
 	 * @param id Identificador da solucao
 	 * @return <Solucao>
+	 * @throws SolucaoIniexistenteException 
 	 */
-	public Solucao getSolucao(int id) {
-
-		return servicoSolucao.getSolucao(id);
+	public Solucao getSolucao(int id) throws SolucaoIniexistenteException {
+		
+		Solucao solucao = servicoSolucao.getSolucao(id);
+		
+		if (solucao == null) {
+			throw new SolucaoIniexistenteException();
+		}
+		
+		return solucao;
 	}
 	
 	/**
@@ -99,9 +106,12 @@ public class ValidacaoSolucaoImpl {
 	 * série de problemas.
 	 * @param emailDesenvolvedor Email do desenvolvedor.
 	 * @return ArrayList<Solucao>
+	 * @throws DescricaoInvalidaException 
 	 */
 	public ArrayList<Solucao> listarSolucoesDoDesenvolvedor(
-			String emailDesenvolvedor) {
+			String emailDesenvolvedor) throws DescricaoInvalidaException {
+		
+		if (!servicoDesenvolvedor.desenvolvedorExiste(emailDesenvolvedor)) throw new DescricaoInvalidaException();
 
 		return servicoSolucao.listarSolucoesDoDesenvolvedor(emailDesenvolvedor);
 	}
@@ -111,9 +121,12 @@ public class ValidacaoSolucaoImpl {
 	 * para uma todos os problemas cadastrados no banco.
 	 * @param emailDesenvolvedor Email do desenvolvedor.
 	 * @return ArrayList<Solucao>
+	 * @throws DescricaoInvalidaException 
 	 */
 	public ArrayList<Solucao> listarSolucoesRejeitadasDoDesenvolvedor(
-			String emailDesenvolvedor) {
+			String emailDesenvolvedor) throws DescricaoInvalidaException {
+		
+		if (!servicoDesenvolvedor.desenvolvedorExiste(emailDesenvolvedor)) throw new DescricaoInvalidaException();
 
 		return servicoSolucao.listarSolucoesRejeitadasDoDesenvolvedor(emailDesenvolvedor);
 	}
@@ -122,9 +135,12 @@ public class ValidacaoSolucaoImpl {
 	 * Esse método remove uma solução proposta por um desenvolvedor da base de dados.
 	 * @param id Identificador da solução.
 	 * @return true se a solução foi removida com sucesso.
+	 * @throws SolucaoIniexistenteException 
 	 */
-	public boolean removerSolucao(int id) {
-
+	public boolean removerSolucao(int id) throws SolucaoIniexistenteException {
+		
+		if (!servicoSolucao.solucaoExiste(id)) throw new SolucaoIniexistenteException();
+		
 		return servicoSolucao.removerSolucao(id);
 	}
 	
