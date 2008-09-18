@@ -56,13 +56,13 @@ public class ValidacaoDesenvolvedorImpl {
 	 * @throws ConhecimentoInexistenteException 
 	 */
 	public boolean adicionarConhecimentoAoDesenvolvedor(
-			String emailDesenvolvedor, String nomeConhecimento) throws DescricaoInvalidaException, ConhecimentoInexistenteException {
+			String emailDesenvolvedor, String nomeConhecimento, int grau, int qntResposta) throws DescricaoInvalidaException, ConhecimentoInexistenteException {
 		
 		if (!servicoDesenvolvedor.desenvolvedorExiste(emailDesenvolvedor)) throw new DescricaoInvalidaException();
 		if (!servicoConhecimento.conhecimentoExiste(nomeConhecimento)) throw new ConhecimentoInexistenteException();
 		
 		return servicoDesenvolvedor.adicionarConhecimentoAoDesenvolvedor(
-				emailDesenvolvedor, nomeConhecimento);
+				emailDesenvolvedor, nomeConhecimento, grau, qntResposta);
 	}
 	
 	/**
@@ -295,9 +295,9 @@ public class ValidacaoDesenvolvedorImpl {
 		String email = dados.getUser();
 		String senha = dados.getPasswd();
 		
-		if (!ValidacaoUtil.validaEmail(email)) throw new EmailInvalidoException();
-		if (!ValidacaoUtil.validaSenha(senha)) throw new SenhaInvalidaException();
-		
+//		if (!ValidacaoUtil.validaEmail(email)) throw new EmailInvalidoException();
+//		if (!ValidacaoUtil.validaSenha(senha)) throw new SenhaInvalidaException();
+//		
 		if (!servicoDesenvolvedor.desenvolvedorExiste(email)) throw new DesenvolvedorInexistenteException();
 		
 		Desenvolvedor desenvolvedor = servicoDesenvolvedor.autenticaDesenvolvedor(email, senha);

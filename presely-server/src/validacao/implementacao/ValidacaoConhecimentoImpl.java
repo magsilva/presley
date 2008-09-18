@@ -227,6 +227,8 @@ public class ValidacaoConhecimentoImpl {
 
 	public ArrayList<Conhecimento> getListaConhecimento() {
 		// TODO Auto-generated method stub
+		System.out.println("AKI CHEGA KRAI");
+		
 		return servicoConhecimento.getListaConhecimento();
 	}
 
