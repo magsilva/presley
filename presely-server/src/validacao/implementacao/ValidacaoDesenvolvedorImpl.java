@@ -51,11 +51,13 @@ public class ValidacaoDesenvolvedorImpl {
 	 * @param emailDesenvolvedor Email do desenvolvedor.
 	 * @param nomeConhecimento Nome do conhecimento a ser adicionado.
 	 * @return true se o conhecimento foi adicionado ao desenvolvedor.
+	 * @throws DescricaoInvalidaException 
+	 * @throws ConhecimentoInexistenteException 
 	 */
 	public boolean adicionarConhecimentoAoDesenvolvedor(
-			String emailDesenvolvedor, String nomeConhecimento) throws Exception {
+			String emailDesenvolvedor, String nomeConhecimento) throws DescricaoInvalidaException, ConhecimentoInexistenteException {
 		
-		if (!servicoDesenvolvedor.desenvolvedorExiste(emailDesenvolvedor)) throw new Exception();
+		if (!servicoDesenvolvedor.desenvolvedorExiste(emailDesenvolvedor)) throw new DescricaoInvalidaException();
 		if (!servicoConhecimento.conhecimentoExiste(nomeConhecimento)) throw new ConhecimentoInexistenteException();
 		
 		return servicoDesenvolvedor.adicionarConhecimentoAoDesenvolvedor(
@@ -70,12 +72,14 @@ public class ValidacaoDesenvolvedorImpl {
 	 * @param nome Nome do novo desenvolvedor.
 	 * @param localidade Local onde o desenvolvedor reside.
 	 * @return true se a atualizacao foi concluida com sucesso.
+	 * @throws DesenvolvedorInexistenteException 
+	 * @throws SenhaInvalidaException 
 	 */
 	public boolean atualizarDesenvolvedor(String email, String novoEmail,
-			String nome, String localidade, String senha) throws Exception {
+			String nome, String localidade, String senha) throws DesenvolvedorInexistenteException, SenhaInvalidaException {
 		
-		if (!servicoDesenvolvedor.desenvolvedorExiste(email)) throw new Exception();
-		if (!ValidacaoUtil.validaSenha(senha)) throw new Exception();
+		if (!servicoDesenvolvedor.desenvolvedorExiste(email)) throw new DesenvolvedorInexistenteException();
+		if (!ValidacaoUtil.validaSenha(senha)) throw new SenhaInvalidaException();
 		
 		return servicoDesenvolvedor.atualizarDesenvolvedor(email, novoEmail, nome, localidade, senha);
 	}
@@ -85,12 +89,14 @@ public class ValidacaoDesenvolvedorImpl {
 	 * @param emailDesenvolvedor Email do desenvolvedor que possui tal conhecimento.
 	 * @param nomeConhecimento Nome do conhecimento associado ao desenvolvedor. 
 	 * @return true se a associacao existe.
+	 * @throws DesenvolvedorInexistenteException 
+	 * @throws ConhecimentoInexistenteException 
 	 */
 	public boolean conhecimentoDoDesenvolvedorExiste(String emailDesenvolvedor,
-			String nomeConhecimento) throws Exception {
+			String nomeConhecimento) throws DesenvolvedorInexistenteException, ConhecimentoInexistenteException {
 		
-		if (!servicoDesenvolvedor.desenvolvedorExiste(emailDesenvolvedor)) throw new Exception();
-		if (!servicoConhecimento.conhecimentoExiste(nomeConhecimento)) throw new Exception();
+		if (!servicoDesenvolvedor.desenvolvedorExiste(emailDesenvolvedor)) throw new DesenvolvedorInexistenteException();
+		if (!servicoConhecimento.conhecimentoExiste(nomeConhecimento)) throw new ConhecimentoInexistenteException();
 		
 		return servicoDesenvolvedor.conhecimentoDoDesenvolvedorExiste(emailDesenvolvedor, nomeConhecimento);
 	}
@@ -127,10 +133,11 @@ public class ValidacaoDesenvolvedorImpl {
 	 * Esse mtodo retorna uma lista de atividades atribuidas a um desenvolvedor
 	 * @param email Email do desenvolvedor
 	 * @return ArrayList<TipoAtividade>
+	 * @throws DescricaoInvalidaException 
 	 */
-	public ArrayList<TipoAtividade> getAtividadesDoDesenvolvedor(String email) throws Exception {
+	public ArrayList<TipoAtividade> getAtividadesDoDesenvolvedor(String email) throws DescricaoInvalidaException {
 		
-		if (!servicoDesenvolvedor.desenvolvedorExiste(email)) throw new Exception();
+		if (!servicoDesenvolvedor.desenvolvedorExiste(email)) throw new DescricaoInvalidaException();
 		
 		return servicoDesenvolvedor.getAtividadesDoDesenvolvedor(email);
 	}
@@ -139,11 +146,12 @@ public class ValidacaoDesenvolvedorImpl {
 	 * Esse mtodo retorna uma lista de conhecimentos que o desenvolvedor possui
 	 * @param email Email do desenvolvedor
 	 * @return ArrayList<Conhecimento>
+	 * @throws DescricaoInvalidaException 
 	 */
 	public ArrayList<Conhecimento> getConhecimentosDoDesenvolvedor(String email) 
-			throws Exception {
+		throws DescricaoInvalidaException  {
 		
-		if (!servicoDesenvolvedor.desenvolvedorExiste(email)) throw new Exception();
+		if (!servicoDesenvolvedor.desenvolvedorExiste(email)) throw new DescricaoInvalidaException();
 		
 		return servicoDesenvolvedor.getConhecimentosDoDesenvolvedor(email);
 	}
@@ -152,11 +160,12 @@ public class ValidacaoDesenvolvedorImpl {
 	 * Este mtodo retorna o desenvolvedor que possui o email passado no parametro.
 	 * @param email Email do desenvolvedor.
 	 * @return <Desenvolvedor> 
+	 * @throws DesenvolvedorInexistenteException 
 	 */
-	public Desenvolvedor getDesenvolvedor(String email) throws Exception {
+	public Desenvolvedor getDesenvolvedor(String email) throws DesenvolvedorInexistenteException {
 		
 		Desenvolvedor desenvolvedor = servicoDesenvolvedor.getDesenvolvedor(email);
-		if (desenvolvedor == null) throw new Exception();
+		if (desenvolvedor == null) throw new DesenvolvedorInexistenteException();
 		
 		return desenvolvedor;
 	}
