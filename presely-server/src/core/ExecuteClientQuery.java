@@ -117,7 +117,11 @@ public class ExecuteClientQuery implements CorePresleyOperations{
 	 * @return
 	 * @throws Exception 
 	 */
-	public boolean associaConhecimentoAtividade(PacketStruct packet) throws AtividadeInexistenteException, ConhecimentoInexistenteException, Exception{
+	public boolean associaConhecimentoAtividade(PacketStruct packet) throws 
+						AtividadeInexistenteException, 
+						ConhecimentoInexistenteException, 
+						Exception{
+		
 		ConhecimentoAtividade conhecimentoAtividade = new ConhecimentoAtividade();
 		ArrayList<Conhecimento> listaConhecimento = conhecimentoAtividade.getConhecimentos();
 		TipoAtividade atividade = conhecimentoAtividade.getAtividade();
@@ -159,8 +163,9 @@ public class ExecuteClientQuery implements CorePresleyOperations{
 	 * 
 	 * @param packet
 	 * @return
+	 * @throws DesenvolvedorInexistenteException 
 	 */
-	public ArrayList<Desenvolvedor> buscaDesenvolvedores(PacketStruct packet) {
+	public ArrayList<Desenvolvedor> buscaDesenvolvedores(PacketStruct packet) throws DesenvolvedorInexistenteException {
 		BuscaDesenvolvedores busca = (BuscaDesenvolvedores)packet.getData();
 
 		Problema problema = busca.getProblema();
@@ -171,7 +176,7 @@ public class ExecuteClientQuery implements CorePresleyOperations{
 	}	
 
 	public ArrayList<Desenvolvedor> buscaDesenvolvedores(Problema problema,
-			ArrayList<Conhecimento> listaConhecimento, int grauDeConfianca) {
+			ArrayList<Conhecimento> listaConhecimento, int grauDeConfianca) throws DesenvolvedorInexistenteException {
 
 		String[] conhecimentos = new String[problema.getConhecimentos().size()];
 		for(int i = 0; i < listaConhecimento.size(); i++)
@@ -213,15 +218,15 @@ public class ExecuteClientQuery implements CorePresleyOperations{
 		return validacaoProblema.removerProblema(problema.getId());
 	}
 
-	public boolean encerrarAtividade(PacketStruct packet) {
+	public boolean encerrarAtividade(PacketStruct packet) throws AtividadeInexistenteException {
 		TipoAtividade atividade = (TipoAtividade) packet.getData();
 		return encerrarAtividade(atividade);
 	}
-	public boolean encerrarAtividade(TipoAtividade atividade) {
+	public boolean encerrarAtividade(TipoAtividade atividade) throws AtividadeInexistenteException {
 		return validacaoAtividade.atualizarStatusDaAtividade(atividade.getId(), true);
 	}
 
-	public boolean enviarMensagem(PacketStruct packet) {
+	public boolean enviarMensagem(PacketStruct packet) throws DesenvolvedorInexistenteException {
 		Mensagem msg = (Mensagem) packet.getData();
 		return enviarMensagem(msg.getDesenvolvedorOrigem(), msg.getDesenvolvedoresDestino(), msg.getProblema(), msg.getTexto());
 
@@ -229,7 +234,7 @@ public class ExecuteClientQuery implements CorePresleyOperations{
 
 	public boolean enviarMensagem(Desenvolvedor desenvolvedorOrigem,
 			ArrayList<Desenvolvedor> desenvolvedoresDestino, Problema problema,
-			String texto) {
+			String texto) throws DesenvolvedorInexistenteException {
 
 		return validacaoMensagem.adicionarMensagem(desenvolvedorOrigem, desenvolvedoresDestino, problema, texto);
 	}
@@ -259,11 +264,11 @@ public class ExecuteClientQuery implements CorePresleyOperations{
 		return logout(authData);
 	}
 	public boolean logout(Desenvolvedor desenvolvedor) {
-		// TODO Auto-generated method stub
-		return false;
+		// Já que não existe sessão, a operação de log-out é "ficticia"
+		return true;
 	}
 
-	public boolean qualificaDesenvolvedor(PacketStruct packet) {
+	public boolean qualificaDesenvolvedor(PacketStruct packet) throws ConhecimentoInexistenteException, DesenvolvedorInexistenteException {
 		QualificacaoDesenvolvedor qualDes = (QualificacaoDesenvolvedor) packet.getData();
 		Problema problema = qualDes.getProblema();
 		Desenvolvedor desenvolvedor = qualDes.getDesenvolvedor();
@@ -271,7 +276,7 @@ public class ExecuteClientQuery implements CorePresleyOperations{
 		return qualificaDesenvolvedor(desenvolvedor, problema, foiUtil);
 	}
 	public boolean qualificaDesenvolvedor(Desenvolvedor desenvolvedor,
-			Problema problema, boolean qualificacao) {
+			Problema problema, boolean qualificacao) throws ConhecimentoInexistenteException, DesenvolvedorInexistenteException {
 		ArrayList<String> conhecimentos = problema.getConhecimentos();
 		return Ontologia.incrementaRespostasDesenvolvedor(desenvolvedor, qualificacao, conhecimentos);
 	}
@@ -309,9 +314,10 @@ public class ExecuteClientQuery implements CorePresleyOperations{
 	}
 
 
-	public Tree getOntologia() {
-		// TODO Auto-generated method stub
-		return null;
+	public Tree getOntologia() throws ConhecimentoInexistenteException {
+		//Ontologia ontologia = new Ontologia(null, null);
+		
+		return Ontologia.getArvoreDeConhecimentos();
 	}
 
 	public ArrayList<Problema> getListaProblemas() {

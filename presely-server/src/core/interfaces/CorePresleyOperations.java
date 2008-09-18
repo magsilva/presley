@@ -38,7 +38,7 @@ public interface CorePresleyOperations {
 	public static final int ENCERRAR_ATIVIDADE = 7;
 	public static final int ASSOCIAR_CONHECIMENTO_ATIVIDADE = 8;
 	public static final int DESSASOCIAR_CONHECIMENTO_ATIVIDADE = 9;
-	public static final int ASSOCAR_PROBLEMA_ATIVIDADE = 10;
+	public static final int ASSOCIAR_PROBLEMA_ATIVIDADE = 10;
 	public static final int DESSASOCIAR_PROBLEMA_ATIVIDADE = 11;
 	public static final int BUSCA_DESENVOLVEDORES = 12;
 	public static final int QUALIFICA_DESENVOLVEDOR = 13;
@@ -113,8 +113,9 @@ public interface CorePresleyOperations {
 	 * CÓDIGO DA OPERAÇÃO -> 07
 	 * @param TipoAtividade atividade
 	 * @return true se a atividade for encerrada com sucesso.
+	 * @throws AtividadeInexistenteException 
 	 */
-	public boolean encerrarAtividade(TipoAtividade atividade);
+	public boolean encerrarAtividade(TipoAtividade atividade) throws AtividadeInexistenteException;
 
 	/**
 	 * Este método associa conhecimentos a uma atividade
@@ -166,8 +167,9 @@ public interface CorePresleyOperations {
 	 * @param TipoAtividade atividade
 	 * @param int grauDeConfiaca varia de 1 -> 100
 	 * @return true se a desassociação foi realizada com sucesso.
+	 * @throws DesenvolvedorInexistenteException 
 	 */
-	public ArrayList<Desenvolvedor> buscaDesenvolvedores(Problema problema, ArrayList<Conhecimento> listaConhecimento, int grauDeConfianca);
+	public ArrayList<Desenvolvedor> buscaDesenvolvedores(Problema problema, ArrayList<Conhecimento> listaConhecimento, int grauDeConfianca) throws DesenvolvedorInexistenteException;
 
 	/**
 	 * Este método qualifica o desenvolvedor de acordo com as respostas dele aos problemas
@@ -176,8 +178,10 @@ public interface CorePresleyOperations {
 	 * @param Problema problema
 	 * @param boolean qualificação
 	 * @return true se a desassociação foi realizada com sucesso.
+	 * @throws DesenvolvedorInexistenteException 
+	 * @throws ConhecimentoInexistenteException 
 	 */
-	public boolean qualificaDesenvolvedor(Desenvolvedor desenvolvedor, Problema problema, boolean qualificacao);
+	public boolean qualificaDesenvolvedor(Desenvolvedor desenvolvedor, Problema problema, boolean qualificacao) throws ConhecimentoInexistenteException, DesenvolvedorInexistenteException;
 
 	/**
 	 * Este método envia uma mensagem para os desenvolvedores selecionados
@@ -185,8 +189,9 @@ public interface CorePresleyOperations {
 	 * @param ArrayList<Desenvolvedor> desenvolvedor
 	 * @param Problema problema
 	 * @return true se a mensagem foi realizada com sucesso.
+	 * @throws DesenvolvedorInexistenteException 
 	 */
-	public boolean enviarMensagem(Desenvolvedor desenvolvedorOrigem, ArrayList<Desenvolvedor> desenvolvedoresDestino, Problema problema, String mensagem);
+	public boolean enviarMensagem(Desenvolvedor desenvolvedorOrigem, ArrayList<Desenvolvedor> desenvolvedoresDestino, Problema problema, String mensagem) throws DesenvolvedorInexistenteException;
 	
 	/**
 	 * Este método retorna uma lista com todos os desenvolvedores cadastrados
@@ -218,8 +223,9 @@ public interface CorePresleyOperations {
 	 * Este método solicita a arvore de ontologia
 	 * CÓDIGO DA OPERAÇÃO -> 18
 	 * @return Tree Arvore de ontologia do sistema.
+	 * @throws ConhecimentoInexistenteException 
 	 */
-	public Tree getOntologia();	
+	public Tree getOntologia() throws ConhecimentoInexistenteException;	
 	
 	/**
 	 * Este método uma lista com todos os problemas cadastrados

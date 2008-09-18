@@ -2,6 +2,8 @@ package validacao.implementacao;
 
 import java.util.ArrayList;
 
+import excessao.DesenvolvedorInexistenteException;
+
 import persistencia.implementacao.ServicoMensagemImplDAO;
 
 import beans.Desenvolvedor;
@@ -10,10 +12,12 @@ import beans.Problema;
 public class ValidacaoMensagemImpl {
 
 	ServicoMensagemImplDAO servicoMensagem;
+	ValidacaoDesenvolvedorImpl validacaoDesenvolvedor;
 
 	public ValidacaoMensagemImpl() {
 
 		servicoMensagem = new ServicoMensagemImplDAO();
+		validacaoDesenvolvedor = new ValidacaoDesenvolvedorImpl();
 
 	}
 
@@ -24,8 +28,15 @@ public class ValidacaoMensagemImpl {
 	 * @param problema Problema em questão.
 	 * @param texto Texto que caracteriza a mensagem.
 	 * @return true caso a mensagem seja armazenada com sucesso no banco de dados.
+	 * @throws DesenvolvedorInexistenteException 
 	 */
-	public boolean adicionarMensagem(Desenvolvedor desenvolvedorOrigem, ArrayList<Desenvolvedor> desenvolvedoresDestino, Problema problema, String texto) {
+	public boolean adicionarMensagem(Desenvolvedor desenvolvedorOrigem, ArrayList<Desenvolvedor> desenvolvedoresDestino, Problema problema, String texto) throws DesenvolvedorInexistenteException {
+
+		if(!validacaoDesenvolvedor.desenvolvedorExiste(desenvolvedorOrigem.getEmail())) throw new DesenvolvedorInexistenteException();
+		for(Desenvolvedor d : desenvolvedoresDestino) {
+			if(!validacaoDesenvolvedor.desenvolvedorExiste(d.getEmail())) throw new DesenvolvedorInexistenteException();
+		}
+		
 		return servicoMensagem.adicionarMensagem(desenvolvedorOrigem, desenvolvedoresDestino, problema, texto);
 	}
 

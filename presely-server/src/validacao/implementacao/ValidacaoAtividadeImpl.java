@@ -36,12 +36,13 @@ public class ValidacaoAtividadeImpl {
 	ServicoConhecimento servicoConhecimento;
 	ServicoProblema servicoProblema;
 	ValidacaoProblemaImpl validacaoProblema;
+	ValidacaoAtividadeImpl validacaoAtividade;
 	
 	public ValidacaoAtividadeImpl() {
 		servicoAtividade = new ServicoAtividadeImplDAO();
 		servicoConhecimento = new ServicoConhecimentoImplDAO();
-		validacaoProblema = new ValidacaoProblemaImpl();
 		servicoProblema = new ServicoProblemaImplDAO();
+		validacaoProblema = new ValidacaoProblemaImpl();
 	}
 	
 	/**
@@ -115,8 +116,11 @@ public class ValidacaoAtividadeImpl {
 	 * @param id Identificador da atividade.
 	 * @param terminada true se a atividade foi concluida.
 	 * @return true se a operacao foi realizada com sucesso.
+	 * @throws AtividadeInexistenteException 
 	 */
-	public boolean atualizarStatusDaAtividade(int id, boolean terminada) {
+	public boolean atualizarStatusDaAtividade(int id, boolean terminada) throws AtividadeInexistenteException {
+		
+		TipoAtividade atividade = validacaoAtividade.getAtividade(id);
 		
 		return servicoAtividade.atualizarStatusDaAtividade(id, terminada);
 	}
