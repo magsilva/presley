@@ -1,5 +1,6 @@
 package beans;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import org.eclipse.swt.widgets.Composite;
@@ -11,7 +12,11 @@ import org.eclipse.swt.widgets.TreeItem;
  * @author JP
  *
  */
-public class Tree {
+public class Tree implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 10L;
 	private Item raiz;
 	
 	/**
