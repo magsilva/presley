@@ -289,8 +289,8 @@ public class ViewComunication implements CorePresleyOperations{
 		return false;
 	}
 
-	public ArrayList<Desenvolvedor> buscaDesenvolvedores(Problema problema,
-			ArrayList<Conhecimento> listaConhecimento, int grauDeConfianca) {
+	public ArrayList<Desenvolvedor> buscaDesenvolvedores(ArrayList<String> listaConhecimentos, 
+			int grauDeConfianca) {
 		// TODO Auto-generated method stub
 		return null;
 	}
