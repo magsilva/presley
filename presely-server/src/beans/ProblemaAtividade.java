@@ -1,6 +1,12 @@
 package beans;
 
-public class ProblemaAtividade {
+import java.io.Serializable;
+
+public class ProblemaAtividade implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 12L;
 	private Problema problema;
 	private TipoAtividade atividade;
 	

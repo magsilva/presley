@@ -1,10 +1,15 @@
 package beans;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class BuscaDesenvolvedores {
+public class BuscaDesenvolvedores implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3L;
 	private Problema problema;
-	private ArrayList<Conhecimento> listaConhecimento;
+	private ArrayList<String> listaConhecimento;
 	private int grauDeConfianca;
 	
 	
@@ -14,10 +19,10 @@ public class BuscaDesenvolvedores {
 	public void setProblema(Problema problema) {
 		this.problema = problema;
 	}
-	public ArrayList<Conhecimento> getListaConhecimento() {
+	public ArrayList<String> getListaConhecimento() {
 		return listaConhecimento;
 	}
-	public void setListaConhecimento(ArrayList<Conhecimento> listaConhecimento) {
+	public void setListaConhecimento(ArrayList<String> listaConhecimento) {
 		this.listaConhecimento = listaConhecimento;
 	}
 	public int getGrauDeConfianca() {
