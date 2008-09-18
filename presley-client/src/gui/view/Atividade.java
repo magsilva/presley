@@ -33,6 +33,7 @@ import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 import org.eclipse.ui.part.ViewPart;
 
+
 import beans.Conhecimento;
 import beans.Desenvolvedor;
 import beans.Problema;
@@ -253,7 +254,6 @@ public class Atividade extends ViewPart {
 				System.out.println("Fim da habilitacao");
 				}
 				catch (Exception exceo) {
-					System.out.println("Que lixo");
 					exceo.printStackTrace();
 				}
 			}
@@ -580,7 +580,7 @@ public class Atividade extends ViewPart {
 				public void mouseDown(MouseEvent arg0) {
 					
 					//Captura os desenvolvedores selecionados
-					String[] nomesDesenvolvedoresSelecionados = nomesDesenvolvedoresSelecionados = listaDesenvolvedores.getSelection();
+					String[] nomesDesenvolvedoresSelecionados = listaDesenvolvedores.getSelection();
 								
 				}
 					 

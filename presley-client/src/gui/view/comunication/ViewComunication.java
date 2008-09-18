@@ -58,7 +58,7 @@ public class ViewComunication implements CorePresleyOperations{
 		
 		this.listaDesenvolvedores = getListaDesenvolvedores();
 		
-		teste();//TESTE
+		//teste();//TESTE
 	}
 	
 	/**
@@ -113,10 +113,10 @@ public class ViewComunication implements CorePresleyOperations{
 	{
 		ArrayList<String> retorno = new ArrayList<String>();
 		if (this.atividades!=null) {
+			atividades = buscaAtividades();
 			for (TipoAtividade atividade : this.atividades) {
 				retorno.add(atividade.getDescricao());
 			}
-			
 		}
 		return retorno;
 	}
@@ -417,9 +417,9 @@ public class ViewComunication implements CorePresleyOperations{
 
 	public ArrayList<Conhecimento> getListaConhecimentos() {
 		// TODO Auto-generated method stub
-		//PacketStruct respostaPacket = sendPack(null,LISTA_CONHECIMENTOS);
-    	//ArrayList<Desenvolvedor> resposta = (ArrayList<Desenvolvedor>)respostaPacket.getData();
-    	//listaDesenvolvedores = resposta;
+		PacketStruct respostaPacket = sendPack(null,CorePresleyOperations.GET_LISTA_CONHECIMENTO);
+    	ArrayList<Desenvolvedor> resposta = (ArrayList<Desenvolvedor>)respostaPacket.getData();
+    	listaDesenvolvedores = resposta;
     	
 		return listaConhecimentos;
 	}
@@ -482,11 +482,15 @@ public class ViewComunication implements CorePresleyOperations{
 	 * @return ArrayList<TipoAtividade> é a lista de atividades cadastradas
 	 */
 	public ArrayList<TipoAtividade> buscaAtividades() {
+		System.out.println("BUSCA ATIVIDADE NO SERVER");
 		// TODO Auto-generated method stub
 		PacketStruct respostaPacket = sendPack(null, BUSCA_ATIVIDADE);
 		ArrayList<TipoAtividade> resposta = (ArrayList<TipoAtividade>)respostaPacket.getData();
     	if (resposta!=null) {
-    		atividades = resposta;
+    		if(atividades == null) System.out.println("atividade == null");
+    		else {
+        		atividades = resposta;
+    		}
 		}
     	
 		return atividades;
