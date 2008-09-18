@@ -167,11 +167,11 @@ public class ValidacaoConhecimentoImpl {
 	public boolean associaConhecimentos(String nomeConhecimentoPai,
 			String nomeConhecimentoFilho) throws ConhecimentoInexistenteException {
 		
-		if (!servicoConhecimento.conhecimentoExiste(nomeConhecimentoFilho)) 
-			throw new ConhecimentoInexistenteException();
-		
-		if (!servicoConhecimento.conhecimentoExiste(nomeConhecimentoPai)) 
-			throw new ConhecimentoInexistenteException();
+//		if (!servicoConhecimento.conhecimentoExiste(nomeConhecimentoFilho)) 
+//			throw new ConhecimentoInexistenteException();
+//		
+//		if (!servicoConhecimento.conhecimentoExiste(nomeConhecimentoPai)) 
+//			throw new ConhecimentoInexistenteException();
 		
 		return servicoConhecimento.associaConhecimentos(nomeConhecimentoPai, nomeConhecimentoFilho);
 	}
@@ -204,8 +204,8 @@ public class ValidacaoConhecimentoImpl {
 	public ArrayList<Conhecimento> getFilhos(String nomeConhecimentoPai)
 			throws ConhecimentoInexistenteException {
 
-		if (!servicoConhecimento.conhecimentoExiste(nomeConhecimentoPai)) 
-			throw new ConhecimentoInexistenteException();
+//		if (!servicoConhecimento.conhecimentoExiste(nomeConhecimentoPai)) 
+//			throw new ConhecimentoInexistenteException();
 		
 		return servicoConhecimento.getFilhos(nomeConhecimentoPai);
 	}
@@ -219,8 +219,8 @@ public class ValidacaoConhecimentoImpl {
 	public ArrayList<Conhecimento> getPais(String nomeConhecimentoFilho)
 			throws ConhecimentoInexistenteException {
 
-		if (!servicoConhecimento.conhecimentoExiste(nomeConhecimentoFilho)) 
-			throw new ConhecimentoInexistenteException();
+//		if (!servicoConhecimento.conhecimentoExiste(nomeConhecimentoFilho)) 
+//			throw new ConhecimentoInexistenteException();
 		
 		return servicoConhecimento.getPais(nomeConhecimentoFilho);
 	}
