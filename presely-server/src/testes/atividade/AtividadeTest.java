@@ -6,9 +6,11 @@ import java.sql.Date;
 import core.ExecuteClientQuery;
 import facade.PacketStruct;
 
+import excessao.AtividadeInexistenteException;
 import excessao.DataInvalidaException;
 import excessao.DescricaoInvalidaException;
 import excessao.EmailInvalidoException;
+import excessao.ProblemaInexistenteException;
 import validacao.implementacao.ValidacaoAtividadeImpl;
 
 import junit.framework.TestCase;
@@ -118,7 +120,43 @@ public class AtividadeTest extends TestCase{
 	}
 	
 	public void testRemoverAtividade(){
+		Date dt1 = new Date(System.currentTimeMillis());
+		Date dt2 = new Date(2008,9,19);
+		desenv = new Desenvolvedor();
+		ArrayList<Conhecimento> al = new ArrayList<Conhecimento>();
+		int idpai = 1;
+		Desenvolvedor sup = new Desenvolvedor();
 		
+		//tem que dar erro de atividade inexistente
+		TipoAtividade at = new TipoAtividade("descricao",desenv,sup,idpai,dt1,dt2,false,al);
+		at.setId(9999);
+		PacketStruct ps = new PacketStruct(at,2);
+		try {
+			assertTrue(ecq.removerAtividade(ps));
+			fail("nao deveria passar, pois nao existe tal atividade");
+		} catch (AtividadeInexistenteException e) {
+			;
+		} catch (ProblemaInexistenteException e) {
+			;
+		} catch (Exception e) {
+			fail("only god");
+		}
+		//----------------------------------------------
+		
+		//tem que dar erro de atividade inexistente
+		at = new TipoAtividade("descricao",desenv,sup,idpai,dt1,dt2,false,al);
+		at.setId(47);
+		ps = new PacketStruct(at,2);
+		try {
+			assertTrue(ecq.removerAtividade(ps));
+		} catch (AtividadeInexistenteException e) {
+			fail("deveria ter removido");
+		} catch (ProblemaInexistenteException e) {
+			fail("problemas na remocao de problemas. nao deveria dar esse erro");
+		} catch (Exception e) {
+			fail("only god");
+		}
+		//----------------------------------------------
 	}
 	
 	public void testBuscarAtividade(){

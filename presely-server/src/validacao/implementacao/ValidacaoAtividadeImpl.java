@@ -240,29 +240,34 @@ public class ValidacaoAtividadeImpl {
 		
 		// Desassociando os conhecimentos da atividade.
 		ArrayList<Conhecimento> conhecimentos = servicoAtividade.getConhecimentosEnvolvidosNaAtividade(id);
-		Iterator<Conhecimento> it = conhecimentos.iterator();
-		
-		while (it.hasNext()) {
-			Conhecimento conhecimento = it.next();
-			servicoAtividade.removerConhecimentoDaAtividade(id, conhecimento.getDescricao());
+		if(conhecimentos != null || !conhecimentos.isEmpty()){
+			Iterator<Conhecimento> it = conhecimentos.iterator();
+			while (it.hasNext()) {
+				Conhecimento conhecimento = it.next();
+				servicoAtividade.removerConhecimentoDaAtividade(id, conhecimento.getDescricao());
+			}
 		}
 		
 		// Desassociando as atividades com associacao
 		ArrayList<TipoAtividade> filhos = servicoAtividade.getSubAtividades(id);
-		Iterator<TipoAtividade> it2 = filhos.iterator();
-		
-		while (it2.hasNext()) {
-			TipoAtividade subAtividade = it2.next();
-			servicoAtividade.desassociarAtividades(subAtividade.getId(), id);
+		if(filhos != null || !filhos.isEmpty()){
+			Iterator<TipoAtividade> it2 = filhos.iterator();
+			
+			while (it2.hasNext()) {
+				TipoAtividade subAtividade = it2.next();
+				servicoAtividade.desassociarAtividades(subAtividade.getId(), id);
+			}
 		}
 		
 		// Removendo problemas associados a atividade
 		ArrayList<Problema> problemas = servicoProblema.listarProblemasDaAtividade(id);
-		Iterator<Problema> it3 = problemas.iterator();
-		
-		while (it3.hasNext()) {
-			Problema problema = it3.next();
-			validacaoProblema.removerProblema(problema.getId());
+		if(problemas != null || !problemas.isEmpty()){
+			Iterator<Problema> it3 = problemas.iterator();
+			
+			while (it3.hasNext()) {
+				Problema problema = it3.next();
+				validacaoProblema.removerProblema(problema.getId());
+			}
 		}
 		
 		return servicoAtividade.removerAtividade(id);
