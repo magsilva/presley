@@ -539,8 +539,7 @@ public class ServicoDesenvolvedorImplDAO implements ServicoDesenvolvedor{
 
 			Statement stm = conn.createStatement();
 
-			String SQL = " SELECT * FROM desenvolvedor";
-
+			String SQL = " SELECT * FROM desenvolvedor;";
 
 			System.out.println(SQL);
 			ResultSet rs = stm.executeQuery(SQL);
