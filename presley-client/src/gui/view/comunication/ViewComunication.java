@@ -214,7 +214,7 @@ public class ViewComunication implements CorePresleyOperations{
 			
 			ontologia = tree;
 			
-			this.adicionaAtividade(atividade);
+			//this.adicionaAtividade(atividade);
 			//this.adicionaDesenvolvedor(desenvolvedor);
 			System.out.println("Adicionando atividade no banco");
 			//this.adicionaAtividade(atividade);
@@ -275,14 +275,18 @@ public class ViewComunication implements CorePresleyOperations{
 	 * @param atividade é a atividade que será removida
 	 */
 	public boolean removerAtividade(TipoAtividade atividade) {
-		// TODO Auto-generated method stub
-    	PacketStruct respostaPacket = sendPack(atividade, REMOVE_ATIVIDADE);
-    	Boolean resposta = (Boolean)respostaPacket.getData();
-    	if (resposta.booleanValue()==true) {
+		Boolean resposta = false;
+		PacketStruct respostaPacket = sendPack(atividade, CorePresleyOperations.REMOVE_ATIVIDADE);
+    	if(respostaPacket.getId() == CorePresleyOperations.ERRO) {
+    		//exibir erro ao usuario
+    		System.out.println("erro");
+    	}
+    	else {
+    		resposta = (Boolean)respostaPacket.getData();
     		this.atividades.remove(atividade.getDescricao());
     		this.conhecimentos.remove(atividade.getDescricao());
 		}
-		return resposta.booleanValue();
+		return resposta;
 	}
 
 	public boolean associaConhecimentoAtividade(
@@ -469,11 +473,11 @@ public class ViewComunication implements CorePresleyOperations{
 	 */
 	public ArrayList<TipoAtividade> buscaAtividades() {
 		// TODO Auto-generated method stub
-		//PacketStruct respostaPacket = sendPack(null, BUSCA_ATIVIDADE);
-		//ArrayList<TipoAtividade> resposta = (ArrayList<TipoAtividade>)respostaPacket.getData();
-    	//if (resposta!=null) {
-    	//	atividades = resposta;
-		//}
+		PacketStruct respostaPacket = sendPack(null, CorePresleyOperations.BUSCA_ATIVIDADE);
+		ArrayList<TipoAtividade> resposta = (ArrayList<TipoAtividade>)respostaPacket.getData();
+    	if (resposta!=null) {
+    		atividades = resposta;
+		}
     	
 		return atividades;
 	}
