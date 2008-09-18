@@ -80,6 +80,7 @@ public class ValidacaoConhecimentoImpl {
 		if (servicoConhecimento.conhecimentoExiste(nome)) throw new ConhecimentoInexistenteException();
 		
 		return servicoConhecimento.criarConhecimento(nome, descricao);
+		
 	}
 	
 	/**
