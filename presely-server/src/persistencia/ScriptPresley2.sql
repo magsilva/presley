@@ -26,8 +26,8 @@ CREATE TABLE atividade (
   dataFim DATE NULL,
   terminada BOOL NULL,
   PRIMARY KEY(id),
-  FOREIGN KEY (desenvolvedor_email) REFERENCES desenvolvedor (email),
-  FOREIGN KEY (gerente_email) REFERENCES desenvolvedor (email),
+  FOREIGN KEY (desenvolvedor_email) REFERENCES desenvolvedor (email) ON DELETE CASCADE,
+  FOREIGN KEY (gerente_email) REFERENCES desenvolvedor (email) ON DELETE CASCADE,
   INDEX atividade_FKIndex3(atividadePai)
 );
 
@@ -35,8 +35,8 @@ CREATE TABLE atividade_has_conhecimento (
   atividade_id INTEGER UNSIGNED NOT NULL,
   conhecimento_nome VARCHAR(40) NOT NULL,
   PRIMARY KEY(atividade_id, conhecimento_nome),
-  INDEX atividade_has_conhecimento_FKIndex1(atividade_id),
-  FOREIGN KEY (conhecimento_nome) REFERENCES conhecimento (nome)  
+  INDEX atividade_has_conhecimento_FKIndex1(atividade_id) ON DELETE CASCADE,
+  FOREIGN KEY (conhecimento_nome) REFERENCES conhecimento (nome) ON DELETE CASCADE 
 );
 
 CREATE TABLE desenvolvedor_has_conhecimento (
@@ -45,8 +45,8 @@ CREATE TABLE desenvolvedor_has_conhecimento (
   grau		    int(5) NOT NULL,
   qtd_resposta	    int(5) NOT NULL,
   PRIMARY KEY(desenvolvedor_email, conhecimento_nome),
-  FOREIGN KEY (desenvolvedor_email) REFERENCES desenvolvedor (email), 
-  FOREIGN KEY (conhecimento_nome) REFERENCES conhecimento (nome) 
+  FOREIGN KEY (desenvolvedor_email) REFERENCES desenvolvedor (email) ON DELETE CASCADE, 
+  FOREIGN KEY (conhecimento_nome) REFERENCES conhecimento (nome) ON DELETE CASCADE
   
 
 );
@@ -59,7 +59,7 @@ CREATE TABLE problema (
   dataRelato DATE NULL,
   mensagem VARCHAR(250) NULL,
   PRIMARY KEY(id),
-  INDEX problema_FKIndex1(atividade_id)
+  INDEX problema_FKIndex1(atividade_id) ON DELETE CASCADE
 );
 
 CREATE TABLE solucao (
@@ -70,8 +70,8 @@ CREATE TABLE solucao (
   dataProposta DATE NULL,
   mensagem VARCHAR(250) NULL,
   PRIMARY KEY(id),
-  INDEX solucao_FKIndex1(problema_id),
-  FOREIGN KEY (desenvolvedor_email) REFERENCES desenvolvedor (email)
+  INDEX solucao_FKIndex1(problema_id) ON DELETE CASCADE,
+  FOREIGN KEY (desenvolvedor_email) REFERENCES desenvolvedor (email) ON DELETE CASCADE
 );
 
 CREATE TABLE mensagem (
@@ -81,7 +81,7 @@ CREATE TABLE mensagem (
   problema	VARCHAR (40) NOT NULL,
   mensagem VARCHAR (250) NOT NULL,
   PRIMARY KEY (id),
-  FOREIGN KEY (desenvolvedor_origem_email) REFERENCES desenvolvedor (email),
-  FOREIGN KEY (desenvolvedor_destino_email) REFERENCES desenvolvedor (email)
+  FOREIGN KEY (desenvolvedor_origem_email) REFERENCES desenvolvedor (email) ON DELETE CASCADE,
+  FOREIGN KEY (desenvolvedor_destino_email) REFERENCES desenvolvedor (email) ON DELETE CASCADE
 );
 

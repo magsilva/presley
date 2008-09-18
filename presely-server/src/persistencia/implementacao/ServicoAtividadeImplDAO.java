@@ -575,8 +575,8 @@ public class ServicoAtividadeImplDAO implements ServicoAtividade{
 				TipoAtividade tipoAtividade = new TipoAtividade();
 
 				tipoAtividade.setId(rs.getInt(1));
-				tipoAtividade.setDesenvolvedor(sd.getDesenvolvedor(rs.getString(2)));
-				tipoAtividade.setSupervisor(sd.getDesenvolvedor(rs.getString(3)));
+				//tipoAtividade.setDesenvolvedor(sd.getDesenvolvedor(rs.getString(2)));
+				//tipoAtividade.setSupervisor(sd.getDesenvolvedor(rs.getString(3)));
 				tipoAtividade.setIdPai(rs.getInt(4));
 				tipoAtividade.setDescricao(rs.getString(5));
 				tipoAtividade.setDataInicio(rs.getDate(6));

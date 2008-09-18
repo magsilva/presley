@@ -28,7 +28,7 @@ import beans.TipoAtividade;
 public class ServicoDesenvolvedorImplDAO implements ServicoDesenvolvedor{
 
 	public boolean adicionarConhecimentoAoDesenvolvedor(
-			String emailDesenvolvedor, String nomeConhecimento) {
+			String emailDesenvolvedor, String nomeConhecimento, int grau, int qntResposta) {
 
 		//Connection conn = MySQLConnectionFactory.getConnection();
 		Connection conn = MySQLConnectionFactory.open();
@@ -40,7 +40,8 @@ public class ServicoDesenvolvedorImplDAO implements ServicoDesenvolvedor{
 			stm = conn.createStatement();
 
 			String SQL = " INSERT INTO desenvolvedor_has_conhecimento VALUES ('"
-				+emailDesenvolvedor+"','" +nomeConhecimento+"');";
+				+emailDesenvolvedor+"','" +nomeConhecimento+"','" +grau+"','" +qntResposta+
+				"');";
 
 			System.out.println(SQL);
 			stm.execute(SQL);

@@ -396,13 +396,18 @@ public class ServicoConhecimentoImplDAO implements ServicoConhecimento{
 
 				String nomeConhecimentoPai = rs.getString(1);
 				Conhecimento conhecimento = getConhecimento(nomeConhecimentoPai);
-
+				
+				System.out.println("Adicionando novo conhecimento a lista");
+				
 				list.add(conhecimento);
 			}
 
 		} catch (SQLException e) {
 			//e.printStackTrace();
 			return null;
+		} catch (NullPointerException e) {
+			System.out.println("NullPointerException na classe ServicoConhecimentoImplDAO..");
+			e.printStackTrace();
 		} finally {
 			try {
 				stm.close();

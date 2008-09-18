@@ -59,7 +59,7 @@ public interface ServicoDesenvolvedor {
 	 * @return true se o conhecimento foi adicionado ao desenvolvedor.
 	 */
 	public boolean adicionarConhecimentoAoDesenvolvedor(String emailDesenvolvedor,
-			String nomeConhecimento);
+			String nomeConhecimento, int grau, int qntResposta);
 	
 	/**
 	 * Esse método remove um conhecimento associado a um desenvolvedor específico.
