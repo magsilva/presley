@@ -286,6 +286,10 @@ public class ExecuteClientQuery implements CorePresleyOperations{
 		return removerAtividade(atividade);
 	}
 	public boolean removerAtividade(TipoAtividade atividade) throws AtividadeInexistenteException, ProblemaInexistenteException {
+		if(atividade == null) {
+			System.out.println("atividade null");
+		}
+			System.out.println("ID ativiadade " + atividade.getId());
 		validacaoAtividade.removerAtividade(atividade.getId());
 		return true;
 	}
