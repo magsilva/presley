@@ -53,6 +53,7 @@ public class Atividade extends ViewPart {
 	private RunAdicionaAtividadeWizardAction runAdicionaAtividade;
 	private RunRemoveAtividadeWizardAction runRemoveAtividade;
 	private RunAssociaProblemaAtividadeWizardAction runAssociaProblema;
+	//private RunAdicionaDesenvolvedorWizardAction runAdicionaDesenvolvedor;
 	
 	private Desenvolvedor desenvolvedorLogado = null;
 	private String atividadeSelecionada = null;
@@ -373,7 +374,7 @@ public class Atividade extends ViewPart {
 			}
 		
 			public void mouseDown(MouseEvent arg0) {
-				
+				//runAdicionaDesenvolvedorWizardAction();
 				//captura o id da atividade selecionada
 				int idAtividade = listaAtividades.getSelectionIndex();
 				
@@ -889,10 +890,10 @@ public class Atividade extends ViewPart {
 		this.problemaAssociadoConhecimentos.put(problema.getDescricao(), conhecimentos);
 	}
 	
-	public void login(String nome, String senha, String ip){
+	/*public void login(String nome, String senha, String ip){
 		desenvolvedorLogado = viewComunication.login(nome, senha);
 	}
-	
+	*/
 	public void removeAtividade(String atividade){
 		//this.viewComunication.removeAtividade(atividade);
 	}
@@ -905,6 +906,11 @@ public class Atividade extends ViewPart {
 		this.runAdicionaAtividade = new RunAdicionaAtividadeWizardAction(this);
 		this.runAdicionaAtividade.run(null);
 	}
+	
+	/*private void runAdicionaDesenvolvedorWizardAction(){
+		this.runAdicionaDesenvolvedor = new RunAdicionaDesenvolvedorWizardAction(this);
+		this.runAdicionaDesenvolvedor.run(null);
+	}*/
 	
 	private void runAssociaProblemaAtividadeWizardAction(){
 		this.runAssociaProblema = new RunAssociaProblemaAtividadeWizardAction(this,atividadeSelecionada);

@@ -10,11 +10,13 @@ import java.util.HashMap;
 import java.util.Hashtable;
 
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
+import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
@@ -80,7 +82,13 @@ public class AdicionaDesenvolvedorWizard extends Wizard implements INewWizard {
 		novoDesenvolvedor.setLocalidade(local);
 		novoDesenvolvedor.setNome(nome);
 		novoDesenvolvedor.setSenha(senha);
-		this.atividade.getViewComunication().adicionaDesenvolvedor(novoDesenvolvedor);
+		try {
+			this.atividade.getViewComunication().adicionaDesenvolvedor(novoDesenvolvedor);
+		} catch (Exception e1) {
+
+			MessageDialog.openError(this.getShell(), "ERROR", e1.getMessage());
+			e1.printStackTrace();
+		}
 		
 		try {
 		      getContainer().run(true, true, new IRunnableWithProgress() {

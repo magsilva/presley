@@ -45,8 +45,10 @@ public class BuscaDesenvolvedoresWizardPage extends WizardPage {
         return Integer.parseInt(grauDeConfianca.getText());
     }
     
+    
     public ArrayList<String> getConhecimentos(){
-    	return this.atividade.getConhecimentosDoProblema();
+    	return null;
+    	//return this.atividade.getConhecimentosDoProblema();
     }
     
 

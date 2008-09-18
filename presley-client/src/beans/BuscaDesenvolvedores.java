@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class BuscaDesenvolvedores {
 	private Problema problema;
-	private ArrayList<Conhecimento> listaConhecimento;
+	private ArrayList<String> listaConhecimento;
 	private int grauDeConfianca;
 	
 	
@@ -14,10 +14,10 @@ public class BuscaDesenvolvedores {
 	public void setProblema(Problema problema) {
 		this.problema = problema;
 	}
-	public ArrayList<Conhecimento> getListaConhecimento() {
+	public ArrayList<String> getListaConhecimento() {
 		return listaConhecimento;
 	}
-	public void setListaConhecimento(ArrayList<Conhecimento> listaConhecimento) {
+	public void setListaConhecimento(ArrayList<String> listaConhecimento) {
 		this.listaConhecimento = listaConhecimento;
 	}
 	public int getGrauDeConfianca() {
