@@ -4,6 +4,7 @@ import gui.action.RunAdicionaAtividadeWizardAction;
 import gui.action.RunAssociaProblemaAtividadeWizardAction;
 import gui.action.RunBuscaDesenvolvedorWizardAction;
 import gui.action.RunRemoveAtividadeWizardAction;
+import gui.view.comunication.CorePresleyOperations;
 import gui.view.comunication.ViewComunication;
 
 import java.sql.Date;
@@ -233,21 +234,21 @@ public class Atividade extends ViewPart {
 				removeAllAtividade.setEnabled(true);
 				System.out.println("Continuando");
 				try {
-				encerraAtividade.setEnabled(true);
-				associaConhecimento.setEnabled(true);
-				desassociaConhecimento.setEnabled(true);
-				buscaConhecimento.setEnabled(true);
-				associaProblema.setEnabled(true);
-				desassociaProblema.setEnabled(true);
-				buscaProblema.setEnabled(true);
-				buscaDesenvolvedor.setEnabled(true);
-				qualificaDesenvolvedor.setEnabled(true);
-				addConhecimento.setEnabled(true);
-				removeConhecimento.setEnabled(true);
-				addUser.setEnabled(true);
-				removeUser.setEnabled(true);
-				solicitaMensagens.setEnabled(true);
-				
+					encerraAtividade.setEnabled(true);
+					associaConhecimento.setEnabled(true);
+					desassociaConhecimento.setEnabled(true);
+					buscaConhecimento.setEnabled(true);
+					associaProblema.setEnabled(true);
+					desassociaProblema.setEnabled(true);
+					buscaProblema.setEnabled(true);
+					buscaDesenvolvedor.setEnabled(true);
+					qualificaDesenvolvedor.setEnabled(true);
+					addConhecimento.setEnabled(true);
+					removeConhecimento.setEnabled(true);
+					addUser.setEnabled(true);
+					removeUser.setEnabled(true);
+					solicitaMensagens.setEnabled(true);
+
 				System.out.println("Fim da habilitacao");
 				}
 				catch (Exception exceo) {
@@ -354,8 +355,42 @@ public class Atividade extends ViewPart {
 					listaConhecimentos.getParent().update();
 				
 				}
-				// TODO Auto-generated method stub
-		
+				else {
+					//adiciona o item na lista de atividades
+					listaAtividades.add(novaAtividade);
+				
+					//captura os conhecimentos envolvidos
+					ArrayList<Conhecimento> conhecimentos = viewComunication.getConhecimentosEnvolvidos(novaAtividade);
+				
+					//limpa as listas de conhecimentos e problemas
+					listaConhecimentos.removeAll();
+					listaProblemas.removeAll();
+				
+					//cria estruturas para armazenar os conhecimentos e problemas
+					ArrayList<String> conh = new ArrayList<String>();
+					ArrayList<String> prob = new ArrayList<String>();
+			
+				
+					//Preenche a lista de conhecimentos
+					if(conhecimentos != null)
+						for(Conhecimento c : conhecimentos)
+						{
+							conh.add(c.getNome());
+							listaConhecimentos.add(c.getNome());
+						}	
+
+					//Seleciona o item recem adicionado
+					listaAtividades.select(listaAtividades.indexOf(novaAtividade));
+					atividadeSelecionada = novaAtividade;
+
+					//atualiza a vizualizacao
+					listaAtividades.getParent().redraw();
+					listaAtividades.getParent().update();
+					listaConhecimentos.getParent().redraw();
+					listaConhecimentos.getParent().update();
+				
+				
+				}
 			}
 		
 			public void mouseDoubleClick(MouseEvent arg0) {
@@ -450,14 +485,21 @@ public class Atividade extends ViewPart {
 				ArrayList<TipoAtividade> atividades = getViewComunication().buscaAtividades();
 				if (atividades!=null) {
 					for (TipoAtividade tipoAtividade : atividades) {
-						if (tipoAtividade.equals(nomeAtividade)) {
+						if (tipoAtividade.getDescricao().equals(nomeAtividade)) {
 							atividadeLocalizada = tipoAtividade;
 						}
 					}
 				}
+				else {
+					System.out.println("Nao achou a lista de atividade");
+				}
+				
+				System.out.println("Dados da atividade a ser removida: ");
+				System.out.println(atividadeLocalizada.getDescricao());
+				System.out.println(atividadeLocalizada.getId());
 				
 				//realiza a remocao da atividade no servidor
-				//viewComunication.sendPack(Atividade, Event.RemocaoAtividade);
+				viewComunication.removerAtividade(atividadeLocalizada);
 				
 				//realiza a remocao da atividade na lista grafica
 				listaAtividades.remove(idAtividade);
