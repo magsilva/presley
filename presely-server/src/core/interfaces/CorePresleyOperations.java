@@ -48,6 +48,7 @@ public interface CorePresleyOperations {
 	public static final int ADICIONA_DESENVOLVEDOR = 17;
 	public static final int GET_ONTOLOGIA = 18;
 	public static final int GET_LISTA_PROBLEMAS = 19;
+	public static final int BUSCA_CONHECIMENTOS_RELACIONADOS = 20;
 	
 	
 	/**
@@ -233,4 +234,9 @@ public interface CorePresleyOperations {
 	 * @return ArrayList<Problema> lista de problemas.
 	 */
 	public ArrayList<Problema> getListaProblemas();
+	
+	
+	
+	
+	public ArrayList<Conhecimento> getListaConhecimentosEnvolvidos(TipoAtividade atividade) throws ConhecimentoInexistenteException;
 }
