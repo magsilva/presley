@@ -966,18 +966,19 @@ public class Atividade extends ViewPart {
 	}
 
 
-	public void adicionaAtividade(TipoAtividade atividade){
+	/*
+	 * public void adicionaAtividade(TipoAtividade atividade){
 		this.viewComunication.adicionaAtividade(atividade);
 	}
-	
+	*/
 	public void associaConhecimentosProblema(Problema problema, ArrayList<Conhecimento> conhecimentos){
 		this.problemaAssociadoConhecimentos.put(problema.getDescricao(), conhecimentos);
 	}
 	
-	public void login(String nome, String senha, String ip){
+	/*public void login(String nome, String senha, String ip){
 		desenvolvedorLogado = viewComunication.login(nome, senha);
 	}
-	
+	*/
 	public void removeAtividade(String atividade){
 		//this.viewComunication.removeAtividade(atividade);
 	}

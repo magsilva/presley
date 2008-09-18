@@ -60,11 +60,11 @@ public class LoginWizard extends Wizard implements INewWizard {
     		String senha = page.getSenha();
     		String ip = page.getIP();
     		
-    		MessageDialog.openError(this.getShell(), "Erro", "Fudeu");
+    		
     		this.atividade.getViewComunication().login(login, senha);
 	
     	}catch (Exception e) {
-			// TODO: handle exception
+    		MessageDialog.openError(this.getShell(), "Erro", e.getMessage());
     		System.out.println("ERRO ERRO:"+e.getMessage());
     		e.printStackTrace();
 		}

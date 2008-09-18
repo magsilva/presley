@@ -7,8 +7,10 @@ import java.lang.reflect.InvocationTargetException;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Hashtable;
+import java.util.Iterator;
 
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.ISelection;
@@ -59,9 +61,16 @@ public class AdicionaConhecimentoWizard extends Wizard implements INewWizard {
     		String atividade = page.getNomeConhecimento();
     		ArrayList<Conhecimento> conhecimentos = page2.getConhecimentos();
     		
+    		Iterator it = conhecimentos.iterator();
+    		while(it.hasNext()) {
+    			Conhecimento conhec = (Conhecimento) it.next();
+    			this.atividade.getViewComunication().adicionaConhecimento(conhec);
+    		}
+    		
     	   
     	}catch (Exception e) {
 			// TODO: handle exception
+    		MessageDialog.openError(this.getShell(), "ERRO", e.getMessage());
     		System.out.println("ERRO ERRO:"+e.getMessage());
     		e.printStackTrace();
 		}

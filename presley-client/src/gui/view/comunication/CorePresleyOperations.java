@@ -2,7 +2,10 @@ package gui.view.comunication;
 
 import java.util.ArrayList;
 
-import excecao.*;
+import excessao.*;
+import excessao.AtividadeInexistenteException;
+import excessao.ConhecimentoInexistenteException;
+import excessao.DescricaoInvalidaException;
 import beans.Conhecimento;
 import beans.DadosAutenticacao;
 import beans.Desenvolvedor;
@@ -58,7 +61,7 @@ public interface CorePresleyOperations {
 	 * @return true se a atividade foi removida com sucesso.
 	 * @throws AtividadeInexistenteException 
 	 */
-	public boolean removerAtividade(TipoAtividade atividade) throws AtividadeInexistenteException;
+	public boolean removerAtividade(TipoAtividade atividade) throws AtividadeInexistenteException, Exception;
 
 	/**
 	 * Este método retorna as atividades cadastradas
@@ -135,7 +138,7 @@ public interface CorePresleyOperations {
 	 * @throws AtividadeInexistenteException 
 	 * @throws DescricaoInvalidaException 
 	 */
-	public boolean associaProblemaAtividade(Problema problema, TipoAtividade atividade) throws DescricaoInvalidaException, AtividadeInexistenteException;
+	public boolean associaProblemaAtividade(Problema problema, TipoAtividade atividade) throws DescricaoInvalidaException, AtividadeInexistenteException, Exception;
 
 	/**
 	 * Este método desassocia um problema a uma atividade

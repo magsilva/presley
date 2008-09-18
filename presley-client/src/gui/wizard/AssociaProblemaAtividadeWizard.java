@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Hashtable;
 
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.ISelection;
@@ -94,7 +95,7 @@ public class AssociaProblemaAtividadeWizard extends Wizard implements INewWizard
  
 	
     	}catch (Exception e) {
-			// TODO: handle exception
+    		MessageDialog.openError(this.getShell(), "ERRO", e.getMessage());
     		System.out.println("ERRO ERRO:"+e.getMessage());
     		e.printStackTrace();
 		}

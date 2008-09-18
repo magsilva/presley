@@ -2,7 +2,7 @@ package gui.action;
 
 import gui.view.Atividade;
 import gui.wizard.AssociaProblemaAtividadeWizard;
-import gui.wizard.BuscaDesenvolvedoresWizard;
+//import gui.wizard.BuscaDesenvolvedoresWizard;
 
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
@@ -53,14 +53,14 @@ IWorkbenchWindowActionDelegate{
 
 	public void run(IAction action) {
 		
-		BuscaDesenvolvedoresWizard wizard = new BuscaDesenvolvedoresWizard(this.atividade);
+		/*BuscaDesenvolvedoresWizard wizard = new BuscaDesenvolvedoresWizard(this.atividade);
 		Shell shell = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
 		WizardDialog dialog = new WizardDialog(shell,wizard);
 		dialog.create();
 		dialog.open();
 		dialog.close();
 		wizard.dispose();
-		
+		*/
 	}
 
 	public void selectionChanged(IAction action, ISelection selection) {

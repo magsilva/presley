@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Hashtable;
 
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.ISelection;
@@ -55,20 +56,24 @@ public class AdicionaDesenvolvedorWizard extends Wizard implements INewWizard {
 		// TODO Auto-generated method stub
         //First save all the page data as variables.
     	try{
-    		String atividade = page.getNomeDesenvolvedor();
+    		/*String atividade = page.getNomeDesenvolvedor();
     		
-    		//Desenvolvedor desenvolvedor = page.getDesenvolvedor();
-    		//Desenvolvedor supervisor = page.getNomeSupervisor();
+    		Desenvolvedor desenvolvedor = page.getDesenvolvedor();
+    		Desenvolvedor supervisor = page.getNomeSupervisor();
     		
     		    		
-    		//TipoAtividade novaAtividade = new TipoAtividade(atividade,desenvolvedor,supervisor,
-    			//	0,dataInicio,dataFim,status,conhecimentos);
+    		TipoAtividade novaAtividade = new TipoAtividade(atividade,desenvolvedor,supervisor,
+    				0,dataInicio,dataFim,status,conhecimentos);
   
     		//Cria a atividade no banco
     		//this.atividade.getViewComunication().adicionaAtividade(novaAtividade);
-	
+	*/
+    		Desenvolvedor desenvolvedor = page.getDesenvolvedor();
+    		this.atividade.getViewComunication().adicionaDesenvolvedor(desenvolvedor);
+    		
     	}catch (Exception e) {
-			// TODO: handle exception
+    		
+    		MessageDialog.openError(this.getShell(), "ERRO", e.getMessage());
     		System.out.println("ERRO ERRO:"+e.getMessage());
     		e.printStackTrace();
 		}

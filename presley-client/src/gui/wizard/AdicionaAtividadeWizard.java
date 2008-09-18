@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Hashtable;
 
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.ISelection;
@@ -62,8 +63,15 @@ public class AdicionaAtividadeWizard extends Wizard implements INewWizard {
     		Desenvolvedor desenvolvedor = page.getDesenvolvedor();
     		Desenvolvedor supervisor = page.getNomeSupervisor();
     		
-    		Date dataInicio = page.getDataInicio();
-    		Date dataFim = page.getDataFim();
+    		Date dataInicio = null;
+			Date dataFim = null;
+			try {
+				dataInicio = page.getDataInicio();
+				dataFim = page.getDataFim();
+			} catch (RuntimeException e) {
+				MessageDialog.openError(this.getShell(), "ERRO", "Formato data inválida.");
+				return false;
+			}
     		
     		boolean status = page.getStatus();
     		
@@ -74,9 +82,8 @@ public class AdicionaAtividadeWizard extends Wizard implements INewWizard {
     		this.atividade.getViewComunication().adicionaAtividade(novaAtividade);
 	
     	}catch (Exception e) {
-			// TODO: handle exception
+    		MessageDialog.openError(this.getShell(), "ERRO", e.getMessage());
     		System.out.println("ERRO ERRO:"+e.getMessage());
-    		e.printStackTrace();
 		}
     	
 		try {
