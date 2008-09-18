@@ -108,8 +108,11 @@ public class ValidacaoProblemaImpl {
 	 * Esse método remove um problema relatado da base de dados.
 	 * @param id Identificador do problema
 	 * @return true se o problema foi removido da base de dados.
+	 * @throws ProblemaInexistenteException 
 	 */
-	public boolean removerProblema(int id) {
+	public boolean removerProblema(int id) throws ProblemaInexistenteException {
+		
+		if (!servicoProblema.problemaExiste(id)) throw new ProblemaInexistenteException();
 		
 		// Remover Solucoes do Problema
 		ArrayList<Solucao> solucoes = servicoSolucao.getSolucoesDoProblema(id);
