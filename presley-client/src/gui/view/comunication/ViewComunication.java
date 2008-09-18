@@ -509,6 +509,20 @@ public class ViewComunication implements CorePresleyOperations{
 		// TODO Auto-generated method stub
 		return false;
 	}
+
+	public ArrayList<Conhecimento> getListaConhecimentosEnvolvidos(TipoAtividade atividade) {
+		System.out.println("BUSCA CONHECIMENTOS ASSOCIADOS");
+		ArrayList<Conhecimento> conhecimentosRelacionados = null;
+		
+		// TODO Auto-generated method stub
+		PacketStruct respostaPacket = sendPack(null, CorePresleyOperations.BUSCA_CONHECIMENTOS_RELACIONADOS);
+		ArrayList<Conhecimento> resposta = (ArrayList<Conhecimento>)respostaPacket.getData();
+    	if (resposta!=null) {
+        		conhecimentosRelacionados = resposta;
+		}
+    	
+		return conhecimentosRelacionados;
+	}
 }
 
 
