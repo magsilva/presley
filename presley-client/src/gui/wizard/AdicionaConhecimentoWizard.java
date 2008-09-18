@@ -22,7 +22,9 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 import beans.Conhecimento;
 import beans.Desenvolvedor;
+import beans.Item;
 import beans.TipoAtividade;
+import beans.Tree;
 
 public class AdicionaConhecimentoWizard extends Wizard implements INewWizard {
 
@@ -58,13 +60,21 @@ public class AdicionaConhecimentoWizard extends Wizard implements INewWizard {
 		// TODO Auto-generated method stub
         //First save all the page data as variables.
     	try{
-    		String atividade = page.getNomeConhecimento();
-    		ArrayList<Conhecimento> conhecimentos = page2.getConhecimentos();
-    		
-    		Iterator it = conhecimentos.iterator();
-    		while(it.hasNext()) {
-    			Conhecimento conhec = (Conhecimento) it.next();
-    			this.atividade.getViewComunication().adicionaConhecimento(conhec);
+    		//String nome = page.getName();
+    		ArrayList<String> nomesNos = page.getConhecimentos();
+    		String paiConhecimento = page.paiConhecimento();
+    		Conhecimento novoConhecimento = new Conhecimento();
+    		for (String nome : nomesNos) {
+    				novoConhecimento.setNome(nome);
+					atividade.getViewComunication().adicionaConhecimento(novoConhecimento);
+			}
+  
+    		Tree myOntologia = atividade.getViewComunication().getOntologia();
+    		ArrayList<Item> localizados = myOntologia.localizaFilho(paiConhecimento);
+    		if (localizados!=null) {
+    			for (Item conh : localizados) {
+    					conh.adicionaFilho(novoConhecimento.getNome());
+    			}
     		}
     		
     	   

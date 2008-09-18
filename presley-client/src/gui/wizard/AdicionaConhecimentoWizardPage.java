@@ -45,9 +45,8 @@ public class AdicionaConhecimentoWizardPage extends WizardPage {
 	private Tree arvoreConhecimento;
 	private ArrayList<TreeItem> conhecimentosSelecionados;
 	private beans.Tree ontologia;
-	
-	
-	private ArrayList<Desenvolvedor> desenvolvedores;
+	private ArrayList<String> nomesNosAdicionado;
+	private String paiConhecimento;
 
     public AdicionaConhecimentoWizardPage(ISelection selection, Atividade atividade) {
         super("wizardPage");
@@ -56,6 +55,7 @@ public class AdicionaConhecimentoWizardPage extends WizardPage {
         this.atividade = atividade;
         conhecimentosSelecionados = new ArrayList<TreeItem>();
         ontologia = atividade.getViewComunication().getOntologia();
+        nomesNosAdicionado = new ArrayList<String>();
 
     }
 
@@ -73,16 +73,12 @@ public class AdicionaConhecimentoWizardPage extends WizardPage {
     }
     
     public ArrayList<String> getConhecimentos(){
-    	ArrayList<String> conhecimentosNomes = new ArrayList<String>();
-    	for (TreeItem conhecimento : conhecimentosSelecionados) {
-			conhecimentosNomes.add(conhecimento.getText());
-		}
     	
-    	if (conhecimentosNomes.isEmpty()) {
-			return null;
-		}
-    	
-    	return conhecimentosNomes;
+    	return nomesNosAdicionado;
+    }
+    
+    public String paiConhecimento(){
+    	return paiConhecimento;
     }
 
     
@@ -142,30 +138,19 @@ public class AdicionaConhecimentoWizardPage extends WizardPage {
 				String nome=null;
 				TreeItem[] treeItem = arvoreConhecimento.getSelection();
 				treeItem[0].setChecked(true);
+				paiConhecimento = treeItem[0].getText();
 				if (treeItem!=null&&treeItem[0]!=null) {
 					TreeItem novoItem = new TreeItem(treeItem[0],treeItem[0].getStyle());
 					nome = nomeConhecimentoText.getText();
 					if (nome!=null||!nome.equals("")) {
 						novoItem.setText(nome);	
+						nomesNosAdicionado.add(nome);
 					}else{
 						return;	
 					}
 				}
 				
-				//Adiciona novo nó na Ontologia
-				ArrayList<Item> itens = ontologia.localizaFilho(treeItem[0].getText());
-				for (Item item : itens) {
-					if (item.getPai()==null&&treeItem[0].getParentItem()==null) {
-						atividade.getViewComunication().adicionaConhecimento(itens.get(0), nome);
-					}else{
-						if (!(item.getPai()==null||treeItem[0].getParentItem()==null)) {
-							if (item.getPai().getNome().equals(treeItem[0].getParentItem().getText())) {
-								atividade.getViewComunication().adicionaConhecimento(itens.get(0), nome);		
-							}		
-						}
-						
-					} 
-				} 
+				 
 			}
 			public void mouseUp(MouseEvent arg0) {
 				// TODO Auto-generated method stub

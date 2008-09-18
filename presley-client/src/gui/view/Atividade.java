@@ -1,6 +1,7 @@
 package gui.view;
 
 import gui.action.RunAdicionaAtividadeWizardAction;
+import gui.action.RunAdicionaDesenvolvedorWizardAction;
 import gui.action.RunAssociaProblemaAtividadeWizardAction;
 import gui.action.RunBuscaDesenvolvedorWizardAction;
 import gui.action.RunRemoveAtividadeWizardAction;
@@ -56,8 +57,7 @@ public class Atividade extends ViewPart {
 	private RunRemoveAtividadeWizardAction runRemoveAtividade;
 	private RunAssociaProblemaAtividadeWizardAction runAssociaProblema;
 	private RunBuscaDesenvolvedorWizardAction runBuscaDesenvolvedor;
-	//private RunAdicionaDesenvolvedorWizardAction runAdicionaDesenvolvedor;
-	//private RunAdicionaDesenvolvedorWizardAction runAdicionaDesenvolvedor;
+	private RunAdicionaDesenvolvedorWizardAction runAdicionaDesenvolvedor;
 	
 	private Desenvolvedor desenvolvedorLogado = null;
 	private String atividadeSelecionada = null;
@@ -413,9 +413,7 @@ public class Atividade extends ViewPart {
 			}
 
 			public void mouseDown(MouseEvent arg0) {
-				int idAtividade = listaAtividades.getSelectionIndex();
-				
-				
+					
 				//exibe o wizard de confirmacao para a retirada da atividade
 				RunAdicionaDesenvolvedorWizard();
 			}
@@ -440,11 +438,6 @@ public class Atividade extends ViewPart {
 				//listaConhecimentos.getParent().update();
 				//listaProblemas.getParent().redraw();
 				//listaProblemas.getParent().update();
-
-			private void RunAdicionaDesenvolvedorWizard() {
-				// TODO Auto-generated method stub
-				
-			}
 
 			public void mouseUp(MouseEvent arg0) {
 				// TODO Auto-generated method stub
@@ -683,10 +676,10 @@ public class Atividade extends ViewPart {
 
 			public void mouseDown(MouseEvent arg0) {
 				Conhecimento ultimoConhecimentoAdicionado = null;
-				String novoConhecimento = null;
+				Conhecimento novoConhecimento = null;
 				
 				//armazena o ultimo conhecimento incluido
-				ArrayList<Conhecimento> conhecimentosAnteriores = viewComunication.getConhecimentosEnvolvidos(novoConhecimento);
+				ArrayList<Conhecimento> conhecimentosAnteriores = viewComunication.getListaConhecimentos();
 				if (conhecimentosAnteriores!=null&&!conhecimentosAnteriores.isEmpty()) {
 					ultimoConhecimentoAdicionado =  conhecimentosAnteriores.get(conhecimentosAnteriores.size()-1);	
 				}
@@ -695,47 +688,11 @@ public class Atividade extends ViewPart {
 				RunAdicionaConhecimentoWizardAction();
 				
 				//captura o nome da atividade inserido pelo usuario
-				ArrayList<String> conhecimentosPosteriores = viewComunication.getAtividades();
+				ArrayList<Conhecimento> conhecimentosPosteriores = viewComunication.getListaConhecimentos();
 				if (conhecimentosPosteriores!=null&&!conhecimentosPosteriores.isEmpty()) {  
 					novoConhecimento = conhecimentosPosteriores.get(conhecimentosPosteriores.size()-1);
 				}
 				
-				//ação de adicionar atividade foi cancelada
-				if (ultimoConhecimentoAdicionado!=null&&!ultimoConhecimentoAdicionado.equals(novoConhecimento)) {
-				
-					//realiza o cadastro da nova atividade
-					//viewComunication.sendPack(new Atividade(), Event.CadastroAtividade);
-				
-					//adiciona o item na lista de atividades
-					listaConhecimentos.add(novoConhecimento);
-				
-					//captura os conhecimentos envolvidos
-					ArrayList<Conhecimento> conhecimentos = viewComunication.getConhecimentosEnvolvidos(novoConhecimento);
-				
-					
-				
-					//cria estruturas para armazenar os conhecimentos e problemas
-					ArrayList<String> conh = new ArrayList<String>();
-					ArrayList<String> prob = new ArrayList<String>();
-			
-				
-					//Preenche a lista de conhecimentos
-					if(conhecimentos != null)
-						for(Conhecimento c : conhecimentos)
-						{
-							conh.add(c.getNome());
-							listaConhecimentos.add(c.getNome());
-						}	
-
-					//Seleciona o item recem adicionado
-					listaAtividades.select(listaAtividades.indexOf(novoConhecimento));
-
-					//atualiza a vizualizacao
-					listaAtividades.getParent().redraw();
-					listaAtividades.getParent().update();
-					listaConhecimentos.getParent().redraw();
-					listaConhecimentos.getParent().update();
-			}
 			}
 			public void mouseUp(MouseEvent arg0) {
 				// TODO Auto-generated method stub
@@ -1107,6 +1064,12 @@ public class Atividade extends ViewPart {
 	private void RunAssociaConhecimentoAtividade(){
 		gui.action.RunAssociaConhecimentoAtividadeWizardAction runLogin = new gui.action.RunAssociaConhecimentoAtividadeWizardAction(this);
 		runLogin.run(null);
+	}
+	
+	private void RunAdicionaDesenvolvedorWizard() {
+		// TODO Auto-generated method stub
+		gui.action.RunAdicionaDesenvolvedorWizardAction runAdicionaDesenvolvedor = new gui.action.RunAdicionaDesenvolvedorWizardAction(this);
+		runAdicionaDesenvolvedor.run(null);
 	}
 	
 	public ViewComunication getViewComunication(){
