@@ -17,10 +17,12 @@ public class ServicoInferenciaDAO {
 		//Connection conn = MySQLConnectionFactory.getConnection();
 		Connection conn = MySQLConnectionFactory.open();
 		
+		Statement stm = null;
+		
 		HashMap<Desenvolvedor, Double> mCand = new HashMap<Desenvolvedor, Double>();
 		
 		try{
-			Statement stm = conn.createStatement();
+			stm = conn.createStatement();
 			
 			String sql = "select email, nome, localidade, grau, qtd_resposta from " +
 						 "desenvolvedor_has_conhecimento as dc, desenvolvedor where " +
@@ -53,7 +55,15 @@ public class ServicoInferenciaDAO {
 			}
 			
 		} catch(SQLException e){
-			
+			e.printStackTrace();
+		} finally {
+			try {
+				stm.close();
+				conn.close();
+			} catch (SQLException onConClose) {
+				System.out.println(" Houve erro no fechamento da conexo ");
+				onConClose.printStackTrace();	             
+			}
 		}
 		
 		return null;

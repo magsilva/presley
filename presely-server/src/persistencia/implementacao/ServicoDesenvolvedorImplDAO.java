@@ -32,10 +32,12 @@ public class ServicoDesenvolvedorImplDAO implements ServicoDesenvolvedor{
 
 		//Connection conn = MySQLConnectionFactory.getConnection();
 		Connection conn = MySQLConnectionFactory.open();
+		
+		Statement stm = null;
 
 		try {
 
-			Statement stm = conn.createStatement();
+			stm = conn.createStatement();
 
 			String SQL = " INSERT INTO desenvolvedor_has_conhecimento VALUES ('"
 				+emailDesenvolvedor+"','" +nomeConhecimento+"');";
@@ -48,6 +50,7 @@ public class ServicoDesenvolvedorImplDAO implements ServicoDesenvolvedor{
 			return false;
 		} finally {
 			try {
+				stm.close();
 				conn.close();
 			} catch (SQLException onConClose) {
 				System.out.println(" Houve erro no fechamento da conexão ");
@@ -64,9 +67,11 @@ public class ServicoDesenvolvedorImplDAO implements ServicoDesenvolvedor{
 		//Connection conn = MySQLConnectionFactory.getConnection();
 		Connection conn = MySQLConnectionFactory.open();
 		
+		Statement stm = null;
+		
 		try {
 
-			Statement stm = conn.createStatement();
+			stm = conn.createStatement();
 
 			String SQL = " UPDATE desenvolvedor SET email = '"+novoEmail+"',"+
 			" nome = '"+nome+"', localidade = '"+localidade+"', senha = '"+senha+
@@ -80,6 +85,7 @@ public class ServicoDesenvolvedorImplDAO implements ServicoDesenvolvedor{
 			return false;
 		} finally {
 			try {
+				stm.close();
 				conn.close();
 			} catch (SQLException onConClose) {
 				System.out.println(" Houve erro no fechamento da conexão ");
@@ -97,9 +103,11 @@ public class ServicoDesenvolvedorImplDAO implements ServicoDesenvolvedor{
 		//Connection conn = MySQLConnectionFactory.getConnection();
 		Connection conn = MySQLConnectionFactory.open();
 		
+		Statement stm = null;
+		
 		try {
 
-			Statement stm = conn.createStatement();
+			stm = conn.createStatement();
 
 			String SQL = " INSERT INTO desenvolvedor " +
 			" VALUES('"+email+"','"+
@@ -113,6 +121,7 @@ public class ServicoDesenvolvedorImplDAO implements ServicoDesenvolvedor{
 			return false;
 		} finally {
 			try {
+				stm.close();
 				conn.close();
 			} catch (SQLException onConClose) {
 				System.out.println(" Houve erro no fechamento da conexão ");
@@ -127,10 +136,12 @@ public class ServicoDesenvolvedorImplDAO implements ServicoDesenvolvedor{
 
 		//Connection conn = MySQLConnectionFactory.getConnection();
 		Connection conn = MySQLConnectionFactory.open();
+		
+		Statement stm = null;
 
 		try {
 
-			Statement stm = conn.createStatement();
+			stm = conn.createStatement();
 
 			String SQL = " SELECT * FROM desenvolvedor WHERE "+
 			" email = '"+email+"';";
@@ -150,6 +161,7 @@ public class ServicoDesenvolvedorImplDAO implements ServicoDesenvolvedor{
 			return false;
 		} finally {
 			try {
+				stm.close();
 				conn.close();
 			} catch (SQLException onConClose) {
 				System.out.println(" Houve erro no fechamento da conexão ");
@@ -164,10 +176,12 @@ public class ServicoDesenvolvedorImplDAO implements ServicoDesenvolvedor{
 
 		//Connection conn = MySQLConnectionFactory.getConnection();
 		Connection conn = MySQLConnectionFactory.open();
+		
+		Statement stm = null;
 
 		try {
 
-			Statement stm = conn.createStatement();
+			stm = conn.createStatement();
 
 			if (this.conhecimentoDoDesenvolvedorExiste(emailDesenvolvedor, nomeConhecimento)){
 				String SQL = " DELETE FROM desenvolvedor_has_conhecimento "+
@@ -185,6 +199,7 @@ public class ServicoDesenvolvedorImplDAO implements ServicoDesenvolvedor{
 			return false;
 		} finally {
 			try {
+				stm.close();
 				conn.close();
 			} catch (SQLException onConClose) {
 				System.out.println(" Houve erro no fechamento da conexão ");
@@ -198,10 +213,12 @@ public class ServicoDesenvolvedorImplDAO implements ServicoDesenvolvedor{
 
 		//Connection conn = MySQLConnectionFactory.getConnection();
 		Connection conn = MySQLConnectionFactory.open();
+		
+		Statement stm = null;
 
 		try {
 
-			Statement stm = conn.createStatement();
+			stm = conn.createStatement();
 
 			String SQL = " SELECT * FROM desenvolvedor_has_conhecimento WHERE "+
 			" desenvolvedor_email = '"+emailDesenvolvedor+"' " +
@@ -222,6 +239,7 @@ public class ServicoDesenvolvedorImplDAO implements ServicoDesenvolvedor{
 			return false;
 		} finally {
 			try {
+				stm.close();
 				conn.close();
 			} catch (SQLException onConClose) {
 				System.out.println(" Houve erro no fechamento da conexão ");
@@ -237,9 +255,11 @@ public class ServicoDesenvolvedorImplDAO implements ServicoDesenvolvedor{
 		//Connection conn = MySQLConnectionFactory.getConnection();
 		Connection conn = MySQLConnectionFactory.open();
 		
+		Statement stm = null;
+		
 		try {
 
-			Statement stm = conn.createStatement();
+			stm = conn.createStatement();
 
 			if (this.desenvolvedorExiste(email)){
 
@@ -258,6 +278,7 @@ public class ServicoDesenvolvedorImplDAO implements ServicoDesenvolvedor{
 			return false;
 		} finally {
 			try {
+				stm.close();
 				conn.close();
 			} catch (SQLException onConClose) {
 				System.out.println(" Houve erro no fechamento da conexão ");
@@ -271,10 +292,12 @@ public class ServicoDesenvolvedorImplDAO implements ServicoDesenvolvedor{
 		
 		//Connection conn = MySQLConnectionFactory.getConnection();
 		Connection conn = MySQLConnectionFactory.open();
+		
+		Statement stm = null;
 			
 		try {
 
-			Statement stm = conn.createStatement();
+			stm = conn.createStatement();
 
 			String SQL = " SELECT * FROM desenvolvedor WHERE "+
 			" email = '"+email+"';";
@@ -303,6 +326,7 @@ public class ServicoDesenvolvedorImplDAO implements ServicoDesenvolvedor{
 			return null;
 		} finally {
 			try {
+				stm.close();
 				conn.close();
 			} catch (SQLException onConClose) {
 				System.out.println(" Houve erro no fechamento da conexão ");
@@ -315,9 +339,11 @@ public class ServicoDesenvolvedorImplDAO implements ServicoDesenvolvedor{
 		//Connection conn = MySQLConnectionFactory.getConnection();
 		Connection conn = MySQLConnectionFactory.open();
 		
+		Statement stm = null;
+		
 		try{
 			
-			Statement stm = conn.createStatement();
+			stm = conn.createStatement();
 			String sql = "select qtd_resposta from " +
 						 "desenvolvedor_has_conhecimento where " +
 						 "desenvolvedor_email = '" + email + "' and conhecimento_nome = " + conhecimento;
@@ -330,6 +356,7 @@ public class ServicoDesenvolvedorImplDAO implements ServicoDesenvolvedor{
 			return -1;
 		} finally {
 			try {
+				stm.close();
 				conn.close();
 			} catch (SQLException onConClose) {
 				System.out.println(" Houve erro no fechamento da conexão ");
@@ -342,9 +369,11 @@ public class ServicoDesenvolvedorImplDAO implements ServicoDesenvolvedor{
 		//Connection conn = MySQLConnectionFactory.getConnection();
 		Connection conn = MySQLConnectionFactory.open();
 		
+		Statement stm = null;
+		
 		try{
 			
-			Statement stm = conn.createStatement();
+			stm = conn.createStatement();
 			String sql = "select grau from " +
 						 "desenvolvedor_has_conhecimento where " +
 						 "desenvolvedor_email = '" + email + "' and conhecimento_nome = " + conhecimento;
@@ -357,6 +386,7 @@ public class ServicoDesenvolvedorImplDAO implements ServicoDesenvolvedor{
 			return -1;
 		} finally {
 			try {
+				stm.close();
 				conn.close();
 			} catch (SQLException onConClose) {
 				System.out.println(" Houve erro no fechamento da conexão ");
@@ -369,9 +399,11 @@ public class ServicoDesenvolvedorImplDAO implements ServicoDesenvolvedor{
 		//Connection conn = MySQLConnectionFactory.getConnection();
 		Connection conn = MySQLConnectionFactory.open();		
 		
+		Statement stm = null;
+		
 		try{
 			
-			Statement stm = conn.createStatement();
+			stm = conn.createStatement();
 			
 			String sql = "update desenvolvedor_has_conhecimento set qtd_resposta = " +quantidade+
 			 " where desenvolvedor_email = '" + email+ "' and conhecimento_nome = '" + conhecimento + "'";
@@ -384,6 +416,7 @@ public class ServicoDesenvolvedorImplDAO implements ServicoDesenvolvedor{
 			return false;
 		} finally {
 			try {
+				stm.close();
 				conn.close();
 			} catch (SQLException onConClose) {
 				System.out.println(" Houve erro no fechamento da conexão ");
@@ -396,9 +429,11 @@ public class ServicoDesenvolvedorImplDAO implements ServicoDesenvolvedor{
 		//Connection conn = MySQLConnectionFactory.getConnection();
 		Connection conn = MySQLConnectionFactory.open();
 		
+		Statement stm = null;
+		
 		try{
 			
-			Statement stm = conn.createStatement();
+			stm = conn.createStatement();
 			
 			String sql = "update desenvolvedor_has_conhecimento set grau = " +grau+
 			 " where desenvolvedor_email = '" + email+ "' and conhecimento_nome = '" + conhecimento + "'";
@@ -411,6 +446,7 @@ public class ServicoDesenvolvedorImplDAO implements ServicoDesenvolvedor{
 			return false;
 		} finally {
 			try {
+				stm.close();
 				conn.close();
 			} catch (SQLException onConClose) {
 				System.out.println(" Houve erro no fechamento da conexão ");
@@ -424,12 +460,14 @@ public class ServicoDesenvolvedorImplDAO implements ServicoDesenvolvedor{
 		//Connection conn = MySQLConnectionFactory.getConnection();
 		Connection conn = MySQLConnectionFactory.open();
 		
+		Statement stm = null;
+		
 		ArrayList<Conhecimento> list = new ArrayList<Conhecimento>();
 		HashMap<Conhecimento, Double> map = new HashMap<Conhecimento, Double>();
 
 		try {
 
-			Statement stm = conn.createStatement();
+			stm = conn.createStatement();
 
 			String SQL = " SELECT * FROM desenvolvedor_has_conhecimento WHERE "+
 			" desenvolvedor_email = '"+email+"' ORDER BY conhecimento_nome;";
@@ -460,6 +498,7 @@ public class ServicoDesenvolvedorImplDAO implements ServicoDesenvolvedor{
 			return null;
 		} finally {
 			try {
+				stm.close();
 				conn.close();
 			} catch (SQLException onConClose) {
 				System.out.println(" Houve erro no fechamento da conexão ");
@@ -478,11 +517,13 @@ public class ServicoDesenvolvedorImplDAO implements ServicoDesenvolvedor{
 		//Connection conn = MySQLConnectionFactory.getConnection();
 		Connection conn = MySQLConnectionFactory.open();
 		
+		Statement stm = null;
+		
 		HashMap<Conhecimento, Double> map = new HashMap<Conhecimento, Double>();
 
 		try {
 
-			Statement stm = conn.createStatement();
+			stm = conn.createStatement();
 
 			String SQL = " SELECT * FROM desenvolvedor_has_conhecimento WHERE "+
 			" desenvolvedor_email = '"+email+"' ORDER BY conhecimento_nome;";
@@ -513,6 +554,7 @@ public class ServicoDesenvolvedorImplDAO implements ServicoDesenvolvedor{
 			return null;
 		} finally {
 			try {
+				stm.close();
 				conn.close();
 			} catch (SQLException onConClose) {
 				System.out.println(" Houve erro no fechamento da conexão ");
@@ -529,11 +571,13 @@ public class ServicoDesenvolvedorImplDAO implements ServicoDesenvolvedor{
 		//Connection conn = MySQLConnectionFactory.getConnection();
 		Connection conn = MySQLConnectionFactory.open();
 		
+		Statement stm = null;
+		
 		ArrayList<TipoAtividade> list = new ArrayList<TipoAtividade>();
 
 		try {
 
-			Statement stm = conn.createStatement();
+			stm = conn.createStatement();
 
 			String SQL = " SELECT * FROM atividade WHERE "+
 			" desenvolvedor_email = '"+email+"' ORDER BY id;";
@@ -568,6 +612,7 @@ public class ServicoDesenvolvedorImplDAO implements ServicoDesenvolvedor{
 			return null;
 		} finally {
 			try {
+				stm.close();
 				conn.close();
 			} catch (SQLException onConClose) {
 				System.out.println(" Houve erro no fechamento da conexão ");
@@ -580,11 +625,13 @@ public class ServicoDesenvolvedorImplDAO implements ServicoDesenvolvedor{
 
 		Connection conn = MySQLConnectionFactory.open();
 		
+		Statement stm = null;
+		
 		ArrayList<Desenvolvedor> list = new ArrayList<Desenvolvedor>();
 
 		try {
 
-			Statement stm = conn.createStatement();
+			stm = conn.createStatement();
 
 			String SQL = " SELECT * FROM desenvolvedor;";
 
@@ -608,6 +655,7 @@ public class ServicoDesenvolvedorImplDAO implements ServicoDesenvolvedor{
 			return null;
 		} finally {
 			try {
+				stm.close();
 				conn.close();
 			} catch (SQLException onConClose) {
 				System.out.println(" Houve erro no fechamento da conexão ");
@@ -620,10 +668,12 @@ public class ServicoDesenvolvedorImplDAO implements ServicoDesenvolvedor{
 		
 		//Connection conn = MySQLConnectionFactory.getConnection();
 		Connection conn = MySQLConnectionFactory.open();
+		
+		Statement stm = null;
 
 		try {
 
-			Statement stm = conn.createStatement();
+			stm = conn.createStatement();
 
 			String SQL = " SELECT * FROM desenvolvedor WHERE "+
 			" email = '"+email+"' AND senha = '"+senha+"';";
@@ -651,6 +701,7 @@ public class ServicoDesenvolvedorImplDAO implements ServicoDesenvolvedor{
 			return null;
 		} finally {
 			try {
+				stm.close();
 				conn.close();
 			} catch (SQLException onConClose) {
 				System.out.println(" Houve erro no fechamento da conexão ");

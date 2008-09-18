@@ -27,10 +27,12 @@ public class ServicoConhecimentoImplDAO implements ServicoConhecimento{
 
 		//Connection conn = MySQLConnectionFactory.getConnection();
 		Connection conn = MySQLConnectionFactory.open();
+		
+		Statement stm = null;
 
 		try {
 
-			Statement stm = conn.createStatement();
+			stm = conn.createStatement();
 
 			String SQL = " UPDATE conhecimento SET nome = '"+novoNome+"',"+
 			" descricao = '"+descricao+"' "+
@@ -44,6 +46,7 @@ public class ServicoConhecimentoImplDAO implements ServicoConhecimento{
 			return false;
 		} finally {
 			try {
+				stm.close();
 				conn.close();
 			} catch (SQLException onConClose) {
 				System.out.println(" Houve erro no fechamento da conexão ");
@@ -58,10 +61,12 @@ public class ServicoConhecimentoImplDAO implements ServicoConhecimento{
 
 		//Connection conn = MySQLConnectionFactory.getConnection();
 		Connection conn = MySQLConnectionFactory.open();
+		
+		Statement stm = null;
 
 		try {
 
-			Statement stm = conn.createStatement();
+			stm = conn.createStatement();
 
 			String SQL = " SELECT * FROM conhecimento WHERE "+
 			" nome = '"+nome+"';";
@@ -81,6 +86,7 @@ public class ServicoConhecimentoImplDAO implements ServicoConhecimento{
 			return false;
 		} finally {
 			try {
+				stm.close();
 				conn.close();
 			} catch (SQLException onConClose) {
 				System.out.println(" Houve erro no fechamento da conexão ");
@@ -93,10 +99,12 @@ public class ServicoConhecimentoImplDAO implements ServicoConhecimento{
 
 		//Connection conn = MySQLConnectionFactory.getConnection();
 		Connection conn = MySQLConnectionFactory.open();
+		
+		Statement stm = null;
 
 		try {
 
-			Statement stm = conn.createStatement();
+			stm = conn.createStatement();
 
 			String SQL = " INSERT INTO conhecimento " +
 			" VALUES('"+nome+"','"+
@@ -110,6 +118,7 @@ public class ServicoConhecimentoImplDAO implements ServicoConhecimento{
 			return false;
 		} finally {
 			try {
+				stm.close();
 				conn.close();
 			} catch (SQLException onConClose) {
 				System.out.println(" Houve erro no fechamento da conexão ");
@@ -124,10 +133,12 @@ public class ServicoConhecimentoImplDAO implements ServicoConhecimento{
 
 		//Connection conn = MySQLConnectionFactory.getConnection();
 		Connection conn = MySQLConnectionFactory.open();
+		
+		Statement stm = null;
 
 		try {
 
-			Statement stm = conn.createStatement();
+			stm = conn.createStatement();
 
 			if (this.conhecimentoExiste(nome)){
 				String SQL = " DELETE FROM conhecimento WHERE " +
@@ -144,6 +155,7 @@ public class ServicoConhecimentoImplDAO implements ServicoConhecimento{
 			return false;
 		} finally {
 			try {
+				stm.close();
 				conn.close();
 			} catch (SQLException onConClose) {
 				System.out.println(" Houve erro no fechamento da conexão ");
@@ -157,10 +169,12 @@ public class ServicoConhecimentoImplDAO implements ServicoConhecimento{
 
 		//Connection conn = MySQLConnectionFactory.getConnection();
 		Connection conn = MySQLConnectionFactory.open();
+		
+		Statement stm = null;
 
 		try {
 
-			Statement stm = conn.createStatement();
+			stm = conn.createStatement();
 			String SQL = ""; 	
 			if (nome != null) {
 
@@ -191,6 +205,7 @@ public class ServicoConhecimentoImplDAO implements ServicoConhecimento{
 			return null;
 		} finally {
 			try {
+				stm.close();
 				conn.close();	            
 			} catch (SQLException onConClose) {
 				System.out.println(" Houve erro no fechamento da conexão ");
@@ -204,10 +219,12 @@ public class ServicoConhecimentoImplDAO implements ServicoConhecimento{
 
 		//Connection conn = MySQLConnectionFactory.getConnection();
 		Connection conn = MySQLConnectionFactory.open();
+		
+		Statement stm = null;
 
 		try {
 
-			Statement stm = conn.createStatement();
+			stm = conn.createStatement();
 
 			String SQL = " INSERT INTO conhecimento_pai_filho " +
 			" VALUES('"+nomeConhecimentoPai+"','"+
@@ -221,6 +238,7 @@ public class ServicoConhecimentoImplDAO implements ServicoConhecimento{
 			return false;
 		} finally {
 			try {
+				stm.close();
 				conn.close();
 			} catch (SQLException onConClose) {
 				System.out.println(" Houve erro no fechamento da conexão ");
@@ -236,10 +254,12 @@ public class ServicoConhecimentoImplDAO implements ServicoConhecimento{
 
 		//Connection conn = MySQLConnectionFactory.getConnection();
 		Connection conn = MySQLConnectionFactory.open();
+		
+		Statement stm = null;
 
 		try {
 
-			Statement stm = conn.createStatement();
+			stm = conn.createStatement();
 
 			String SQL = " DELETE FROM conhecimento_pai_filho WHERE conhecimento_pai_nome = '" +
 			nomeConhecimentoPai+"' AND conhecimento_filho_nome = '"+
@@ -253,6 +273,7 @@ public class ServicoConhecimentoImplDAO implements ServicoConhecimento{
 			return false;
 		} finally {
 			try {
+				stm.close();
 				conn.close();
 			} catch (SQLException onConClose) {
 				System.out.println(" Houve erro no fechamento da conexão ");
@@ -268,12 +289,14 @@ public class ServicoConhecimentoImplDAO implements ServicoConhecimento{
 
 		//Connection conn = MySQLConnectionFactory.getConnection();
 		Connection conn = MySQLConnectionFactory.open();
+		
+		Statement stm = null;
 
 		ArrayList<Conhecimento> list = new ArrayList<Conhecimento>();
 
 		try {
 
-			Statement stm = conn.createStatement();
+			stm = conn.createStatement();
 			String SQL = ""; 	
 
 			SQL = " SELECT * FROM conhecimento_pai_filho WHERE "+
@@ -295,6 +318,7 @@ public class ServicoConhecimentoImplDAO implements ServicoConhecimento{
 			return null;
 		} finally {
 			try {
+				stm.close();
 				conn.close();	            
 			} catch (SQLException onConClose) {
 				System.out.println(" Houve erro no fechamento da conexão ");
@@ -310,12 +334,14 @@ public class ServicoConhecimentoImplDAO implements ServicoConhecimento{
 
 		//Connection conn = MySQLConnectionFactory.getConnection();
 		Connection conn = MySQLConnectionFactory.open();
+		
+		Statement stm = null;
 
 		ArrayList<Conhecimento> list = new ArrayList<Conhecimento>();
 
 		try {
 
-			Statement stm = conn.createStatement();
+			stm = conn.createStatement();
 			String SQL = ""; 	
 
 			SQL = " SELECT * FROM conhecimento_pai_filho WHERE "+
@@ -337,6 +363,7 @@ public class ServicoConhecimentoImplDAO implements ServicoConhecimento{
 			return null;
 		} finally {
 			try {
+				stm.close();
 				conn.close();	            
 			} catch (SQLException onConClose) {
 				System.out.println(" Houve erro no fechamento da conexão ");
@@ -350,12 +377,14 @@ public class ServicoConhecimentoImplDAO implements ServicoConhecimento{
 	public ArrayList<Conhecimento> getListaConhecimento() {
 		//Connection conn = MySQLConnectionFactory.getConnection();
 		Connection conn = MySQLConnectionFactory.open();
+		
+		Statement stm = null;
 
 		ArrayList<Conhecimento> list = new ArrayList<Conhecimento>();
 
 		try {
 
-			Statement stm = conn.createStatement();
+			stm = conn.createStatement();
 			String SQL = ""; 	
 
 			SQL = " SELECT * FROM conhecimento;";
@@ -376,6 +405,7 @@ public class ServicoConhecimentoImplDAO implements ServicoConhecimento{
 			return null;
 		} finally {
 			try {
+				stm.close();
 				conn.close();	            
 			} catch (SQLException onConClose) {
 				System.out.println(" Houve erro no fechamento da conexão ");

@@ -20,9 +20,11 @@ public class ServicoSolucaoImplDAO implements ServicoSolucao{
 		//Connection conn = MySQLConnectionFactory.getConnection();
 		Connection conn = MySQLConnectionFactory.open();
 		
+		Statement stm = null;
+		
 		try {
 		
-			Statement stm = conn.createStatement();
+			stm = conn.createStatement();
 		
 			String SQL;
 			
@@ -41,6 +43,7 @@ public class ServicoSolucaoImplDAO implements ServicoSolucao{
 			return false;
 		} finally {
 	         try {
+	        	 stm.close();
 	             conn.close();
 	           } catch (SQLException onConClose) {
 	             System.out.println(" Houve erro no fechamento da conexão ");
@@ -58,9 +61,11 @@ public class ServicoSolucaoImplDAO implements ServicoSolucao{
 		//Connection conn = MySQLConnectionFactory.getConnection();
 		Connection conn = MySQLConnectionFactory.open();
 		
+		Statement stm = null;
+		
 		try {
 		
-			Statement stm = conn.createStatement();
+			stm = conn.createStatement();
 		
 			String SQL = " INSERT INTO solucao(desenvolvedor_email,problema_id,dataProposta,mensagem,resolveu) " +
 					     " VALUES('"+emailDesenvolvedor+"',"+
@@ -74,6 +79,7 @@ public class ServicoSolucaoImplDAO implements ServicoSolucao{
 			return false;
 		} finally {
 	         try {
+	        	 stm.close();
 	             conn.close();
 	           } catch (SQLException onConClose) {
 	             System.out.println(" Houve erro no fechamento da conexão ");
@@ -91,13 +97,15 @@ public class ServicoSolucaoImplDAO implements ServicoSolucao{
 		//Connection conn = MySQLConnectionFactory.getConnection();
 		Connection conn = MySQLConnectionFactory.open();
 		
+		Statement stm = null;
+		
 		ArrayList<Solucao> list = new ArrayList<Solucao>();
 		ServicoDesenvolvedor sd = new ServicoDesenvolvedorImplDAO();
 		ServicoProblema sp = new ServicoProblemaImplDAO();
 		
 		try {
 		
-			Statement stm = conn.createStatement();
+			stm = conn.createStatement();
 		
 			String SQL = " SELECT * FROM solucao WHERE "+
 						 " desenvolvedor_email = '"+emailDesenvolvedor+"'"+
@@ -127,6 +135,7 @@ public class ServicoSolucaoImplDAO implements ServicoSolucao{
 			return null;
 		} finally {
 	         try {
+	        	 stm.close();
 	             conn.close();
 	           } catch (SQLException onConClose) {
 	             System.out.println(" Houve erro no fechamento da conexão ");
@@ -142,13 +151,15 @@ public class ServicoSolucaoImplDAO implements ServicoSolucao{
 		//Connection conn = MySQLConnectionFactory.getConnection();
 		Connection conn = MySQLConnectionFactory.open();
 		
+		Statement stm = null;
+		
 		ArrayList<Solucao> list = new ArrayList<Solucao>();
 		ServicoDesenvolvedor sd = new ServicoDesenvolvedorImplDAO();
 		ServicoProblema sp = new ServicoProblemaImplDAO();
 		
 		try {
 		
-			Statement stm = conn.createStatement();
+			stm = conn.createStatement();
 		
 			String SQL = " SELECT * FROM solucao WHERE "+
 						 " desenvolvedor_email = '"+emailDesenvolvedor+"' ORDER BY id;";
@@ -177,6 +188,7 @@ public class ServicoSolucaoImplDAO implements ServicoSolucao{
 			return null;
 		} finally {
 	         try {
+	        	 stm.close();
 	             conn.close();
 	           } catch (SQLException onConClose) {
 	             System.out.println(" Houve erro no fechamento da conexão ");
@@ -192,13 +204,15 @@ public class ServicoSolucaoImplDAO implements ServicoSolucao{
 		//Connection conn = MySQLConnectionFactory.getConnection();
 		Connection conn = MySQLConnectionFactory.open();
 		
+		Statement stm = null;
+		
 		ArrayList<Solucao> list = new ArrayList<Solucao>();
 		ServicoDesenvolvedor sd = new ServicoDesenvolvedorImplDAO();
 		ServicoProblema sp = new ServicoProblemaImplDAO();
 		
 		try {
 		
-			Statement stm = conn.createStatement();
+			stm = conn.createStatement();
 		
 			String SQL = " SELECT * FROM solucao WHERE "+
 						 " desenvolvedor_email = '"+emailDesenvolvedor+"'"+
@@ -228,6 +242,7 @@ public class ServicoSolucaoImplDAO implements ServicoSolucao{
 			return null;
 		} finally {
 	         try {
+	        	 stm.close();
 	             conn.close();
 	           } catch (SQLException onConClose) {
 	             System.out.println(" Houve erro no fechamento da conexão ");
@@ -242,9 +257,11 @@ public class ServicoSolucaoImplDAO implements ServicoSolucao{
 		//Connection conn = MySQLConnectionFactory.getConnection();
 		Connection conn = MySQLConnectionFactory.open();
 		
+		Statement stm = null;
+		
 		try {
 		
-			Statement stm = conn.createStatement();
+			stm = conn.createStatement();
 		
 			if (this.solucaoExiste(id)){
 				String SQL = " DELETE FROM solucao WHERE " +
@@ -263,6 +280,7 @@ public class ServicoSolucaoImplDAO implements ServicoSolucao{
 			return false;
 		} finally {
 	         try {
+	        	 stm.close();
 	             conn.close();
 	           } catch (SQLException onConClose) {
 	             System.out.println(" Houve erro no fechamento da conexão ");
@@ -276,9 +294,11 @@ public class ServicoSolucaoImplDAO implements ServicoSolucao{
 		//Connection conn = MySQLConnectionFactory.getConnection();
 		Connection conn = MySQLConnectionFactory.open();
 		
+		Statement stm = null;
+		
 		try {
 		
-			Statement stm = conn.createStatement();
+			stm = conn.createStatement();
 		
 			String SQL = " SELECT * FROM solucao WHERE "+
 						 " id = "+id+";";
@@ -298,6 +318,7 @@ public class ServicoSolucaoImplDAO implements ServicoSolucao{
 			return false;
 		} finally {
 	         try {
+	        	 stm.close();
 	             conn.close();
 	           } catch (SQLException onConClose) {
 	             System.out.println(" Houve erro no fechamento da conexão ");
@@ -311,12 +332,14 @@ public class ServicoSolucaoImplDAO implements ServicoSolucao{
 		//Connection conn = MySQLConnectionFactory.getConnection();
 		Connection conn = MySQLConnectionFactory.open();
 		
+		Statement stm = null;
+		
 		ServicoDesenvolvedor sd = new ServicoDesenvolvedorImplDAO();
 		ServicoProblema sp = new ServicoProblemaImplDAO();
 		
 		try {
 		
-			Statement stm = conn.createStatement();
+			stm = conn.createStatement();
 		
 			String SQL = " SELECT * FROM solucao WHERE "+
 						 " id = "+id+";";
@@ -346,6 +369,7 @@ public class ServicoSolucaoImplDAO implements ServicoSolucao{
 			return null;
 		} finally {
 	         try {
+	        	 stm.close();
 	             conn.close();
 	           } catch (SQLException onConClose) {
 	             System.out.println(" Houve erro no fechamento da conexão ");
@@ -358,6 +382,8 @@ public class ServicoSolucaoImplDAO implements ServicoSolucao{
 		//Connection conn = MySQLConnectionFactory.getConnection();
 		Connection conn = MySQLConnectionFactory.open();
 		
+		Statement stm = null;
+		
 		ServicoDesenvolvedor sd = new ServicoDesenvolvedorImplDAO();
 		ServicoProblema sp = new ServicoProblemaImplDAO();
 		
@@ -365,7 +391,7 @@ public class ServicoSolucaoImplDAO implements ServicoSolucao{
 		
 		try {
 		
-			Statement stm = conn.createStatement();
+			stm = conn.createStatement();
 		
 			String SQL = " SELECT * FROM solucao WHERE "+
 						 " problema_id = "+idProblema+";";
@@ -393,6 +419,7 @@ public class ServicoSolucaoImplDAO implements ServicoSolucao{
 			return null;
 		} finally {
 	         try {
+	        	 stm.close();
 	             conn.close();
 	           } catch (SQLException onConClose) {
 	             System.out.println(" Houve erro no fechamento da conexão ");

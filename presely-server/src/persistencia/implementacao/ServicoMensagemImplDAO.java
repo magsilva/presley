@@ -19,9 +19,10 @@ public class ServicoMensagemImplDAO {
 		//Connection conn = MySQLConnectionFactory.getConnection();
 		Connection conn = MySQLConnectionFactory.open();
 		
+		Statement stm = null;		
 
 		try {
-			Statement stm = conn.createStatement();
+			stm = conn.createStatement();
 
 			for (int i = 0; i < desenvolvedoresDestino.size(); i++) {
 			String SQL = " INSERT INTO mensagem VALUES ('"
@@ -35,6 +36,7 @@ public class ServicoMensagemImplDAO {
 			return false;
 		} finally {
 			try {
+				stm.close();
 				conn.close();
 			} catch (SQLException onConClose) {
 				System.out.println(" Houve erro no fechamento da conexão ");
@@ -50,10 +52,12 @@ public class ServicoMensagemImplDAO {
 		//Connection conn = MySQLConnectionFactory.getConnection();
 		Connection conn = MySQLConnectionFactory.open();
 		
+		Statement stm = null;
+		
 		String[] m;
 
 		try {
-			Statement stm = conn.createStatement();
+			stm = conn.createStatement();
 
 			String sql = "select mensagem from mensagem where " +
 			 "mensagem.desenvolvedor_destino_email = '"+desenvolvedorDestino.getEmail();
@@ -74,6 +78,7 @@ public class ServicoMensagemImplDAO {
 			return null;
 		} finally {
 			try {
+				stm.close();
 				conn.close();
 			} catch (SQLException onConClose) {
 				System.out.println(" Houve erro no fechamento da conexão ");
