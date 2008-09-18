@@ -56,10 +56,10 @@ public class BuscaDesenvolvedoresWizard extends Wizard implements INewWizard {
         //First save all the page data as variables.
     	try{
     		ArrayList<String> conhecimentos = page.getConhecimentos();
-    		int grauDeConianca = page.getGrauDeConfianca();
-    		System.out.println("grau de confiança: " + grauDeConianca);
+    		int grauDeConfianca = page.getGrauDeConfianca();
+    		System.out.println("grau de confiança: " + grauDeConfianca);
     		System.out.println("conhecimentos: " + conhecimentos.toString());
-    		this.atividade.getViewComunication().buscaDesenvolvedores(conhecimentos, grauDeConianca);
+    		this.atividade.setDesenvolvedores(this.atividade.getViewComunication().buscaDesenvolvedores(conhecimentos, grauDeConfianca));
 	
     	}catch (Exception e) {
 			
