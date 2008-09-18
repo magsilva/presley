@@ -941,14 +941,13 @@ public class Atividade extends ViewPart {
 				listaProblemas.removeAll();
 				
 				//Adiciona o problema criado e associado a atividade na lista de problemas
-				ArrayList<Problema> problemasAssocidos;
+				ArrayList<Problema> problemasAssocidos = null;
 				problemasAssocidos = getViewComunication().getProblemas(atividadeSelecionada);
 				if (problemasAssocidos!=null) {
 					for (Problema problema : problemasAssocidos) {
 						listaProblemas.add(problema.getDescricao());
 					}
 				}
-				problemaSelecionado = listaProblemas.getItem(listaProblemas.getSelectionIndex());
 				
 			}
 		
@@ -991,6 +990,9 @@ public class Atividade extends ViewPart {
 		
 			public void mouseDown(MouseEvent arg0) {
 				// TODO Auto-generated method stub
+				
+
+				problemaSelecionado = listaProblemas.getItem(listaProblemas.getSelectionIndex());
 				runBuscaDesenvolvedorWizardAction();
 				
 //				ArrayList<Problema> problemasAssocidos;
@@ -1116,14 +1118,14 @@ public class Atividade extends ViewPart {
 	}
 	
 	public ArrayList<String> getConhecimentosDoProblema(){
-		ArrayList<String> conhecimentosDoProblema = null;
+		ArrayList<String> conhecimentosDoProblema = new ArrayList<String>();
 		
 		System.out.println("problemaSelecionado = " + problemaSelecionado);
 		
-		if(problemaAssociadoConhecimentos != null){
+		if(!problemaAssociadoConhecimentos.isEmpty()){
 			ArrayList<Conhecimento> conhecimentos = problemaAssociadoConhecimentos.get(problemaSelecionado);
 			for(Conhecimento c : conhecimentos){
-				conhecimentosDoProblema.add(c.getNome());
+				conhecimentosDoProblema.add(c.getDescricao());
 			}
 			}
 		else
