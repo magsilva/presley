@@ -45,7 +45,7 @@ public class AtividadeTest extends TestCase{
 		//teste geral pode dar qualquer erro dos esperados
 		TipoAtividade at = new TipoAtividade(null,desenv,sup,idpai,dt1,dt2,false,al);
 		PacketStruct ps = new PacketStruct(at,1);
-
+		
 		try {
 			assertTrue(ecq.adicionaAtividade(ps));
 			fail("deveria dar alguma excecao prevista");
@@ -145,7 +145,7 @@ public class AtividadeTest extends TestCase{
 		
 		//tem que dar erro de atividade inexistente
 		at = new TipoAtividade("descricao",desenv,sup,idpai,dt1,dt2,false,al);
-		at.setId(47);
+		at.setId(65);
 		ps = new PacketStruct(at,2);
 		try {
 			assertTrue(ecq.removerAtividade(ps));
