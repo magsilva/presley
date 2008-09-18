@@ -1,5 +1,6 @@
 package core;
 
+import beans.DadosAutenticacao;
 import core.interfaces.CorePresleyOperations;
 import server.ServerBridge;
 import excessao.AtividadeInexistenteException;
@@ -82,7 +83,6 @@ public class ServerBridgeImp implements ServerBridge {
 			System.out.println("BUSCA_ATIVIDADE");
 			typeRetorno = CorePresleyOperations.BUSCA_ATIVIDADE;
 			retorno = executeClientQuery.buscaAtividades();
-			typeRetorno = CorePresleyOperations.BUSCA_ATIVIDADE;
 			pktRetorno = new PacketStruct(retorno, typeRetorno);
 			break;				
 
@@ -105,6 +105,7 @@ public class ServerBridgeImp implements ServerBridge {
 			// Packet tipo 5: LOG_IN
 		case CorePresleyOperations.LOG_IN:
 			System.out.println("LOG_IN");
+			System.out.println((DadosAutenticacao)packet.getData());
 			try {
 				retorno = executeClientQuery.login(packet);
 				typeRetorno = CorePresleyOperations.LOG_IN;
@@ -214,11 +215,11 @@ public class ServerBridgeImp implements ServerBridge {
 
 			try {
 				retorno = executeClientQuery.buscaDesenvolvedores(packet);
+				typeRetorno = CorePresleyOperations.BUSCA_DESENVOLVEDORES;
 			} catch (DesenvolvedorInexistenteException e2) {
 				retorno = "ERRO: Desenvolvedor inexistente.";
 				e2.printStackTrace();
 			}
-			typeRetorno = CorePresleyOperations.BUSCA_DESENVOLVEDORES;
 
 			pktRetorno = new PacketStruct(retorno, typeRetorno);
 			break;				
@@ -228,6 +229,7 @@ public class ServerBridgeImp implements ServerBridge {
 			System.out.println("QUALIFICA_DESENVOLVEDOR");
 			try {
 					retorno = executeClientQuery.qualificaDesenvolvedor(packet);
+					typeRetorno = CorePresleyOperations.QUALIFICA_DESENVOLVEDOR;
 				} catch (ConhecimentoInexistenteException e2) {
 					retorno = "ERRO: Conhecimento inexistente.";
 					e2.printStackTrace();
@@ -235,7 +237,6 @@ public class ServerBridgeImp implements ServerBridge {
 					retorno = "ERRO: Desenvolvedor inexistente.";
 					e2.printStackTrace();
 				}
-			typeRetorno = CorePresleyOperations.QUALIFICA_DESENVOLVEDOR;
 
 			pktRetorno = new PacketStruct(retorno, typeRetorno);
 			break;				
@@ -244,12 +245,12 @@ public class ServerBridgeImp implements ServerBridge {
 		case CorePresleyOperations.ENVIAR_MENSAGEM:
 			System.out.println("ENVIAR_MENSAGEM");
 			try {
-					retorno = executeClientQuery.enviarMensagem(packet);
-				} catch (DesenvolvedorInexistenteException e2) {
-					retorno = "ERRO: Desenvolvedor inexistente.";
-					e2.printStackTrace();
-				}
-			typeRetorno = CorePresleyOperations.ENVIAR_MENSAGEM;
+				retorno = executeClientQuery.enviarMensagem(packet);
+				typeRetorno = CorePresleyOperations.ENVIAR_MENSAGEM;
+			} catch (DesenvolvedorInexistenteException e2) {
+				retorno = "ERRO: Desenvolvedor inexistente.";
+				e2.printStackTrace();
+			}
 
 			pktRetorno = new PacketStruct(retorno, typeRetorno);
 			break;				
@@ -271,15 +272,16 @@ public class ServerBridgeImp implements ServerBridge {
 
 			pktRetorno = new PacketStruct(retorno, typeRetorno);
 			break;
+			
 		case CorePresleyOperations.GET_ONTOLOGIA:
 			System.out.println("GET_ONTOLOGIA");
 			try {
 				retorno = executeClientQuery.getOntologia();
+				typeRetorno = CorePresleyOperations.GET_ONTOLOGIA;
 			} catch (ConhecimentoInexistenteException e1) {
-				retorno = "ERRO: Problema inexistente.";
+				retorno = "ERRO: Conhecimento inexistente.";
 				e1.printStackTrace();
 			}
-			typeRetorno = CorePresleyOperations.GET_ONTOLOGIA;
 
 			pktRetorno = new PacketStruct(retorno, typeRetorno);
 			break;				
@@ -289,16 +291,23 @@ public class ServerBridgeImp implements ServerBridge {
 
 			try {
 				retorno = executeClientQuery.adicionaDesenvolvedor(packet);
+				typeRetorno = CorePresleyOperations.ADICIONA_DESENVOLVEDOR;
 			} catch (DesenvolvedorExisteException e) {
 				retorno = "ERRO: Desenvolvedor já Cadastrado no Banco.";
 				e.printStackTrace();
 			} catch (SenhaInvalidaException e) {
 				retorno = "ERRO: Senha Invalida.";
 				e.printStackTrace();
+			} catch (DescricaoInvalidaException e) {
+				retorno = "ERRO: Descricao Invalida.";
+				e.printStackTrace();
+			} catch (ConhecimentoInexistenteException e) {
+				retorno = "ERRO: Conhecimento inexistente.";
+				e.printStackTrace();
+			} catch (DesenvolvedorInexistenteException e) {
+				retorno = "ERRO: Desenvolvedor inexistente.";
+				e.printStackTrace();
 			}
-			typeRetorno = CorePresleyOperations.ADICIONA_DESENVOLVEDOR;
-
-				
 
 			pktRetorno = new PacketStruct(retorno, typeRetorno);
 			break;				
