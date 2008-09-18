@@ -297,6 +297,10 @@ public class ViewComunication implements CorePresleyOperations{
 
 	public boolean desassociaConhecimentoAtividade(
 			ArrayList<Conhecimento> listaConhecimento, TipoAtividade atividade) {
+		
+			listaConhecimento.remove(listaConhecimento.get(0));
+			conhecimentos.remove(atividade.getDescricao());
+			
 		// TODO Auto-generated method stub
 		return false;
 	}
