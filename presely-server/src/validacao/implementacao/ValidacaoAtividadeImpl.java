@@ -10,6 +10,7 @@ import persistencia.implementacao.ServicoProblemaImplDAO;
 import persistencia.interfaces.ServicoAtividade;
 import persistencia.interfaces.ServicoConhecimento;
 import persistencia.interfaces.ServicoProblema;
+import excessao.AssociacaoAtividadesException;
 import excessao.AtividadeInexistenteException;
 import excessao.ConhecimentoInexistenteException;
 import excessao.DataInvalidaException;
@@ -48,9 +49,11 @@ public class ValidacaoAtividadeImpl {
 	 * @param idAtividade Identificador da atividade.
 	 * @param nomeConhecimento Nome do conhecimento a ser associado.
 	 * @return true se a associacao foi feita.
+	 * @throws AtividadeInexistenteException 
+	 * @throws ConhecimentoInexistenteException 
 	 */
 	public boolean adicionarConhecimentoAAtividade(int idAtividade,
-			String nomeConhecimento) throws Exception {
+			String nomeConhecimento) throws AtividadeInexistenteException, ConhecimentoInexistenteException  {
 		
 		if (!servicoAtividade.atividadeExiste(idAtividade))throw new AtividadeInexistenteException();
 		if (!servicoConhecimento.conhecimentoExiste(nomeConhecimento)) throw new ConhecimentoInexistenteException();
@@ -63,8 +66,9 @@ public class ValidacaoAtividadeImpl {
 	 * @param idSubAtividade Identificador da sub-atividade 
 	 * @param idAtividadePai Identificador da atividade pai.
 	 * @return true se a associacao foi feita com sucesso.
+	 * @throws AssociacaoAtividadesException 
 	 */
-	public boolean associarAtividades(int idSubAtividade, int idAtividadePai) throws Exception {
+	public boolean associarAtividades(int idSubAtividade, int idAtividadePai) throws AssociacaoAtividadesException {
 		
 		//Verificando se a atividade pai no  filha da atividade pai.
 		ArrayList<TipoAtividade> subAtividades = servicoAtividade.getSubAtividades(idSubAtividade);
@@ -73,7 +77,7 @@ public class ValidacaoAtividadeImpl {
 		while (it.hasNext()) {
 			TipoAtividade tipoAtividade = it.next();
 			if (tipoAtividade.getId() == idAtividadePai) {
-				throw new Exception();
+				throw new AssociacaoAtividadesException();
 			}
 		}
 		
@@ -179,11 +183,12 @@ public class ValidacaoAtividadeImpl {
 	 * previamente cadastrada.
 	 * @param id Identificador da atividade
 	 * @return <TipoAtividade>
+	 * @throws AtividadeInexistenteException 
 	 */
-	public TipoAtividade getAtividade(int id) throws Exception {
+	public TipoAtividade getAtividade(int id) throws AtividadeInexistenteException {
 		
 		TipoAtividade tipoAtividade = servicoAtividade.getAtividade(id);
-		if (tipoAtividade == null) throw new Exception();
+		if (tipoAtividade == null) throw new AtividadeInexistenteException();
 		
 		return tipoAtividade;
 	}
@@ -193,11 +198,12 @@ public class ValidacaoAtividadeImpl {
 	 * atividade.
 	 * @param idAtividade Identificador da atividade
 	 * @return ArrayList<Conhecimento>
+	 * @throws AtividadeInexistenteException 
 	 */
 	public ArrayList<Conhecimento> getConhecimentosEnvolvidosNaAtividade(
-			int idAtividade) throws Exception {
+			int idAtividade) throws AtividadeInexistenteException  {
 		
-		if (!servicoAtividade.atividadeExiste(idAtividade)) throw new Exception();
+		if (!servicoAtividade.atividadeExiste(idAtividade)) throw new AtividadeInexistenteException();
 		
 		return servicoAtividade.getConhecimentosEnvolvidosNaAtividade(idAtividade);
 	}
@@ -207,10 +213,11 @@ public class ValidacaoAtividadeImpl {
 	 * pai.
 	 * @param idPai Identificador da atividade pai
 	 * @return ArrayList<TipoAtividade>
+	 * @throws AtividadeInexistenteException 
 	 */
-	public ArrayList<TipoAtividade> getSubAtividades(int idPai) throws Exception {
+	public ArrayList<TipoAtividade> getSubAtividades(int idPai) throws AtividadeInexistenteException {
 		
-		if (!servicoAtividade.atividadeExiste(idPai)) throw new Exception();
+		if (!servicoAtividade.atividadeExiste(idPai)) throw new AtividadeInexistenteException();
 		
 		return servicoAtividade.getSubAtividades(idPai);
 	}
