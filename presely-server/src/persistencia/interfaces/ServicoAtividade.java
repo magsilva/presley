@@ -3,7 +3,6 @@ package persistencia.interfaces;
 import java.sql.Date;
 import java.util.ArrayList;
 
-import beans.Problema;
 import beans.TipoAtividade;
 import beans.Conhecimento;
 

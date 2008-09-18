@@ -2,7 +2,12 @@ package core.interfaces;
 
 import java.util.ArrayList;
 
-import sun.security.util.Password;
+import beans.Conhecimento;
+import beans.DadosAutenticacao;
+import beans.Desenvolvedor;
+import beans.Problema;
+import beans.TipoAtividade;
+import beans.Tree;
 import excessao.AtividadeInexistenteException;
 import excessao.ConhecimentoInexistenteException;
 import excessao.DescricaoInvalidaException;
@@ -11,12 +16,6 @@ import excessao.EmailInvalidoException;
 import excessao.ErroDeAutenticacaoException;
 import excessao.ProblemaInexistenteException;
 import excessao.SenhaInvalidaException;
-import beans.Conhecimento;
-import beans.DadosAutenticacao;
-import beans.Desenvolvedor;
-import beans.Problema;
-import beans.TipoAtividade;
-import beans.Tree;
 
 /**
  * 

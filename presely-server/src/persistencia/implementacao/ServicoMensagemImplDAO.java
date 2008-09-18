@@ -8,7 +8,6 @@ import java.util.ArrayList;
 
 import persistencia.MySQLConnectionFactory;
 import beans.Desenvolvedor;
-import beans.Mensagem;
 import beans.Problema;
 
 public class ServicoMensagemImplDAO {

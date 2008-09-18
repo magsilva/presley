@@ -432,7 +432,6 @@ public class ServicoDesenvolvedorImplDAO implements ServicoDesenvolvedor{
 	public HashMap<Conhecimento, Double> getConhecimentosDoDesenvolvedor(String email, int x) {
 		Connection conn = MySQLConnectionFactory.getConnection();
 		
-		ArrayList<Conhecimento> list = new ArrayList<Conhecimento>();
 		HashMap<Conhecimento, Double> map = new HashMap<Conhecimento, Double>();
 
 		try {

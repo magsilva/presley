@@ -14,7 +14,6 @@ import java.util.Iterator;
 
 import ontologia.Ontologia;
 
-import sun.security.krb5.internal.crypto.Des;
 import excessao.AtividadeInexistenteException;
 import excessao.ConhecimentoInexistenteException;
 import excessao.DataInvalidaException;
@@ -29,7 +28,6 @@ import validacao.implementacao.ValidacaoConhecimentoImpl;
 import validacao.implementacao.ValidacaoDesenvolvedorImpl;
 import validacao.implementacao.ValidacaoMensagemImpl;
 import validacao.implementacao.ValidacaoProblemaImpl;
-import validacao.implementacao.ValidacaoUtil;
 
 import beans.BuscaDesenvolvedores;
 import beans.Conhecimento;
@@ -197,7 +195,7 @@ public class ExecuteClientQuery implements CorePresleyOperations{
 	public boolean desassociaConhecimentoAtividade(
 			ArrayList<Conhecimento> listaConhecimento, TipoAtividade atividade) throws ConhecimentoInexistenteException, AtividadeInexistenteException {
 
-		Iterator it = listaConhecimento.iterator();
+		Iterator<Conhecimento> it = listaConhecimento.iterator();
 		while(it.hasNext()) {
 			Conhecimento conhecimento = (Conhecimento) it.next();
 			validacaoAtividade.removerConhecimentoDaAtividade(atividade.getId(), conhecimento.getNome());
@@ -302,9 +300,6 @@ public class ExecuteClientQuery implements CorePresleyOperations{
 		return adicionaDesenvolvedor(desenvolvedor);
 	}
 	public boolean adicionaDesenvolvedor(Desenvolvedor desenvolvedor) throws Exception {
-
-		boolean retorno = false;
-
 		validacaoDesenvolvedor.criarDesenvolvedor(desenvolvedor.getEmail(), desenvolvedor.getNome(), desenvolvedor.getLocalidade(), desenvolvedor.getSenha());
 		return true;
 	}

@@ -19,11 +19,10 @@ import beans.TipoAtividade;
 public class AtividadeTest extends TestCase{
 	
 	private Desenvolvedor desenv;
-	private ValidacaoAtividadeImpl valida;
 	private ExecuteClientQuery ecq;
 	
 	protected void setUp() throws Exception {
-		valida = new ValidacaoAtividadeImpl();
+		new ValidacaoAtividadeImpl();
 		ecq = new ExecuteClientQuery();
 		super.setUp();
 	}
@@ -32,6 +31,7 @@ public class AtividadeTest extends TestCase{
 		super.tearDown();
 	}
 
+	@SuppressWarnings("deprecation")
 	public void testAdicionarAtividade(){
 		Date dt1 = new Date(System.currentTimeMillis());
 		Date dt2 = new Date(2008,9,18);

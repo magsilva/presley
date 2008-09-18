@@ -60,6 +60,7 @@ public class TestOntologia extends TestCase {
 	
 	
 
+	@SuppressWarnings("unchecked")
 	public void testGetScore() {
 		//para desenvolver 0
 		int expectedScore = 0; 

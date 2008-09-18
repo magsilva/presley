@@ -12,7 +12,6 @@ import persistencia.interfaces.ServicoAtividade;
 import persistencia.interfaces.ServicoConhecimento;
 import persistencia.interfaces.ServicoDesenvolvedor;
 import excessao.ConhecimentoInexistenteException;
-import excessao.ConhecimentoNaoEncontradoException;
 import excessao.DescricaoInvalidaException;
 import excessao.NomeInvalidoException;
 

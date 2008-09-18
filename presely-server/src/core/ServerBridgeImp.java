@@ -1,7 +1,5 @@
 package core;
 
-import java.sql.Date;
-
 import core.interfaces.CorePresleyOperations;
 import server.ServerBridge;
 import excessao.AtividadeInexistenteException;
@@ -13,13 +11,10 @@ import excessao.EmailInvalidoException;
 import excessao.ErroDeAutenticacaoException;
 import excessao.ProblemaInexistenteException;
 import excessao.SenhaInvalidaException;
-import validacao.implementacao.ValidacaoAtividadeImpl;
-import beans.TipoAtividade;
 import facade.PacketStruct;
 
 /**
  * Esta classe implementa no servidor metodos para rotear
- * os pacotes que chegam do modulo de comunicacao.
  * 
  * @author Alysson Diniz
  * @version 1.00

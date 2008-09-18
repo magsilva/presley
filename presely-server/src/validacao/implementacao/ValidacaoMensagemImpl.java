@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import persistencia.implementacao.ServicoMensagemImplDAO;
 
 import beans.Desenvolvedor;
-import beans.Mensagem;
 import beans.Problema;
 
 public class ValidacaoMensagemImpl {

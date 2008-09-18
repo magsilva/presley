@@ -1,26 +1,16 @@
 package ontologia;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Map;
 
-import persistencia.MySQLConnectionFactory;
-import persistencia.interfaces.ServicoConhecimento;
-import excessao.ConhecimentoInexistenteException;
-import excessao.DesenvolvedorInexistenteException;
 import validacao.implementacao.ValidacaoConhecimentoImpl;
 import validacao.implementacao.ValidacaoDesenvolvedorImpl;
-
 import beans.Conhecimento;
 import beans.Desenvolvedor;
 import beans.Item;
-import beans.Problema;
 import beans.Tree;
+import excessao.ConhecimentoInexistenteException;
+import excessao.DesenvolvedorInexistenteException;
 
 /**
  * Esta classe relaciona uma detrminada Ontologia,

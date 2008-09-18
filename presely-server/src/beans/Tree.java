@@ -207,7 +207,6 @@ public class Tree {
 		tree.getFilho("LP").adicionaFilho("JAVA");
 		tree.getFilho("LP").adicionaFilho("C++");
 		
-		Item item = tree.getFilho("LP");
 				
 		ArrayList<Item> localizados = tree.localizaFilho("C++");
 		

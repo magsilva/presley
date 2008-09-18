@@ -8,7 +8,6 @@ import java.util.HashMap;
 
 import persistencia.MySQLConnectionFactory;
 import excessao.DesenvolvedorInexistenteException;
-import beans.Conhecimento;
 import beans.Desenvolvedor;
 
 public class ServicoInferenciaDAO {

@@ -7,14 +7,11 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
-import beans.Desenvolvedor;
-import beans.Problema;
-import beans.Solucao;
 import persistencia.MySQLConnectionFactory;
-import persistencia.interfaces.ServicoAtividade;
 import persistencia.interfaces.ServicoDesenvolvedor;
 import persistencia.interfaces.ServicoProblema;
 import persistencia.interfaces.ServicoSolucao;
+import beans.Solucao;
 
 public class ServicoSolucaoImplDAO implements ServicoSolucao{
 

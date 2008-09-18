@@ -1,10 +1,7 @@
 package core;
 
 import server.ServerBridge;
-import validacao.implementacao.ValidacaoAtividadeImpl;
-import facade.PacketStruct;
 import facade.PrincipalSUBJECT;
-import beans.TipoAtividade;
 
 /**
  * Classe principal de testes do servidor

@@ -10,8 +10,6 @@ import facade.StubInterface;
 
 public class RMIServer {
 
-	private StubInterface stub;
-
 	private int port;
 	
 	private ServerBridge bridge;
