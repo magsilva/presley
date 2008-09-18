@@ -35,7 +35,7 @@ public class AssociaProblemaAtividadeWizardPage extends WizardPage {
 
     public AssociaProblemaAtividadeWizardPage(ISelection selection, Atividade atividade, String tipoAtividade) {
         super("wizardPage");
-        setTitle("Associa Problema a Atividade Wizard");
+        setTitle("Associa Problema à Atividade Wizard");
         setDescription("Associa problema a uma Atividade.");
         this.atividade = atividade;
         this.tipoAtividadeAssociado = tipoAtividade;
