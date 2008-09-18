@@ -5,11 +5,6 @@ import java.sql.Date;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Shell;
-
-
 import beans.Conhecimento;
 import beans.DadosAutenticacao;
 import beans.Desenvolvedor;
@@ -20,10 +15,6 @@ import beans.TipoAtividade;
 import beans.Tree;
 import facade.PacketStruct;
 import facade.PrincipalSUBJECT;
-import excecao.*;
-import excessao.EmailInvalidoException;
-import excessao.ErroDeAutenticacaoException;
-import excessao.SenhaInvalidaException;
 
 /**
  * Esta classe controla a comunicacao entre o cliente e o servidor.
