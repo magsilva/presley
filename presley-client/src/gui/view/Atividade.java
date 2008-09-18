@@ -672,7 +672,7 @@ public class Atividade extends ViewPart {
 
 			public void mouseDown(MouseEvent arg0) {
 				
-				// exibe o wizard para adicao de novo conhecimento
+				// exibe o wizard para remoção de novo conhecimento
 				RunRemoveConhecimentoWizardAction();
 				
 			}
@@ -737,6 +737,62 @@ public class Atividade extends ViewPart {
 		desassociaConhecimento.setImage(desass);
 		desassociaConhecimento.setToolTipText("Desassocia o conhecimento da atividade");
 		desassociaConhecimento.setEnabled(false);
+		desassociaConhecimento.addMouseListener(new MouseListener() {
+			
+			public void mouseUp(MouseEvent arg0) {
+				// TODO Auto-generated method stub
+		
+			}
+		
+			public void mouseDown(MouseEvent arg0) {
+				
+				//recupera o id do conhecimento selecionado na na lista da interface
+				int idConhecimento = listaConhecimentos.getSelectionIndex();
+				String nomeConhecimento = listaConhecimentos.getItem(idConhecimento);
+				Conhecimento conhecimentoDesassociado = null;
+				TipoAtividade atividadeDesassociada = null;
+				
+				ArrayList<TipoAtividade> atividade = null;
+				atividade = viewComunication.buscaAtividades();
+				
+				for (TipoAtividade a : atividade) {
+					if (a.getDescricao().equals(atividadeSelecionada))
+						atividadeDesassociada = a;			
+					
+				}
+				
+				
+				//recupera todos os cohecimentos envolvidos na ativadade 
+				ArrayList<Conhecimento> conhecimentosPosteriores = 
+					viewComunication.getConhecimentosEnvolvidos(atividadeDesassociada.getDescricao());
+				
+				
+				for (Conhecimento c : conhecimentosPosteriores) {
+					if (c.getNome().equals(nomeConhecimento))
+						 conhecimentoDesassociado = c;
+				}
+				ArrayList<Conhecimento> desassociaConhecimento =  new ArrayList<Conhecimento>();
+							
+				desassociaConhecimento.add(conhecimentoDesassociado);
+					
+				viewComunication.desassociaConhecimentoAtividade(desassociaConhecimento, atividadeDesassociada);
+
+				listaConhecimentos.remove(idConhecimento);
+
+			}
+		
+			public void mouseDoubleClick(MouseEvent arg0) {
+				// TODO Auto-generated method stub
+		
+			}
+		
+		});
+		
+		
+		
+		
+		
+		
 		
 		buscaConhecimento = new Button(parentComposite, SWT.NONE);
 		Image buscaConh = new Image(addAtividade.getDisplay(),this.getClass().getResourceAsStream("/icons/buscaConh.gif"));
