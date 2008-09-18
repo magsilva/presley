@@ -9,6 +9,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 
 
+import beans.BuscaDesenvolvedores;
 import beans.Conhecimento;
 import beans.ConhecimentoAtividade;
 import beans.DadosAutenticacao;
@@ -46,7 +47,7 @@ public class ViewComunication implements CorePresleyOperations{
 		try {
 			
 			System.out.println("instanciando cliente");
-			PrincipalSUBJECT.getInstance("client", "150.165.130.196", 1099);
+			//PrincipalSUBJECT.getInstance("client", "150.165.130.196", 1099);
 			
 			System.out.println("Passou do getInstance");
 		} catch (Exception e) {
@@ -214,7 +215,7 @@ public class ViewComunication implements CorePresleyOperations{
 			
 			ontologia = tree;
 			
-			//this.adicionaAtividade(atividade);
+			this.adicionaAtividade(atividade);
 			//this.adicionaDesenvolvedor(desenvolvedor);
 			System.out.println("Adicionando atividade no banco");
 			//this.adicionaAtividade(atividade);
@@ -255,18 +256,18 @@ public class ViewComunication implements CorePresleyOperations{
 
 		boolean retorno = false;
 		
-		PacketStruct respostaPacket = sendPack(atividade, CorePresleyOperations.ADICIONA_ATIVIDADE);
-    	if(respostaPacket.getId() == CorePresleyOperations.ERRO) {
-    		throw new Exception((String)respostaPacket.getData());
-    	}
-    	else {
-    		retorno = (Boolean)respostaPacket.getData();
-    		if (retorno == true) {
+//		PacketStruct respostaPacket = sendPack(atividade, CorePresleyOperations.ADICIONA_ATIVIDADE);
+//    	if(respostaPacket.getId() == CorePresleyOperations.ERRO) {
+//    		throw new Exception((String)respostaPacket.getData());
+//    	}
+//    	else {
+//    		retorno = (Boolean)respostaPacket.getData();
+//    		if (retorno == true) {
     			this.atividades.add(atividade);
     			this.conhecimentos.put(atividade.getDescricao(), atividade.getListaDeConhecimentosEnvolvidos());
-    		}
-    		System.out.println("Resposta: "+retorno);
-    	}
+//    		}
+//    		System.out.println("Resposta: "+retorno);
+ //   	}
 		return retorno;
 	}
 	
@@ -275,18 +276,14 @@ public class ViewComunication implements CorePresleyOperations{
 	 * @param atividade é a atividade que será removida
 	 */
 	public boolean removerAtividade(TipoAtividade atividade) {
-		Boolean resposta = false;
-		PacketStruct respostaPacket = sendPack(atividade, CorePresleyOperations.REMOVE_ATIVIDADE);
-    	if(respostaPacket.getId() == CorePresleyOperations.ERRO) {
-    		//exibir erro ao usuario
-    		System.out.println("erro");
-    	}
-    	else {
-    		resposta = (Boolean)respostaPacket.getData();
+		// TODO Auto-generated method stub
+    	PacketStruct respostaPacket = sendPack(atividade, REMOVE_ATIVIDADE);
+    	Boolean resposta = (Boolean)respostaPacket.getData();
+    	if (resposta.booleanValue()==true) {
     		this.atividades.remove(atividade.getDescricao());
     		this.conhecimentos.remove(atividade.getDescricao());
 		}
-		return resposta;
+		return resposta.booleanValue();
 	}
 
 	public boolean associaConhecimentoAtividade(
@@ -311,28 +308,33 @@ public class ViewComunication implements CorePresleyOperations{
 		ProblemaAtividade problemaAtividade = new ProblemaAtividade();
 		problemaAtividade.setAtividade(atividade);
 		problemaAtividade.setProblema(problema);
-		PacketStruct respostaPacket = sendPack(problemaAtividade,ASSOCAR_PROBLEMA_ATIVIDADE);
+		//PacketStruct respostaPacket = sendPack(problemaAtividade,ASSOCAR_PROBLEMA_ATIVIDADE);
     	
-		if(respostaPacket.getId() == CorePresleyOperations.ERRO) {
-			throw new Exception((String) respostaPacket.getData());
-		}
-		
-		Boolean resposta = (Boolean)respostaPacket.getData();
-    	//listaDesenvolvedores = resposta;
-    	if (resposta!=null&&resposta.booleanValue()==true) {
+//		if(respostaPacket.getId() == CorePresleyOperations.ERRO) {
+//			throw new Exception((String) respostaPacket.getData());
+//		}
+//		
+//		Boolean resposta = (Boolean)respostaPacket.getData();
+//    	//listaDesenvolvedores = resposta;
+//    	if (resposta!=null&&resposta.booleanValue()==true) {
     		this.listaProblemas.add(problema);
-    		ArrayList<Problema> problemasAssociados = this.problemas.get(atividade.getDescricao());
-    		problemasAssociados.add(problema);	
+    		this.problemas.put(atividade.getDescricao(),listaProblemas);
+    	//	ArrayList<Problema> problemasAssociados = this.problemas.get(atividade.getDescricao());
+    	//	problemasAssociados.add(problema);	
     		return true;
-		}
+//		}
 		
-		return false;
+		//return false;
 	}
 
 	public ArrayList<Desenvolvedor> buscaDesenvolvedores(ArrayList<String> listaConhecimentos, 
 			int grauDeConfianca) {
-		// TODO Auto-generated method stub
-		return null;
+		BuscaDesenvolvedores dadosDaBusca = new BuscaDesenvolvedores();
+		dadosDaBusca.setGrauDeConfianca(grauDeConfianca);
+		dadosDaBusca.setListaConhecimento(listaConhecimentos);
+		PacketStruct respostaPacket = sendPack(dadosDaBusca, BUSCA_DESENVOLVEDORES);
+		ArrayList<Desenvolvedor> desenvolvedores = (ArrayList<Desenvolvedor>)respostaPacket.getData();
+		return desenvolvedores;
 	}
 
 	public boolean desassociaConhecimentoAtividade(
@@ -366,18 +368,18 @@ public class ViewComunication implements CorePresleyOperations{
 	
 	public ArrayList<Desenvolvedor> getListaDesenvolvedores() {
 		// TODO Auto-generated method stub
-		PacketStruct respostaPacket = sendPack(null,CorePresleyOperations.GET_LISTA_DESENVOLVEDORES);
-    	ArrayList<Desenvolvedor> resposta = (ArrayList<Desenvolvedor>)respostaPacket.getData();
-    	listaDesenvolvedores = resposta;
-    	
-    	if(resposta == null) 
-    		System.out.println("RESPOSTA NULL");
-    	
-    	Iterator it = resposta.iterator();
-    	while (it.hasNext()) {
-    		Desenvolvedor des = (Desenvolvedor)it.next();
-    		System.out.println(des.getNome());
-    	}
+	//	PacketStruct respostaPacket = sendPack(null,CorePresleyOperations.GET_LISTA_DESENVOLVEDORES);
+//    	ArrayList<Desenvolvedor> resposta = (ArrayList<Desenvolvedor>)respostaPacket.getData();
+//    	listaDesenvolvedores = resposta;
+//    	
+//    	if(resposta == null) 
+//    		System.out.println("RESPOSTA NULL");
+//    	
+//    	Iterator it = resposta.iterator();
+//    	while (it.hasNext()) {
+//    		Desenvolvedor des = (Desenvolvedor)it.next();
+//    		System.out.println(des.getNome());
+//    	}
     	
 		return listaDesenvolvedores;
 	}
@@ -452,6 +454,13 @@ public class ViewComunication implements CorePresleyOperations{
 	public boolean adicionaDesenvolvedor(Desenvolvedor desenvolvedor) throws Exception{
 		boolean retorno = true;
 		
+//		PacketStruct respostaPacket = sendPack(desenvolvedor,ADICIONA_DESENVOLVEDOR);//TESTE
+//    	Boolean resposta = (Boolean)respostaPacket.getData();
+//    	//return resposta.booleanValue();
+//    	
+//		if(respostaPacket.getId() == CorePresleyOperations.ERRO) {
+//			throw new Exception((String) respostaPacket.getData());
+//		}
 		PacketStruct respostaPacket = sendPack(desenvolvedor, CorePresleyOperations.ADICIONA_DESENVOLVEDOR);//TESTE
     	Boolean resposta = (Boolean)respostaPacket.getData();
     	//return resposta.booleanValue();
@@ -462,7 +471,7 @@ public class ViewComunication implements CorePresleyOperations{
 
 		listaDesenvolvedores.add(desenvolvedor);
 		
-		retorno = (Boolean)respostaPacket.getData();
+//		retorno = (Boolean)respostaPacket.getData();
     	
 		return retorno;
 	}
@@ -473,11 +482,11 @@ public class ViewComunication implements CorePresleyOperations{
 	 */
 	public ArrayList<TipoAtividade> buscaAtividades() {
 		// TODO Auto-generated method stub
-		PacketStruct respostaPacket = sendPack(null, CorePresleyOperations.BUSCA_ATIVIDADE);
-		ArrayList<TipoAtividade> resposta = (ArrayList<TipoAtividade>)respostaPacket.getData();
-    	if (resposta!=null) {
-    		atividades = resposta;
-		}
+		//PacketStruct respostaPacket = sendPack(null, BUSCA_ATIVIDADE);
+		//ArrayList<TipoAtividade> resposta = (ArrayList<TipoAtividade>)respostaPacket.getData();
+    	//if (resposta!=null) {
+    	//	atividades = resposta;
+		//}
     	
 		return atividades;
 	}
