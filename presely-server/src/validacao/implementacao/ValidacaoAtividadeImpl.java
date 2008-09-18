@@ -15,6 +15,7 @@ import excessao.ConhecimentoInexistenteException;
 import excessao.DataInvalidaException;
 import excessao.DescricaoInvalidaException;
 import excessao.EmailInvalidoException;
+import excessao.ProblemaInexistenteException;
 import beans.Problema;
 import beans.TipoAtividade;
 import beans.Conhecimento;
@@ -215,8 +216,9 @@ public class ValidacaoAtividadeImpl {
 	 * Este metodo remove uma atividade previamente cadastrada na base de dados.
 	 * @param id Identificador da atividade
 	 * @return true se a atividade foi removida da base de dados.
+	 * @throws ProblemaInexistenteException 
 	 */
-	public boolean removerAtividade(int id) throws AtividadeInexistenteException {
+	public boolean removerAtividade(int id) throws AtividadeInexistenteException, ProblemaInexistenteException {
 		
 		if (!servicoAtividade.atividadeExiste(id)) throw new AtividadeInexistenteException();
 		

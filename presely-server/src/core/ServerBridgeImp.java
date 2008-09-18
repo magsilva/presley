@@ -11,6 +11,7 @@ import excessao.DescricaoInvalidaException;
 import excessao.DesenvolvedorInexistenteException;
 import excessao.EmailInvalidoException;
 import excessao.ErroDeAutenticacaoException;
+import excessao.ProblemaInexistenteException;
 import excessao.SenhaInvalidaException;
 import validacao.implementacao.ValidacaoAtividadeImpl;
 import beans.TipoAtividade;
@@ -69,6 +70,9 @@ public class ServerBridgeImp implements ServerBridge {
 				retorno = executeClientQuery.removerAtividade(packet);
 			} catch (AtividadeInexistenteException e2) {
 				retorno = e2;
+			} catch (ProblemaInexistenteException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 			pktRetorno = new PacketStruct(retorno, CorePresleyOperations.REMOVE_ATIVIDADE);
 			break;				
@@ -177,7 +181,12 @@ public class ServerBridgeImp implements ServerBridge {
 			// Packet tipo 11: DESSASOCIAR_PROBLEMA_ATIVIDADE
 		case CorePresleyOperations.DESSASOCIAR_PROBLEMA_ATIVIDADE:
 			System.out.println("DESSASOCIAR_PROBLEMA_ATIVIDADE");
-			retorno = executeClientQuery.desassociaProblemaAtividade(packet);
+			try {
+					retorno = executeClientQuery.desassociaProblemaAtividade(packet);
+				} catch (ProblemaInexistenteException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 			pktRetorno = new PacketStruct(retorno, CorePresleyOperations.DESSASOCIAR_PROBLEMA_ATIVIDADE);
 			break;				
 

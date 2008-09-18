@@ -22,6 +22,7 @@ import excessao.DescricaoInvalidaException;
 import excessao.DesenvolvedorInexistenteException;
 import excessao.EmailInvalidoException;
 import excessao.ErroDeAutenticacaoException;
+import excessao.ProblemaInexistenteException;
 import excessao.SenhaInvalidaException;
 import validacao.implementacao.ValidacaoAtividadeImpl;
 import validacao.implementacao.ValidacaoConhecimentoImpl;
@@ -204,13 +205,13 @@ public class ExecuteClientQuery implements CorePresleyOperations{
 		return true;
 	}
 
-	public boolean desassociaProblemaAtividade(PacketStruct packet) {
+	public boolean desassociaProblemaAtividade(PacketStruct packet) throws ProblemaInexistenteException {
 		ProblemaAtividade problemaAtividade = (ProblemaAtividade) packet.getData();
 		Problema problema = problemaAtividade.getProblema();
 		return desassociaProblemaAtividade(problema);
 	}
 
-	public boolean desassociaProblemaAtividade(Problema problema) {
+	public boolean desassociaProblemaAtividade(Problema problema) throws ProblemaInexistenteException {
 		return validacaoProblema.removerProblema(problema.getId());
 	}
 
@@ -277,11 +278,11 @@ public class ExecuteClientQuery implements CorePresleyOperations{
 		return Ontologia.incrementaRespostasDesenvolvedor(desenvolvedor, qualificacao, conhecimentos);
 	}
 
-	public boolean removerAtividade(PacketStruct packet) throws AtividadeInexistenteException {
+	public boolean removerAtividade(PacketStruct packet) throws AtividadeInexistenteException, ProblemaInexistenteException {
 		TipoAtividade atividade = (TipoAtividade) packet.getData();
 		return removerAtividade(atividade);
 	}
-	public boolean removerAtividade(TipoAtividade atividade) throws AtividadeInexistenteException {
+	public boolean removerAtividade(TipoAtividade atividade) throws AtividadeInexistenteException, ProblemaInexistenteException {
 		validacaoAtividade.removerAtividade(atividade.getId());
 		return true;
 	}

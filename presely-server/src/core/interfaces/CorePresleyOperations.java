@@ -9,6 +9,7 @@ import excessao.DescricaoInvalidaException;
 import excessao.DesenvolvedorInexistenteException;
 import excessao.EmailInvalidoException;
 import excessao.ErroDeAutenticacaoException;
+import excessao.ProblemaInexistenteException;
 import excessao.SenhaInvalidaException;
 import beans.Conhecimento;
 import beans.DadosAutenticacao;
@@ -63,8 +64,9 @@ public interface CorePresleyOperations {
 	 * @param TipoAtividade atividade 
 	 * @return true se a atividade foi removida com sucesso.
 	 * @throws AtividadeInexistenteException 
+	 * @throws ProblemaInexistenteException 
 	 */
-	public boolean removerAtividade(TipoAtividade atividade) throws AtividadeInexistenteException;
+	public boolean removerAtividade(TipoAtividade atividade) throws AtividadeInexistenteException, ProblemaInexistenteException;
 
 	/**
 	 * Este método retorna as atividades cadastradas
@@ -152,8 +154,9 @@ public interface CorePresleyOperations {
 	 * CÓDIGO DA OPERAÇÃO -> 11
 	 * @param Problema problema
 	 * @return true se a desassociação foi realizada com sucesso.
+	 * @throws ProblemaInexistenteException 
 	 */
-	public boolean desassociaProblemaAtividade(Problema problema);
+	public boolean desassociaProblemaAtividade(Problema problema) throws ProblemaInexistenteException;
 
 	/**
 	 * Este método retorna uma lista de desenvolvedores para resolver um problema
