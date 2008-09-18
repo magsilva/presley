@@ -43,7 +43,7 @@ public class AssociaProblemaAtividadeWizardPage2 extends WizardPage {
     public AssociaProblemaAtividadeWizardPage2(ISelection selection, Atividade atividade) {
         super("wizardPage");
         this.atividade=atividade;
-        setTitle("Associa Problema a Atividade Wizard");
+        setTitle("Associa Problema à Atividade Wizard");
         setDescription("Adiciona conhecimentos associados ao Problema.");
         conhecimentosSelecionados = new Hashtable<String,TreeItem>();
         ontologia = atividade.getViewComunication().getOntologia();
