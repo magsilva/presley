@@ -120,6 +120,8 @@ public class ValidacaoAtividadeImpl {
 	 */
 	public boolean atualizarStatusDaAtividade(int id, boolean terminada) throws AtividadeInexistenteException {
 		
+		@SuppressWarnings("unused")
+		// teste para capturar exceção.
 		TipoAtividade atividade = validacaoAtividade.getAtividade(id);
 		
 		return servicoAtividade.atualizarStatusDaAtividade(id, terminada);
