@@ -136,9 +136,10 @@ public class AdicionaConhecimentoWizardPage extends WizardPage {
 				// TODO Auto-generated method stub
 				//Adiciona novo nó na arvore gráfica
 				String nome=null;
+				ArrayList<String> caminhoDaRaiz = new ArrayList<String>();
 				TreeItem[] treeItem = arvoreConhecimento.getSelection();
 				treeItem[0].setChecked(true);
-				paiConhecimento = treeItem[0].getText();
+				paiConhecimento = treeItem[0].getParentItem().getText();
 				if (treeItem!=null&&treeItem[0]!=null) {
 					TreeItem novoItem = new TreeItem(treeItem[0],treeItem[0].getStyle());
 					nome = nomeConhecimentoText.getText();

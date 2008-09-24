@@ -95,7 +95,7 @@ public class Atividade extends ViewPart {
 	
 	public Atividade()
 	{
-		this.viewComunication = new ViewComunication(ipServidor);
+		//this.viewComunication = new ViewComunication(ipServidor);
 
 	}	
 	
@@ -763,7 +763,12 @@ public class Atividade extends ViewPart {
 							
 				desassociaConhecimento.add(conhecimentoDesassociado);
 					
-				viewComunication.desassociaConhecimentoAtividade(desassociaConhecimento, atividadeDesassociada);
+				try {
+					viewComunication.desassociaConhecimentoAtividade(desassociaConhecimento, atividadeDesassociada);	
+				} catch (Exception e) {
+					// TODO: handle exception
+					e.printStackTrace();
+				}
 
 				listaConhecimentos.remove(idConhecimento);
 

@@ -63,10 +63,18 @@ public class AdicionaConhecimentoWizard extends Wizard implements INewWizard {
     		//String nome = page.getName();
     		ArrayList<String> nomesNos = page.getConhecimentos();
     		String paiConhecimento = page.paiConhecimento();
+    		Conhecimento pai = null;
+    		ArrayList<Conhecimento> listaConhecimento = atividade.getViewComunication().getListaConhecimentos();
+    		for (Conhecimento conhecimento : listaConhecimento) {
+				if (conhecimento.getNome().equals(paiConhecimento)) {
+					pai = conhecimento;
+					break;
+				}
+			}
     		Conhecimento novoConhecimento = new Conhecimento();
     		for (String nome : nomesNos) {
     				novoConhecimento.setNome(nome);
-					atividade.getViewComunication().adicionaConhecimento(novoConhecimento);
+					atividade.getViewComunication().adicionaConhecimento(novoConhecimento,pai);
 			}
   
     		Tree myOntologia = atividade.getViewComunication().getOntologia();
