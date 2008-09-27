@@ -241,9 +241,9 @@ public class ViewComunication implements CorePresleyOperations{
 			ontologia = tree;
 			
 			//this.adicionaAtividade(atividade);
-			this.adicionaDesenvolvedor(desenvolvedor);
+			//this.adicionaDesenvolvedor(desenvolvedor);
 			System.out.println("Adicionando atividade no banco");
-			this.adicionaAtividade(atividade);
+			//this.adicionaAtividade(atividade);
 			System.out.println("Passou da adicao");
 			//this.adicionaDesenvolvedor(desenvolvedor);
 

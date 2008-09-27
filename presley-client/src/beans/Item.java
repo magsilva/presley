@@ -1,5 +1,6 @@
 package beans;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 /**
  * Classe que representa os nós da árvore da classe presley.util.Tree.
@@ -7,8 +8,9 @@ import java.util.ArrayList;
  * @author JP
  *
  */
-public class Item {
+public class Item implements Serializable{
 
+	private static final long serialVersionUID = 20L;
 	private String nome;
 	private ArrayList<Item> filhos;
 	private Item pai;
