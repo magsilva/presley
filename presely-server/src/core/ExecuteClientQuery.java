@@ -75,14 +75,16 @@ public class ExecuteClientQuery implements CorePresleyOperations{
 	 * @throws DescricaoInvalidaException 
 	 */
 	public boolean adicionaConhecimento(PacketStruct packet) throws DescricaoInvalidaException, ConhecimentoInexistenteException, Exception {
-		Conhecimento conhecimento = (Conhecimento) packet.getData();
+		ArrayList<Conhecimento> conhecimento = (ArrayList<Conhecimento>) packet.getData();
+		Conhecimento pai = conhecimento.get(1);
+		Conhecimento filho = conhecimento.get(0);
 
-		this.adicionaConhecimento(conhecimento); 
+		this.adicionaConhecimento(pai,filho); 
 		return true;
 	}
-	public boolean adicionaConhecimento(Conhecimento conhecimento) throws DescricaoInvalidaException, ConhecimentoInexistenteException, Exception {
+	public boolean adicionaConhecimento(Conhecimento pai, Conhecimento filho) throws DescricaoInvalidaException, ConhecimentoInexistenteException, Exception {
 
-		validacaoConhecimento.criarConhecimento( conhecimento.getNome(), conhecimento.getDescricao() );
+		validacaoConhecimento.criarConhecimento( filho.getNome(), filho.getDescricao() );
 		return true;
 	}
 
@@ -166,25 +168,24 @@ public class ExecuteClientQuery implements CorePresleyOperations{
 	 * @throws DesenvolvedorInexistenteException 
 	 */
 	public ArrayList<Desenvolvedor> buscaDesenvolvedores(PacketStruct packet) throws DesenvolvedorInexistenteException {
-		BuscaDesenvolvedores busca = (BuscaDesenvolvedores)packet.getData();
+		/*BuscaDesenvolvedores busca = (BuscaDesenvolvedores)packet.getData();
 
 		Problema problema = busca.getProblema();
-		ArrayList<Conhecimento> listaConhecimento = busca.getListaConhecimento();
+		ArrayList<String> listaConhecimento = busca.getListaConhecimento();
 		int grauDeConfianca = busca.getGrauDeConfianca();
 
-		return buscaDesenvolvedores(problema, listaConhecimento, grauDeConfianca);
+		return buscaDesenvolvedores(problema, listaConhecimento, grauDeConfianca);*/
+		return new ArrayList<Desenvolvedor>();
 	}	
 
 	public ArrayList<Desenvolvedor> buscaDesenvolvedores(Problema problema,
 			ArrayList<Conhecimento> listaConhecimento, int grauDeConfianca) throws DesenvolvedorInexistenteException {
-
-		String[] conhecimentos = new String[problema.getConhecimentos().size()];
-		for(int i = 0; i < listaConhecimento.size(); i++)
-			conhecimentos[i] = listaConhecimento.get(i).getNome();
-
-		ArrayList<Desenvolvedor> listaDesenvolvedores = Inferencia.getDesenvolvedores(conhecimentos, grauDeConfianca);
+		/*
+		ArrayList<Desenvolvedor> listaDesenvolvedores = Inferencia.getDesenvolvedores(listaConhecimento, grauDeConfianca);
 
 		return listaDesenvolvedores;
+		*/
+			return new ArrayList<Desenvolvedor>();
 
 	}
 

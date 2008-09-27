@@ -28,8 +28,8 @@ public class Ontologia {
 	boolean [][] DAG; /** DIRECT ACYCLIC GRAPH. */
 	int [][] usersCounts; /** Contadores dos conhecimentos dos usuarios. */
 	ArrayList<Integer> stack; /** Pilha de trabalho. */
-	static ValidacaoDesenvolvedorImpl validacaoDesenvolvedor;
-	static ValidacaoConhecimentoImpl validacaoConhecimento;
+	static ValidacaoDesenvolvedorImpl validacaoDesenvolvedor = new ValidacaoDesenvolvedorImpl();
+	static ValidacaoConhecimentoImpl validacaoConhecimento = new ValidacaoConhecimentoImpl();
 
 	/** 
 	 * Cria uma  nova instancia de ontologia
@@ -43,8 +43,6 @@ public class Ontologia {
 		this.DAG = DAG;
 		this.usersCounts = usersCounts;
 		stack = new ArrayList<Integer>();
-		validacaoDesenvolvedor = new ValidacaoDesenvolvedorImpl();
-		validacaoConhecimento = new ValidacaoConhecimentoImpl();
 	}
 
 	/**

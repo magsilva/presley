@@ -8,7 +8,7 @@ import java.sql.SQLException;
 public class MySQLConnectionFactory {
 
 	private static String user = "root";
-	private static String pwd = "presley123";
+	private static String pwd = "desterro";
 	private static Connection connection = null;
 	
 	private MySQLConnectionFactory(){
@@ -63,7 +63,7 @@ public class MySQLConnectionFactory {
 			
             Class.forName("com.mysql.jdbc.Driver");
             novaConexao = DriverManager.getConnection(
-            		"jdbc:mysql://150.165.130.20/presley", 
+            		"jdbc:mysql://localhost/presley", 
             		user, 
             		pwd);
             

@@ -35,7 +35,7 @@ CREATE TABLE atividade_has_conhecimento (
   atividade_id INTEGER UNSIGNED NOT NULL,
   conhecimento_nome VARCHAR(40) NOT NULL,
   PRIMARY KEY(atividade_id, conhecimento_nome),
-  INDEX atividade_has_conhecimento_FKIndex1(atividade_id) ON DELETE CASCADE,
+  INDEX atividade_has_conhecimento_FKIndex1(atividade_id),
   FOREIGN KEY (conhecimento_nome) REFERENCES conhecimento (nome) ON DELETE CASCADE 
 );
 
@@ -59,7 +59,7 @@ CREATE TABLE problema (
   dataRelato DATE NULL,
   mensagem VARCHAR(250) NULL,
   PRIMARY KEY(id),
-  INDEX problema_FKIndex1(atividade_id) ON DELETE CASCADE
+  INDEX problema_FKIndex1(atividade_id)
 );
 
 CREATE TABLE solucao (
@@ -70,7 +70,7 @@ CREATE TABLE solucao (
   dataProposta DATE NULL,
   mensagem VARCHAR(250) NULL,
   PRIMARY KEY(id),
-  INDEX solucao_FKIndex1(problema_id) ON DELETE CASCADE,
+  INDEX solucao_FKIndex1(problema_id),
   FOREIGN KEY (desenvolvedor_email) REFERENCES desenvolvedor (email) ON DELETE CASCADE
 );
 

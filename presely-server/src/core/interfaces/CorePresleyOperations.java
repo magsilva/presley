@@ -86,7 +86,7 @@ public interface CorePresleyOperations {
 	 * @throws ConhecimentoInexistenteException 
 	 * @throws DescricaoInvalidaException 
 	 */
-	public boolean adicionaConhecimento(Conhecimento conhecimento) throws DescricaoInvalidaException, ConhecimentoInexistenteException, Exception;
+	public boolean adicionaConhecimento(Conhecimento novoConhecimento, Conhecimento pai) throws DescricaoInvalidaException, ConhecimentoInexistenteException, Exception;
 
 	/**
 	 * Este método executa autenticação no servidor

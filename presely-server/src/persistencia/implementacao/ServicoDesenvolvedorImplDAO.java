@@ -655,13 +655,13 @@ public class ServicoDesenvolvedorImplDAO implements ServicoDesenvolvedor{
 		} catch (Exception e) {
 			return null;
 		} finally {
-			try {
+			/*try {
 				stm.close();
 				conn.close();
 			} catch (SQLException onConClose) {
 				System.out.println(" Houve erro no fechamento da conexão ");
 				onConClose.printStackTrace();	             
-			}
+			}*/
 		}
 	}
 
