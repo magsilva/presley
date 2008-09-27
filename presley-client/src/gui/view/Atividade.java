@@ -91,11 +91,12 @@ public class Atividade extends ViewPart {
 	private final int larguraJanela = 195;
 	private final int distanciaPanelLabel = 5;
 	private final int posHorPanel = 0;
-	private String ipServidor = "150.165.130.196";
+	//private String ipServidor = "150.165.130.196";
+	private String ipServidor = "localhost";
 	
 	public Atividade()
 	{
-		//this.viewComunication = new ViewComunication(ipServidor);
+		this.viewComunication = new ViewComunication(ipServidor);
 
 	}	
 	
@@ -318,7 +319,7 @@ public class Atividade extends ViewPart {
 				//viewComunication.buscaAtividades();
 				
 				//ação de adicionar atividade foi cancelada
-				if (ultimaAtividadeAdicionada!=null&&!ultimaAtividadeAdicionada.equals(novaAtividade)) {
+				if (ultimaAtividadeAdicionada!=null&&ultimaAtividadeAdicionada.equals(novaAtividade)) {
 				
 				}
 				else {

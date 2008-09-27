@@ -60,6 +60,37 @@ public class ViewComunication implements CorePresleyOperations{
 	}
 	
 	/**
+	 * Construtor da classe ViewCommunication. Instancia a comunicacao como cliente, passando o ip do
+	 * servidor e a porta para acesso remoto (1099 padrao RMI) e usa o ip passado como parametro.
+	 */
+	public ViewComunication(String ip) {
+		///*
+		try {
+
+			//Criando objetos contendo listas de atividades, desenvolvedores, etc
+			atividades = new ArrayList<TipoAtividade>();	
+			listaDesenvolvedores = new ArrayList<Desenvolvedor>();//Lista de todos os desenvolvedores
+			listaConhecimentos = new ArrayList<Conhecimento>();//Lista de todos os conhecimentos
+			listaProblemas = new ArrayList<Problema>();//Lista de todos os problemas
+			conhecimentos = new HashMap<String,ArrayList<Conhecimento>>();//mapeamento nome de atividade e seus conhecimentos associados
+			problemas = new HashMap<String,ArrayList<Problema>>();//mapeamento nome de atividade e seus problemas associados
+			ontologia = null;//Armazena a ontologia
+			
+			System.out.println("instanciando cliente");
+			PrincipalSUBJECT.getInstance("client", ip, 1099);
+			
+			System.out.println("Passou do getInstance");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		//*/
+		
+		this.listaDesenvolvedores = getListaDesenvolvedores();
+		
+		teste();//TESTE
+	}
+	
+	/**
 	 * Retorna a ontolgia dos conhecimentos.
 	 * @return Tree é a arvore de conhecimentos.
 	 */
@@ -87,6 +118,7 @@ public class ViewComunication implements CorePresleyOperations{
 		ArrayList<Conhecimento> filhoPai = new ArrayList<Conhecimento>();
 		filhoPai.add(novoConhecimento);
 		filhoPai.add(pai);
+		
 		PacketStruct respostaPacket = sendPack(filhoPai, CorePresleyOperations.ADICIONA_CONHECIMENTO);
 		if(respostaPacket.getId() == CorePresleyOperations.ERRO) {
 			throw new Exception((String) respostaPacket.getData());
@@ -208,10 +240,10 @@ public class ViewComunication implements CorePresleyOperations{
 			
 			ontologia = tree;
 			
-			this.adicionaAtividade(atividade);
-			//this.adicionaDesenvolvedor(desenvolvedor);
-			System.out.println("Adicionando atividade no banco");
 			//this.adicionaAtividade(atividade);
+			this.adicionaDesenvolvedor(desenvolvedor);
+			System.out.println("Adicionando atividade no banco");
+			this.adicionaAtividade(atividade);
 			System.out.println("Passou da adicao");
 			//this.adicionaDesenvolvedor(desenvolvedor);
 
@@ -256,6 +288,10 @@ public class ViewComunication implements CorePresleyOperations{
     		}
     		System.out.println("Resposta: "+retorno);
     	}
+    	
+    	this.atividades.add(atividade);//TESTE
+		this.conhecimentos.put(atividade.getDescricao(), atividade.getListaDeConhecimentosEnvolvidos());//TESTE
+    	
 		return retorno;
 	}
 	
@@ -271,8 +307,12 @@ public class ViewComunication implements CorePresleyOperations{
     		this.atividades.remove(atividade.getDescricao());
     		this.conhecimentos.remove(atividade.getDescricao());
 		}
+    	
+    	this.atividades.remove(atividade.getDescricao());//TESTE
+		this.conhecimentos.remove(atividade.getDescricao());//TESTE
+    	
 		return resposta.booleanValue();
-    		//return true;
+    	//return true;
 	}
 
 	public boolean associaConhecimentoAtividade(
@@ -307,6 +347,7 @@ public class ViewComunication implements CorePresleyOperations{
 		ProblemaAtividade problemaAtividade = new ProblemaAtividade();
 		problemaAtividade.setAtividade(atividade);
 		problemaAtividade.setProblema(problema);
+		
 		PacketStruct respostaPacket = sendPack(problemaAtividade,ASSOCAR_PROBLEMA_ATIVIDADE);
     	
 		if(respostaPacket.getId() == CorePresleyOperations.ERRO) {
@@ -393,8 +434,10 @@ public class ViewComunication implements CorePresleyOperations{
     	ArrayList<Desenvolvedor> resposta = (ArrayList<Desenvolvedor>)respostaPacket.getData();
     	listaDesenvolvedores = resposta;
     	
-    	if(resposta == null) 
+    	if(resposta == null){ 
     		System.out.println("RESPOSTA NULL");
+    		return null;
+    	}
     	
     	Iterator it = resposta.iterator();
     	while (it.hasNext()) {

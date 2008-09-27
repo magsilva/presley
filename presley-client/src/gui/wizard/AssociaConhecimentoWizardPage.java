@@ -131,13 +131,14 @@ public class AssociaConhecimentoWizardPage extends WizardPage {
 									
 							}	
 						}
-						for (TreeItem pai = atual.getParentItem(); pai!=null; pai = pai.getParentItem()) {
+						/*for (TreeItem pai = atual.getParentItem(); pai!=null; pai = pai.getParentItem()) {
 								pai.setChecked(true);	
 								//Verifica se é o raiz, se for, não inclui este na lista
 								if (!pai.getText().equals(conhecimentosModelo.getRaiz().getNome())) {
 										conhecimentosSelecionados.put(pai.getText(), pai);
 								}
 						}
+						*/
 					}
 				}
 			
