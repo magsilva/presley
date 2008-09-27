@@ -71,7 +71,7 @@ public class AdicionaAtividadeWizardPage extends WizardPage {
     
     public Desenvolvedor getNomeSupervisor(){
     	Desenvolvedor supervisorRetorno = null; 
-    	String selecao = listaDesenvolvedores.getText();
+    	String selecao = listaSupervisores.getText();
     	for (Desenvolvedor desenvolvedor : desenvolvedores) {
 			if (desenvolvedor.getNome().equals(selecao)) {
 				supervisorRetorno = desenvolvedor;

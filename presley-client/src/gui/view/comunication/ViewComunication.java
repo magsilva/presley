@@ -135,6 +135,16 @@ public class ViewComunication implements CorePresleyOperations{
 	 */
 	public ArrayList<String> getAtividades()
 	{
+	
+		PacketStruct respostaPacket = sendPack(null,CorePresleyOperations.BUSCA_ATIVIDADE);
+    	ArrayList<TipoAtividade> resposta = (ArrayList<TipoAtividade>)respostaPacket.getData();
+    	atividades = resposta;
+    	
+    	if(resposta == null){ 
+    		System.out.println("RESPOSTA NULL");
+    		return null;
+    	}
+		
 		ArrayList<String> retorno = new ArrayList<String>();
 		if (this.atividades!=null) {
 			for (TipoAtividade atividade : this.atividades) {
@@ -152,6 +162,26 @@ public class ViewComunication implements CorePresleyOperations{
 	 */
 	public ArrayList<Conhecimento> getConhecimentosEnvolvidos(String atividade)
 	{
+		TipoAtividade tipoAtividadeSelecionado = null;
+		
+		for (TipoAtividade atividadeAtual : atividades) {
+			if (atividadeAtual.getDescricao().equals(atividade)) {
+				tipoAtividadeSelecionado = atividadeAtual;
+				break;
+			}
+		}
+		
+		PacketStruct respostaPacket = sendPack(tipoAtividadeSelecionado,CorePresleyOperations.BUSCA_CONHECIMENTOS_RELACIONADOS);
+    	ArrayList<Conhecimento> resposta = (ArrayList<Conhecimento>)respostaPacket.getData();
+    	ArrayList<Conhecimento> conhecimentosAssociados = conhecimentos.get(atividade);
+    	
+       	if(resposta == null){ 
+    		System.out.println("RESPOSTA NULL");
+    		return conhecimentosAssociados;
+    	}
+    	
+       	conhecimentosAssociados = resposta;
+    	
 		return this.conhecimentos.get(atividade);
 	}
 	
@@ -162,6 +192,33 @@ public class ViewComunication implements CorePresleyOperations{
 	 */
 	public ArrayList<Problema> getProblemas(String atividade)
 	{
+		TipoAtividade tipoAtividadeSelecionado = null;
+		
+		for (TipoAtividade atividadeAtual : atividades) {
+			if (atividadeAtual.getDescricao().equals(atividade)) {
+				tipoAtividadeSelecionado = atividadeAtual;
+				break;
+			}
+		}
+		
+		PacketStruct respostaPacket = sendPack(tipoAtividadeSelecionado,CorePresleyOperations.GET_LISTA_PROBLEMAS);
+    	ArrayList<Problema> resposta = (ArrayList<Problema>)respostaPacket.getData();
+    	ArrayList<Problema> problemasAssociados = problemas.get(atividade);
+    	ArrayList<Problema> problemasAssociadosTemp = new ArrayList<Problema>();
+    	
+       	if(resposta == null){ 
+    		System.out.println("RESPOSTA NULL");
+    		return problemasAssociados;
+    	}
+       	
+       	for (Problema problema : resposta) {
+			if (problema.getAtividade().getDescricao().equals(atividade)) {
+				problemasAssociadosTemp.add(problema);
+			}
+		}
+    	
+       	problemasAssociados = problemasAssociadosTemp;
+		
 		return this.problemas.get(atividade);
 	}
 	
@@ -348,7 +405,7 @@ public class ViewComunication implements CorePresleyOperations{
 		problemaAtividade.setAtividade(atividade);
 		problemaAtividade.setProblema(problema);
 		
-		PacketStruct respostaPacket = sendPack(problemaAtividade,ASSOCAR_PROBLEMA_ATIVIDADE);
+		PacketStruct respostaPacket = sendPack(problemaAtividade,CorePresleyOperations.ASSOCAR_PROBLEMA_ATIVIDADE);
     	
 		if(respostaPacket.getId() == CorePresleyOperations.ERRO) {
 			throw new Exception((String) respostaPacket.getData());

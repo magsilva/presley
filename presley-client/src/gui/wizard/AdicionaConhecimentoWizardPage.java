@@ -139,10 +139,10 @@ public class AdicionaConhecimentoWizardPage extends WizardPage {
 				ArrayList<String> caminhoDaRaiz = new ArrayList<String>();
 				TreeItem[] treeItem = arvoreConhecimento.getSelection();
 				treeItem[0].setChecked(true);
-				if (treeItem[0].getParentItem()==null) {
+				if (treeItem[0]==null) {
 					paiConhecimento = null;
 				}else{
-					paiConhecimento = treeItem[0].getParentItem().getText();	
+					paiConhecimento = treeItem[0].getText();	
 				}
 				
 				if (treeItem!=null&&treeItem[0]!=null) {
