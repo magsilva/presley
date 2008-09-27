@@ -76,6 +76,9 @@ public class ExecuteClientQuery implements CorePresleyOperations{
 	 */
 	public boolean adicionaConhecimento(PacketStruct packet) throws DescricaoInvalidaException, ConhecimentoInexistenteException, Exception {
 		ArrayList<Conhecimento> conhecimento = (ArrayList<Conhecimento>) packet.getData();
+		if (conhecimento==null) {
+			this.adicionaConhecimento(null, null);
+		}
 		Conhecimento pai = conhecimento.get(1);
 		Conhecimento filho = conhecimento.get(0);
 
@@ -358,7 +361,7 @@ public class ExecuteClientQuery implements CorePresleyOperations{
 			Conhecimento conhecimentoAssociado = validacaoConhecimento.getConhecimento(c.getNome());
 			listaConhecimento.add(c);
 		}
-		return null;
+		return listaConhecimento;
 	}
 
 }
