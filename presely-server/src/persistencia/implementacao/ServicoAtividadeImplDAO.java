@@ -65,11 +65,13 @@ public class ServicoAtividadeImplDAO implements ServicoAtividade{
 
 	}
 
-	public boolean cadastrarAtividade(String emailDesenvolvedor,
+	public int cadastrarAtividade(String emailDesenvolvedor,
 			String emailGerente, String descricao, Date dataInicio, Date dataFim) {
 
 		//Connection conn = MySQLConnectionFactory.getConnection();
 		Connection conn = MySQLConnectionFactory.open();
+		
+		int retorno = 0;
 		
 		Statement stm = null;
 
@@ -84,10 +86,19 @@ public class ServicoAtividadeImplDAO implements ServicoAtividade{
 
 			System.out.println(SQL);
 			stm.execute(SQL);
+			
+			SQL = "SELECT id FROM atividade WHERE descricao = " + descricao + ";" ;
+			
+			
+			System.out.println(SQL);
+			ResultSet rs = stm.executeQuery(SQL);
+
+			retorno = rs.getInt(1);
+			
 
 		} catch (SQLException e) {
 			e.printStackTrace();
-			return false;
+			return -1;
 		} finally {
 			try {
 				
@@ -99,7 +110,7 @@ public class ServicoAtividadeImplDAO implements ServicoAtividade{
 				onConClose.printStackTrace();	             
 			}
 		}
-		return true;
+		return retorno;
 
 	}
 

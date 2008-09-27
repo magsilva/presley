@@ -27,7 +27,7 @@ public interface ServicoAtividade {
 	 * @return true se a atividade foi concluida com sucesso.
 	 */
 	
-	public boolean cadastrarAtividade(String emailDesenvolvedor, String emailGerente,
+	public int cadastrarAtividade(String emailDesenvolvedor, String emailGerente,
 			String descricao, Date dataInicio, Date dataFim);
 	
 	/**

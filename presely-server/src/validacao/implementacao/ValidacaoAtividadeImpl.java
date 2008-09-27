@@ -135,7 +135,7 @@ public class ValidacaoAtividadeImpl {
 	 * @throws DescricaoInvalidaException 
 	 * @throws DataInvalidaException 
 	 */
-	public boolean cadastrarAtividade(TipoAtividade tipoAtividade) throws EmailInvalidoException, 
+	public int cadastrarAtividade(TipoAtividade tipoAtividade) throws EmailInvalidoException, 
 			DescricaoInvalidaException, DataInvalidaException{
 		
 		String emailDesenvolvedor = tipoAtividade.getDesenvolvedor().getEmail();
@@ -170,8 +170,12 @@ public class ValidacaoAtividadeImpl {
 	 * @throws DescricaoInvalidaException 
 	 * @throws DataInvalidaException 
 	 */
-	public boolean cadastrarAtividade(String emailDesenvolvedor,
-			String emailGerente, String descricao, Date dataInicio, Date dataFim) 
+	public int cadastrarAtividade(String emailDesenvolvedor,
+			String emailGerente, 
+			String descricao, 
+			Date dataInicio, 
+			Date dataFim,
+			ArrayList<Conhecimento> listaConhecimento) 
 			throws EmailInvalidoException, DescricaoInvalidaException, DataInvalidaException {
 		
 		System.out.println("TipoAtividade adicionada com sucesso!");
@@ -181,7 +185,15 @@ public class ValidacaoAtividadeImpl {
 		if (!ValidacaoUtil.validaDescricao(descricao)) throw new DescricaoInvalidaException();
 		if (!ValidacaoUtil.verificaOrdemDatas(dataInicio, dataFim)) throw new DataInvalidaException();
 		
-		return servicoAtividade.cadastrarAtividade(emailDesenvolvedor, emailGerente, descricao, dataInicio, dataFim);
+		int retorno = servicoAtividade.cadastrarAtividade(emailDesenvolvedor, emailGerente, descricao, dataInicio, dataFim);
+		
+		for(Conhecimento conhecimento : listaConhecimento) {
+			int idAtividade = retorno;
+			String nomeConhecimento = conhecimento.getNome();
+			servicoAtividade.adicionarConhecimentoAAtividade(idAtividade, nomeConhecimento);
+		}
+		
+		return retorno;
 	}
 	
 	/**
