@@ -411,7 +411,7 @@ public class Ontologia {
 		Conhecimento conhecimento = validacaoConhecimento.getConhecimento(nomeItemPai);
 
 		ArrayList<Conhecimento> filhos = validacaoConhecimento.getFilhos(conhecimento.getNome());
-		if (filhos != null) {
+		if (filhos.size() == 0) {
 			Iterator<Conhecimento> it1 = filhos.iterator();
 
 			while (it1.hasNext()) {
