@@ -85,6 +85,7 @@ public class ExecuteClientQuery implements CorePresleyOperations{
 	public boolean adicionaConhecimento(Conhecimento pai, Conhecimento filho) throws DescricaoInvalidaException, ConhecimentoInexistenteException, Exception {
 
 		validacaoConhecimento.criarConhecimento( filho.getNome(), filho.getDescricao() );
+		validacaoConhecimento.associaConhecimentos( pai.getNome(), filho.getNome());
 		return true;
 	}
 
