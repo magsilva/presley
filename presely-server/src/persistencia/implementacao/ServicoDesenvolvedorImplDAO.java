@@ -28,7 +28,7 @@ import beans.TipoAtividade;
 public class ServicoDesenvolvedorImplDAO implements ServicoDesenvolvedor{
 
 	public boolean adicionarConhecimentoAoDesenvolvedor(
-			String emailDesenvolvedor, String nomeConhecimento, int grau, int qntResposta) {
+			String emailDesenvolvedor, String nomeConhecimento, double grau, int qntResposta) {
 
 		//Connection conn = MySQLConnectionFactory.getConnection();
 		Connection conn = MySQLConnectionFactory.open();
