@@ -2,7 +2,11 @@ package validacao.implementacao;
 
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Set;
+
+import javax.swing.text.StyledEditorKit.ItalicAction;
 
 import beans.DadosAutenticacao;
 import beans.Solucao;
@@ -112,12 +116,21 @@ public class ValidacaoDesenvolvedorImpl {
 	 * @throws SenhaInvalidaException 
 	 */
 	public boolean criarDesenvolvedor(String email, String nome,
-			String localidade, String senha) throws DesenvolvedorExisteException, SenhaInvalidaException {
+			String localidade, String senha, HashMap<Conhecimento, Double> hashMap) throws DesenvolvedorExisteException, SenhaInvalidaException {
 		
 		if (servicoDesenvolvedor.desenvolvedorExiste(email)) throw new DesenvolvedorExisteException();
 		if (!ValidacaoUtil.validaSenha(senha)) throw new SenhaInvalidaException();
 		
-		return servicoDesenvolvedor.criarDesenvolvedor(email, nome, localidade, senha);
+		boolean teste = servicoDesenvolvedor.criarDesenvolvedor(email, nome, localidade, senha);
+		
+		Set<Conhecimento> setConhecimento = hashMap.keySet();
+		
+		for(Conhecimento conhecimento: setConhecimento) {
+			Double grau = hashMap.get(conhecimento);
+			servicoDesenvolvedor.adicionarConhecimentoAoDesenvolvedor(email, conhecimento.getNome(), grau, 0);
+		}
+		
+		return teste;
 	}
 	
 	/**
