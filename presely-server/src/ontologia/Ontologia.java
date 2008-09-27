@@ -360,20 +360,23 @@ public class Ontologia {
 	 */
 	public static Tree getArvoreDeConhecimentos() throws ConhecimentoInexistenteException {
 		Tree arvore = new Tree("Raiz");
-
+		
 		ArrayList<Conhecimento> filhosDoRaiz = new ArrayList<Conhecimento>();
-
+		System.out.println("Numero de Filhos do raiz = " + filhosDoRaiz.size()); //teste
+		validacaoConhecimento = new ValidacaoConhecimentoImpl();
+		
 		ArrayList<Conhecimento> conhecimentos = validacaoConhecimento.getListaConhecimento();
+		System.out.println("Numero de conhrcimentos no banco = " + conhecimentos.size());
 		Iterator<Conhecimento> it = conhecimentos.iterator();
 
-		// Buscando os conhecimentos que naopossuem pais (ou seja, os filhos do raiz).
+		// Buscando os conhecimentos que nao possuem pais (ou seja, os filhos do raiz).
 		while (it.hasNext()) {
 			Conhecimento conhecimento = it.next();
 			ArrayList<Conhecimento> paisDoConhecimento = null;
 
 			paisDoConhecimento = validacaoConhecimento.getPais(conhecimento.getNome());
 
-			if (paisDoConhecimento == null) {
+			if (paisDoConhecimento.size() == 0) {
 				filhosDoRaiz.add(conhecimento);
 			}
 		}
