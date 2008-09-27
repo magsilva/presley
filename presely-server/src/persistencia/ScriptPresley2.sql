@@ -85,3 +85,11 @@ CREATE TABLE mensagem (
   FOREIGN KEY (desenvolvedor_destino_email) REFERENCES desenvolvedor (email) ON DELETE CASCADE
 );
 
+CREATE TABLE conhecimento_pai_filho (
+  conhecimento_pai_nome VARCHAR(40) NOT NULL,
+  conhecimento_filho_nome VARCHAR(40) NOT NULL,
+  PRIMARY KEY(conhecimento_pai_nome, conhecimento_filho_nome),
+  FOREIGN KEY (conhecimento_pai_nome) REFERENCES conhecimento (nome) ON DELETE CASCADE,
+  FOREIGN KEY (conhecimento_filho_nome) REFERENCES conhecimento (nome) ON DELETE CASCADE
+);
+
