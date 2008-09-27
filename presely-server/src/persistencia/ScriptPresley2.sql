@@ -42,7 +42,7 @@ CREATE TABLE atividade_has_conhecimento (
 CREATE TABLE desenvolvedor_has_conhecimento (
   desenvolvedor_email VARCHAR(40) NOT NULL,
   conhecimento_nome VARCHAR(40) NOT NULL,
-  grau		    int(5) NOT NULL,
+  grau		    real NOT NULL,
   qtd_resposta	    int(5) NOT NULL,
   PRIMARY KEY(desenvolvedor_email, conhecimento_nome),
   FOREIGN KEY (desenvolvedor_email) REFERENCES desenvolvedor (email) ON DELETE CASCADE, 
