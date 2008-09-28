@@ -270,6 +270,7 @@ public class ViewComunication implements CorePresleyOperations{
 			desenvolvedor.setEmail("a@a.a");
 			desenvolvedor.setLocalidade("Rua Projetada");
 			desenvolvedor.setSenha("123456");
+			
 			//desenvolvedor.setListaConhecimento(listaConhecimentosDesenvolvedor);
 			Desenvolvedor supervisor = new Desenvolvedor();
 			supervisor.setNome("SICRANO");
