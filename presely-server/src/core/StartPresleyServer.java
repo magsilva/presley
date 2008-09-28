@@ -42,7 +42,6 @@ public class StartPresleyServer {
 	}
 	
 	public static void main(String [] args){
-		@SuppressWarnings("unused")
 		StartPresleyServer server = new StartPresleyServer();
 	}
 	

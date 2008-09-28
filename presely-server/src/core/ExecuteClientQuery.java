@@ -88,7 +88,16 @@ public class ExecuteClientQuery implements CorePresleyOperations{
 	public boolean adicionaConhecimento(Conhecimento pai, Conhecimento filho) throws DescricaoInvalidaException, ConhecimentoInexistenteException, Exception {
 
 		validacaoConhecimento.criarConhecimento( filho.getNome(), filho.getDescricao() );
+		if (pai != null) {
+            try {
+                    validacaoConhecimento.associaConhecimentos( pai.getNome(), filho.getNome());
+            } catch (Exception e) {
+                    validacaoConhecimento.removerConhecimento(filho.getNome());
+                    throw e;
+            }
+		}
 		return true;
+
 	}
 
 	/**
@@ -350,9 +359,12 @@ public class ExecuteClientQuery implements CorePresleyOperations{
 			TipoAtividade atividade) throws ConhecimentoInexistenteException {
 
 		ArrayList<Conhecimento> listaConhecimento = new ArrayList<Conhecimento>();
-		for(Conhecimento c: atividade.getListaDeConhecimentosEnvolvidos()) {
-			Conhecimento conhecimentoAssociado = validacaoConhecimento.getConhecimento(c.getNome());
-			listaConhecimento.add(c);
+		try {
+			listaConhecimento = validacaoAtividade.getConhecimentosEnvolvidosNaAtividade(atividade.getId());
+			
+		} catch (AtividadeInexistenteException e) {
+			// TODO: handle exception
+			e.printStackTrace();
 		}
 		return listaConhecimento;
 	}

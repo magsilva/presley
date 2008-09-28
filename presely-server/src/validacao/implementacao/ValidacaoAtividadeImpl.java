@@ -143,6 +143,7 @@ public class ValidacaoAtividadeImpl {
 		String descricao = tipoAtividade.getDescricao();
 		Date dataInicio = tipoAtividade.getDataInicio();
 		Date dataFim = tipoAtividade.getDataFinal();
+		ArrayList<Conhecimento> conhecimentos = tipoAtividade.getListaDeConhecimentosEnvolvidos();
 		
 		if (!ValidacaoUtil.validaEmail(emailDesenvolvedor)) throw new EmailInvalidoException();
 		System.out.println("Atividade cadastrada com sucesso!1");
@@ -154,7 +155,7 @@ public class ValidacaoAtividadeImpl {
 		
 		System.out.println("Atividade cadastrada com sucesso!4");
 		
-		return servicoAtividade.cadastrarAtividade(emailDesenvolvedor, emailGerente, descricao, dataInicio, dataFim);
+		return cadastrarAtividade(emailDesenvolvedor, emailGerente, descricao, dataInicio, dataFim,conhecimentos);
 		
 	}
 	
@@ -187,10 +188,12 @@ public class ValidacaoAtividadeImpl {
 		
 		int retorno = servicoAtividade.cadastrarAtividade(emailDesenvolvedor, emailGerente, descricao, dataInicio, dataFim);
 		
-		for(Conhecimento conhecimento : listaConhecimento) {
-			int idAtividade = retorno;
-			String nomeConhecimento = conhecimento.getNome();
-			servicoAtividade.adicionarConhecimentoAAtividade(idAtividade, nomeConhecimento);
+		if (listaConhecimento!=null) {
+			for(Conhecimento conhecimento : listaConhecimento) {
+				int idAtividade = retorno;
+				String nomeConhecimento = conhecimento.getNome();
+				servicoAtividade.adicionarConhecimentoAAtividade(idAtividade, nomeConhecimento);
+			}	
 		}
 		
 		return retorno;

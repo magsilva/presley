@@ -87,16 +87,21 @@ public class ServicoAtividadeImplDAO implements ServicoAtividade{
 			System.out.println(SQL);
 			stm.execute(SQL);
 			
-			SQL = "SELECT id FROM atividade WHERE descricao = " + descricao + ";" ;
+			SQL = "SELECT id FROM atividade WHERE descricao = '" + descricao + "';" ;
 			
-			
+			stm = conn.createStatement();
 			System.out.println(SQL);
 			ResultSet rs = stm.executeQuery(SQL);
 
-			retorno = rs.getInt(1);
+			if (rs.next()){
+				retorno = rs.getInt("id");
+			}
+			
+			
 			
 
 		} catch (SQLException e) {
+			System.out.println(e.getMessage());
 			e.printStackTrace();
 			return -1;
 		} finally {
@@ -184,7 +189,7 @@ public class ServicoAtividadeImplDAO implements ServicoAtividade{
 			stm = conn.createStatement();
 
 			String SQL = " SELECT * FROM atividade_has_conhecimento WHERE "+
-			" atividade_id = "+idAtividade+" " +
+			" atividade_id = '"+idAtividade+"' " +
 			" ORDER BY conhecimento_nome;";
 
 
@@ -236,7 +241,7 @@ public class ServicoAtividadeImplDAO implements ServicoAtividade{
 			stm = conn.createStatement();
 
 			String SQL = " SELECT * FROM atividade WHERE "+
-			" atividadePai = "+idPai+" ORDER BY desenvolvedor_email, id;";
+			" atividadePai = '"+idPai+"' ORDER BY desenvolvedor_email, id;";
 
 
 			System.out.println(SQL);
@@ -330,7 +335,7 @@ public class ServicoAtividadeImplDAO implements ServicoAtividade{
 			stm = conn.createStatement();
 
 			String SQL = " SELECT * FROM atividade WHERE "+
-			" id = "+id+";";
+			" id = '"+id+"';";
 
 
 			System.out.println(SQL);
@@ -376,7 +381,7 @@ public class ServicoAtividadeImplDAO implements ServicoAtividade{
 			stm.execute(SQL);
 
 		} catch (SQLException e) {
-			//e.printStackTrace();
+			e.printStackTrace();
 			return false;
 		} finally {
 			try {
@@ -446,7 +451,7 @@ public class ServicoAtividadeImplDAO implements ServicoAtividade{
 			stm = conn.createStatement();
 
 			String SQL = " SELECT * FROM atividade_has_conhecimento WHERE "+
-			" atividade_id = "+idAtividade+" " +
+			" atividade_id = '"+idAtividade+"' " +
 			" AND conhecimento_nome = '"+nomeConhecimento+"' ORDER BY atividade_id;";
 
 
