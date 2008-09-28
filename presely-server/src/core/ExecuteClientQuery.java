@@ -89,12 +89,12 @@ public class ExecuteClientQuery implements CorePresleyOperations{
 
 		validacaoConhecimento.criarConhecimento( filho.getNome(), filho.getDescricao() );
 		if (pai != null) {
-            try {
-                    validacaoConhecimento.associaConhecimentos( pai.getNome(), filho.getNome());
-            } catch (Exception e) {
-                    validacaoConhecimento.removerConhecimento(filho.getNome());
-                    throw e;
-            }
+			try {
+				validacaoConhecimento.associaConhecimentos( pai.getNome(), filho.getNome());
+			} catch (Exception e) {
+				validacaoConhecimento.removerConhecimento(filho.getNome());
+				throw e;
+			}
 		}
 		return true;
 
@@ -132,12 +132,11 @@ public class ExecuteClientQuery implements CorePresleyOperations{
 	 * @return
 	 * @throws Exception 
 	 */
-	public boolean associaConhecimentoAtividade(PacketStruct packet) throws 
-	AtividadeInexistenteException, 
-	ConhecimentoInexistenteException, 
-	Exception{
-
-		ConhecimentoAtividade conhecimentoAtividade = new ConhecimentoAtividade();
+	public boolean associaConhecimentoAtividade(PacketStruct packet) throws AtividadeInexistenteException, 
+								ConhecimentoInexistenteException, 
+								Exception {
+		
+		ConhecimentoAtividade conhecimentoAtividade = (ConhecimentoAtividade) packet.getData();
 		ArrayList<Conhecimento> listaConhecimento = conhecimentoAtividade.getConhecimentos();
 		TipoAtividade atividade = conhecimentoAtividade.getAtividade();
 
@@ -197,8 +196,8 @@ public class ExecuteClientQuery implements CorePresleyOperations{
 		ArrayList<Desenvolvedor> listaDesenvolvedores = Inferencia.getDesenvolvedores(listaConhecimento, grauDeConfianca);
 
 		return listaDesenvolvedores;
-		*/
-			return new ArrayList<Desenvolvedor>();
+		 */
+		return new ArrayList<Desenvolvedor>();
 
 	}
 
@@ -307,9 +306,10 @@ public class ExecuteClientQuery implements CorePresleyOperations{
 	public boolean removerAtividade(TipoAtividade atividade) throws AtividadeInexistenteException, ProblemaInexistenteException {
 		if(atividade == null) {
 			System.out.println("atividade null");
+		} else {
+			System.out.println("ID ativiadade " + atividade.getId());
+			validacaoAtividade.removerAtividade(atividade.getId());
 		}
-		System.out.println("ID ativiadade " + atividade.getId());
-		validacaoAtividade.removerAtividade(atividade.getId());
 		return true;
 	}
 
@@ -366,7 +366,7 @@ public class ExecuteClientQuery implements CorePresleyOperations{
 		ArrayList<Conhecimento> listaConhecimento = new ArrayList<Conhecimento>();
 		try {
 			listaConhecimento = validacaoAtividade.getConhecimentosEnvolvidosNaAtividade(atividade.getId());
-			
+
 		} catch (AtividadeInexistenteException e) {
 			// TODO: handle exception
 			e.printStackTrace();
