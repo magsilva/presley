@@ -4,9 +4,6 @@ package validacao.implementacao;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Iterator;
-
-//import com.sun.xml.internal.ws.addressing.v200408.ProblemAction;
-
 import beans.Problema;
 import beans.Solucao;
 import persistencia.implementacao.ServicoAtividadeImplDAO;
