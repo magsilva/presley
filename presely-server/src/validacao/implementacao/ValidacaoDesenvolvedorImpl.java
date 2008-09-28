@@ -123,14 +123,22 @@ public class ValidacaoDesenvolvedorImpl {
 		
 		boolean teste = servicoDesenvolvedor.criarDesenvolvedor(email, nome, localidade, senha);
 		
-		Set<Conhecimento> setConhecimento = hashMap.keySet();
+		Set<Conhecimento> setConhecimento = null;
+		if(hashMap != null) {
+			
+			setConhecimento = hashMap.keySet();
+			
+			for(Conhecimento conhecimento: setConhecimento) {
+				Double grau = hashMap.get(conhecimento);
+				servicoDesenvolvedor.adicionarConhecimentoAoDesenvolvedor(email, conhecimento.getNome(), grau, 0);
+			}
+			
+			return teste;
+		} 
 		
-		for(Conhecimento conhecimento: setConhecimento) {
-			Double grau = hashMap.get(conhecimento);
-			servicoDesenvolvedor.adicionarConhecimentoAoDesenvolvedor(email, conhecimento.getNome(), grau, 0);
-		}
+		return false;
 		
-		return teste;
+		
 	}
 	
 	/**
