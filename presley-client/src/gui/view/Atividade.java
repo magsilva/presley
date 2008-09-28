@@ -8,6 +8,7 @@ import gui.action.RunRemoveAtividadeWizardAction;
 import gui.view.comunication.CorePresleyOperations;
 import gui.view.comunication.ViewComunication;
 
+import java.lang.reflect.Array;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -520,8 +521,17 @@ public class Atividade extends ViewPart {
 					
 					atividadeSelecionada = atividade;
 					
-					//Captura os problemas associados
+					//Retorna os problemas associados
 					ArrayList<Problema> problemas = viewComunication.getProblemas(atividade);
+					ArrayList<Problema> problemasAssociados = new ArrayList<Problema>();
+					if (problemas!=null) {
+						for (Problema problema : problemas) {
+							if (problema.getAtividade().getDescricao().equals(atividadeSelecionada)) {
+								problemasAssociados.add(problema);
+							}
+						}
+					}
+					
 					
 					//Captura os conhecimentos associados
 					ArrayList<Conhecimento> conhecimentos = viewComunication.getConhecimentosEnvolvidos(atividade);
@@ -533,10 +543,10 @@ public class Atividade extends ViewPart {
 					listaConhecimentos.removeAll();
 					
 					//Adiciona os problemas a arvore
-					if (problemas!=null) {
-						for(int i=0; i < problemas.size(); i++)
+					if (problemasAssociados!=null) {
+						for(int i=0; i < problemasAssociados.size(); i++)
 						{
-							listaProblemas.add(problemas.get(i).getDescricao());
+							listaProblemas.add(problemasAssociados.get(i).getDescricao());
 							listaProblemas.getParent().redraw();
 							listaProblemas.getParent().update();
 						}	
