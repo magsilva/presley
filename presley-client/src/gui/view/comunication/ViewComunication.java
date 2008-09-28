@@ -599,7 +599,10 @@ public class ViewComunication implements CorePresleyOperations{
 	}
 
 	public boolean desassociaProblemaAtividade(Problema problema) {
-		// TODO Auto-generated method stub
+		PacketStruct respostaPacket = sendPack(problema, CorePresleyOperations.DESSASOCIAR_PROBLEMA_ATIVIDADE);
+		if(respostaPacket.getData() != null) {
+			return true;
+		}
 		return false;
 	}
 

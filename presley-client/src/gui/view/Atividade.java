@@ -36,8 +36,10 @@ import org.eclipse.ui.part.ViewPart;
 
 
 import beans.Conhecimento;
+import beans.ConhecimentoAtividade;
 import beans.Desenvolvedor;
 import beans.Problema;
+import beans.ProblemaAtividade;
 import beans.TipoAtividade;
 
 
@@ -883,6 +885,74 @@ public class Atividade extends ViewPart {
 		desassociaProblema.setImage(desass);
 		desassociaProblema.setToolTipText("Desassocia problema de atividade");
 		desassociaProblema.setEnabled(false);
+		desassociaProblema.addMouseListener(new MouseListener() {
+
+			public void mouseDoubleClick(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			public void mouseDown(MouseEvent e) {
+				Problema problemaDesassociado = null;
+				TipoAtividade atividadeDesassociada = null; 
+				ArrayList<Problema> listaProblemasAtividade = null;
+				ProblemaAtividade probAtividade = new ProblemaAtividade();
+				ArrayList<TipoAtividade> allAtividades = null;
+				
+				/*Captura o id do problema selecionado*/
+				int idProblema = listaProblemas.getSelectionIndex();
+				
+				/*Captura o nome do problema selecionado*/
+				String nomeProblema = listaProblemas.getItem(idProblema);
+				
+				/*Captura o id da atividade selecionada*/
+				int idAtividade = listaAtividades.getSelectionIndex();
+				
+				/*Captura o nome da atividade selecionada*/
+				String nomeAtividade = listaConhecimentos.getItem(idAtividade);
+				
+				/*Captura a lista de problemas associados a atividade*/
+				listaProblemasAtividade = viewComunication.getProblemas(nomeAtividade);
+				
+				/*Captura a lista de atividades*/
+				allAtividades = viewComunication.buscaAtividades();
+				
+				/*Captura a atividade da qual o problema deve ser desassociado*/
+				for (TipoAtividade a : allAtividades) {
+					if (a.getDescricao().equals(nomeAtividade))
+						atividadeDesassociada = a;			
+				}
+				
+				System.out.println("Antes do for");
+				/*Captura o problema a ser desassociado*/
+				for (Problema a : listaProblemasAtividade) {
+					System.out.println(nomeProblema);
+					if (a.getDescricao().equals(nomeProblema)) {
+						System.out.println("cmd");
+						problemaDesassociado = a;			
+						break;
+					}
+				}
+				
+				System.out.println("2x0" + problemaDesassociado.getDescricao());
+				/*Exclui do banco*/
+				try {
+					probAtividade.setAtividade(atividadeDesassociada);
+					probAtividade.setProblema(problemaDesassociado);
+					viewComunication.desassociaProblemaAtividade(problemaDesassociado);	
+					listaProblemas.remove(idProblema);
+					System.out.println("Terminou!");
+				} catch (Exception excep) {
+					excep.printStackTrace();
+				}
+			}
+
+			public void mouseUp(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+		});
 		
 		buscaProblema = new Button(parentComposite, SWT.NONE);
 		//Image ass = new Image(addAtividade.getDisplay(),this.getClass().getResourceAsStream("/icons/associaConh.gif"));
