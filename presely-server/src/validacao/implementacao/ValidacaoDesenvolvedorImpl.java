@@ -27,6 +27,7 @@ import excessao.DesenvolvedorExisteException;
 import excessao.DesenvolvedorInexistenteException;
 import excessao.EmailInvalidoException;
 import excessao.ErroDeAutenticacaoException;
+import excessao.ListagemDeConhecimentoInexistenteException;
 import excessao.SenhaInvalidaException;
 
 /**
@@ -114,9 +115,10 @@ public class ValidacaoDesenvolvedorImpl {
 	 * @return true se o desenvolvedor foi criado com sucesso.
 	 * @throws DesenvolvedorInexistenteException 
 	 * @throws SenhaInvalidaException 
+	 * @throws ListagemDeConhecimentoInexistenteException 
 	 */
 	public boolean criarDesenvolvedor(String email, String nome,
-			String localidade, String senha, HashMap<Conhecimento, Double> hashMap) throws DesenvolvedorExisteException, SenhaInvalidaException {
+			String localidade, String senha, HashMap<Conhecimento, Double> hashMap) throws DesenvolvedorExisteException, SenhaInvalidaException, ListagemDeConhecimentoInexistenteException {
 		
 		if (servicoDesenvolvedor.desenvolvedorExiste(email)) throw new DesenvolvedorExisteException();
 		if (!ValidacaoUtil.validaSenha(senha)) throw new SenhaInvalidaException();
@@ -134,10 +136,9 @@ public class ValidacaoDesenvolvedorImpl {
 			}
 			
 			return teste;
-		} 
-		
-		return false;
-		
+		} else {
+			throw new ListagemDeConhecimentoInexistenteException();
+		}	
 		
 	}
 	
