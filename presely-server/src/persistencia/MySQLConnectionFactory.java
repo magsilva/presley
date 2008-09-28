@@ -63,9 +63,7 @@ public class MySQLConnectionFactory {
 			
             Class.forName("com.mysql.jdbc.Driver");
             novaConexao = DriverManager.getConnection(
-            		"jdbc:mysql://localhost/presley", 
-            		user, 
-            		pwd);
+            		"jdbc:mysql://localhost/presley");
             
             System.out.println("\n-------------- Nova Conexao Criada!-----------\n");
             

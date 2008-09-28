@@ -223,8 +223,13 @@ public class ExecuteClientQuery implements CorePresleyOperations{
 	}
 
 	public boolean desassociaProblemaAtividade(PacketStruct packet) throws ProblemaInexistenteException {
-		ProblemaAtividade problemaAtividade = (ProblemaAtividade) packet.getData();
-		Problema problema = problemaAtividade.getProblema();
+		System.out.println("ENTREI AQUUIIIIIIIIIIIIIIIII");
+		if(packet.getData() == null) {
+			System.out.println("Tricolor");
+			return false;
+		}
+		Problema problema = (Problema)packet.getData();
+		System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!" + problema.getId());
 		return desassociaProblemaAtividade(problema);
 	}
 
