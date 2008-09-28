@@ -272,7 +272,7 @@ public class ServerBridgeImp implements ServerBridge {
 
 			pktRetorno = new PacketStruct(retorno, typeRetorno);
 			break;
-			
+			// Packet tipo 17: GET_ONTOLOGIA
 		case CorePresleyOperations.GET_ONTOLOGIA:
 			System.out.println("GET_ONTOLOGIA");
 			try {
@@ -285,7 +285,7 @@ public class ServerBridgeImp implements ServerBridge {
 
 			pktRetorno = new PacketStruct(retorno, typeRetorno);
 			break;				
-
+			// Packet tipo 18: ADICIONA_DESENVOLVEDOR
 		case CorePresleyOperations.ADICIONA_DESENVOLVEDOR:
 			System.out.println("ADICIONA_DESENVOLVEDOR");
 
@@ -315,13 +315,29 @@ public class ServerBridgeImp implements ServerBridge {
 			pktRetorno = new PacketStruct(retorno, typeRetorno);
 			break;	
 			
+			// Packet tipo 19: GET_LISTA_PROBLEMAS
+		case CorePresleyOperations.GET_LISTA_PROBLEMAS:
+			System.out.println("GET_LISTA_PROBLEMAS");
+
+				try {
+					retorno = executeClientQuery.getListaProblemas();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				typeRetorno = CorePresleyOperations.GET_LISTA_PROBLEMAS;
+
+
+			pktRetorno = new PacketStruct(retorno, typeRetorno);
+			break;
+
+			// Packet tipo 20: BUSCA_CONHECIMENTOS_RELACIONADOS
 		case CorePresleyOperations.BUSCA_CONHECIMENTOS_RELACIONADOS:
 			System.out.println("BUSCA_CONHECIMENTOS_RELACIONADOS");
 
 				try {
 					retorno = executeClientQuery.getListaConhecimentosEnvolvidos(packet);
 				} catch (ConhecimentoInexistenteException e) {
-
+					e.printStackTrace();
 				}
 				typeRetorno = CorePresleyOperations.BUSCA_CONHECIMENTOS_RELACIONADOS;
 
@@ -331,7 +347,6 @@ public class ServerBridgeImp implements ServerBridge {
 
 		}
 		return pktRetorno;
+		
 	}
-
-
 }

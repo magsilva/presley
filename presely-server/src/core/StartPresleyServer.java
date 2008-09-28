@@ -40,7 +40,6 @@ public class StartPresleyServer {
 		
 		
 	}
-	
 	public static void main(String [] args){
 		StartPresleyServer server = new StartPresleyServer();
 	}
