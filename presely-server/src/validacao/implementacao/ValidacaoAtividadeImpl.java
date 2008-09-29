@@ -261,10 +261,10 @@ public class ValidacaoAtividadeImpl {
 			
 			while (it.hasNext()) {
 				Conhecimento conhecimento = it.next();
+				System.out.println("Conhecimento: "+ conhecimento.getDescricao() );
 				servicoAtividade.removerConhecimentoDaAtividade(id, conhecimento.getDescricao());
 			}
 		}
-		
 		// Desassociando as atividades com associacao
 		ArrayList<TipoAtividade> filhos = servicoAtividade.getSubAtividades(id);
 
