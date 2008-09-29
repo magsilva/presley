@@ -2,13 +2,20 @@ package gui.view.comunication;
 
 import java.util.ArrayList;
 
-import excessao.*;
 import beans.Conhecimento;
 import beans.DadosAutenticacao;
 import beans.Desenvolvedor;
 import beans.Problema;
 import beans.TipoAtividade;
 import beans.Tree;
+import excessao.AtividadeInexistenteException;
+import excessao.ConhecimentoInexistenteException;
+import excessao.DescricaoInvalidaException;
+import excessao.DesenvolvedorInexistenteException;
+import excessao.EmailInvalidoException;
+import excessao.ErroDeAutenticacaoException;
+import excessao.ProblemaInexistenteException;
+import excessao.SenhaInvalidaException;
 
 /**
  * 
@@ -31,7 +38,7 @@ public interface CorePresleyOperations {
 	public static final int ENCERRAR_ATIVIDADE = 7;
 	public static final int ASSOCIAR_CONHECIMENTO_ATIVIDADE = 8;
 	public static final int DESSASOCIAR_CONHECIMENTO_ATIVIDADE = 9;
-	public static final int ASSOCAR_PROBLEMA_ATIVIDADE = 10;
+	public static final int ASSOCIAR_PROBLEMA_ATIVIDADE = 10;
 	public static final int DESSASOCIAR_PROBLEMA_ATIVIDADE = 11;
 	public static final int BUSCA_DESENVOLVEDORES = 12;
 	public static final int QUALIFICA_DESENVOLVEDOR = 13;
@@ -43,7 +50,7 @@ public interface CorePresleyOperations {
 	public static final int GET_LISTA_PROBLEMAS = 19;
 	public static final int BUSCA_CONHECIMENTOS_RELACIONADOS = 20;
 	public static final int REMOVER_CONHECIMENTO = 21;
-	
+	public static final int CONHECIMENTO_POSSUI_FILHOS = 22;
 	/**
 	 * Este método cadastra uma nova atividade na base de dados.
 	 * CÓDIGO DA OPERAÇÃO -> 01
@@ -59,8 +66,9 @@ public interface CorePresleyOperations {
 	 * @param TipoAtividade atividade 
 	 * @return true se a atividade foi removida com sucesso.
 	 * @throws AtividadeInexistenteException 
+	 * @throws ProblemaInexistenteException 
 	 */
-	public boolean removerAtividade(TipoAtividade atividade) throws AtividadeInexistenteException, Exception;
+	public boolean removerAtividade(TipoAtividade atividade) throws AtividadeInexistenteException, ProblemaInexistenteException;
 
 	/**
 	 * Este método retorna as atividades cadastradas
@@ -86,8 +94,12 @@ public interface CorePresleyOperations {
 	 * @param String user
 	 * @param String passwd  
 	 * @return Desenvolvedor 
+	 * @throws ErroDeAutenticacaoException 
+	 * @throws SenhaInvalidaException 
+	 * @throws EmailInvalidoException 
+	 * @throws DesenvolvedorInexistenteException 
 	 */
-	public Desenvolvedor login(DadosAutenticacao authData);
+	public Desenvolvedor login(DadosAutenticacao authData) throws DesenvolvedorInexistenteException, EmailInvalidoException, SenhaInvalidaException, ErroDeAutenticacaoException;
 
 	/**
 	 * Este método solicita logout do servidor
@@ -102,8 +114,9 @@ public interface CorePresleyOperations {
 	 * CÓDIGO DA OPERAÇÃO -> 07
 	 * @param TipoAtividade atividade
 	 * @return true se a atividade for encerrada com sucesso.
+	 * @throws AtividadeInexistenteException 
 	 */
-	public boolean encerrarAtividade(TipoAtividade atividade);
+	public boolean encerrarAtividade(TipoAtividade atividade) throws AtividadeInexistenteException;
 
 	/**
 	 * Este método associa conhecimentos a uma atividade
@@ -125,6 +138,7 @@ public interface CorePresleyOperations {
 	 * @return true se a desassociação foi realizada com sucesso.
 	 * @throws AtividadeInexistenteException 
 	 * @throws ConhecimentoInexistenteException 
+	 * @throws Exception 
 	 */
 	public boolean desassociaConhecimentoAtividade(ArrayList<Conhecimento> listaConhecimento, TipoAtividade atividade) throws ConhecimentoInexistenteException, AtividadeInexistenteException, Exception;
 
@@ -136,6 +150,7 @@ public interface CorePresleyOperations {
 	 * @return true se a associação foi realizada com sucesso.
 	 * @throws AtividadeInexistenteException 
 	 * @throws DescricaoInvalidaException 
+	 * @throws Exception 
 	 */
 	public boolean associaProblemaAtividade(Problema problema, TipoAtividade atividade) throws DescricaoInvalidaException, AtividadeInexistenteException, Exception;
 
@@ -144,8 +159,9 @@ public interface CorePresleyOperations {
 	 * CÓDIGO DA OPERAÇÃO -> 11
 	 * @param Problema problema
 	 * @return true se a desassociação foi realizada com sucesso.
+	 * @throws ProblemaInexistenteException 
 	 */
-	public boolean desassociaProblemaAtividade(Problema problema);
+	public boolean desassociaProblemaAtividade(Problema problema) throws ProblemaInexistenteException;
 
 	/**
 	 * Este método retorna uma lista de desenvolvedores para resolver um problema
@@ -154,8 +170,9 @@ public interface CorePresleyOperations {
 	 * @param TipoAtividade atividade
 	 * @param int grauDeConfiaca varia de 1 -> 100
 	 * @return true se a desassociação foi realizada com sucesso.
+	 * @throws DesenvolvedorInexistenteException 
 	 */
-	public ArrayList<Desenvolvedor> buscaDesenvolvedores(ArrayList<String> listaConhecimento, int grauDeConfianca) throws Exception;
+	public ArrayList<Desenvolvedor> buscaDesenvolvedores(Problema problema, ArrayList<Conhecimento> listaConhecimento, int grauDeConfianca) throws DesenvolvedorInexistenteException;
 
 	/**
 	 * Este método qualifica o desenvolvedor de acordo com as respostas dele aos problemas
@@ -164,8 +181,10 @@ public interface CorePresleyOperations {
 	 * @param Problema problema
 	 * @param boolean qualificação
 	 * @return true se a desassociação foi realizada com sucesso.
+	 * @throws DesenvolvedorInexistenteException 
+	 * @throws ConhecimentoInexistenteException 
 	 */
-	public boolean qualificaDesenvolvedor(Desenvolvedor desenvolvedor, Problema problema, boolean qualificacao);
+	public boolean qualificaDesenvolvedor(Desenvolvedor desenvolvedor, Problema problema, boolean qualificacao) throws ConhecimentoInexistenteException, DesenvolvedorInexistenteException;
 
 	/**
 	 * Este método envia uma mensagem para os desenvolvedores selecionados
@@ -173,8 +192,9 @@ public interface CorePresleyOperations {
 	 * @param ArrayList<Desenvolvedor> desenvolvedor
 	 * @param Problema problema
 	 * @return true se a mensagem foi realizada com sucesso.
+	 * @throws DesenvolvedorInexistenteException 
 	 */
-	public boolean enviarMensagem(Desenvolvedor desenvolvedorOrigem, ArrayList<Desenvolvedor> desenvolvedoresDestino, Problema problema, String mensagem);
+	public boolean enviarMensagem(Desenvolvedor desenvolvedorOrigem, ArrayList<Desenvolvedor> desenvolvedoresDestino, Problema problema, String mensagem) throws DesenvolvedorInexistenteException;
 	
 	/**
 	 * Este método retorna uma lista com todos os desenvolvedores cadastrados
@@ -206,8 +226,9 @@ public interface CorePresleyOperations {
 	 * Este método solicita a arvore de ontologia
 	 * CÓDIGO DA OPERAÇÃO -> 18
 	 * @return Tree Arvore de ontologia do sistema.
+	 * @throws ConhecimentoInexistenteException 
 	 */
-	public Tree getOntologia();	
+	public Tree getOntologia() throws ConhecimentoInexistenteException;	
 	
 	/**
 	 * Este método uma lista com todos os problemas cadastrados
@@ -216,9 +237,9 @@ public interface CorePresleyOperations {
 	 */
 	public ArrayList<Problema> getListaProblemas();
 	
-	
-	public ArrayList<Conhecimento> getListaConhecimentosEnvolvidos(TipoAtividade atividade);
-	
-	public boolean removerConhecimento(Conhecimento conhecimento);
+	public ArrayList<Conhecimento> getListaConhecimentosEnvolvidos(TipoAtividade atividade) throws ConhecimentoInexistenteException;
 
+	public boolean removerConhecimento(Conhecimento conhecimento) throws ConhecimentoInexistenteException;
+	
+	public boolean possuiFilhos(Conhecimento conhecimento) throws ConhecimentoInexistenteException;
 }

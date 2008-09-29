@@ -7,6 +7,7 @@ import java.util.Iterator;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.ui.actions.RetargetAction;
 
 
 import beans.Conhecimento;
@@ -297,7 +298,6 @@ public class ViewComunication implements CorePresleyOperations{
 //			//this.adicionaDesenvolvedor(desenvolvedor);
 //
 //		} catch (Exception e) {
-//			// TODO: handle exception
 //			System.out.println("ERRO ERRO ViewComunication: "+e.getMessage());
 //			e.printStackTrace();
 //		}
@@ -349,7 +349,6 @@ public class ViewComunication implements CorePresleyOperations{
 	 * @param atividade é a atividade que será removida
 	 */
 	public boolean removerAtividade(TipoAtividade atividade) {
-		// TODO Auto-generated method stub
     	PacketStruct respostaPacket = sendPack(atividade, REMOVE_ATIVIDADE);
     	Boolean resposta = (Boolean)respostaPacket.getData();
     	if (resposta.booleanValue()==true) {
@@ -392,12 +391,11 @@ public class ViewComunication implements CorePresleyOperations{
 
 	public boolean associaProblemaAtividade(Problema problema,
 			TipoAtividade atividade) throws Exception{
-		// TODO Auto-generated method stub
 		ProblemaAtividade problemaAtividade = new ProblemaAtividade();
 		problemaAtividade.setAtividade(atividade);
 		problemaAtividade.setProblema(problema);
 		
-		PacketStruct respostaPacket = sendPack(problemaAtividade,CorePresleyOperations.ASSOCAR_PROBLEMA_ATIVIDADE);
+		PacketStruct respostaPacket = sendPack(problemaAtividade,CorePresleyOperations.ASSOCIAR_PROBLEMA_ATIVIDADE);
     	
 		if(respostaPacket.getId() == CorePresleyOperations.ERRO) {
 			throw new Exception((String) respostaPacket.getData());
@@ -428,7 +426,6 @@ public class ViewComunication implements CorePresleyOperations{
 
 	public boolean desassociaConhecimentoAtividade(
 			ArrayList<Conhecimento> listaConhecimento, TipoAtividade atividade) throws Exception {
-		// TODO Auto-generated method stub
 		ConhecimentoAtividade ca = new ConhecimentoAtividade();
 		ca.setAtividade(atividade);
 		ca.setConhecimento(listaConhecimento);
@@ -456,12 +453,10 @@ public class ViewComunication implements CorePresleyOperations{
 
 	public boolean desassociaProblemaAtividade(Problema problema,
 			TipoAtividade atividade) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	public boolean encerrarAtividade(TipoAtividade atividade) {
-		// TODO Auto-generated method stub
 		//PacketStruct respostaPacket = sendPack(atividade,ENCERRA_ATIVIDADE);
     	//Boolean resposta = (Boolean)respostaPacket.getData();
 		//return resposta.booleanValue();
@@ -470,7 +465,6 @@ public class ViewComunication implements CorePresleyOperations{
 
 	public boolean enviarMensagem(
 			ArrayList<Desenvolvedor> desenvolvedoresDestino, Problema problema) {
-		// TODO Auto-generated method stub
 		//PacketStruct respostaPacket = sendPack(null,ENVIA_MENSAGEM);//TESTE
     	//Boolean resposta = (Boolean)respostaPacket.getData();
 		//return resposta.booleanValue();
@@ -478,7 +472,6 @@ public class ViewComunication implements CorePresleyOperations{
 	}
 	
 	public ArrayList<Desenvolvedor> getListaDesenvolvedores() {
-		// TODO Auto-generated method stub
 		PacketStruct respostaPacket = sendPack(null,CorePresleyOperations.GET_LISTA_DESENVOLVEDORES);
     	ArrayList<Desenvolvedor> resposta = (ArrayList<Desenvolvedor>)respostaPacket.getData();
     	listaDesenvolvedores = resposta;
@@ -511,7 +504,6 @@ public class ViewComunication implements CorePresleyOperations{
 	}
 
 	public boolean logout(Desenvolvedor desenvolvedor) {
-		// TODO Auto-generated method stub
 		PacketStruct respostaPacket = sendPack(null,CorePresleyOperations.LOG_OUT);//TESTE
     	Boolean resposta = (Boolean)respostaPacket.getData();
 		return resposta.booleanValue();
@@ -520,7 +512,6 @@ public class ViewComunication implements CorePresleyOperations{
 
 	public boolean qualificaDesenvolvedor(Desenvolvedor desenvolvedor,
 			Problema problema, boolean qualificacao) {
-		// TODO Auto-generated method stub
 		PacketStruct respostaPacket = sendPack(null,QUALIFICA_DESENVOLVEDOR);//TESTE
     	Boolean resposta = (Boolean)respostaPacket.getData();
     	return resposta.booleanValue();
@@ -529,7 +520,6 @@ public class ViewComunication implements CorePresleyOperations{
 	}
 
 	public ArrayList<Conhecimento> getListaConhecimentos() {
-		// TODO Auto-generated method stub
 		PacketStruct respostaPacket = sendPack(null,CorePresleyOperations.GET_LISTA_CONHECIMENTO);
     	ArrayList<Conhecimento> resposta = (ArrayList<Conhecimento>)respostaPacket.getData();
     	listaConhecimentos = resposta;
@@ -538,7 +528,6 @@ public class ViewComunication implements CorePresleyOperations{
 	}
 	
 	public ArrayList<Problema> getListaProblemas() {
-		// TODO Auto-generated method stub
 		PacketStruct respostaPacket = sendPack(null,GET_LISTA_PROBLEMAS);
     	ArrayList<Problema> resposta = (ArrayList<Problema>)respostaPacket.getData();
     	listaProblemas = resposta;
@@ -579,7 +568,6 @@ public class ViewComunication implements CorePresleyOperations{
 	 * @return ArrayList<TipoAtividade> é a lista de atividades cadastradas
 	 */
 	public ArrayList<TipoAtividade> buscaAtividades() {
-		// TODO Auto-generated method stub
 		PacketStruct respostaPacket = sendPack(null, BUSCA_ATIVIDADE);
 		ArrayList<TipoAtividade> resposta = (ArrayList<TipoAtividade>)respostaPacket.getData();
     	if (resposta!=null) {
@@ -620,6 +608,26 @@ public class ViewComunication implements CorePresleyOperations{
 			return true;
 		}
 		return false;
+	}
+
+
+	public boolean possuiFilhos(Conhecimento conhecimento)
+			throws ConhecimentoInexistenteException {
+		PacketStruct respostaPacket = sendPack(conhecimento, CorePresleyOperations.CONHECIMENTO_POSSUI_FILHOS);
+		boolean retorno = false;
+		if(respostaPacket.getData() != null){
+			retorno = (Boolean)respostaPacket.getData();
+		}		
+		return retorno;
+	}
+	
+	
+	//TODO
+	public ArrayList<Desenvolvedor> buscaDesenvolvedores(Problema problema,
+			ArrayList<Conhecimento> listaConhecimento, int grauDeConfianca)
+			throws DesenvolvedorInexistenteException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
 
