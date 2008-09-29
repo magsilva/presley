@@ -93,3 +93,13 @@ CREATE TABLE conhecimento_pai_filho (
   FOREIGN KEY (conhecimento_filho_nome) REFERENCES conhecimento (nome) ON DELETE CASCADE
 );
 
+
+CREATE TABLE problema_has_conhecimento (
+  atividade_id INTEGER UNSIGNED NOT NULL,
+  conhecimento_nome VARCHAR(40) NOT NULL,
+  problema_nome VARCHAR (40) NOT NULL,
+  PRIMARY KEY(atividade_id, conhecimento_nome, problema_nome),
+  INDEX problema_has_conhecimento_FKIndex1(atividade_id, conhecimento_nome),
+  FOREIGN KEY (conhecimento_nome) REFERENCES conhecimento (nome) ON DELETE CASCADE 
+);
+

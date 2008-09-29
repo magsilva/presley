@@ -1,6 +1,7 @@
 package beans;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 public class ProblemaAtividade implements Serializable {
 	/**
@@ -9,6 +10,7 @@ public class ProblemaAtividade implements Serializable {
 	private static final long serialVersionUID = 12L;
 	private Problema problema;
 	private TipoAtividade atividade;
+	private ArrayList<Conhecimento> listaConhecimentos;
 	
 	
 	public Problema getProblema() {
@@ -22,6 +24,12 @@ public class ProblemaAtividade implements Serializable {
 	}
 	public void setAtividade(TipoAtividade atividade) {
 		this.atividade = atividade;
+	}
+	public ArrayList<Conhecimento> getListaConhecimentos() {
+		return listaConhecimentos;
+	}
+	public void setListaConhecimentos(ArrayList<Conhecimento> listaConhecimentos) {
+		this.listaConhecimentos = listaConhecimentos;
 	}
 	
 	

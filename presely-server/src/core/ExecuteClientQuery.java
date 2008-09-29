@@ -131,9 +131,9 @@ public class ExecuteClientQuery implements CorePresleyOperations{
 	 * @throws Exception 
 	 */
 	public boolean associaConhecimentoAtividade(PacketStruct packet) throws AtividadeInexistenteException, 
-								ConhecimentoInexistenteException, 
-								Exception {
-		
+	ConhecimentoInexistenteException, 
+	Exception {
+
 		ConhecimentoAtividade conhecimentoAtividade = (ConhecimentoAtividade)packet.getData();
 		ArrayList<Conhecimento> listaConhecimento = conhecimentoAtividade.getConhecimentos();
 		TipoAtividade atividade = conhecimentoAtividade.getAtividade();
@@ -161,13 +161,17 @@ public class ExecuteClientQuery implements CorePresleyOperations{
 
 		Problema problema = problemaAtividade.getProblema();
 		TipoAtividade atividade =  problemaAtividade.getAtividade();
+		ArrayList<Conhecimento> listaConhecimentos = problemaAtividade.getListaConhecimentos();
 
-		return associaProblemaAtividade(problema, atividade);
+		return associaProblemaAtividade(problema, atividade, listaConhecimentos);
 	}
 	public boolean associaProblemaAtividade(Problema problema,
-			TipoAtividade atividade) throws DescricaoInvalidaException, AtividadeInexistenteException {
+			TipoAtividade atividade, 
+			ArrayList<Conhecimento> listaConhecimentos) throws DescricaoInvalidaException, AtividadeInexistenteException {
 
-		validacaoProblema.cadastrarProblema(atividade.getId(), problema.getDescricao(), problema.getData(), problema.getMensagem());
+		validacaoProblema.cadastrarProblema(atividade.getId(), problema.getDescricao(), 
+				problema.getData(), problema.getMensagem(), listaConhecimentos);
+
 		return true;
 	}
 
@@ -186,11 +190,11 @@ public class ExecuteClientQuery implements CorePresleyOperations{
 	}	
 
 	public ArrayList<Desenvolvedor> buscaDesenvolvedores(ArrayList<String> listaConhecimento, int grauDeConfianca) throws DesenvolvedorInexistenteException {
-		
+
 		String[] conhecimentos = new String[listaConhecimento.size()];
 		for(int i = 0; i < listaConhecimento.size(); i++)
 			conhecimentos[i] = listaConhecimento.get(i);
-		
+
 		ArrayList<Desenvolvedor> listaDesenvolvedores = Inferencia.getDesenvolvedores(conhecimentos, grauDeConfianca);
 
 		return listaDesenvolvedores;
@@ -388,7 +392,7 @@ public class ExecuteClientQuery implements CorePresleyOperations{
 		return validacaoDesenvolvedor.removerDesenvolvedor(desenvolvedor.getEmail());
 	}
 
-	
+
 
 
 }

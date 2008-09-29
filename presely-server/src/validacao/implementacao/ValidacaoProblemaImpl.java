@@ -4,6 +4,8 @@ package validacao.implementacao;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Iterator;
+
+import beans.Conhecimento;
 import beans.Problema;
 import beans.Solucao;
 import persistencia.implementacao.ServicoAtividadeImplDAO;
@@ -59,13 +61,14 @@ public class ValidacaoProblemaImpl {
 	 * @return true se o problema foi cadastrado com sucesso.
 	 */
 	public boolean cadastrarProblema(int idAtividade, String descricao,
-			Date dataDoRelato, String mensagem) throws DescricaoInvalidaException, AtividadeInexistenteException {
+			Date dataDoRelato, String mensagem, ArrayList<Conhecimento> listaConhecimentos) 
+			throws DescricaoInvalidaException, AtividadeInexistenteException {
 		
 		if (!servicoAtividade.atividadeExiste(idAtividade)) throw new AtividadeInexistenteException();
 		
 		if (!ValidacaoUtil.validaDescricao(descricao)) throw new DescricaoInvalidaException();
 
-		return servicoProblema.cadastrarProblema(idAtividade, descricao, dataDoRelato, mensagem);
+		return servicoProblema.cadastrarProblema(idAtividade, descricao, dataDoRelato, mensagem, listaConhecimentos);
 	}
 	
 	/**

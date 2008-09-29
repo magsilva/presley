@@ -3,6 +3,7 @@ package persistencia.interfaces;
 import java.sql.Date;
 import java.util.ArrayList;
 
+import beans.Conhecimento;
 import beans.Problema;
 
 /**
@@ -25,7 +26,7 @@ public interface ServicoProblema {
 	 * @return true se o problema foi cadastrado com sucesso.
 	 */
 	public boolean cadastrarProblema(int idAtividade, String descricao,
-			Date dataDoRelato, String mensagem);
+			Date dataDoRelato, String mensagem, ArrayList<Conhecimento> conhecimento);
 	
 	/**
 	 * Esse método atualiza o status do problema, ou seja, se ele foi resolvido
