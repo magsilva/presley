@@ -50,7 +50,7 @@ public interface CorePresleyOperations {
 	public static final int GET_LISTA_PROBLEMAS = 19;
 	public static final int BUSCA_CONHECIMENTOS_RELACIONADOS = 20;
 	public static final int REMOVER_CONHECIMENTO = 21;
-	
+	public static final int CONHECIMENTO_POSSUI_FILHOS = 22;
 	/**
 	 * Este método cadastra uma nova atividade na base de dados.
 	 * CÓDIGO DA OPERAÇÃO -> 01
@@ -238,4 +238,6 @@ public interface CorePresleyOperations {
 	public ArrayList<Conhecimento> getListaConhecimentosEnvolvidos(TipoAtividade atividade) throws ConhecimentoInexistenteException;
 
 	public boolean removerConhecimento(Conhecimento conhecimento) throws ConhecimentoInexistenteException;
+	
+	public boolean possuiFilhos(Conhecimento conhecimento) throws ConhecimentoInexistenteException;
 }

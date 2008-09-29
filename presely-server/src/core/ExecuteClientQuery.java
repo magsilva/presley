@@ -375,5 +375,15 @@ public class ExecuteClientQuery implements CorePresleyOperations{
 		return validacaoConhecimento.removerConhecimento(conhecimento.getNome());
 	}
 
+	public Object possuiFilhos(PacketStruct packet) throws ConhecimentoInexistenteException {
+		Conhecimento conhecimento = (Conhecimento)packet.getData();
+		return this.possuiFilhos(conhecimento);
+	}
+	public boolean possuiFilhos(Conhecimento conhecimento) throws ConhecimentoInexistenteException {
+		return validacaoConhecimento.possuiFilhos(conhecimento);
+	}
+
+	
+
 
 }

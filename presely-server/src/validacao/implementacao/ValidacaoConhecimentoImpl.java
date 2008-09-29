@@ -220,17 +220,22 @@ public class ValidacaoConhecimentoImpl {
 	public ArrayList<Conhecimento> getPais(String nomeConhecimentoFilho)
 			throws ConhecimentoInexistenteException {
 
-//		if (!servicoConhecimento.conhecimentoExiste(nomeConhecimentoFilho)) 
-//			throw new ConhecimentoInexistenteException();
-		
 		return servicoConhecimento.getPais(nomeConhecimentoFilho);
 	}
 
 	public ArrayList<Conhecimento> getListaConhecimento() {
-		// TODO Auto-generated method stub
-		System.out.println("AKI CHEGA KRAI");
 		
 		return servicoConhecimento.getListaConhecimento();
+	}
+
+	public boolean possuiFilhos(Conhecimento conhecimento) throws ConhecimentoInexistenteException {
+		
+		ArrayList<Conhecimento> listaConhecimento =  servicoConhecimento.getFilhos(conhecimento.getNome());
+
+		if((listaConhecimento != null) && (listaConhecimento.size() == 0)) {
+			return false;
+		}
+		return true;
 	}
 
 }

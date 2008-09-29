@@ -228,15 +228,15 @@ public class ServerBridgeImp implements ServerBridge {
 		case CorePresleyOperations.QUALIFICA_DESENVOLVEDOR:
 			System.out.println("QUALIFICA_DESENVOLVEDOR");
 			try {
-					retorno = executeClientQuery.qualificaDesenvolvedor(packet);
-					typeRetorno = CorePresleyOperations.QUALIFICA_DESENVOLVEDOR;
-				} catch (ConhecimentoInexistenteException e2) {
-					retorno = "ERRO: Conhecimento inexistente.";
-					e2.printStackTrace();
-				} catch (DesenvolvedorInexistenteException e2) {
-					retorno = "ERRO: Desenvolvedor inexistente.";
-					e2.printStackTrace();
-				}
+				retorno = executeClientQuery.qualificaDesenvolvedor(packet);
+				typeRetorno = CorePresleyOperations.QUALIFICA_DESENVOLVEDOR;
+			} catch (ConhecimentoInexistenteException e2) {
+				retorno = "ERRO: Conhecimento inexistente.";
+				e2.printStackTrace();
+			} catch (DesenvolvedorInexistenteException e2) {
+				retorno = "ERRO: Desenvolvedor inexistente.";
+				e2.printStackTrace();
+			}
 
 			pktRetorno = new PacketStruct(retorno, typeRetorno);
 			break;				
@@ -313,17 +313,17 @@ public class ServerBridgeImp implements ServerBridge {
 
 			pktRetorno = new PacketStruct(retorno, typeRetorno);
 			break;	
-			
+
 			// Packet tipo 19: GET_LISTA_PROBLEMAS
 		case CorePresleyOperations.GET_LISTA_PROBLEMAS:
 			System.out.println("GET_LISTA_PROBLEMAS");
 
-				try {
-					retorno = executeClientQuery.getListaProblemas();
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-				typeRetorno = CorePresleyOperations.GET_LISTA_PROBLEMAS;
+			try {
+				retorno = executeClientQuery.getListaProblemas();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			typeRetorno = CorePresleyOperations.GET_LISTA_PROBLEMAS;
 
 
 			pktRetorno = new PacketStruct(retorno, typeRetorno);
@@ -333,12 +333,12 @@ public class ServerBridgeImp implements ServerBridge {
 		case CorePresleyOperations.BUSCA_CONHECIMENTOS_RELACIONADOS:
 			System.out.println("BUSCA_CONHECIMENTOS_RELACIONADOS");
 
-				try {
-					retorno = executeClientQuery.getListaConhecimentosEnvolvidos(packet);
-				} catch (ConhecimentoInexistenteException e) {
-					e.printStackTrace();
-				}
-				typeRetorno = CorePresleyOperations.BUSCA_CONHECIMENTOS_RELACIONADOS;
+			try {
+				retorno = executeClientQuery.getListaConhecimentosEnvolvidos(packet);
+			} catch (ConhecimentoInexistenteException e) {
+				e.printStackTrace();
+			}
+			typeRetorno = CorePresleyOperations.BUSCA_CONHECIMENTOS_RELACIONADOS;
 
 
 			pktRetorno = new PacketStruct(retorno, typeRetorno);
@@ -346,20 +346,35 @@ public class ServerBridgeImp implements ServerBridge {
 		case CorePresleyOperations.REMOVER_CONHECIMENTO:
 			System.out.println("REMOVER_CONHECIMENTO");
 
-				try {
-					retorno = executeClientQuery.removerConhecimento(packet);
-				} catch (ConhecimentoInexistenteException e) {
-					retorno = "ERRO: Conhecimento inexistente.";
-					e.printStackTrace();
-				}
-				typeRetorno = CorePresleyOperations.REMOVER_CONHECIMENTO;
+			try {
+				retorno = executeClientQuery.removerConhecimento(packet);
+			} catch (ConhecimentoInexistenteException e) {
+				retorno = "ERRO: Conhecimento inexistente.";
+				e.printStackTrace();
+			}
+			typeRetorno = CorePresleyOperations.REMOVER_CONHECIMENTO;
 
 
 			pktRetorno = new PacketStruct(retorno, typeRetorno);
 			break;
 
+		case CorePresleyOperations.CONHECIMENTO_POSSUI_FILHOS:
+			System.out.println("CONHECIMENTO_POSSUI_FILHOS");
+
+			try {
+				retorno = executeClientQuery.possuiFilhos(packet);
+			} catch (ConhecimentoInexistenteException e) {
+				retorno = "ERRO: Conhecimento inexistente.";
+				e.printStackTrace();
+			}
+			typeRetorno = CorePresleyOperations.CONHECIMENTO_POSSUI_FILHOS;
+
+
+			pktRetorno = new PacketStruct(retorno, typeRetorno);
+			break;
 		}
+
 		return pktRetorno;
-		
+
 	}
 }
