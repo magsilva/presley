@@ -71,12 +71,15 @@ public class AssociaConhecimentoWizardPage extends WizardPage {
     	//Fazendo um mapeamento entre o nome dos conhecimentos e o conhecimento
     	//para agilizar a recuperação mais a frente
     	for (Conhecimento conh : this.atividade.getViewComunication().getListaConhecimentos()) {
-			tabelaConhecimentos.put(conh.getNome(), conh);
+    		System.out.println(">>>>>>> CRIANDO TABELA >>>>>>>>>> " + conh.getNome());
+    		tabelaConhecimentos.put(conh.getNome(), conh);
 		}
     	
     	conhecimentos = new ArrayList<Conhecimento>();
+    	
     	//Preenche a lista de conhecimentos para resposta
     	for (String nome : conhecimentosNomes) {
+    		System.out.println(" >>>>>>>>>>>>>>>> KEY >>>>>>>>>>>> " + nome);
 			Conhecimento conh1 = tabelaConhecimentos.get(nome);
 			if (conh1!=null) {
 				conhecimentos.add(conh1);

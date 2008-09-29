@@ -374,7 +374,7 @@ public class Atividade extends ViewPart {
 		addUser.setSize(larguraBotao, alturaBotao);
 		addUser.setImage(userAdd);
 		addUser.setToolTipText("Adiciona novo desenvolvedor");
-		addUser.setEnabled(false);
+		addUser.setEnabled(true);
 		addUser.addMouseListener(new MouseListener() {
 
 			public void mouseDoubleClick(MouseEvent arg0) {

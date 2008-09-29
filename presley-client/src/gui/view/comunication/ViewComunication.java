@@ -531,8 +531,8 @@ public class ViewComunication implements CorePresleyOperations{
 	public ArrayList<Conhecimento> getListaConhecimentos() {
 		// TODO Auto-generated method stub
 		PacketStruct respostaPacket = sendPack(null,CorePresleyOperations.GET_LISTA_CONHECIMENTO);
-    	ArrayList<Desenvolvedor> resposta = (ArrayList<Desenvolvedor>)respostaPacket.getData();
-    	listaDesenvolvedores = resposta;
+    	ArrayList<Conhecimento> resposta = (ArrayList<Conhecimento>)respostaPacket.getData();
+    	listaConhecimentos = resposta;
     	
 		return listaConhecimentos;
 	}

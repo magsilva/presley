@@ -1,9 +1,14 @@
 package beans;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class ConhecimentoAtividade {
+public class ConhecimentoAtividade implements Serializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 17L;
 	private ArrayList<Conhecimento> conhecimento;
 	private TipoAtividade Atividade;
 	
