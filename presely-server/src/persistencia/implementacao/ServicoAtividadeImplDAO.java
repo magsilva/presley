@@ -204,7 +204,7 @@ public class ServicoAtividadeImplDAO implements ServicoAtividade{
 				ServicoConhecimento sc = new ServicoConhecimentoImplDAO();
 
 				Conhecimento conhecimento = sc.getConhecimento(nomeConhecimento);
-
+				System.out.println("descricao conhecimento implementacao " + conhecimento.getDescricao());
 				list.add(conhecimento);
 
 			}
@@ -397,16 +397,11 @@ public class ServicoAtividadeImplDAO implements ServicoAtividade{
 
 	}
 
-	public boolean removerConhecimentoDaAtividade(int idAtividade,
-			String nomeConhecimento) {
-
-		//Connection conn = MySQLConnectionFactory.getConnection();
+	public boolean removerConhecimentoDaAtividade(int idAtividade, String nomeConhecimento) {
 		Connection conn = MySQLConnectionFactory.open();
-		
 		Statement stm = null;
 
 		try {
-
 			stm = conn.createStatement();
 
 			if (this.atividadeAssociadaAConhecimentoExiste(idAtividade, nomeConhecimento)){
@@ -434,8 +429,6 @@ public class ServicoAtividadeImplDAO implements ServicoAtividade{
 				onConClose.printStackTrace();	             
 			}
 		}
-
-
 	}
 
 	public boolean atividadeAssociadaAConhecimentoExiste(int idAtividade,
