@@ -168,13 +168,12 @@ public interface CorePresleyOperations {
 	/**
 	 * Este método retorna uma lista de desenvolvedores para resolver um problema
 	 * CÓDIGO DA OPERAÇÃO -> 12
-	 * @param Problema problema
-	 * @param TipoAtividade atividade
+	 * @param ArrayList<String> lista de conhecimentos associados ao problema
 	 * @param int grauDeConfiaca varia de 1 -> 100
-	 * @return true se a desassociação foi realizada com sucesso.
+	 * @return ArrayList<Desenvolvedor> lista de desenvolvedores aptos a resolver o problema
 	 * @throws DesenvolvedorInexistenteException 
 	 */
-	public ArrayList<Desenvolvedor> buscaDesenvolvedores(Problema problema, ArrayList<Conhecimento> listaConhecimento, int grauDeConfianca) throws DesenvolvedorInexistenteException;
+	public ArrayList<Desenvolvedor> buscaDesenvolvedores(ArrayList<String> conhecimentos, int grauDeConfianca) throws Exception;
 
 	/**
 	 * Este método qualifica o desenvolvedor de acordo com as respostas dele aos problemas
