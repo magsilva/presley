@@ -1,8 +1,11 @@
 package beans;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class BuscaDesenvolvedores {
+public class BuscaDesenvolvedores implements Serializable {
+
+	private static final long serialVersionUID = 3L;
 	private Problema problema;
 	private ArrayList<String> listaConhecimento;
 	private int grauDeConfianca;
