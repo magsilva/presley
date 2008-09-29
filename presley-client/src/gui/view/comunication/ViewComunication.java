@@ -520,9 +520,12 @@ public class ViewComunication implements CorePresleyOperations{
 	}
 
 	public ArrayList<Conhecimento> getListaConhecimentos() {
+		System.out.println("Cheguei na View Communication");
 		PacketStruct respostaPacket = sendPack(null,CorePresleyOperations.GET_LISTA_CONHECIMENTO);
-    	ArrayList<Conhecimento> resposta = (ArrayList<Conhecimento>)respostaPacket.getData();
-    	listaConhecimentos = resposta;
+    	System.out.println("Passe do sendPack");
+		ArrayList<Conhecimento> resposta = (ArrayList<Conhecimento>)respostaPacket.getData();
+    	System.out.println(resposta.get(0).getNome() + "  " + resposta.get(0).getDescricao() );
+		listaConhecimentos = resposta;
     	
 		return listaConhecimentos;
 	}

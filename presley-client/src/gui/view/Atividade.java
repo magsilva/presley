@@ -1,5 +1,6 @@
 package gui.view;
 
+import excessao.ConhecimentoInexistenteException;
 import gui.action.RunAdicionaAtividadeWizardAction;
 import gui.action.RunAdicionaDesenvolvedorWizardAction;
 import gui.action.RunAssociaProblemaAtividadeWizardAction;
@@ -673,8 +674,51 @@ public class Atividade extends ViewPart {
 
 			public void mouseDown(MouseEvent arg0) {
 				
+				//captura o id do conhecimento selecionado
+				int idConh = listaConhecimentos.getSelectionIndex();
+				
+				//captura o nome do conhecimento
+				String nomeConh = listaConhecimentos.getItem(idConh);
+				Conhecimento conhLocalizado = null;
+				
+				/*Encontra o conhecimento selecionado no banco*/
+				ArrayList<Conhecimento> conhecimentos = viewComunication.getListaConhecimentos();
+				System.out.println("Lista de Conhecimentos!!! : " + conhecimentos.get(0).getNome());
+				System.out.println(conhecimentos.get(1).getNome());
+				
+				if (conhecimentos!=null) {
+					for (Conhecimento conhecimento : conhecimentos) {
+						if (conhecimento.getNome().equals(nomeConh)) {
+							conhLocalizado = conhecimento;
+						}
+					}
+				}
+				else {
+					System.out.println("Nao achou a lista de atividade");
+				}
+				
+				
+				System.out.println("Dados do conhecimento a ser removido: ");
+				System.out.println(conhLocalizado.getDescricao());
+				
+				/*Testar se o conhecimento é pai de alguem*/
+				try {
+					if (viewComunication.possuiFilhos(conhLocalizado)) {
+						System.out.println("Soh eh possivel excluir conhecimentos folhas!");
+					}
+					else {
+						//realiza a remocao da atividade no servidor
+						viewComunication.removerConhecimento(conhLocalizado);
+
+						//realiza a remocao da atividade na lista grafica
+						listaConhecimentos.remove(idConh);
+					}
+				} catch (ConhecimentoInexistenteException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				// exibe o wizard para remoção de novo conhecimento
-				RunRemoveConhecimentoWizardAction();
+				//RunRemoveConhecimentoWizardAction();
 				
 			}
 			
