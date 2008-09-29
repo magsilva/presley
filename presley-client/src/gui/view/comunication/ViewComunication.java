@@ -311,6 +311,7 @@ public class ViewComunication implements CorePresleyOperations{
 	 * @return o pacote de resposta do servidor
 	 */
 	private PacketStruct sendPack(Object data, int id) {
+		
 		PacketStruct pack = new PacketStruct(data, id);
 		PacketStruct packet = PrincipalSUBJECT.facade(pack);
 		System.out.println(packet.getData());

@@ -82,6 +82,8 @@ public class BuscaDesenvolvedoresWizard extends Wizard implements INewWizard {
 		      // User canceled, so stop but don't close wizard.
 		      return false;
 		   }
+		   /*Preencher o panel com a lista*/
+		   this.atividade.updateListaGraficaDesenvolvedores();
 		   return true;
 	}
 
