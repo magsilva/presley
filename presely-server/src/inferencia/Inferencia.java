@@ -34,19 +34,18 @@ public class Inferencia {
 	//		
 	//	}
 
-	public Inferencia(){
-		validaInf = new ValidacaoInferenciaImpl();
-	}
 
 	public static ArrayList<Desenvolvedor> getDesenvolvedores(String[] conhecimentos, double conf) throws DesenvolvedorInexistenteException{
 
 		int max = conhecimentos.length;
 		int cont = 1;
-
+		validaInf = new ValidacaoInferenciaImpl();
 		HashMap<Desenvolvedor, Double> mCand = new HashMap<Desenvolvedor, Double>();
-
+		System.out.println("Tamanho do array de strings de conhecimentos " + max);
 		for(String c : conhecimentos){
+			System.out.println("Iterador" + c);
 			HashMap<Desenvolvedor, Double> mCandidatos = validaInf.getDesenvolvedoresByConhecimento(c);
+			System.out.println(mCandidatos.toString());
 			atualizaPossiveisDesenvolvedores(mCand, mCandidatos, ((double)cont)/max);
 
 			cont++; // Proximo conhecimento

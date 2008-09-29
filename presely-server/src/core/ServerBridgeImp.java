@@ -1,6 +1,9 @@
 package core;
 
+import java.util.ArrayList;
+
 import beans.DadosAutenticacao;
+import beans.Desenvolvedor;
 import core.interfaces.CorePresleyOperations;
 import server.ServerBridge;
 import excessao.AtividadeInexistenteException;
@@ -38,6 +41,7 @@ public class ServerBridgeImp implements ServerBridge {
 	 * @return Packet O pacote resposta para o cliente
 	 */
 	public PacketStruct sendToServer(PacketStruct packet) {
+		System.out.println("AHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH" +packet.getId());
 		PacketStruct pktRetorno = null;
 		Object retorno = null;
 		ExecuteClientQuery executeClientQuery = new ExecuteClientQuery(); 
@@ -197,9 +201,11 @@ public class ServerBridgeImp implements ServerBridge {
 
 			// Packet tipo 12: BUSCA_DESENVOLVEDORES
 		case CorePresleyOperations.BUSCA_DESENVOLVEDORES:
-
+			System.out.println("busca desenvolvedores ");
 			try {
 				retorno = executeClientQuery.buscaDesenvolvedores(packet);
+				ArrayList<beans.Desenvolvedor> des = (ArrayList<Desenvolvedor>)retorno;
+				System.out.println("Email do desenvolvedor retornado: "+des.get(0).getEmail());
 				typeRetorno = CorePresleyOperations.BUSCA_DESENVOLVEDORES;
 			} catch (DesenvolvedorInexistenteException e2) {
 				retorno = "ERRO: Desenvolvedor inexistente.";

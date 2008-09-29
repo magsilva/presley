@@ -16,6 +16,7 @@ public class ServicoInferenciaDAO {
 		
 		//Connection conn = MySQLConnectionFactory.getConnection();
 		Connection conn = MySQLConnectionFactory.open();
+		Desenvolvedor d = null;
 		
 		Statement stm = null;
 		
@@ -24,35 +25,37 @@ public class ServicoInferenciaDAO {
 		try{
 			stm = conn.createStatement();
 			
-			String sql = "select email, nome, localidade, grau, qtd_resposta from " +
+			String sql = "select desenvolvedor_email, grau, qtd_resposta from " +
 						 "desenvolvedor_has_conhecimento as dc, desenvolvedor where " +
 						 "dc.conhecimento_nome = '"+conhecimento+"' and dc.desenvolvedor_email = email and " +
 						 		" grau > 0";
 			
-			ResultSet rs = stm.executeQuery(sql);
+			String sql2 = "select desenvolvedor_email, grau, qtd_resposta from " +
+					"desenvolvedor_has_conhecimento as dc, desenvolvedor where " +
+					"dc.conhecimento_nome = 'BD' and dc.desenvolvedor_email = email and grau > 0";
+			ResultSet rs = stm.executeQuery(sql2);
 			
-			if(!rs.next()) throw new DesenvolvedorInexistenteException();
+			//if(!rs.next()) throw new DesenvolvedorInexistenteException();
 			
 			while(rs.next()){
-				
 					/* Instanciando e iniciando valores do Desenvolvedor */
-					Desenvolvedor d = new Desenvolvedor();
+					d = new Desenvolvedor();
 					d.setEmail(rs.getString(1));
-					d.setNome(rs.getString(2));
-					d.setLocalidade(rs.getString(3));
-					/* -------------------------------------------------- */
 					
-					/* Ajustando o 'valor' de seu conhecimento em um dado conhecimento */
-					int grau = rs.getInt(4);
-					int qtd = rs.getInt(5);
+					// Ajustando o 'valor' de seu conhecimento em um dado conhecimento 
+					int grau = rs.getInt(2);
+					int qtd = rs.getInt(3);
 					double valor = ((double)((qtd*4)+(grau*6)))/10;
-					/* -------- */
-
-					/* Adicionando o candidato na tabela */
+					 
+					// Adicionando o candidato na tabela 
 					mCand.put(d, valor);
-					/* --------- */
-				
 			}
+			if(d == null) {
+				System.out.println("desenvolvedor null");
+			}
+			System.out.println("Email do desenvolvedor candidato: "+d.getEmail());
+			System.out.println("Valor do desenvolvedor candidato: "+mCand.get(d));
+			return mCand;
 			
 		} catch(SQLException e){
 			e.printStackTrace();
