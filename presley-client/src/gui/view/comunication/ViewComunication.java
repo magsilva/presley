@@ -56,7 +56,7 @@ public class ViewComunication implements CorePresleyOperations{
 		
 		this.listaDesenvolvedores = getListaDesenvolvedores();
 		
-		teste();//TESTE
+	//	teste();//TESTE
 	}
 	
 	/**
@@ -87,7 +87,7 @@ public class ViewComunication implements CorePresleyOperations{
 		
 		this.listaDesenvolvedores = getListaDesenvolvedores();
 		
-		teste();//TESTE
+	//	teste();//TESTE
 	}
 	
 	/**
@@ -218,90 +218,90 @@ public class ViewComunication implements CorePresleyOperations{
 	 * Mótodo de teste que cria uma ontologia e uma atividade com seus conhecimentos e problemas associados.
 	 * Esta ser para simular o ambiente operacional do sistema.
 	 */
-	public void teste()
-	{
-		try {
-			
-			Conhecimento conhecimentoAtividade1 = new Conhecimento();
-			conhecimentoAtividade1.setNome("Banco de Dados");
-			conhecimentoAtividade1.setDescricao("Area geral de banco de dados");
-			Conhecimento conhecimentoAtividade2 = new Conhecimento();
-			conhecimentoAtividade2.setNome("Banco de Dados Relacional");
-			conhecimentoAtividade2.setDescricao("Tipo de Banco de Dados relacional");
-			Conhecimento conhecimentoAtividade3 = new Conhecimento();
-			conhecimentoAtividade3.setNome("LP");
-			conhecimentoAtividade3.setDescricao("Linguagem de programacao");
-			Conhecimento conhecimentoAtividade4 = new Conhecimento();
-			conhecimentoAtividade4.setNome("JAVA");
-			conhecimentoAtividade4.setDescricao("Linguagem JAVA");
-			Conhecimento conhecimentoAtividade5 = new Conhecimento();
-			conhecimentoAtividade5.setNome("C++");
-			conhecimentoAtividade5.setDescricao("Linguagem C++");
-			ArrayList<Conhecimento> listaConhecimentosAtividade = new ArrayList<Conhecimento>();
-			listaConhecimentosAtividade.add(conhecimentoAtividade1);
-			listaConhecimentosAtividade.add(conhecimentoAtividade2);
-
-			
-			
-			Conhecimento conhecimentoDesenvolvedor = new Conhecimento();
-			conhecimentoDesenvolvedor.setNome("MySQL");
-			conhecimentoDesenvolvedor.setDescricao("Banco de dados relacional gratis de otima qualidade");
-			ArrayList<Conhecimento> listaConhecimentosDesenvolvedor = new ArrayList<Conhecimento>();
-			listaConhecimentosDesenvolvedor.add(conhecimentoDesenvolvedor);
-			
-			listaConhecimentos.add(conhecimentoAtividade1);
-			listaConhecimentos.add(conhecimentoAtividade2);
-			listaConhecimentos.add(conhecimentoAtividade3);
-			listaConhecimentos.add(conhecimentoAtividade4);
-			listaConhecimentos.add(conhecimentoAtividade5);
-			listaConhecimentos.add(conhecimentoDesenvolvedor);
-			
-			Desenvolvedor desenvolvedor = new Desenvolvedor();
-			desenvolvedor.setNome("FULANO");
-			desenvolvedor.setEmail("a@a.a");
-			desenvolvedor.setLocalidade("Rua Projetada");
-			desenvolvedor.setSenha("123456");
-			
-			//desenvolvedor.setListaConhecimento(listaConhecimentosDesenvolvedor);
-			Desenvolvedor supervisor = new Desenvolvedor();
-			supervisor.setNome("SICRANO");
-			supervisor.setEmail("sicrano1@algumDominio.com.br");
-			supervisor.setLocalidade("Rua Projetada");
-			//supervisor.setListaConhecimento(listaConhecimentosDesenvolvedor);
-			ArrayList<Desenvolvedor> listaDesenvolvedores = new ArrayList<Desenvolvedor>();
-			listaDesenvolvedores.add(desenvolvedor);
-			listaDesenvolvedores.add(supervisor);
-			this.listaDesenvolvedores=listaDesenvolvedores;
-			
-			TipoAtividade atividade = new TipoAtividade("Implementar Presley",desenvolvedor,supervisor,0,new Date(System.currentTimeMillis()),
-					new Date(System.currentTimeMillis()),false,listaConhecimentosAtividade);
-			
-			Tree tree = new Tree("CONHECIMENTO");
-			
-			tree.adicionaFilho("Banco de Dados");
-			
-			tree.getFilho("Banco de Dados").adicionaFilho("Banco de Dados Relacional");
-			tree.getFilho("Banco de Dados").getFilho("Banco de Dados Relacional").adicionaFilho("MySQL");
-			
-			tree.adicionaFilho("LP");
-			tree.getFilho("LP").adicionaFilho("JAVA");
-			tree.getFilho("LP").adicionaFilho("C++");
-			
-			ontologia = tree;
-			
-			//this.adicionaAtividade(atividade);
-			//this.adicionaDesenvolvedor(desenvolvedor);
-			System.out.println("Adicionando atividade no banco");
-			//this.adicionaAtividade(atividade);
-			System.out.println("Passou da adicao");
-			//this.adicionaDesenvolvedor(desenvolvedor);
-
-		} catch (Exception e) {
-			// TODO: handle exception
-			System.out.println("ERRO ERRO ViewComunication: "+e.getMessage());
-			e.printStackTrace();
-		}
-	}
+//	public void teste()
+//	{
+//		try {
+//			
+//			Conhecimento conhecimentoAtividade1 = new Conhecimento();
+//			conhecimentoAtividade1.setNome("Banco de Dados");
+//			conhecimentoAtividade1.setDescricao("Area geral de banco de dados");
+//			Conhecimento conhecimentoAtividade2 = new Conhecimento();
+//			conhecimentoAtividade2.setNome("Banco de Dados Relacional");
+//			conhecimentoAtividade2.setDescricao("Tipo de Banco de Dados relacional");
+//			Conhecimento conhecimentoAtividade3 = new Conhecimento();
+//			conhecimentoAtividade3.setNome("LP");
+//			conhecimentoAtividade3.setDescricao("Linguagem de programacao");
+//			Conhecimento conhecimentoAtividade4 = new Conhecimento();
+//			conhecimentoAtividade4.setNome("JAVA");
+//			conhecimentoAtividade4.setDescricao("Linguagem JAVA");
+//			Conhecimento conhecimentoAtividade5 = new Conhecimento();
+//			conhecimentoAtividade5.setNome("C++");
+//			conhecimentoAtividade5.setDescricao("Linguagem C++");
+//			ArrayList<Conhecimento> listaConhecimentosAtividade = new ArrayList<Conhecimento>();
+//			listaConhecimentosAtividade.add(conhecimentoAtividade1);
+//			listaConhecimentosAtividade.add(conhecimentoAtividade2);
+//
+//			
+//			
+//			Conhecimento conhecimentoDesenvolvedor = new Conhecimento();
+//			conhecimentoDesenvolvedor.setNome("MySQL");
+//			conhecimentoDesenvolvedor.setDescricao("Banco de dados relacional gratis de otima qualidade");
+//			ArrayList<Conhecimento> listaConhecimentosDesenvolvedor = new ArrayList<Conhecimento>();
+//			listaConhecimentosDesenvolvedor.add(conhecimentoDesenvolvedor);
+//			
+//			listaConhecimentos.add(conhecimentoAtividade1);
+//			listaConhecimentos.add(conhecimentoAtividade2);
+//			listaConhecimentos.add(conhecimentoAtividade3);
+//			listaConhecimentos.add(conhecimentoAtividade4);
+//			listaConhecimentos.add(conhecimentoAtividade5);
+//			listaConhecimentos.add(conhecimentoDesenvolvedor);
+//			
+//			Desenvolvedor desenvolvedor = new Desenvolvedor();
+//			desenvolvedor.setNome("FULANO");
+//			desenvolvedor.setEmail("a@a.a");
+//			desenvolvedor.setLocalidade("Rua Projetada");
+//			desenvolvedor.setSenha("123456");
+//			
+//			//desenvolvedor.setListaConhecimento(listaConhecimentosDesenvolvedor);
+//			Desenvolvedor supervisor = new Desenvolvedor();
+//			supervisor.setNome("SICRANO");
+//			supervisor.setEmail("sicrano1@algumDominio.com.br");
+//			supervisor.setLocalidade("Rua Projetada");
+//			//supervisor.setListaConhecimento(listaConhecimentosDesenvolvedor);
+//			ArrayList<Desenvolvedor> listaDesenvolvedores = new ArrayList<Desenvolvedor>();
+//			listaDesenvolvedores.add(desenvolvedor);
+//			listaDesenvolvedores.add(supervisor);
+//			this.listaDesenvolvedores=listaDesenvolvedores;
+//			
+//			TipoAtividade atividade = new TipoAtividade("Implementar Presley",desenvolvedor,supervisor,0,new Date(System.currentTimeMillis()),
+//					new Date(System.currentTimeMillis()),false,listaConhecimentosAtividade);
+//			
+//			Tree tree = new Tree("CONHECIMENTO");
+//			
+//			tree.adicionaFilho("Banco de Dados");
+//			
+//			tree.getFilho("Banco de Dados").adicionaFilho("Banco de Dados Relacional");
+//			tree.getFilho("Banco de Dados").getFilho("Banco de Dados Relacional").adicionaFilho("MySQL");
+//			
+//			tree.adicionaFilho("LP");
+//			tree.getFilho("LP").adicionaFilho("JAVA");
+//			tree.getFilho("LP").adicionaFilho("C++");
+//			
+//			ontologia = tree;
+//			
+//			//this.adicionaAtividade(atividade);
+//			this.adicionaDesenvolvedor(desenvolvedor);
+//			//System.out.println("Adicionando atividade no banco");
+//			//this.adicionaAtividade(atividade);
+//			//System.out.println("Passou da adicao");
+//			//this.adicionaDesenvolvedor(desenvolvedor);
+//
+//		} catch (Exception e) {
+//			// TODO: handle exception
+//			System.out.println("ERRO ERRO ViewComunication: "+e.getMessage());
+//			e.printStackTrace();
+//		}
+//	}
 	
 	/**
 	 * Metodo responsavel por enviar uma requisicao/pacote ao servidor 
@@ -606,10 +606,20 @@ public class ViewComunication implements CorePresleyOperations{
 		return false;
 	}
 
-	public ArrayList<Conhecimento> getListaConhecimentosEnvolvidos(
-			TipoAtividade atividade) {
-		// TODO Auto-generated method stub
+	public ArrayList<Conhecimento> getListaConhecimentosEnvolvidos(TipoAtividade atividade) {
+		PacketStruct respostaPacket = sendPack(atividade, CorePresleyOperations.BUSCA_CONHECIMENTOS_RELACIONADOS);
+		if(respostaPacket.getData() != null){
+			return (ArrayList<Conhecimento>) respostaPacket.getData();
+		}
 		return null;
+	}
+
+	public boolean removerConhecimento(Conhecimento conhecimento) {
+		PacketStruct respostaPacket = sendPack(conhecimento, CorePresleyOperations.REMOVER_CONHECIMENTO);
+		if(respostaPacket.getData() != null){
+			return true;
+		}
+		return false;
 	}
 }
 
