@@ -264,7 +264,7 @@ public class ServerBridgeImp implements ServerBridge {
 			pktRetorno = new PacketStruct(retorno, typeRetorno);
 			break;
 
-			// Packet tipo 16: GET_LISTA_DESENVOLVEDORES
+			// Packet tipo 16: GET_LISTA_CONHECIMENTO
 		case CorePresleyOperations.GET_LISTA_CONHECIMENTO:
 			System.out.println("GET_LISTA_CONHECIMENTOS");
 			retorno = executeClientQuery.getListaConhecimentos();
@@ -272,6 +272,7 @@ public class ServerBridgeImp implements ServerBridge {
 
 			pktRetorno = new PacketStruct(retorno, typeRetorno);
 			break;
+			
 			// Packet tipo 17: GET_ONTOLOGIA
 		case CorePresleyOperations.GET_ONTOLOGIA:
 			System.out.println("GET_ONTOLOGIA");
