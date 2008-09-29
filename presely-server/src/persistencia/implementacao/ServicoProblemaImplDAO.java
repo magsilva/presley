@@ -35,7 +35,6 @@ public class ServicoProblemaImplDAO implements ServicoProblema{
 				SQL = " UPDATE problema SET resolvido = 0"+
 				" WHERE id = "+id+";";
 			}
-			System.out.println(SQL);
 			stm.execute(SQL);
 
 		} catch (SQLException e) {
@@ -60,6 +59,10 @@ public class ServicoProblemaImplDAO implements ServicoProblema{
 
 		//Connection conn = MySQLConnectionFactory.getConnection();
 		Connection conn = MySQLConnectionFactory.open();
+		
+		for(Conhecimento c  : conhecimentosAssociados)
+			System.out.println("chamada3 >>>>>>>>>>>>>>>>>>>>>> " + c.getNome());
+
 
 		Statement stm = null;
 
@@ -73,8 +76,10 @@ public class ServicoProblemaImplDAO implements ServicoProblema{
 			stm.execute(SQL);
 
 			for(Conhecimento conhecimento: conhecimentosAssociados) {
-				SQL = "INSERT INTO problema_has_conhecimento(atividade_id,descricao,conhecimento) " + 
+				SQL = "INSERT INTO problema_has_conhecimento(atividade_id,conhecimento_nome,problema_nome) " + 
 				"VALUES ( " + idAtividade+",'"+descricao+"','"+ conhecimento.getNome() + "');" ;
+				System.out.println(SQL);
+				stm.execute(SQL);
 			}	
 
 		} catch (SQLException e) {
@@ -112,7 +117,6 @@ public class ServicoProblemaImplDAO implements ServicoProblema{
 			" atividade_id = "+idAtividade+" ORDER BY atividade_id;";
 
 
-			System.out.println(SQL);
 			ResultSet rs = stm.executeQuery(SQL);
 
 			while (rs.next()){
@@ -160,7 +164,6 @@ public class ServicoProblemaImplDAO implements ServicoProblema{
 				String SQL = " DELETE FROM problema WHERE " +
 				" id = "+id+";";
 
-				System.out.println(SQL);
 				stm.execute(SQL);
 				return true;
 
@@ -197,7 +200,6 @@ public class ServicoProblemaImplDAO implements ServicoProblema{
 			" id = "+id+" ORDER BY id;";
 
 
-			System.out.println(SQL);
 			ResultSet rs = stm.executeQuery(SQL);
 
 			if (rs.next()){
@@ -237,7 +239,6 @@ public class ServicoProblemaImplDAO implements ServicoProblema{
 			" id = "+id+";";
 
 
-			System.out.println(SQL);
 			ResultSet rs = stm.executeQuery(SQL);
 
 			if (rs.next()){
@@ -286,7 +287,6 @@ public class ServicoProblemaImplDAO implements ServicoProblema{
 			String SQL = " SELECT * FROM problema";
 
 
-			System.out.println(SQL);
 			ResultSet rs = stm.executeQuery(SQL);
 
 			while (rs.next()){

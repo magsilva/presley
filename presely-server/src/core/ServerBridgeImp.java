@@ -41,7 +41,6 @@ public class ServerBridgeImp implements ServerBridge {
 	 * @return Packet O pacote resposta para o cliente
 	 */
 	public PacketStruct sendToServer(PacketStruct packet) {
-		System.out.println("AHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH" +packet.getId());
 		PacketStruct pktRetorno = null;
 		Object retorno = null;
 		ExecuteClientQuery executeClientQuery = new ExecuteClientQuery(); 
@@ -174,6 +173,8 @@ public class ServerBridgeImp implements ServerBridge {
 
 			// Packet tipo 10: ASSOCAR_PROBLEMA_ATIVIDADE
 		case CorePresleyOperations.ASSOCIAR_PROBLEMA_ATIVIDADE:
+			
+			System.out.println(">>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
 			try {
 				retorno = executeClientQuery.associaProblemaAtividade(packet);
 				typeRetorno = CorePresleyOperations.ASSOCIAR_PROBLEMA_ATIVIDADE;

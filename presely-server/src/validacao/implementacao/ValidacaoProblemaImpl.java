@@ -67,6 +67,10 @@ public class ValidacaoProblemaImpl {
 		if (!servicoAtividade.atividadeExiste(idAtividade)) throw new AtividadeInexistenteException();
 		
 		if (!ValidacaoUtil.validaDescricao(descricao)) throw new DescricaoInvalidaException();
+		
+		for(Conhecimento c  : listaConhecimentos)
+			System.out.println("chamada2 >>>>>>>>>>>>>>>>>>>>>> " + c.getNome());
+
 
 		return servicoProblema.cadastrarProblema(idAtividade, descricao, dataDoRelato, mensagem, listaConhecimentos);
 	}

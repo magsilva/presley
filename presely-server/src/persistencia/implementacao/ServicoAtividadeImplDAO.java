@@ -300,7 +300,6 @@ public class ServicoAtividadeImplDAO implements ServicoAtividade{
 				String SQL = " DELETE FROM atividade WHERE " +
 				" id = "+id+";";
 
-				System.out.println(SQL);
 				stm.execute(SQL);
 				return true;
 
@@ -338,7 +337,6 @@ public class ServicoAtividadeImplDAO implements ServicoAtividade{
 			" id = '"+id+"';";
 
 
-			System.out.println(SQL);
 			ResultSet rs = stm.executeQuery(SQL);
 
 			if (rs.next()){
@@ -409,8 +407,6 @@ public class ServicoAtividadeImplDAO implements ServicoAtividade{
 				" WHERE atividade_id = "+idAtividade+
 				" AND conhecimento_nome = '"+nomeConhecimento+"';";
 
-				System.out.println(SQL);
-				stm.execute(SQL);
 				return true;
 
 			}else{
@@ -448,7 +444,6 @@ public class ServicoAtividadeImplDAO implements ServicoAtividade{
 			" AND conhecimento_nome = '"+nomeConhecimento+"' ORDER BY atividade_id;";
 
 
-			System.out.println(SQL);
 			ResultSet rs = stm.executeQuery(SQL);
 
 			if (rs.next()){
@@ -492,7 +487,6 @@ public class ServicoAtividadeImplDAO implements ServicoAtividade{
 				SQL = " UPDATE atividade SET atividadePai = '"+idAtividadePai+
 				"' WHERE id = '"+idSubAtividade+"';";
 
-				System.out.println(SQL);
 				stm.execute(SQL);
 				return true;
 
@@ -535,7 +529,6 @@ public class ServicoAtividadeImplDAO implements ServicoAtividade{
 				SQL = " UPDATE atividade SET atividadePai = '0'"+
 				" WHERE id = "+idSubAtividade+";";
 
-				System.out.println(SQL);
 				stm.execute(SQL);
 				return true;
 
@@ -576,7 +569,6 @@ public class ServicoAtividadeImplDAO implements ServicoAtividade{
 			String SQL = " SELECT * FROM atividade";
 
 
-			System.out.println(SQL);
 			ResultSet rs = stm.executeQuery(SQL);
 
 			while (rs.next()){

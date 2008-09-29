@@ -162,6 +162,19 @@ public class ExecuteClientQuery implements CorePresleyOperations{
 		Problema problema = problemaAtividade.getProblema();
 		TipoAtividade atividade =  problemaAtividade.getAtividade();
 		ArrayList<Conhecimento> listaConhecimentos = problemaAtividade.getListaConhecimentos();
+		
+		if (listaConhecimentos == null) {
+			System.out.println("NULL ><<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
+			return false;
+		}
+		
+		if(listaConhecimentos.isEmpty()) {
+			System.out.println("empty>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+			return false;
+		}
+		
+		for(Conhecimento c  : listaConhecimentos)
+		System.out.println("chamada1 >>>>>>>>>>>>>>>>>>>>>> " + c.getNome());
 
 		return associaProblemaAtividade(problema, atividade, listaConhecimentos);
 	}
