@@ -178,25 +178,22 @@ public class ExecuteClientQuery implements CorePresleyOperations{
 	 * @throws DesenvolvedorInexistenteException 
 	 */
 	public ArrayList<Desenvolvedor> buscaDesenvolvedores(PacketStruct packet) throws DesenvolvedorInexistenteException {
-		/*BuscaDesenvolvedores busca = (BuscaDesenvolvedores)packet.getData();
-
-		Problema problema = busca.getProblema();
+		BuscaDesenvolvedores busca = (BuscaDesenvolvedores)packet.getData();
 		ArrayList<String> listaConhecimento = busca.getListaConhecimento();
 		int grauDeConfianca = busca.getGrauDeConfianca();
 
-		return buscaDesenvolvedores(problema, listaConhecimento, grauDeConfianca);*/
-		return new ArrayList<Desenvolvedor>();
+		return buscaDesenvolvedores(listaConhecimento, grauDeConfianca);
 	}	
 
-	public ArrayList<Desenvolvedor> buscaDesenvolvedores(Problema problema,
-			ArrayList<Conhecimento> listaConhecimento, int grauDeConfianca) throws DesenvolvedorInexistenteException {
-		/*
-		ArrayList<Desenvolvedor> listaDesenvolvedores = Inferencia.getDesenvolvedores(listaConhecimento, grauDeConfianca);
+	public ArrayList<Desenvolvedor> buscaDesenvolvedores(ArrayList<String> listaConhecimento, int grauDeConfianca) throws DesenvolvedorInexistenteException {
+		
+		String[] conhecimentos = new String[listaConhecimento.size()];
+		for(int i = 0; i < listaConhecimento.size(); i++)
+			conhecimentos[i] = listaConhecimento.get(i);
+		
+		ArrayList<Desenvolvedor> listaDesenvolvedores = Inferencia.getDesenvolvedores(conhecimentos, grauDeConfianca);
 
 		return listaDesenvolvedores;
-		 */
-		return new ArrayList<Desenvolvedor>();
-
 	}
 
 
