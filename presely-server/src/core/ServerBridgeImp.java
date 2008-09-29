@@ -308,7 +308,6 @@ public class ServerBridgeImp implements ServerBridge {
 				retorno = "ERRO: Desenvolvedor inexistente.";
 				e.printStackTrace();
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 
@@ -340,6 +339,20 @@ public class ServerBridgeImp implements ServerBridge {
 					e.printStackTrace();
 				}
 				typeRetorno = CorePresleyOperations.BUSCA_CONHECIMENTOS_RELACIONADOS;
+
+
+			pktRetorno = new PacketStruct(retorno, typeRetorno);
+			break;
+		case CorePresleyOperations.REMOVER_CONHECIMENTO:
+			System.out.println("REMOVER_CONHECIMENTO");
+
+				try {
+					retorno = executeClientQuery.removerConhecimento(packet);
+				} catch (ConhecimentoInexistenteException e) {
+					retorno = "ERRO: Conhecimento inexistente.";
+					e.printStackTrace();
+				}
+				typeRetorno = CorePresleyOperations.REMOVER_CONHECIMENTO;
 
 
 			pktRetorno = new PacketStruct(retorno, typeRetorno);

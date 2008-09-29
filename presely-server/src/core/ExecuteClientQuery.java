@@ -55,7 +55,6 @@ public class ExecuteClientQuery implements CorePresleyOperations{
 	ValidacaoProblemaImpl 	   validacaoProblema; 
 	ValidacaoDesenvolvedorImpl validacaoDesenvolvedor; 
 	ValidacaoMensagemImpl 	   validacaoMensagem;
-	ValidacaoConhecimentoImpl  valConhecimento; 
 
 	public ExecuteClientQuery() {
 		validacaoConhecimento  = new ValidacaoConhecimentoImpl();
@@ -63,7 +62,6 @@ public class ExecuteClientQuery implements CorePresleyOperations{
 		validacaoProblema 	   = new ValidacaoProblemaImpl();
 		validacaoDesenvolvedor = new ValidacaoDesenvolvedorImpl();
 		validacaoMensagem 	   = new ValidacaoMensagemImpl();
-		valConhecimento 	   = new ValidacaoConhecimentoImpl();
 	}
 
 	/**
@@ -136,7 +134,7 @@ public class ExecuteClientQuery implements CorePresleyOperations{
 								ConhecimentoInexistenteException, 
 								Exception {
 		
-		ConhecimentoAtividade conhecimentoAtividade = (ConhecimentoAtividade) packet.getData();
+		ConhecimentoAtividade conhecimentoAtividade = (ConhecimentoAtividade)packet.getData();
 		ArrayList<Conhecimento> listaConhecimento = conhecimentoAtividade.getConhecimentos();
 		TipoAtividade atividade = conhecimentoAtividade.getAtividade();
 
@@ -363,12 +361,19 @@ public class ExecuteClientQuery implements CorePresleyOperations{
 		ArrayList<Conhecimento> listaConhecimento = new ArrayList<Conhecimento>();
 		try {
 			listaConhecimento = validacaoAtividade.getConhecimentosEnvolvidosNaAtividade(atividade.getId());
-
 		} catch (AtividadeInexistenteException e) {
-			// TODO: handle exception
 			e.printStackTrace();
 		}
 		return listaConhecimento;
 	}
+
+	public Object removerConhecimento(PacketStruct packet) throws ConhecimentoInexistenteException {
+		Conhecimento conhecimento = (Conhecimento) packet.getData();
+		return removerConhecimento(conhecimento);
+	}
+	public boolean removerConhecimento(Conhecimento conhecimento) throws ConhecimentoInexistenteException {
+		return validacaoConhecimento.removerConhecimento(conhecimento.getNome());
+	}
+
 
 }
