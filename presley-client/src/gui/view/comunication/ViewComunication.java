@@ -10,6 +10,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.actions.RetargetAction;
 
 
+import beans.BuscaDesenvolvedores;
 import beans.Conhecimento;
 import beans.ConhecimentoAtividade;
 import beans.DadosAutenticacao;
@@ -418,10 +419,21 @@ public class ViewComunication implements CorePresleyOperations{
 		return false;
 	}
 
-	public ArrayList<Desenvolvedor> buscaDesenvolvedores(ArrayList<String> listaConhecimentos, 
-			int grauDeConfianca) {
-		// TODO Auto-generated method stub
-		return null;
+	public ArrayList<Desenvolvedor> buscaDesenvolvedores(ArrayList<String> conhecimentos, int grauDeConfianca) {
+		BuscaDesenvolvedores dadosDaBusca = new BuscaDesenvolvedores();
+		dadosDaBusca.setGrauDeConfianca(grauDeConfianca);
+		dadosDaBusca.setListaConhecimento(conhecimentos);
+		PacketStruct respostaPacket = sendPack(dadosDaBusca, BUSCA_DESENVOLVEDORES);
+		System.out.println("codigo " + BUSCA_DESENVOLVEDORES);
+		if (respostaPacket.getId() == ERRO || respostaPacket == null) {
+			System.out.println("ERRO "+respostaPacket.getData());
+			return null;
+		}
+		else{ 
+				System.out.println("get data " + respostaPacket.getData().toString());
+			ArrayList<Desenvolvedor> desenvolvedores = (ArrayList<Desenvolvedor>)respostaPacket.getData();
+			return desenvolvedores;
+		}
 	}
 
 	public boolean desassociaConhecimentoAtividade(
