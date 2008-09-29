@@ -632,6 +632,16 @@ public class ViewComunication implements CorePresleyOperations{
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	public boolean removerDesenvolvedor(Desenvolvedor desenvolvedor) {
+		PacketStruct respostaPacket = sendPack(desenvolvedor, CorePresleyOperations.REMOVER_DESENVOLVEDOR);
+		boolean retorno = false;
+		if(respostaPacket.getData() != null){
+			retorno = (Boolean)respostaPacket.getData();
+		}		
+		return retorno;
+
+	}
 }
 
 
