@@ -55,12 +55,20 @@ public class LoginWizard extends Wizard implements INewWizard {
 	public boolean performFinish() {
 		// TODO Auto-generated method stub
         //First save all the page data as variables.
+	
     	try{
     		String login = page.getLogin();
     		String senha = page.getSenha();
     		String ip = page.getIP();
     		
-    		this.atividade.getViewComunication().login(login, senha);
+    		Desenvolvedor des = this.atividade.getViewComunication().login(login, senha);
+    		
+    		if (des== null)
+    			return false;
+    		else {
+    			this.atividade.habilitaBotoes();
+    			this.atividade.desabilitaBotaoLogin();
+    		}
 	
     	}catch (Exception e) {
     		MessageDialog.openError(this.getShell(), "Erro", e.getMessage());
@@ -85,6 +93,7 @@ public class LoginWizard extends Wizard implements INewWizard {
 		   return true;
 	}
 
+	
 	public void init(IWorkbench workbench, IStructuredSelection selection) {
 		// TODO Auto-generated method stub
 		this.selection = selection;

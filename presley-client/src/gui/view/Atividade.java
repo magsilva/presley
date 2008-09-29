@@ -8,36 +8,21 @@ import gui.action.RunBuscaDesenvolvedorWizardAction;
 import gui.action.RunRemoveAtividadeWizardAction;
 import gui.view.comunication.CorePresleyOperations;
 import gui.view.comunication.ViewComunication;
-
-import java.lang.reflect.Array;
-import java.sql.Date;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Hashtable;
-import java.util.Set;
-
-
-import org.eclipse.jdt.ui.wizards.NewContainerWizardPage;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.DisposeEvent;
-import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
-import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.List;
-import org.eclipse.swt.widgets.Listener;
-import org.eclipse.swt.widgets.Tree;
-import org.eclipse.swt.widgets.TreeItem;
 import org.eclipse.ui.part.ViewPart;
-
-
 import beans.Conhecimento;
-import beans.ConhecimentoAtividade;
 import beans.Desenvolvedor;
 import beans.Problema;
 import beans.ProblemaAtividade;
@@ -52,11 +37,12 @@ public class Atividade extends ViewPart {
 	private ViewComunication viewComunication;
 	private List listaAtividades, listaConhecimentos, listaProblemas, listaDesenvolvedores; 
 	private Label conhecimentoLabel, problemaLabel, contatosLabel;
-	private Composite panelContatos, parentComposite;
-	private Button login,logout, addAtividade, addUser,removeUser, addConhecimento,removeConhecimento, removeAtividade, 
-			buscaAtividade, encerraAtividade, associaConhecimento, desassociaConhecimento,
-			buscaConhecimento, associaProblema, desassociaProblema, buscaProblema,
-			buscaDesenvolvedor, qualificaDesenvolvedor, solicitaMensagens;
+	private Composite parentComposite;
+	private Button login, logout, addAtividade, addUser,removeUser, addConhecimento,removeConhecimento, removeAtividade, 
+			encerraAtividade, associaConhecimento, desassociaConhecimento,
+			associaProblema, desassociaProblema, buscaDesenvolvedor, qualificaDesenvolvedor, solicitaMensagens;
+	
+	
 	private ArrayList<Desenvolvedor> desenvolvedoresHabilitados;
 	
 	private RunAdicionaAtividadeWizardAction runAdicionaAtividade;
@@ -78,8 +64,6 @@ public class Atividade extends ViewPart {
 	private final int posHorBotaoNivel4 = 76;
 	private final int posHorBotaoNivel5 = 100;
 	private final int posHorBotaoNivel6 = 124;
-	private final int posHorBotaoNivel7 = 148;
-	private final int posHorBotaoNivel8 = 172;
 	private final int posVerBotaoNivel1 = 4;
 	private final int posVerBotaoNivel2 = 113;
 	private final int posVerBotaoNivel3 = 233;
@@ -95,7 +79,7 @@ public class Atividade extends ViewPart {
 	private final int larguraJanela = 195;
 	private final int distanciaPanelLabel = 5;
 	private final int posHorPanel = 0;
-	//private String ipServidor = "150.165.130.196";
+	
 	private String ipServidor = "localhost";
 	
 	public Atividade()
@@ -113,100 +97,46 @@ public class Atividade extends ViewPart {
 	public void setFocus() {
 		// TODO Auto-generated method stub
 
-	}	
-	
-	private void setListener(final Button button)
-	{
-		button.addMouseListener(new MouseListener(){
-			
-			public void mouseDoubleClick(MouseEvent e) {
-								
-			}
-
-			public void mouseDown(MouseEvent e) {	
-				try{
-					Set<String> keys = conhecimentosList.keySet();
-					
-					for(String key : keys)
-					{
-						conhecimentosList.get(key).setVisible(false);
-						conhecimentosList.get(key).setEnabled(false);
-						
-						problemasList.get(key).setVisible(false);
-						problemasList.get(key).setEnabled(false);
-					}
-					
-					problemaLabel.setVisible(true);
-					conhecimentoLabel.setVisible(true);
-					
-					conhecimentosList.get( button.getText()).setVisible(true);
-					conhecimentosList.get( button.getText()).setEnabled(true);
-					
-					problemasList.get( button.getText()).setVisible(true);
-					problemasList.get( button.getText()).setEnabled(true);
-					
-					habilitaBotoesConhecimento();
-					habilitaBotoesProblema();
-				
-					button.getParent().redraw();
-					button.getParent().update();
-					
-				}catch(Exception e1){
-					System.out.println("ERRO ERRO Evento Mouse:   "+e1.getMessage());
-					e1.printStackTrace();
-				}
-			}
-			
-			public void mouseUp(MouseEvent e) {
-				// TODO Auto-generated method stub
-				
-			}				
-		});
 	}
 	
-	private void atualizaPosicaoComponentes()
-	{
-
-				for(int i=0; i < this.buttons.size(); i++)
-				{
-					buttons.get(i).setLocation(0, i*25);
-					buttons.get(i).setSize(200, 25);
-					this.buttons.get(i).getParent().redraw();
-				}		
-	}
-	
-	private void desabilitaBotoesConhecimento(){
-		associaConhecimento.setEnabled(false);
-	    desassociaConhecimento.setEnabled(false);
-	    buscaConhecimento.setEnabled(false);
-	}
-	
-	private void habilitaBotoesConhecimento(){
+	public void habilitaBotoes() {
+		addAtividade.setEnabled(true);
+		removeAtividade.setEnabled(true);
+		encerraAtividade.setEnabled(true);
 		associaConhecimento.setEnabled(true);
-	    desassociaConhecimento.setEnabled(true);
-	    buscaConhecimento.setEnabled(true);		
-	}
-	
-	private void desabilitaBotoesProblema(){
-		associaProblema.setEnabled(false);
-		desassociaProblema.setEnabled(false);
-		buscaProblema.setEnabled(false);
-	}
-	
-	private void habilitaBotoesProblema(){
+		desassociaConhecimento.setEnabled(true);
 		associaProblema.setEnabled(true);
 		desassociaProblema.setEnabled(true);
-		buscaProblema.setEnabled(true);
-	}
-	
-	private void desabilitaBotoesContato(){
-		buscaDesenvolvedor.setEnabled(false);
-		qualificaDesenvolvedor.setEnabled(false);	
-	}
-	
-	private void habilitaBotoesContato(){
 		buscaDesenvolvedor.setEnabled(true);
-		qualificaDesenvolvedor.setEnabled(true);	
+		qualificaDesenvolvedor.setEnabled(true);
+		addConhecimento.setEnabled(true);
+		removeConhecimento.setEnabled(true);
+		removeUser.setEnabled(true);
+		solicitaMensagens.setEnabled(true);
+	}
+
+	public void desabilitaBotoes() {
+		addAtividade.setEnabled(false);
+		removeAtividade.setEnabled(false);
+		encerraAtividade.setEnabled(false);
+		associaConhecimento.setEnabled(false);
+		desassociaConhecimento.setEnabled(false);
+		associaProblema.setEnabled(false);
+		desassociaProblema.setEnabled(false);
+		buscaDesenvolvedor.setEnabled(false);
+		qualificaDesenvolvedor.setEnabled(false);
+		addConhecimento.setEnabled(false);
+		removeConhecimento.setEnabled(false);
+		removeUser.setEnabled(false);
+		solicitaMensagens.setEnabled(false);
+	}
+
+	
+	public void desabilitaBotaoLogin() {
+		login.setEnabled(false);
+		login.setVisible(false);
+		logout.setEnabled(true);
+		logout.setVisible(true);
 	}
 		
 	private void initComponents(Composite parent)
@@ -216,6 +146,41 @@ public class Atividade extends ViewPart {
 		buttons = new ArrayList<Button>();
 		
 		
+		logout = new Button(parentComposite, SWT.NONE);
+		Image logoff = new Image(logout.getDisplay(),this.getClass().getResourceAsStream("/icons/logout.gif"));
+		logout.setLocation(posHorBotaoNivel1, posVerBotaoNivel1);
+		logout.setSize(larguraBotao, alturaBotao);
+		logout.setImage(logoff);
+		logout.setToolTipText("Logout");
+		logout.setVisible(false);
+		logout.setEnabled(false);
+		logout.addMouseListener(new MouseListener() {
+
+			public void mouseDoubleClick(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			public void mouseDown(MouseEvent e) {
+				boolean answer  = MessageDialog.openQuestion( removeAtividade.getShell(),
+			            "Confirmacao",
+			            "Tem certeza que deseja sair?");
+				if(answer) {
+					desabilitaBotoes();
+					logout.setEnabled(false);
+					logout.setVisible(false);
+					login.setEnabled(true);
+					login.setVisible(true);
+				}
+			}
+
+			public void mouseUp(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+		});
+		
 		login = new Button(parentComposite, SWT.NONE);
 		Image log = new Image(login.getDisplay(),this.getClass().getResourceAsStream("/icons/users.gif"));
 		login.setLocation(posHorBotaoNivel1, posVerBotaoNivel1);
@@ -223,47 +188,6 @@ public class Atividade extends ViewPart {
 		login.setImage(log);
 		login.setToolTipText("Login");
 		login.setEnabled(true);
-		login.addDisposeListener(new DisposeListener(){
-
-			public void widgetDisposed(DisposeEvent e) {
-				//Habilita o botao de logout
-				logout = new Button(parentComposite, SWT.NONE);
-				Image logoff = new Image(logout.getDisplay(),this.getClass().getResourceAsStream("/icons/logout.gif"));
-				logout.setLocation(posHorBotaoNivel1, posVerBotaoNivel1);
-				logout.setSize(larguraBotao, alturaBotao);
-				logout.setImage(logoff);
-				logout.setToolTipText("Logout");
-				logout.setEnabled(true);
-				
-				System.out.println("Habilitando botoes");
-				//Habilita os outros botoes
-				addAtividade.setEnabled(true);
-				removeAtividade.setEnabled(true);
-				System.out.println("Continuando");
-				try {
-					encerraAtividade.setEnabled(true);
-					associaConhecimento.setEnabled(true);
-					desassociaConhecimento.setEnabled(true);
-					buscaConhecimento.setEnabled(true);
-					associaProblema.setEnabled(true);
-					desassociaProblema.setEnabled(true);
-					buscaProblema.setEnabled(true);
-					buscaDesenvolvedor.setEnabled(true);
-					qualificaDesenvolvedor.setEnabled(true);
-					addConhecimento.setEnabled(true);
-					removeConhecimento.setEnabled(true);
-					addUser.setEnabled(true);
-					removeUser.setEnabled(true);
-					solicitaMensagens.setEnabled(true);
-
-				System.out.println("Fim da habilitacao");
-				}
-				catch (Exception exceo) {
-					exceo.printStackTrace();
-				}
-			}
-			
-		});
 		login.addMouseListener(new MouseListener() {			
 			public void mouseDoubleClick(MouseEvent e) {
 				// TODO Auto-generated method stub
@@ -275,7 +199,7 @@ public class Atividade extends ViewPart {
 				RunLoginWizardAction();
 				
 				//Desabilita o botao de login
-				login.dispose();
+				//login.dispose();
 				
 			}
 
@@ -339,9 +263,7 @@ public class Atividade extends ViewPart {
 				
 					//cria estruturas para armazenar os conhecimentos e problemas
 					ArrayList<String> conh = new ArrayList<String>();
-					ArrayList<String> prob = new ArrayList<String>();
 			
-				
 					//Preenche a lista de conhecimentos
 					if(conhecimentos != null)
 						for(Conhecimento c : conhecimentos)
@@ -437,47 +359,51 @@ public class Atividade extends ViewPart {
 			}
 		
 			public void mouseDown(MouseEvent arg0) {
-				
-				//captura o id da atividade selecionada
-				int idAtividade = listaAtividades.getSelectionIndex();
-				String nomeAtividade = listaAtividades.getItem(idAtividade);
-				TipoAtividade atividadeLocalizada = null;
-				
-				ArrayList<TipoAtividade> atividades = viewComunication.buscaAtividades();
-				if (atividades!=null) {
-					for (TipoAtividade tipoAtividade : atividades) {
-						if (tipoAtividade.getDescricao().equals(nomeAtividade)) {
-							atividadeLocalizada = tipoAtividade;
+		
+				boolean answer  = MessageDialog.openQuestion( removeAtividade.getShell(),
+			            "Confirmacao",
+			            "Tem certeza que deseja excluir a atividade selecionada?");
+				if(answer) {
+					//captura o id da atividade selecionada
+					int idAtividade = listaAtividades.getSelectionIndex();
+					String nomeAtividade = listaAtividades.getItem(idAtividade);
+					TipoAtividade atividadeLocalizada = null;
+
+					ArrayList<TipoAtividade> atividades = viewComunication.buscaAtividades();
+					if (atividades!=null) {
+						for (TipoAtividade tipoAtividade : atividades) {
+							if (tipoAtividade.getDescricao().equals(nomeAtividade)) {
+								atividadeLocalizada = tipoAtividade;
+							}
 						}
 					}
-				}
-				else {
-					System.out.println("Nao achou a lista de atividade");
-				}
-				
-				System.out.println("Dados da atividade a ser removida: ");
-				System.out.println(atividadeLocalizada.getDescricao());
-				System.out.println(atividadeLocalizada.getId());
-				
-				//realiza a remocao da atividade no servidor
-				viewComunication.removerAtividade(atividadeLocalizada);
-				
-				//realiza a remocao da atividade na lista grafica
-				listaAtividades.remove(idAtividade);
-				
-				
-				//limpa as listas de problemas e conhecimentos
-				listaConhecimentos.removeAll();
-				listaProblemas.removeAll();
-				
-				//atualiza as listas
-				listaAtividades.getParent().redraw();
-				listaAtividades.getParent().update();
-				listaConhecimentos.getParent().redraw();
-				listaConhecimentos.getParent().update();
-				listaProblemas.getParent().redraw();
-				listaProblemas.getParent().update();
+					else {
+						System.out.println("Nao achou a lista de atividade");
+					}
 
+					System.out.println("Dados da atividade a ser removida: ");
+					System.out.println(atividadeLocalizada.getDescricao());
+					System.out.println(atividadeLocalizada.getId());
+
+					//realiza a remocao da atividade no servidor
+					viewComunication.removerAtividade(atividadeLocalizada);
+
+					//realiza a remocao da atividade na lista grafica
+					listaAtividades.remove(idAtividade);
+
+
+					//limpa as listas de problemas e conhecimentos
+					listaConhecimentos.removeAll();
+					listaProblemas.removeAll();
+
+					//atualiza as listas
+					listaAtividades.getParent().redraw();
+					listaAtividades.getParent().update();
+					listaConhecimentos.getParent().redraw();
+					listaConhecimentos.getParent().update();
+					listaProblemas.getParent().redraw();
+					listaProblemas.getParent().update();
+				}
 			}
 		
 			public void mouseDoubleClick(MouseEvent arg0) {
@@ -496,6 +422,29 @@ public class Atividade extends ViewPart {
 		encerraAtividade.setImage(encerra);
 		encerraAtividade.setToolTipText("Encerra atividade selecionada");
 		encerraAtividade.setEnabled(false);
+		encerraAtividade.addMouseListener(new MouseListener() {
+
+			public void mouseDoubleClick(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			public void mouseDown(MouseEvent e) {
+				boolean answer  = MessageDialog.openQuestion( removeAtividade.getShell(),
+			            "Confirmacao",
+			            "Tem certeza que deseja encerrar a atividade selecionada?");
+				if(answer) {
+					//TODO implementar o encerramento
+				}
+				
+			}
+
+			public void mouseUp(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+		});
 			
 		listaAtividades = new List(parentComposite, SWT.SINGLE | SWT.BORDER);
 		listaAtividades.setLocation(posHorPanel, posVerPainelAtividade);
@@ -581,10 +530,7 @@ public class Atividade extends ViewPart {
 		listaDesenvolvedores.setLocation(posHorPanel, posVerPainelContatos);
 		listaDesenvolvedores.setSize(larguraJanela, alturaPainelContatos);
 		listaDesenvolvedores.setVisible(true);
-		
-		
-		
-			listaDesenvolvedores.addMouseListener(new MouseListener() {
+		listaDesenvolvedores.addMouseListener(new MouseListener() {
 
 				public void mouseDoubleClick(MouseEvent arg0) {
 					// TODO Auto-generated method stub
@@ -621,7 +567,7 @@ public class Atividade extends ViewPart {
 		conhecimentosList = new HashMap<String, List>();
 		
 		addConhecimento = new Button(parentComposite, SWT.NONE);
-		addConhecimento.setLocation(posHorBotaoNivel4, posVerBotaoNivel2);
+		addConhecimento.setLocation(posHorBotaoNivel3, posVerBotaoNivel2);
 		addConhecimento.setSize(larguraBotao, alturaBotao);
 		addConhecimento.setImage(add);
 		addConhecimento.setToolTipText("Cadastra um novo conhecimento");
@@ -661,7 +607,7 @@ public class Atividade extends ViewPart {
 		});
 		
 		removeConhecimento = new Button(parentComposite, SWT.NONE);
-		removeConhecimento.setLocation(posHorBotaoNivel5, posVerBotaoNivel2);
+		removeConhecimento.setLocation(posHorBotaoNivel4, posVerBotaoNivel2);
 		removeConhecimento.setSize(larguraBotao, alturaBotao);
 		removeConhecimento.setImage(remove);
 		removeConhecimento.setToolTipText("Remove o conhecimento selecionado");
@@ -674,52 +620,56 @@ public class Atividade extends ViewPart {
 
 			public void mouseDown(MouseEvent arg0) {
 				
-				//captura o id do conhecimento selecionado
-				int idConh = listaConhecimentos.getSelectionIndex();
+				boolean answer  = MessageDialog.openQuestion( removeAtividade.getShell(),
+			            "Confirmacao",
+			            "Tem certeza que deseja excluir o conhecimento selecionado?");
 				
-				//captura o nome do conhecimento
-				String nomeConh = listaConhecimentos.getItem(idConh);
-				Conhecimento conhLocalizado = null;
+				if(answer) {
 				
-				/*Encontra o conhecimento selecionado no banco*/
-				ArrayList<Conhecimento> conhecimentos = viewComunication.getListaConhecimentos();
-				System.out.println("Lista de Conhecimentos!!! : " + conhecimentos.get(0).getNome());
-				System.out.println(conhecimentos.get(1).getNome());
-				
-				if (conhecimentos!=null) {
-					for (Conhecimento conhecimento : conhecimentos) {
-						if (conhecimento.getNome().equals(nomeConh)) {
-							conhLocalizado = conhecimento;
+					//captura o id do conhecimento selecionado
+					int idConh = listaConhecimentos.getSelectionIndex();
+
+					//captura o nome do conhecimento
+					String nomeConh = listaConhecimentos.getItem(idConh);
+					Conhecimento conhLocalizado = null;
+
+					/*Encontra o conhecimento selecionado no banco*/
+					ArrayList<Conhecimento> conhecimentos = viewComunication.getListaConhecimentos();
+					System.out.println("Lista de Conhecimentos!!! : " + conhecimentos.get(0).getNome());
+					System.out.println(conhecimentos.get(1).getNome());
+
+					if (conhecimentos!=null) {
+						for (Conhecimento conhecimento : conhecimentos) {
+							if (conhecimento.getNome().equals(nomeConh)) {
+								conhLocalizado = conhecimento;
+							}
 						}
 					}
-				}
-				else {
-					System.out.println("Nao achou a lista de atividade");
-				}
-				
-				
-				System.out.println("Dados do conhecimento a ser removido: ");
-				System.out.println(conhLocalizado.getDescricao());
-				
-				/*Testar se o conhecimento é pai de alguem*/
-				try {
-					if (viewComunication.possuiFilhos(conhLocalizado)) {
-						System.out.println("Soh eh possivel excluir conhecimentos folhas!");
-					}
 					else {
-						//realiza a remocao da atividade no servidor
-						viewComunication.removerConhecimento(conhLocalizado);
-
-						//realiza a remocao da atividade na lista grafica
-						listaConhecimentos.remove(idConh);
+						System.out.println("Nao achou a lista de atividade");
 					}
-				} catch (ConhecimentoInexistenteException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+
+
+					System.out.println("Dados do conhecimento a ser removido: ");
+					System.out.println(conhLocalizado.getDescricao());
+
+					/*Testar se o conhecimento é pai de alguem*/
+					try {
+						if (viewComunication.possuiFilhos(conhLocalizado)) {
+							System.out.println("Soh eh possivel excluir conhecimentos folhas!");
+						}
+						else {
+							//realiza a remocao da atividade no servidor
+							viewComunication.removerConhecimento(conhLocalizado);
+
+							//realiza a remocao da atividade na lista grafica
+							listaConhecimentos.remove(idConh);
+						}
+					} catch (ConhecimentoInexistenteException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 				}
-				// exibe o wizard para remoção de novo conhecimento
-				//RunRemoveConhecimentoWizardAction();
-				
 			}
 			
 			public void mouseUp(MouseEvent arg0) {
@@ -796,39 +746,40 @@ public class Atividade extends ViewPart {
 				String nomeConhecimento = listaConhecimentos.getItem(idConhecimento);
 				Conhecimento conhecimentoDesassociado = null;
 				TipoAtividade atividadeDesassociada = null;
-				
 				ArrayList<TipoAtividade> atividade = null;
-				atividade = viewComunication.buscaAtividades();
 				
-				for (TipoAtividade a : atividade) {
-					if (a.getDescricao().equals(atividadeSelecionada))
-						atividadeDesassociada = a;			
-					
-				}
+				boolean answer  = MessageDialog.openQuestion( removeAtividade.getShell(),
+			            "Confirmacao",
+			            "Tem certeza que desassociar o conhecimento " + nomeConhecimento +  " da atividade selecionada?");
 				
-				
-				//recupera todos os cohecimentos envolvidos na ativadade 
-				ArrayList<Conhecimento> conhecimentosPosteriores = 
-					viewComunication.getConhecimentosEnvolvidos(atividadeDesassociada.getDescricao());
-				
-				
-				for (Conhecimento c : conhecimentosPosteriores) {
-					if (c.getNome().equals(nomeConhecimento))
-						 conhecimentoDesassociado = c;
-				}
-				ArrayList<Conhecimento> desassociaConhecimento =  new ArrayList<Conhecimento>();
-							
-				desassociaConhecimento.add(conhecimentoDesassociado);
-					
-				try {
-					viewComunication.desassociaConhecimentoAtividade(desassociaConhecimento, atividadeDesassociada);	
-				} catch (Exception e) {
-					// TODO: handle exception
-					e.printStackTrace();
-				}
+				if(answer) {
+					atividade = viewComunication.buscaAtividades();
 
-				listaConhecimentos.remove(idConhecimento);
+					for (TipoAtividade a : atividade) {
+						if (a.getDescricao().equals(atividadeSelecionada))
+							atividadeDesassociada = a;			
+					}
+					//recupera todos os cohecimentos envolvidos na ativadade 
+					ArrayList<Conhecimento> conhecimentosPosteriores = 
+						viewComunication.getConhecimentosEnvolvidos(atividadeDesassociada.getDescricao());
 
+					for (Conhecimento c : conhecimentosPosteriores) {
+						if (c.getNome().equals(nomeConhecimento))
+							conhecimentoDesassociado = c;
+					}
+					ArrayList<Conhecimento> desassociaConhecimento =  new ArrayList<Conhecimento>();
+
+					desassociaConhecimento.add(conhecimentoDesassociado);
+
+					try {
+						viewComunication.desassociaConhecimentoAtividade(desassociaConhecimento, atividadeDesassociada);	
+					} catch (Exception e) {
+						// TODO: handle exception
+						e.printStackTrace();
+					}
+
+					listaConhecimentos.remove(idConhecimento);
+				}
 			}
 		
 			public void mouseDoubleClick(MouseEvent arg0) {
@@ -837,20 +788,6 @@ public class Atividade extends ViewPart {
 			}
 		
 		});
-		
-		
-		
-		
-		
-		
-		
-		buscaConhecimento = new Button(parentComposite, SWT.NONE);
-		Image buscaConh = new Image(addAtividade.getDisplay(),this.getClass().getResourceAsStream("/icons/buscaConh.gif"));
-		buscaConhecimento.setLocation(posHorBotaoNivel3, posVerBotaoNivel2);
-		buscaConhecimento.setSize(larguraBotao, alturaBotao);
-		buscaConhecimento.setImage(buscaConh);
-		buscaConhecimento.setToolTipText("Busca um conhecimento");
-		buscaConhecimento.setEnabled(false);
 		
 		ArrayList<String> nomesAtividades = viewComunication.getAtividades();
 		if (nomesAtividades!=null) {
@@ -937,57 +874,63 @@ public class Atividade extends ViewPart {
 			}
 
 			public void mouseDown(MouseEvent e) {
-				Problema problemaDesassociado = null;
-				TipoAtividade atividadeDesassociada = null; 
-				ArrayList<Problema> listaProblemasAtividade = null;
-				ProblemaAtividade probAtividade = new ProblemaAtividade();
-				ArrayList<TipoAtividade> allAtividades = null;
+				boolean answer  = MessageDialog.openQuestion( removeAtividade.getShell(),
+			            "Confirmacao",
+			            "Tem certeza que deseja desassociar o problema da atividade selecionada?");
 				
-				/*Captura o id do problema selecionado*/
-				int idProblema = listaProblemas.getSelectionIndex();
-				
-				/*Captura o nome do problema selecionado*/
-				String nomeProblema = listaProblemas.getItem(idProblema);
-				
-				/*Captura o id da atividade selecionada*/
-				int idAtividade = listaAtividades.getSelectionIndex();
-				
-				/*Captura o nome da atividade selecionada*/
-				String nomeAtividade = listaConhecimentos.getItem(idAtividade);
-				
-				/*Captura a lista de problemas associados a atividade*/
-				listaProblemasAtividade = viewComunication.getProblemas(nomeAtividade);
-				
-				/*Captura a lista de atividades*/
-				allAtividades = viewComunication.buscaAtividades();
-				
-				/*Captura a atividade da qual o problema deve ser desassociado*/
-				for (TipoAtividade a : allAtividades) {
-					if (a.getDescricao().equals(nomeAtividade))
-						atividadeDesassociada = a;			
-				}
-				
-				System.out.println("Antes do for");
-				/*Captura o problema a ser desassociado*/
-				for (Problema a : listaProblemasAtividade) {
-					System.out.println(nomeProblema);
-					if (a.getDescricao().equals(nomeProblema)) {
-						System.out.println("cmd");
-						problemaDesassociado = a;			
-						break;
+				if(answer) {
+					Problema problemaDesassociado = null;
+					TipoAtividade atividadeDesassociada = null; 
+					ArrayList<Problema> listaProblemasAtividade = null;
+					ProblemaAtividade probAtividade = new ProblemaAtividade();
+					ArrayList<TipoAtividade> allAtividades = null;
+
+					/*Captura o id do problema selecionado*/
+					int idProblema = listaProblemas.getSelectionIndex();
+
+					/*Captura o nome do problema selecionado*/
+					String nomeProblema = listaProblemas.getItem(idProblema);
+
+					/*Captura o id da atividade selecionada*/
+					int idAtividade = listaAtividades.getSelectionIndex();
+
+					/*Captura o nome da atividade selecionada*/
+					String nomeAtividade = listaConhecimentos.getItem(idAtividade);
+
+					/*Captura a lista de problemas associados a atividade*/
+					listaProblemasAtividade = viewComunication.getProblemas(nomeAtividade);
+
+					/*Captura a lista de atividades*/
+					allAtividades = viewComunication.buscaAtividades();
+
+					/*Captura a atividade da qual o problema deve ser desassociado*/
+					for (TipoAtividade a : allAtividades) {
+						if (a.getDescricao().equals(nomeAtividade))
+							atividadeDesassociada = a;			
 					}
-				}
-				
-				System.out.println("2x0" + problemaDesassociado.getDescricao());
-				/*Exclui do banco*/
-				try {
-					probAtividade.setAtividade(atividadeDesassociada);
-					probAtividade.setProblema(problemaDesassociado);
-					viewComunication.desassociaProblemaAtividade(problemaDesassociado);	
-					listaProblemas.remove(idProblema);
-					System.out.println("Terminou!");
-				} catch (Exception excep) {
-					excep.printStackTrace();
+
+					System.out.println("Antes do for");
+					/*Captura o problema a ser desassociado*/
+					for (Problema a : listaProblemasAtividade) {
+						System.out.println(nomeProblema);
+						if (a.getDescricao().equals(nomeProblema)) {
+							System.out.println("cmd");
+							problemaDesassociado = a;			
+							break;
+						}
+					}
+
+					System.out.println("2x0" + problemaDesassociado.getDescricao());
+					/*Exclui do banco*/
+					try {
+						probAtividade.setAtividade(atividadeDesassociada);
+						probAtividade.setProblema(problemaDesassociado);
+						viewComunication.desassociaProblemaAtividade(problemaDesassociado);	
+						listaProblemas.remove(idProblema);
+						System.out.println("Terminou!");
+					} catch (Exception excep) {
+						excep.printStackTrace();
+					}
 				}
 			}
 
@@ -998,13 +941,6 @@ public class Atividade extends ViewPart {
 			
 		});
 		
-		buscaProblema = new Button(parentComposite, SWT.NONE);
-		//Image ass = new Image(addAtividade.getDisplay(),this.getClass().getResourceAsStream("/icons/associaConh.gif"));
-		buscaProblema.setLocation(posHorBotaoNivel4, posVerBotaoNivel3);
-		buscaProblema.setSize(larguraBotao, alturaBotao);
-		buscaProblema.setImage(buscaConh);
-		buscaProblema.setToolTipText("Busca problemas ja existentes");
-		buscaProblema.setEnabled(false);
 		
 		buscaDesenvolvedor = new Button(parentComposite, SWT.NONE);
 		Image buscaDes = new Image(addAtividade.getDisplay(),this.getClass().getResourceAsStream("/icons/buscaDes.gif"));
