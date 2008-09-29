@@ -154,7 +154,13 @@ public interface CorePresleyOperations {
 	 * @throws DescricaoInvalidaException 
 	 * @throws Exception 
 	 */
-	public boolean associaProblemaAtividade(Problema problema, TipoAtividade atividade) throws DescricaoInvalidaException, AtividadeInexistenteException, Exception;
+	public boolean associaProblemaAtividade(
+				Problema problema, 
+				TipoAtividade atividade,
+				ArrayList<Conhecimento> listaConhecimento) 
+			throws DescricaoInvalidaException, 
+			AtividadeInexistenteException, 
+			Exception;
 
 	/**
 	 * Este método desassocia um problema a uma atividade

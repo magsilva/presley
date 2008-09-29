@@ -391,11 +391,20 @@ public class ViewComunication implements CorePresleyOperations{
 		return true;
 	}
 
-	public boolean associaProblemaAtividade(Problema problema,
-			TipoAtividade atividade) throws Exception{
+	public boolean associaProblemaAtividade(
+			Problema problema,
+			TipoAtividade atividade,
+			ArrayList<Conhecimento> listaConhecimento
+			) throws Exception{
+		
 		ProblemaAtividade problemaAtividade = new ProblemaAtividade();
 		problemaAtividade.setAtividade(atividade);
 		problemaAtividade.setProblema(problema);
+		problemaAtividade.setListaConhecimentos(listaConhecimento);
+		
+		if(problemaAtividade.getListaConhecimentos() == null) System.out.println("NULLLL !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+		else for(Conhecimento c : problemaAtividade.getListaConhecimentos()) System.out.println(c.getNome());
+		
 		
 		PacketStruct respostaPacket = sendPack(problemaAtividade,CorePresleyOperations.ASSOCIAR_PROBLEMA_ATIVIDADE);
     	

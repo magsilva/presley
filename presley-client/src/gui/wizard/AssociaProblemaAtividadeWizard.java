@@ -91,7 +91,8 @@ public class AssociaProblemaAtividadeWizard extends Wizard implements INewWizard
     		atividade.associaConhecimentosProblema(problema, conhecimentos);
     		
     		//Cria a atividade no banco
-    		atividade.getViewComunication().associaProblemaAtividade(problema, atividadeAssociada);
+    		for(Conhecimento c : conhecimentos) System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>" + c.getNome());
+    		atividade.getViewComunication().associaProblemaAtividade(problema, atividadeAssociada, conhecimentos);
  
 	
     	}catch (Exception e) {
@@ -118,7 +119,6 @@ public class AssociaProblemaAtividadeWizard extends Wizard implements INewWizard
 	}
 
 	public void init(IWorkbench workbench, IStructuredSelection selection) {
-		// TODO Auto-generated method stub
 		this.selection = selection;
 	}
 	
