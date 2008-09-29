@@ -383,6 +383,14 @@ public class ExecuteClientQuery implements CorePresleyOperations{
 		return validacaoConhecimento.possuiFilhos(conhecimento);
 	}
 
+	public boolean removerDesenvolvedor(PacketStruct packet) {
+		Desenvolvedor desenvolvedor = (Desenvolvedor)packet.getData();
+		return this.removerDesenvolvedor(desenvolvedor);
+	}
+	public boolean removerDesenvolvedor(Desenvolvedor desenvolvedor) {
+		return validacaoDesenvolvedor.removerDesenvolvedor(desenvolvedor.getEmail());
+	}
+
 	
 
 

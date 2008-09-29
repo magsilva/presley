@@ -46,8 +46,6 @@ public class ServerBridgeImp implements ServerBridge {
 		switch ( packet.getId() ) {
 		// Packet tipo 1: adicionaAtividade(TipoAtividade atividade) - ok
 		case CorePresleyOperations.ADICIONA_ATIVIDADE:
-			System.out.println("ADICIONA_ATIVIDADE");
-
 			try {
 				retorno = executeClientQuery.adicionaAtividade(packet);
 				typeRetorno = CorePresleyOperations.ADICIONA_ATIVIDADE;
@@ -65,8 +63,6 @@ public class ServerBridgeImp implements ServerBridge {
 
 			// Packet tipo 2: removerAtividade(TipoAtividade atividade) -ok
 		case CorePresleyOperations.REMOVE_ATIVIDADE:
-			System.out.println("REMOVE_ATIVIDADE");
-
 			try {
 				retorno = executeClientQuery.removerAtividade(packet);
 				typeRetorno = CorePresleyOperations.REMOVE_ATIVIDADE;
@@ -80,7 +76,6 @@ public class ServerBridgeImp implements ServerBridge {
 
 			// Packet tipo 3: BUSCA_ATIVIDADE()			
 		case CorePresleyOperations.BUSCA_ATIVIDADE:
-			System.out.println("BUSCA_ATIVIDADE");
 			typeRetorno = CorePresleyOperations.BUSCA_ATIVIDADE;
 			retorno = executeClientQuery.buscaAtividades();
 			pktRetorno = new PacketStruct(retorno, typeRetorno);
@@ -88,7 +83,6 @@ public class ServerBridgeImp implements ServerBridge {
 
 			// Packet tipo 4: ADICIONA_CONHECIMENTO
 		case CorePresleyOperations.ADICIONA_CONHECIMENTO:
-			System.out.println("ADICIONA_CONHECIMENTO");
 			try {
 				retorno = executeClientQuery.adicionaConhecimento(packet);
 				typeRetorno = CorePresleyOperations.ADICIONA_CONHECIMENTO;
@@ -104,7 +98,6 @@ public class ServerBridgeImp implements ServerBridge {
 
 			// Packet tipo 5: LOG_IN
 		case CorePresleyOperations.LOG_IN:
-			System.out.println("LOG_IN");
 			System.out.println((DadosAutenticacao)packet.getData());
 			try {
 				retorno = executeClientQuery.login(packet);
@@ -127,7 +120,6 @@ public class ServerBridgeImp implements ServerBridge {
 
 			// Packet tipo 6: LOG_OUT
 		case CorePresleyOperations.LOG_OUT:
-			System.out.println("LOG_OUT");
 			typeRetorno = CorePresleyOperations.LOG_OUT;
 			retorno = executeClientQuery.logout(packet);
 			pktRetorno = new PacketStruct(retorno, typeRetorno);
@@ -135,7 +127,6 @@ public class ServerBridgeImp implements ServerBridge {
 
 			// Packet tipo 7: ENCERRAR_ATIVIDADE
 		case CorePresleyOperations.ENCERRAR_ATIVIDADE:
-			System.out.println("ENCERRAR_ATIVIDADE");
 			typeRetorno = CorePresleyOperations.ENCERRAR_ATIVIDADE;
 			try {
 				retorno = executeClientQuery.encerrarAtividade(packet);
@@ -148,8 +139,6 @@ public class ServerBridgeImp implements ServerBridge {
 
 			// Packet tipo 8: ASSOCIAR_CONHECIMENTO_ATIVIDADE
 		case CorePresleyOperations.ASSOCIAR_CONHECIMENTO_ATIVIDADE:
-			System.out.println("ASSOCIAR_CONHECIMENTO_ATIVIDADE");
-
 			try {
 				retorno = executeClientQuery.associaConhecimentoAtividade(packet);
 				typeRetorno = CorePresleyOperations.ASSOCIAR_CONHECIMENTO_ATIVIDADE;
@@ -166,7 +155,6 @@ public class ServerBridgeImp implements ServerBridge {
 
 			// Packet tipo 9: DESSASOCIAR_CONHECIMENTO_ATIVIDADE
 		case CorePresleyOperations.DESSASOCIAR_CONHECIMENTO_ATIVIDADE:
-			System.out.println("DESSASOCIAR_CONHECIMENTO_ATIVIDADE");
 			try {
 				retorno = executeClientQuery.desassociaConhecimentoAtividade(packet);
 				typeRetorno = CorePresleyOperations.DESSASOCIAR_CONHECIMENTO_ATIVIDADE;
@@ -182,7 +170,6 @@ public class ServerBridgeImp implements ServerBridge {
 
 			// Packet tipo 10: ASSOCAR_PROBLEMA_ATIVIDADE
 		case CorePresleyOperations.ASSOCIAR_PROBLEMA_ATIVIDADE:
-			System.out.println("ASSOCIAR_PROBLEMA_ATIVIDADE");
 			try {
 				retorno = executeClientQuery.associaProblemaAtividade(packet);
 				typeRetorno = CorePresleyOperations.ASSOCIAR_PROBLEMA_ATIVIDADE;
@@ -198,7 +185,6 @@ public class ServerBridgeImp implements ServerBridge {
 
 			// Packet tipo 11: DESSASOCIAR_PROBLEMA_ATIVIDADE
 		case CorePresleyOperations.DESSASOCIAR_PROBLEMA_ATIVIDADE:
-			System.out.println("DESSASOCIAR_PROBLEMA_ATIVIDADE");
 			try {
 				retorno = executeClientQuery.desassociaProblemaAtividade(packet);
 				typeRetorno = CorePresleyOperations.DESSASOCIAR_PROBLEMA_ATIVIDADE;
@@ -211,7 +197,6 @@ public class ServerBridgeImp implements ServerBridge {
 
 			// Packet tipo 12: BUSCA_DESENVOLVEDORES
 		case CorePresleyOperations.BUSCA_DESENVOLVEDORES:
-			System.out.println("BUSCA_DESENVOLVEDORES");
 
 			try {
 				retorno = executeClientQuery.buscaDesenvolvedores(packet);
@@ -226,7 +211,6 @@ public class ServerBridgeImp implements ServerBridge {
 
 			// Packet tipo 13: QUALIFICA_DESENVOLVEDOR
 		case CorePresleyOperations.QUALIFICA_DESENVOLVEDOR:
-			System.out.println("QUALIFICA_DESENVOLVEDOR");
 			try {
 				retorno = executeClientQuery.qualificaDesenvolvedor(packet);
 				typeRetorno = CorePresleyOperations.QUALIFICA_DESENVOLVEDOR;
@@ -243,7 +227,6 @@ public class ServerBridgeImp implements ServerBridge {
 
 			// Packet tipo 14: ENVIAR_MENSAGEM
 		case CorePresleyOperations.ENVIAR_MENSAGEM:
-			System.out.println("ENVIAR_MENSAGEM");
 			try {
 				retorno = executeClientQuery.enviarMensagem(packet);
 				typeRetorno = CorePresleyOperations.ENVIAR_MENSAGEM;
@@ -257,7 +240,6 @@ public class ServerBridgeImp implements ServerBridge {
 
 			// Packet tipo 15: GET_LISTA_DESENVOLVEDORES
 		case CorePresleyOperations.GET_LISTA_DESENVOLVEDORES:
-			System.out.println("GET_LISTA_DESENVOLVEDORES");
 			retorno = executeClientQuery.getListaDesenvolvedores();
 			typeRetorno = CorePresleyOperations.GET_LISTA_DESENVOLVEDORES;
 
@@ -266,16 +248,14 @@ public class ServerBridgeImp implements ServerBridge {
 
 			// Packet tipo 16: GET_LISTA_CONHECIMENTO
 		case CorePresleyOperations.GET_LISTA_CONHECIMENTO:
-			System.out.println("GET_LISTA_CONHECIMENTOS");
 			retorno = executeClientQuery.getListaConhecimentos();
 			typeRetorno = CorePresleyOperations.GET_LISTA_CONHECIMENTO;
 
 			pktRetorno = new PacketStruct(retorno, typeRetorno);
 			break;
-			
+
 			// Packet tipo 17: GET_ONTOLOGIA
 		case CorePresleyOperations.GET_ONTOLOGIA:
-			System.out.println("GET_ONTOLOGIA");
 			try {
 				retorno = executeClientQuery.getOntologia();
 				typeRetorno = CorePresleyOperations.GET_ONTOLOGIA;
@@ -288,7 +268,6 @@ public class ServerBridgeImp implements ServerBridge {
 			break;				
 			// Packet tipo 18: ADICIONA_DESENVOLVEDOR
 		case CorePresleyOperations.ADICIONA_DESENVOLVEDOR:
-			System.out.println("ADICIONA_DESENVOLVEDOR");
 
 			try {
 				retorno = executeClientQuery.adicionaDesenvolvedor(packet);
@@ -317,8 +296,6 @@ public class ServerBridgeImp implements ServerBridge {
 
 			// Packet tipo 19: GET_LISTA_PROBLEMAS
 		case CorePresleyOperations.GET_LISTA_PROBLEMAS:
-			System.out.println("GET_LISTA_PROBLEMAS");
-
 			try {
 				retorno = executeClientQuery.getListaProblemas();
 			} catch (Exception e) {
@@ -326,14 +303,11 @@ public class ServerBridgeImp implements ServerBridge {
 			}
 			typeRetorno = CorePresleyOperations.GET_LISTA_PROBLEMAS;
 
-
 			pktRetorno = new PacketStruct(retorno, typeRetorno);
 			break;
 
 			// Packet tipo 20: BUSCA_CONHECIMENTOS_RELACIONADOS
 		case CorePresleyOperations.BUSCA_CONHECIMENTOS_RELACIONADOS:
-			System.out.println("BUSCA_CONHECIMENTOS_RELACIONADOS");
-
 			try {
 				retorno = executeClientQuery.getListaConhecimentosEnvolvidos(packet);
 			} catch (ConhecimentoInexistenteException e) {
@@ -345,8 +319,6 @@ public class ServerBridgeImp implements ServerBridge {
 			pktRetorno = new PacketStruct(retorno, typeRetorno);
 			break;
 		case CorePresleyOperations.REMOVER_CONHECIMENTO:
-			System.out.println("REMOVER_CONHECIMENTO");
-
 			try {
 				retorno = executeClientQuery.removerConhecimento(packet);
 			} catch (ConhecimentoInexistenteException e) {
@@ -360,8 +332,6 @@ public class ServerBridgeImp implements ServerBridge {
 			break;
 
 		case CorePresleyOperations.CONHECIMENTO_POSSUI_FILHOS:
-			System.out.println("CONHECIMENTO_POSSUI_FILHOS");
-
 			try {
 				retorno = executeClientQuery.possuiFilhos(packet);
 			} catch (ConhecimentoInexistenteException e) {
@@ -369,6 +339,14 @@ public class ServerBridgeImp implements ServerBridge {
 				e.printStackTrace();
 			}
 			typeRetorno = CorePresleyOperations.CONHECIMENTO_POSSUI_FILHOS;
+
+
+			pktRetorno = new PacketStruct(retorno, typeRetorno);
+			break;
+
+		case CorePresleyOperations.REMOVER_DESENVOLVEDOR:
+			retorno = executeClientQuery.removerDesenvolvedor(packet);
+			typeRetorno = CorePresleyOperations.REMOVER_DESENVOLVEDOR;
 
 
 			pktRetorno = new PacketStruct(retorno, typeRetorno);
