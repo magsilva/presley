@@ -80,7 +80,7 @@ public class Atividade extends ViewPart {
 	private final int distanciaPanelLabel = 5;
 	private final int posHorPanel = 0;
 
-	private String ipServidor = "localhost";
+	private String ipServidor = "127.0.0.1";
 
 	public Atividade()
 	{
@@ -958,13 +958,10 @@ public class Atividade extends ViewPart {
 		buscaDesenvolvedor.addMouseListener(new MouseListener() {
 
 			public void mouseUp(MouseEvent arg0) {
-				// TODO Auto-generated method stub
 
 			}
 
 			public void mouseDown(MouseEvent arg0) {
-				// TODO Auto-generated method stub
-
 
 				problemaSelecionado = listaProblemas.getItem(listaProblemas.getSelectionIndex());
 				runBuscaDesenvolvedorWizardAction();
@@ -989,7 +986,7 @@ public class Atividade extends ViewPart {
 			}
 
 			public void mouseDoubleClick(MouseEvent arg0) {
-				// TODO Auto-generated method stub
+				
 
 			}
 
@@ -1017,24 +1014,70 @@ public class Atividade extends ViewPart {
 		solicitaMensagens.setImage(solicitaMens);
 		solicitaMensagens.setToolTipText("Envia mensagem para usuario selecionado");
 		solicitaMensagens.setEnabled(false);
+		solicitaMensagens.addMouseListener(new MouseListener() {
+
+			public void mouseDoubleClick(MouseEvent e) {
+				
+			}
+
+			public void mouseDown(MouseEvent e) {
+				System.out.println("AQUIIIIIIIIIIIIII");
+				
+				Problema problemaAssociado = null;
+				ArrayList<Desenvolvedor> desenvolvedorDestino = new ArrayList<Desenvolvedor>();
+				
+				/*Captura o id do desenvolvedor que devera receber a mensagem*/
+				int idDesenvolvedor = listaDesenvolvedores.getSelectionIndex();
+
+				/*Captura o nome do desenvolvedor que devera receber a mensagem*/
+				String emailDesenvolvedorDestino = listaDesenvolvedores.getItem(idDesenvolvedor);
+
+				/*Captura o id do problema ao qual sera associado a mensagem*/
+				int idProblema = listaProblemas.getSelectionIndex();
+
+				/*Captura a lista de Desenvolvedores*/
+				ArrayList<Desenvolvedor> allDesenvolvedores = viewComunication.getListaDesenvolvedores();
+
+				/*Captura a atividade da qual o problema deve ser desassociado*/
+				for (Desenvolvedor a : allDesenvolvedores) {
+					if (a.getEmail().equals(emailDesenvolvedorDestino))
+						desenvolvedorDestino.add(a);			
+				}
+				
+				/*Captura o nome do problema ao qual sera associado a mensagem*/
+				String nomeProblema = listaProblemas.getItem(idProblema);
+				
+				/*Captura a lista de problemas*/
+				ArrayList<Problema> allProblemas = viewComunication.getListaProblemas();
+
+				/*Captura a atividade da qual o problema deve ser desassociado*/
+				for (Problema a : allProblemas) {
+					if (a.getDescricao().equals(nomeProblema))
+						problemaAssociado = a;			
+				}
+				
+				/*Captura a mensagem a ser enviada*/
+				String mensagem = problemaAssociado.getMensagem();
+				
+				ArrayList<Desenvolvedor> desenvolvedoresOrigem = viewComunication.getListaDesenvolvedores();
+				//System.out.println("Email do desenvolvedor logado: " + desenvolvedorLogado.getEmail());
+				System.out.println("Email do desenvolvedor destino: " + desenvolvedorDestino.get(0).getEmail());
+				System.out.println("Problema Associado: " + problemaAssociado.getDescricao());
+				System.out.println("Mensagem: " + mensagem);
+				
+				viewComunication.enviarMensagem(desenvolvedoresOrigem.get(0), desenvolvedorDestino, problemaAssociado, mensagem);
+			}
+
+			public void mouseUp(MouseEvent e) {
+				
+			}
+			
+		});
 	}
 
 
-	/*
-	 * public void adicionaAtividade(TipoAtividade atividade){
-		this.viewComunication.adicionaAtividade(atividade);
-	}
-	 */
 	public void associaConhecimentosProblema(Problema problema, ArrayList<Conhecimento> conhecimentos){
 		this.problemaAssociadoConhecimentos.put(problema.getDescricao(), conhecimentos);
-	}
-
-	/*public void login(String nome, String senha, String ip){
-		desenvolvedorLogado = viewComunication.login(nome, senha);
-	}
-	 */
-	public void removeAtividade(String atividade){
-		//this.viewComunication.removeAtividade(atividade);
 	}
 
 	public ArrayList<String> getAtividades(){
@@ -1062,21 +1105,18 @@ public class Atividade extends ViewPart {
 	}
 
 	private void RunLoginWizardAction() {
-		// TODO Auto-generated method stub
 		gui.action.RunLoginWizardAction runLogin = new gui.action.RunLoginWizardAction(this);
 		runLogin.run(null);
 
 	}
 
 	private void RunAdicionaConhecimentoWizardAction() {
-		// TODO Auto-generated method stub
 		gui.action.RunAdicionaConhecimentoWizard runLogin = new gui.action.RunAdicionaConhecimentoWizard(this);
 		runLogin.run(null);
 
 	}
 
 	private void RunRemoveConhecimentoWizardAction() {
-		// TODO Auto-generated method stub
 		gui.action.RunRemoveConhecimentoWizardAction runLogin = new gui.action.RunRemoveConhecimentoWizardAction(this);
 		runLogin.run(null);
 
@@ -1087,7 +1127,6 @@ public class Atividade extends ViewPart {
 	}
 
 	private void RunAdicionaDesenvolvedorWizard() {
-		// TODO Auto-generated method stub
 		gui.action.RunAdicionaDesenvolvedorWizardAction runAdicionaDesenvolvedor = new gui.action.RunAdicionaDesenvolvedorWizardAction(this);
 		runAdicionaDesenvolvedor.run(null);
 	}

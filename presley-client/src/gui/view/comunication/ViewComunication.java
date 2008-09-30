@@ -16,6 +16,7 @@ import beans.ConhecimentoAtividade;
 import beans.DadosAutenticacao;
 import beans.Desenvolvedor;
 import beans.Item;
+import beans.Mensagem;
 import beans.Problema;
 import beans.ProblemaAtividade;
 import beans.TipoAtividade;
@@ -436,7 +437,14 @@ public class ViewComunication implements CorePresleyOperations{
 		PacketStruct respostaPacket = sendPack(dadosDaBusca, BUSCA_DESENVOLVEDORES);
 		System.out.println("codigo " + BUSCA_DESENVOLVEDORES);
 		if (respostaPacket.getId() == ERRO || respostaPacket == null) {
-			System.out.println("ERRO "+respostaPacket.getData());
+			if(respostaPacket.getId() == CorePresleyOperations.ERRO) {
+				try {
+					throw new Exception((String)  respostaPacket.getData());
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
 			return null;
 		}
 		else{ 
@@ -563,8 +571,16 @@ public class ViewComunication implements CorePresleyOperations{
 	public boolean enviarMensagem(Desenvolvedor desenvolvedorOrigem,
 			ArrayList<Desenvolvedor> desenvolvedoresDestino, Problema problema,
 			String mensagem) {
-		// TODO Auto-generated method stub
-		return false;
+		Mensagem msg = new Mensagem();		
+		msg.setDesenvolvedorOrigem(desenvolvedorOrigem);
+		msg.setDesenvolvedoresDestino(desenvolvedoresDestino);
+		msg.setProblema(problema);
+		msg.setTexto(mensagem);
+		PacketStruct respostaPacket = sendPack(msg, CorePresleyOperations.ENVIAR_MENSAGEM);
+		Boolean retorno;
+		retorno = (Boolean)respostaPacket.getData();
+		System.out.println("Retorno do enviar mensagem: " +retorno);
+		return retorno;
 	}
 
 
