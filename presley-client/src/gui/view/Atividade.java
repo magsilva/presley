@@ -40,7 +40,7 @@ public class Atividade extends ViewPart {
 	private Composite parentComposite;
 	private Button login, logout, addAtividade, addUser,removeUser, addConhecimento,removeConhecimento, removeAtividade, 
 	encerraAtividade, associaConhecimento, desassociaConhecimento,
-	associaProblema, desassociaProblema, buscaDesenvolvedor, qualificaDesenvolvedor, solicitaMensagens;
+	associaProblema, desassociaProblema, buscaDesenvolvedor, qualificaDesenvolvedor, enviaMensagem;
 
 
 	private ArrayList<Desenvolvedor> desenvolvedoresHabilitados;
@@ -122,7 +122,7 @@ public class Atividade extends ViewPart {
 		addConhecimento.setEnabled(true);
 		removeConhecimento.setEnabled(true);
 		removeUser.setEnabled(true);
-		solicitaMensagens.setEnabled(true);
+		enviaMensagem.setEnabled(true);
 	}
 
 	public void desabilitaBotoes() {
@@ -138,7 +138,7 @@ public class Atividade extends ViewPart {
 		addConhecimento.setEnabled(false);
 		removeConhecimento.setEnabled(false);
 		removeUser.setEnabled(false);
-		solicitaMensagens.setEnabled(false);
+		enviaMensagem.setEnabled(false);
 	}
 
 
@@ -1008,14 +1008,14 @@ public class Atividade extends ViewPart {
 		qualificaDesenvolvedor .setToolTipText("Qualifica resposta do usuario");
 		qualificaDesenvolvedor.setEnabled(false);
 
-		solicitaMensagens = new Button(parentComposite, SWT.NONE);
-		Image solicitaMens = new Image(solicitaMensagens.getDisplay(),this.getClass().getResourceAsStream("/icons/trocaMsg.gif"));
-		solicitaMensagens.setLocation(posHorBotaoNivel2, posVerBotaoNivel4);
-		solicitaMensagens.setSize(larguraBotao, alturaBotao);
-		solicitaMensagens.setImage(solicitaMens);
-		solicitaMensagens.setToolTipText("Envia mensagem para usuario selecionado");
-		solicitaMensagens.setEnabled(false);
-		solicitaMensagens.addMouseListener(new MouseListener() {
+		enviaMensagem = new Button(parentComposite, SWT.NONE);
+		Image enviaMens = new Image(enviaMensagem.getDisplay(),this.getClass().getResourceAsStream("/icons/trocaMsg.gif"));
+		enviaMensagem.setLocation(posHorBotaoNivel2, posVerBotaoNivel4);
+		enviaMensagem.setSize(larguraBotao, alturaBotao);
+		enviaMensagem.setImage(enviaMens);
+		enviaMensagem.setToolTipText("Envia mensagem para usuario selecionado");
+		enviaMensagem.setEnabled(false);
+		enviaMensagem.addMouseListener(new MouseListener() {
 
 			public void mouseDoubleClick(MouseEvent e) {
 				
