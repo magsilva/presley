@@ -8,10 +8,14 @@ import java.util.ArrayList;
 
 import persistencia.MySQLConnectionFactory;
 import beans.Desenvolvedor;
+import beans.Mensagem;
 import beans.Problema;
 
+
+
 public class ServicoMensagemImplDAO {
-	
+
+	ServicoProblemaImplDAO servicoProblema = new ServicoProblemaImplDAO();
 	public boolean adicionarMensagem(Desenvolvedor desenvolvedorOrigem, ArrayList<Desenvolvedor> desenvolvedoresDestino, Problema problema, String texto) {
 		
 		//MySQLConnectionFactory factory = new MySQLConnectionFactory();
@@ -48,32 +52,38 @@ public class ServicoMensagemImplDAO {
 		return true;
 	}
 	
-	public String[] getMensagens(Desenvolvedor desenvolvedorDestino) {
+	public ArrayList<Mensagem> getMensagens(String emailDesenvolvedorDestino) {
 		
 		//Connection conn = MySQLConnectionFactory.getConnection();
 		Connection conn = MySQLConnectionFactory.open();
-		
+		ArrayList<Mensagem> mensagens = new ArrayList<Mensagem>();
 		Statement stm = null;
-		
-		String[] m;
+	
 
 		try {
 			stm = conn.createStatement();
 
-			String sql = "select mensagem from mensagem where " +
-			 "mensagem.desenvolvedor_destino_email = '"+desenvolvedorDestino.getEmail();
+			String sql = "select desenvolvedor_origem_email, problema, mensagem from mensagem where " +
+			 "mensagem.desenvolvedor_destino_email = '"+emailDesenvolvedorDestino+"'";
 			ResultSet rs = stm.executeQuery(sql);
-			ArrayList<String> mensagens = new ArrayList<String>();
+			System.out.println(sql);
 						
 			while(rs.next()) {
-				mensagens.add(rs.getString(1));
+				Mensagem msg = new Mensagem();
+				Desenvolvedor des = new Desenvolvedor();
+				Problema pro = new Problema();
+				
+				des.setEmail(rs.getString(1));
+				int id = rs.getInt(2);
+				pro = servicoProblema.getProblema(id);
+				
+				msg.setDesenvolvedorOrigem(des);
+				msg.setProblema(pro);
+				msg.setTexto(rs.getString(3));
+				
+				mensagens.add(msg);
 			}
 			
-			m = new String[mensagens.size()];
-			
-			for (int i = 0; i < mensagens.size(); i++)
-				m[i] = mensagens.get(i);
-
 		} catch (SQLException e) {
 			//e.printStackTrace();
 			return null;
@@ -87,7 +97,7 @@ public class ServicoMensagemImplDAO {
 				return null;
 			}
 		}
-		return m;
+		return mensagens;
 	}
 
 }

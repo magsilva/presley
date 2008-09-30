@@ -52,6 +52,7 @@ public interface CorePresleyOperations {
 	public static final int REMOVER_CONHECIMENTO = 21;
 	public static final int CONHECIMENTO_POSSUI_FILHOS = 22;
 	public static final int REMOVER_DESENVOLVEDOR = 23;
+	public static final int OBTER_MENSAGENS = 24;
 	/**
 	 * Este método cadastra uma nova atividade na base de dados.
 	 * CÓDIGO DA OPERAÇÃO -> 01

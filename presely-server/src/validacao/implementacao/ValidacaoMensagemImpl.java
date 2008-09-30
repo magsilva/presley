@@ -7,6 +7,7 @@ import excessao.DesenvolvedorInexistenteException;
 import persistencia.implementacao.ServicoMensagemImplDAO;
 
 import beans.Desenvolvedor;
+import beans.Mensagem;
 import beans.Problema;
 
 public class ValidacaoMensagemImpl {
@@ -45,8 +46,10 @@ public class ValidacaoMensagemImpl {
 	 * @param desenvolvedorDestino Desenvolvedor que irá receber as mensagens.
 	 * @return Coleção com todas as mensagens referentes ao desenvolvedorDestino.
 	 */
-	public String[] getMensagens(Desenvolvedor desenvolvedorDestino) {
-		return servicoMensagem.getMensagens(desenvolvedorDestino);
+	public ArrayList<Mensagem> getMensagens(String emailDesenvolvedorDestino) {
+		
+		
+		return servicoMensagem.getMensagens(emailDesenvolvedorDestino);
 	}
 
 }

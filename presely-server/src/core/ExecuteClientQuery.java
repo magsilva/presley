@@ -267,9 +267,8 @@ public class ExecuteClientQuery implements CorePresleyOperations{
 		return validacaoMensagem.adicionarMensagem(desenvolvedorOrigem, desenvolvedoresDestino, problema, texto);
 	}
 
-	public Mensagem[] requisitaMensagens(Desenvolvedor desenvolvedorDestino) {
-		validacaoMensagem.getMensagens(desenvolvedorDestino);
-		return null;
+	public ArrayList<Mensagem> requisitaMensagens(Desenvolvedor desenvolvedorDestino) {
+		return validacaoMensagem.getMensagens(desenvolvedorDestino.getEmail());
 	}
 
 	public ArrayList<Desenvolvedor> getListaDesenvolvedores() {
@@ -405,7 +404,15 @@ public class ExecuteClientQuery implements CorePresleyOperations{
 	public boolean removerDesenvolvedor(Desenvolvedor desenvolvedor) {
 		return validacaoDesenvolvedor.removerDesenvolvedor(desenvolvedor.getEmail());
 	}
+	
+	public ArrayList<Mensagem> obterMensagens(PacketStruct packet) {
+		return this.obterMensagens((String)packet.getData());
+	}
 
+	public ArrayList<Mensagem> obterMensagens(String email) {
+		return validacaoMensagem.getMensagens(email);
+	}
+	
 
 
 
