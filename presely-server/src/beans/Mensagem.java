@@ -1,9 +1,14 @@
 package beans;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Mensagem {
+public class Mensagem implements Serializable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 133L;
 	private Desenvolvedor desenvolvedorOrigem;
 	private ArrayList<Desenvolvedor> desenvolvedoresDestino; 
 	private Problema problema;
