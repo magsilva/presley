@@ -77,7 +77,7 @@ public class ServicoProblemaImplDAO implements ServicoProblema{
 
 			for(Conhecimento conhecimento: conhecimentosAssociados) {
 				SQL = "INSERT INTO problema_has_conhecimento(atividade_id,conhecimento_nome,problema_nome) " + 
-				"VALUES ( " + idAtividade+",'"+descricao+"','"+ conhecimento.getNome() + "');" ;
+				"VALUES ( " + idAtividade+",'"+conhecimento.getNome()+"','"+ descricao + "');" ;
 				System.out.println(SQL);
 				stm.execute(SQL);
 			}	

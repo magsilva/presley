@@ -255,6 +255,7 @@ public class ExecuteClientQuery implements CorePresleyOperations{
 
 	public boolean enviarMensagem(PacketStruct packet) throws DesenvolvedorInexistenteException {
 		Mensagem msg = (Mensagem) packet.getData();
+		System.out.println("Mensagem dentro do execute client query: "+msg.getTexto());
 		return enviarMensagem(msg.getDesenvolvedorOrigem(), msg.getDesenvolvedoresDestino(), msg.getProblema(), msg.getTexto());
 
 	}
@@ -262,7 +263,7 @@ public class ExecuteClientQuery implements CorePresleyOperations{
 	public boolean enviarMensagem(Desenvolvedor desenvolvedorOrigem,
 			ArrayList<Desenvolvedor> desenvolvedoresDestino, Problema problema,
 			String texto) throws DesenvolvedorInexistenteException {
-
+		System.out.println("Mensagem dentro do execute client query 2: "+ texto);
 		return validacaoMensagem.adicionarMensagem(desenvolvedorOrigem, desenvolvedoresDestino, problema, texto);
 	}
 

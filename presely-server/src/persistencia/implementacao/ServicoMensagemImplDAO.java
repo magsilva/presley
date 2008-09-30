@@ -20,13 +20,14 @@ public class ServicoMensagemImplDAO {
 		Connection conn = MySQLConnectionFactory.open();
 		
 		Statement stm = null;		
-
+		System.out.println("Dentro do banco, desOrigem email: "+desenvolvedorOrigem.getEmail());
+		System.out.println("Dentro do banco, mensagem: "+texto);
 		try {
 			stm = conn.createStatement();
 
 			for (int i = 0; i < desenvolvedoresDestino.size(); i++) {
-			String SQL = " INSERT INTO mensagem VALUES ('"
-				+desenvolvedorOrigem.getEmail()+"','" +desenvolvedoresDestino.get(i)+"','"+problema.getId()+"','"+texto+"');";
+			String SQL = " INSERT INTO mensagem(desenvolvedor_origem_email, desenvolvedor_destino_email, problema, mensagem) VALUES ('"
+				+desenvolvedorOrigem.getEmail()+"','" +desenvolvedoresDestino.get(i).getEmail()+"','"+problema.getId()+"','"+texto+"');";
 			System.out.println(SQL);
 			stm.execute(SQL);
 			}
