@@ -3,8 +3,11 @@ package gui.view;
 /* Desenvolvido por Leandro Carlos, Samara Martins e Alysson Diniz */
 
 
+import gui.view.comunication.ViewComunication;
+
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 import org.eclipse.swt.SWT;
@@ -19,6 +22,7 @@ import org.eclipse.ui.part.ViewPart;
 
 import beans.Mensagem;
 import beans.Problema;
+import beans.ProblemaMensagens;
 
 public class Mensagens extends ViewPart {
 
@@ -29,9 +33,12 @@ public class Mensagens extends ViewPart {
 	private final int posHorBotaoNivel1 = 4;
 	private final int posVerBotaoNivel1 = 4;
 	private final int posHorBotaoNivel2 = 28;
-	
+	private String ipServidor = "127.0.0.1";
+	private ViewComunication viewComunication;
+	private ArrayList<ProblemaMensagens> mensagensProblemas;
+
 	public Mensagens() {
-		// TODO Auto-generated constructor stub
+		this.viewComunication = new ViewComunication(ipServidor);
 	}
 
 	public void createPartControl(Composite parent) {
@@ -66,32 +73,79 @@ public class Mensagens extends ViewPart {
 				ArrayList<Mensagem> mensagens = null;
 				Problema problemaAnterior = null;
 				Map map = new HashMap();
+				ArrayList<String> nomeProblemas = new ArrayList<String>();
+				mensagensProblemas = new ArrayList<ProblemaMensagens>();
 				
+				
+				System.out.println("Antes de chamar o banco");
 				/*obter as mensagens do desenvolvedor logado*/
-				//mensagens = viewComunication.obterMensagens(desenvolvedorLogado);
+				mensagens = viewComunication.obterMensagens(Atividade.getDesenvolvedorLogado());
 				
-				/*obter os problemas associados as mensagens*/
-				for(int i = 0; i < mensagens.size(); i++) {
-					/*Pega o primeiro problema*/
-					if(i == 0) {
-						problemaAnterior = mensagens.get(i).getProblema();
-						map.put(problemaAnterior.getDescricao(),mensagens.get(i).getTexto());
-						continue;
-					}
-					/*Se eh o mesmo problema*/
-					if(mensagens.get(i).getProblema().equals(problemaAnterior)){
-						map.put(problemaAnterior.getDescricao(),mensagens.get(i).getTexto());
+				Iterator it = mensagens.iterator();
+				while(it.hasNext()){	
+					System.out.println("dentro do laco");
+					Mensagem mensagem   = (Mensagem) it.next();
+					String descricaoPro = mensagem.getProblema().getDescricao();
+					
+					
+					if(nomeProblemas.contains(descricaoPro)) {
+						System.out.println("ENTREI IF");
+						Iterator ite = mensagensProblemas.iterator();
+						
+						/* GAMBIARRA!!!!! */
+						while(ite.hasNext()) {
+							ProblemaMensagens pro = (ProblemaMensagens) ite.next();
+							
+							if(descricaoPro.equals(pro.getDescricaoProblema())) {
+								pro.addMensagem(mensagem.getTexto());
+							}
+						}
 					}
 					else {
-						problemaAnterior = mensagens.get(i).getProblema();
-						map.put(problemaAnterior.getDescricao(),mensagens.get(i).getTexto());
+						System.out.println("ENTREI ELSE");
+						ProblemaMensagens proMsg = new ProblemaMensagens(descricaoPro, mensagem.getProblema().getId());
+						proMsg.addMensagem(mensagem.getTexto());
+						mensagensProblemas.add(proMsg);
+						System.out.println("Adicionando: "+ descricaoPro + "ao nomeProblemas");
+						nomeProblemas.add(descricaoPro);
 					}
 				}
 				
-				/*No final, map deve conter uma lista de problemas e mensagens associadas*/
-				
-				/*Monta a arvore grafica em funcao de map*/
 				final Tree tree = new Tree(parentComposite, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL | SWT.CHECK);
+				tree.setLocation(posHorBotaoNivel1, 25);
+				tree.setSize(1000, 100);
+				tree.setVisible(true);
+				
+				TreeItem[] item = new TreeItem[mensagensProblemas.size()];
+				
+				int contador = 0;
+				System.out.println("Antes do while");
+				/*No final, map deve conter uma lista de problemas e mensagens associadas*/
+				Iterator ite = mensagensProblemas.iterator();
+				while(ite.hasNext()) {
+					System.out.println("Estou no while");
+					ProblemaMensagens proMsg = (ProblemaMensagens)ite.next();
+					System.out.println("ID DO PROBLEMA: "+proMsg.getIdProblema());
+					item[contador] = new TreeItem(tree, SWT.NONE);
+					item[contador].setText(""+(proMsg.getDescricaoProblema()));	
+					
+					ArrayList<String> msgs = proMsg.getMensagensPro();
+					Iterator iter = msgs.iterator();
+					TreeItem[] radio = new TreeItem[msgs.size()];
+					int count = 0;
+					while(iter.hasNext()) {
+						String msg = (String) iter.next();
+						radio[count] = new TreeItem(item[contador], SWT.NONE);
+						radio[count].setText(msg);
+						count++;
+					}
+					
+					contador++;
+				}
+				System.out.println("Depois do while");
+				/*Monta a arvore grafica em funcao de map*/
+				
+				/*
 				TreeItem item = new TreeItem(tree, SWT.NONE);
 				item.setText("Problema");	
 				
@@ -103,7 +157,7 @@ public class Mensagens extends ViewPart {
 			    
 			    tree.setLocation(posHorBotaoNivel1, 25);
 				tree.setSize(1000, 100);
-				tree.setVisible(true);
+				tree.setVisible(true);*/
 			}
 
 			public void mouseUp(MouseEvent e) {

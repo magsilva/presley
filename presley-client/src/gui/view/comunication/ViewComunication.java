@@ -132,6 +132,13 @@ public class ViewComunication implements CorePresleyOperations{
 		
 	}
 	
+	public ArrayList<Mensagem> obterMensagens(Desenvolvedor des) {
+		ArrayList<Mensagem> mensagens = null;
+		PacketStruct respostaPacket = sendPack(des.getEmail(),CorePresleyOperations.OBTER_MENSAGENS);
+		mensagens = (ArrayList<Mensagem>)respostaPacket.getData();
+		return mensagens;
+	}
+	
 	/**
 	 * Retorna os nomes das atividades cadastradas
 	 * @return ArrayList<String> é a lista de atividades

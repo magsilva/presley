@@ -51,7 +51,7 @@ public class Atividade extends ViewPart {
 	private RunBuscaDesenvolvedorWizardAction runBuscaDesenvolvedor;
 	private RunAdicionaDesenvolvedorWizardAction runAdicionaDesenvolvedor;
 
-	private Desenvolvedor desenvolvedorLogado = null;
+	private static Desenvolvedor desenvolvedorLogado = null;
 	private String atividadeSelecionada = null;
 	private String problemaSelecionado = null;
 	private Hashtable<String, ArrayList<Conhecimento>> problemaAssociadoConhecimentos = new Hashtable<String, ArrayList<Conhecimento>>();
@@ -109,6 +109,10 @@ public class Atividade extends ViewPart {
 		}
 	}
 
+	public static Desenvolvedor getDesenvolvedorLogado() {
+		return desenvolvedorLogado;
+	}
+	
 	public void habilitaBotoes() {
 		addAtividade.setEnabled(true);
 		removeAtividade.setEnabled(true);
