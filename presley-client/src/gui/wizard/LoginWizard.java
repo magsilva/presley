@@ -66,6 +66,7 @@ public class LoginWizard extends Wizard implements INewWizard {
     		if (des== null)
     			return false;
     		else {
+    			this.atividade.setDesenvolvedorLogado(des);
     			this.atividade.habilitaBotoes();
     			this.atividade.desabilitaBotaoLogin();
     		}

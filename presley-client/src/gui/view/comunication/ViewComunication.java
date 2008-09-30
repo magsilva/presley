@@ -576,6 +576,7 @@ public class ViewComunication implements CorePresleyOperations{
 		msg.setDesenvolvedoresDestino(desenvolvedoresDestino);
 		msg.setProblema(problema);
 		msg.setTexto(mensagem);
+		System.out.println("Mensagem dentro de view Comunication: "+msg.getTexto());
 		PacketStruct respostaPacket = sendPack(msg, CorePresleyOperations.ENVIAR_MENSAGEM);
 		Boolean retorno;
 		retorno = (Boolean)respostaPacket.getData();

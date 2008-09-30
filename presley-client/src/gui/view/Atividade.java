@@ -99,6 +99,10 @@ public class Atividade extends ViewPart {
 
 	}
 	
+	public void setDesenvolvedorLogado(Desenvolvedor des) {
+		this.desenvolvedorLogado = des;
+	}
+	
 	public void updateListaGraficaDesenvolvedores() {
 		for (int index = 0; index < desenvolvedoresHabilitados.size(); index++) {
 			listaDesenvolvedores.add(desenvolvedoresHabilitados.get(index).getEmail());
@@ -203,9 +207,6 @@ public class Atividade extends ViewPart {
 			public void mouseDown(MouseEvent e) {
 				//Exibe o wizard de login
 				RunLoginWizardAction();
-
-				//Desabilita o botao de login
-				//login.dispose();
 
 			}
 
@@ -1060,12 +1061,12 @@ public class Atividade extends ViewPart {
 				String mensagem = problemaAssociado.getMensagem();
 				
 				ArrayList<Desenvolvedor> desenvolvedoresOrigem = viewComunication.getListaDesenvolvedores();
-				//System.out.println("Email do desenvolvedor logado: " + desenvolvedorLogado.getEmail());
+				System.out.println("Email do desenvolvedor logado: " + desenvolvedoresOrigem.get(1).getEmail());
 				System.out.println("Email do desenvolvedor destino: " + desenvolvedorDestino.get(0).getEmail());
 				System.out.println("Problema Associado: " + problemaAssociado.getDescricao());
 				System.out.println("Mensagem: " + mensagem);
 				
-				viewComunication.enviarMensagem(desenvolvedoresOrigem.get(0), desenvolvedorDestino, problemaAssociado, mensagem);
+				viewComunication.enviarMensagem(desenvolvedorLogado, desenvolvedorDestino, problemaAssociado, mensagem);
 			}
 
 			public void mouseUp(MouseEvent e) {
