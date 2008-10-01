@@ -19,6 +19,7 @@ import beans.Item;
 import beans.Mensagem;
 import beans.Problema;
 import beans.ProblemaAtividade;
+import beans.QualificacaoDesenvolvedor;
 import beans.TipoAtividade;
 import beans.Tree;
 import facade.PacketStruct;
@@ -549,11 +550,14 @@ public class ViewComunication implements CorePresleyOperations{
 
 	public boolean qualificaDesenvolvedor(Desenvolvedor desenvolvedor,
 			Problema problema, boolean qualificacao) {
-		PacketStruct respostaPacket = sendPack(null,QUALIFICA_DESENVOLVEDOR);//TESTE
+		QualificacaoDesenvolvedor qualis = new QualificacaoDesenvolvedor();
+		qualis.setDesenvolvedor(desenvolvedor);
+		qualis.setProblema(problema);
+		qualis.setFoiUtil(qualificacao);
+		PacketStruct respostaPacket = sendPack(qualis,QUALIFICA_DESENVOLVEDOR);//TESTE
     	Boolean resposta = (Boolean)respostaPacket.getData();
     	return resposta.booleanValue();
-    			
-		//return false;
+
 	}
 
 	public ArrayList<Conhecimento> getListaConhecimentos() {

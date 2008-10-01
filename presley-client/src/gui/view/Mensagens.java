@@ -30,16 +30,18 @@ import beans.ProblemaMensagens;
 public class Mensagens extends ViewPart {
 
 	private Composite parentComposite;
-	private Button obterMensagens, enviarResposta;
+	private Button obterMensagens, enviarResposta, qualificaDesenvolvedor;
 	private final int larguraBotao = 20;
 	private final int alturaBotao = 20;
 	private final int posHorBotaoNivel1 = 4;
 	private final int posVerBotaoNivel1 = 4;
 	private final int posHorBotaoNivel2 = 28;
+	private final int posHorBotaoNivel3 = 52;
 	private String ipServidor = "127.0.0.1";
 	private ViewComunication viewComunication;
 	private ArrayList<ProblemaMensagens> mensagensProblemas;
 	private RunEnviaRespostaWizardAction runEnviaResposta;
+	private Tree tree = null;
 
 	public Mensagens() {
 		this.viewComunication = new ViewComunication(ipServidor);
@@ -72,11 +74,7 @@ public class Mensagens extends ViewPart {
 			}
 
 			public void mouseDown(MouseEvent e) {
-				String nomeProblema = "";
-				ArrayList<String> mensagensDoProblema = null;
 				ArrayList<Mensagem> mensagens = null;
-				Problema problemaAnterior = null;
-				Map map = new HashMap();
 				ArrayList<String> nomeProblemas = new ArrayList<String>();
 				mensagensProblemas = new ArrayList<ProblemaMensagens>();
 				
@@ -115,7 +113,7 @@ public class Mensagens extends ViewPart {
 					}
 				}
 				
-				final Tree tree = new Tree(parentComposite, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL | SWT.CHECK);
+				tree = new Tree(parentComposite, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL | SWT.CHECK);
 				tree.setLocation(posHorBotaoNivel1, 25);
 				tree.setSize(1000, 100);
 				tree.setVisible(true);
@@ -147,21 +145,6 @@ public class Mensagens extends ViewPart {
 					contador++;
 				}
 				System.out.println("Depois do while");
-				/*Monta a arvore grafica em funcao de map*/
-				
-				/*
-				TreeItem item = new TreeItem(tree, SWT.NONE);
-				item.setText("Problema");	
-				
-				final TreeItem radio1 = new TreeItem(item, SWT.NONE);
-				radio1.setText("Bope");
-
-				final TreeItem radio2 = new TreeItem(item,  SWT.NONE);
-			    radio2.setText("GigaBug");
-			    
-			    tree.setLocation(posHorBotaoNivel1, 25);
-				tree.setSize(1000, 100);
-				tree.setVisible(true);*/
 			}
 
 			public void mouseUp(MouseEvent e) {
@@ -197,6 +180,33 @@ public class Mensagens extends ViewPart {
 			}
 			
 		});
+	
+		qualificaDesenvolvedor = new Button(parentComposite, SWT.NONE);
+		Image ok = new Image(qualificaDesenvolvedor.getDisplay(),this.getClass().getResourceAsStream("/icons/ok.gif"));
+		qualificaDesenvolvedor .setLocation(posHorBotaoNivel3, posVerBotaoNivel1);
+		qualificaDesenvolvedor .setSize(larguraBotao, alturaBotao);
+		qualificaDesenvolvedor .setImage(ok);
+		qualificaDesenvolvedor .setToolTipText("Qualifica resposta do usuario");
+		qualificaDesenvolvedor.setEnabled(true);
+		qualificaDesenvolvedor.addMouseListener(new MouseListener() {
+
+			public void mouseDoubleClick(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			public void mouseDown(MouseEvent e) {
+				// TODO Auto-generated method stub
+				Mensagem msgSelecionada = getMensagem();
+				viewComunication.qualificaDesenvolvedor(msgSelecionada.getDesenvolvedorOrigem(), msgSelecionada.getProblema(), true);
+			}
+
+			public void mouseUp(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+		});
 	}
 
 	public Mensagens getViewMensagens() {
@@ -208,9 +218,16 @@ public class Mensagens extends ViewPart {
 	}
 	
 	public Mensagem getMensagem(){
-		
+		Mensagem mensagemSelecionada = null;
 		ArrayList<Mensagem> mensagens = viewComunication.obterMensagens(this.getDesenvolvedorLogado());
-		return mensagens.get(0);
+		TreeItem[] mensagensSelecionadas = tree.getSelection();
+		for(int i =0; i < mensagens.size(); i++) {
+			if(mensagens.get(i).getTexto().equals(mensagensSelecionadas[0].getText())){
+				System.out.println("ACHOU A MENSAGEM!");
+				mensagemSelecionada = mensagens.get(i);
+			}
+		}
+		return mensagemSelecionada;
 	}
 	
 	@Override

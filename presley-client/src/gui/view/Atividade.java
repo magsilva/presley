@@ -40,7 +40,7 @@ public class Atividade extends ViewPart {
 	private Composite parentComposite;
 	private Button login, logout, addAtividade, addUser,removeUser, addConhecimento,removeConhecimento, removeAtividade, 
 	encerraAtividade, associaConhecimento, desassociaConhecimento,
-	associaProblema, desassociaProblema, buscaDesenvolvedor, qualificaDesenvolvedor, enviaMensagem;
+	associaProblema, desassociaProblema, buscaDesenvolvedor, enviaMensagem;
 
 
 	private ArrayList<Desenvolvedor> desenvolvedoresHabilitados;
@@ -122,7 +122,6 @@ public class Atividade extends ViewPart {
 		associaProblema.setEnabled(true);
 		desassociaProblema.setEnabled(true);
 		buscaDesenvolvedor.setEnabled(true);
-		qualificaDesenvolvedor.setEnabled(true);
 		addConhecimento.setEnabled(true);
 		removeConhecimento.setEnabled(true);
 		removeUser.setEnabled(true);
@@ -138,7 +137,6 @@ public class Atividade extends ViewPart {
 		associaProblema.setEnabled(false);
 		desassociaProblema.setEnabled(false);
 		buscaDesenvolvedor.setEnabled(false);
-		qualificaDesenvolvedor.setEnabled(false);
 		addConhecimento.setEnabled(false);
 		removeConhecimento.setEnabled(false);
 		removeUser.setEnabled(false);
@@ -1004,17 +1002,11 @@ public class Atividade extends ViewPart {
 		contatosLabel.setSize(200, 20);
 		contatosLabel.setVisible(true);
 
-		qualificaDesenvolvedor = new Button(parentComposite, SWT.NONE);
-		Image ok = new Image(addAtividade.getDisplay(),this.getClass().getResourceAsStream("/icons/ok.gif"));
-		qualificaDesenvolvedor .setLocation(posHorBotaoNivel1, posVerBotaoNivel4);
-		qualificaDesenvolvedor .setSize(larguraBotao, alturaBotao);
-		qualificaDesenvolvedor .setImage(ok);
-		qualificaDesenvolvedor .setToolTipText("Qualifica resposta do usuario");
-		qualificaDesenvolvedor.setEnabled(false);
+		
 
 		enviaMensagem = new Button(parentComposite, SWT.NONE);
 		Image enviaMens = new Image(enviaMensagem.getDisplay(),this.getClass().getResourceAsStream("/icons/trocaMsg.gif"));
-		enviaMensagem.setLocation(posHorBotaoNivel2, posVerBotaoNivel4);
+		enviaMensagem.setLocation(posHorBotaoNivel1, posVerBotaoNivel4);
 		enviaMensagem.setSize(larguraBotao, alturaBotao);
 		enviaMensagem.setImage(enviaMens);
 		enviaMensagem.setToolTipText("Envia mensagem para usuario selecionado");
