@@ -3,6 +3,8 @@ package gui.view;
 /* Desenvolvido por Leandro Carlos, Samara Martins e Alysson Diniz */
 
 
+import gui.action.RunAssociaProblemaAtividadeWizardAction;
+import gui.action.RunEnviaRespostaWizardAction;
 import gui.view.comunication.ViewComunication;
 
 import java.util.ArrayList;
@@ -20,6 +22,7 @@ import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 import org.eclipse.ui.part.ViewPart;
 
+import beans.Desenvolvedor;
 import beans.Mensagem;
 import beans.Problema;
 import beans.ProblemaMensagens;
@@ -36,6 +39,7 @@ public class Mensagens extends ViewPart {
 	private String ipServidor = "127.0.0.1";
 	private ViewComunication viewComunication;
 	private ArrayList<ProblemaMensagens> mensagensProblemas;
+	private RunEnviaRespostaWizardAction runEnviaResposta;
 
 	public Mensagens() {
 		this.viewComunication = new ViewComunication(ipServidor);
@@ -175,12 +179,53 @@ public class Mensagens extends ViewPart {
 		enviarResposta .setToolTipText("Envia Resposta");
 		enviarResposta .setVisible(true);
 		enviarResposta .setEnabled(true);
+		enviarResposta.addMouseListener(new MouseListener(){
+
+			public void mouseDoubleClick(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			public void mouseDown(MouseEvent e) {
+				runEnviaRespostaWizardAction(getViewMensagens());
+				
+			}
+
+			public void mouseUp(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+		});
 	}
 
+	public Mensagens getViewMensagens() {
+		return this;
+	}
+	
+	public Desenvolvedor getDesenvolvedorLogado(){
+		return Atividade.getDesenvolvedorLogado();
+	}
+	
+	public Mensagem getMensagem(){
+		
+		ArrayList<Mensagem> mensagens = viewComunication.obterMensagens(this.getDesenvolvedorLogado());
+		return mensagens.get(0);
+	}
+	
 	@Override
 	public void setFocus() {
 		// TODO Auto-generated method stub
 		
+	}
+
+	private void runEnviaRespostaWizardAction(Mensagens viewMensagens){
+		this.runEnviaResposta = new RunEnviaRespostaWizardAction(viewMensagens);
+		this.runEnviaResposta.run(null);
+	}
+
+	public ViewComunication getViewComunication() {
+		return viewComunication;
 	}
 
 

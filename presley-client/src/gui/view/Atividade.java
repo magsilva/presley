@@ -1104,10 +1104,6 @@ public class Atividade extends ViewPart {
 		this.runBuscaDesenvolvedor.run(null);
 	}
 
-	private void runRemoveWizardAction(){
-		this.runRemoveAtividade = new RunRemoveAtividadeWizardAction(this);
-		this.runRemoveAtividade.run(null);
-	}
 
 	private void RunLoginWizardAction() {
 		gui.action.RunLoginWizardAction runLogin = new gui.action.RunLoginWizardAction(this);
@@ -1121,11 +1117,6 @@ public class Atividade extends ViewPart {
 
 	}
 
-	private void RunRemoveConhecimentoWizardAction() {
-		gui.action.RunRemoveConhecimentoWizardAction runLogin = new gui.action.RunRemoveConhecimentoWizardAction(this);
-		runLogin.run(null);
-
-	}
 	private void RunAssociaConhecimentoAtividade(){
 		gui.action.RunAssociaConhecimentoAtividadeWizardAction runLogin = new gui.action.RunAssociaConhecimentoAtividadeWizardAction(this);
 		runLogin.run(null);
