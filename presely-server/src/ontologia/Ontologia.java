@@ -313,7 +313,7 @@ public class Ontologia {
                                 int quantidade = validacaoDesenvolvedor.getQntResposta(email, conhecimentoAtividade) + 1;
                                 boolean resposta = validacaoDesenvolvedor.updateQntResposta(email, conhecimentoAtividade, quantidade);
                                 if(!resposta)
-                                        return false;
+                                return false;
 
                         }
 
