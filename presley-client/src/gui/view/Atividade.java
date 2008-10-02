@@ -580,7 +580,7 @@ public class Atividade extends ViewPart {
 		addConhecimento.setSize(larguraBotao, alturaBotao);
 		addConhecimento.setImage(add);
 		addConhecimento.setToolTipText("Cadastra um novo conhecimento");
-		addConhecimento.setEnabled(false);
+		addConhecimento.setEnabled(true);
 		addConhecimento.addMouseListener(new MouseListener(){
 
 			public void mouseDoubleClick(MouseEvent arg0) {
@@ -1129,7 +1129,8 @@ public class Atividade extends ViewPart {
 
 	public ArrayList<String> getConhecimentosDoProblema(){
 		ArrayList<String> conhecimentosDoProblema = new ArrayList<String>();
-
+		conhecimentosDoProblema = viewComunication.getConhecimentosAssociados(problemaSelecionado);
+		/*
 		if(!problemaAssociadoConhecimentos.isEmpty()){
 			System.out.println("problema selecionado: " + problemaSelecionado);
 			ArrayList<Conhecimento> conhecimentos = problemaAssociadoConhecimentos.get(problemaSelecionado);
@@ -1140,7 +1141,8 @@ public class Atividade extends ViewPart {
 			}
 		}
 		else
-			System.out.println("hashtable de problemas e conhecimentos é null");
+			System.out.println("hashtable de problemas e conhecimentos é null");*/
+		
 		return conhecimentosDoProblema;
 	}
 

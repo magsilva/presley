@@ -53,6 +53,7 @@ public interface CorePresleyOperations {
 	public static final int CONHECIMENTO_POSSUI_FILHOS = 22;
 	public static final int REMOVER_DESENVOLVEDOR = 23;
 	public static final int OBTER_MENSAGENS = 24;
+	public static final int BUSCA_CONHECIMENTOS_PROBLEMA = 25;
 	
 	
 	/**

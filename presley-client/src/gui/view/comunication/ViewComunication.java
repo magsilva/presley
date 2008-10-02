@@ -411,7 +411,7 @@ public class ViewComunication implements CorePresleyOperations{
 		problemaAtividade.setProblema(problema);
 		problemaAtividade.setListaConhecimentos(listaConhecimento);
 		
-		if(problemaAtividade.getListaConhecimentos() == null) System.out.println("NULLLL !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+		if(problemaAtividade.getListaConhecimentos() == null) System.out.println("Nenhum conhecimento foi selecionado");
 		else for(Conhecimento c : problemaAtividade.getListaConhecimentos()) System.out.println(c.getNome());
 		
 		
@@ -691,6 +691,12 @@ public class ViewComunication implements CorePresleyOperations{
 		}		
 		return retorno;
 
+	}
+	
+	public ArrayList<String> getConhecimentosAssociados(String problema) {
+		PacketStruct respostaPacket = sendPack(problema,CorePresleyOperations.BUSCA_CONHECIMENTOS_PROBLEMA);
+		
+		return (ArrayList<String>)respostaPacket.getData();
 	}
 }
 

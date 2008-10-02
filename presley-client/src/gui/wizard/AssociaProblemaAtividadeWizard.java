@@ -90,7 +90,7 @@ public class AssociaProblemaAtividadeWizard extends Wizard implements INewWizard
     		//a lista de desenvolvedores que ajudarão no problema
     		atividade.associaConhecimentosProblema(problema, conhecimentos);
     		
-    		//Cria a atividade no banco
+    		//Associa o problema a atividade no banco
     		for(Conhecimento c : conhecimentos) System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>" + c.getNome());
     		atividade.getViewComunication().associaProblemaAtividade(problema, atividadeAssociada, conhecimentos);
  
