@@ -72,5 +72,12 @@ public interface ServicoProblema {
 	 * @return <Problema>
 	 */	
 	public ArrayList<Problema> getListaProblemas();
+	
+	/**
+	 * Esse método retorna todos os conhecimentos associados ao problema
+	 * @param nomeProblema nome do problema.
+	 * @return <String>
+	 */	
+	public ArrayList<String> getConhecimentosAssociados(String nomeProblema);
 }
 

@@ -364,8 +364,14 @@ public class ServerBridgeImp implements ServerBridge {
 			typeRetorno = CorePresleyOperations.OBTER_MENSAGENS;
 			pktRetorno = new PacketStruct(retorno, typeRetorno);
 			break;
-		}
 
+		case CorePresleyOperations.BUSCA_CONHECIMENTOS_PROBLEMA:
+			retorno = executeClientQuery.buscaConhecimentosProblema(packet);
+			typeRetorno = CorePresleyOperations.BUSCA_CONHECIMENTOS_PROBLEMA;
+			pktRetorno = new PacketStruct(retorno, typeRetorno);
+			break;
+		}
+		
 		return pktRetorno;
 
 	}

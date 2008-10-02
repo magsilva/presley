@@ -30,14 +30,13 @@ public class ServicoInferenciaDAO {
 						 "dc.conhecimento_nome = '"+conhecimento+"' and dc.desenvolvedor_email = email and " +
 						 		" grau > 0";
 			
-			String sql2 = "select desenvolvedor_email, grau, qtd_resposta from " +
-					"desenvolvedor_has_conhecimento as dc, desenvolvedor where " +
-					"dc.conhecimento_nome = 'BD' and dc.desenvolvedor_email = email and grau > 0";
 			ResultSet rs = stm.executeQuery(sql);
 			
+			System.out.println("SQL DA INFERENCIA: "+sql);
 			//if(!rs.next()) throw new DesenvolvedorInexistenteException();
 			
 			while(rs.next()){
+					System.out.println("DENTRO DO LACO DA INFERENCIA");
 					/* Instanciando e iniciando valores do Desenvolvedor */
 					d = new Desenvolvedor();
 					d.setEmail(rs.getString(1));

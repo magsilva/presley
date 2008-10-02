@@ -307,11 +307,15 @@ public class Ontologia {
 
                 if(foiUtil){
                         String email = desenvolvedor.getEmail();
-
+                        System.out.println(">>>>>>>>>>>>>>>>>>>>>>Email do desenvolvedor: "+email);
+                        System.out.println("Tamanho dos conhecimentos: "+conhecimentos.size());
+                        
                         for(String conhecimentoAtividade : conhecimentos){
-
+                        		
                                 int quantidade = validacaoDesenvolvedor.getQntResposta(email, conhecimentoAtividade) + 1;
+                                System.out.println("Desenvolvedor: "+email+" no conhecimento "+conhecimentoAtividade+" tinha valor: "+ validacaoDesenvolvedor.getQntResposta(email, conhecimentoAtividade)+ " e agora vai pra: "+quantidade);
                                 boolean resposta = validacaoDesenvolvedor.updateQntResposta(email, conhecimentoAtividade, quantidade);
+                                System.out.println(resposta);
                                 if(!resposta)
                                 return false;
 

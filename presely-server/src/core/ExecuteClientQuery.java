@@ -300,11 +300,13 @@ public class ExecuteClientQuery implements CorePresleyOperations{
 		Problema problema = qualDes.getProblema();
 		Desenvolvedor desenvolvedor = qualDes.getDesenvolvedor();
 		boolean foiUtil = qualDes.isFoiUtil();
+		System.out.println("ExecuteClientQuery: "+ problema.getDescricao());
 		return qualificaDesenvolvedor(desenvolvedor, problema, foiUtil);
 	}
 	public boolean qualificaDesenvolvedor(Desenvolvedor desenvolvedor,
 			Problema problema, boolean qualificacao) throws ConhecimentoInexistenteException, DesenvolvedorInexistenteException {
-		ArrayList<String> conhecimentos = problema.getConhecimentos();
+		//ArrayList<String> conhecimentos = problema.getConhecimentos();
+		ArrayList<String> conhecimentos = validacaoProblema.getConhecimentosAssociados(problema.getDescricao());
 		return Ontologia.incrementaRespostasDesenvolvedor(desenvolvedor, qualificacao, conhecimentos);
 	}
 
@@ -413,7 +415,10 @@ public class ExecuteClientQuery implements CorePresleyOperations{
 		return validacaoMensagem.getMensagens(email);
 	}
 	
-
+	public ArrayList<String> buscaConhecimentosProblema(PacketStruct packet) {
+		String nomeProblema = (String)packet.getData();
+		return validacaoProblema.getConhecimentosAssociados(nomeProblema);
+	}
 
 
 }

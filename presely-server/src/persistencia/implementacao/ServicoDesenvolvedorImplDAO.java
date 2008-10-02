@@ -29,7 +29,8 @@ public class ServicoDesenvolvedorImplDAO implements ServicoDesenvolvedor{
 
 	public boolean adicionarConhecimentoAoDesenvolvedor(
 			String emailDesenvolvedor, String nomeConhecimento, double grau, int qntResposta) {
-
+		if(qntResposta <= 0)
+			qntResposta = 1;
 		//Connection conn = MySQLConnectionFactory.getConnection();
 		Connection conn = MySQLConnectionFactory.open();
 		
@@ -347,13 +348,18 @@ public class ServicoDesenvolvedorImplDAO implements ServicoDesenvolvedor{
 			stm = conn.createStatement();
 			String sql = "select qtd_resposta from " +
 						 "desenvolvedor_has_conhecimento where " +
-						 "desenvolvedor_email = '" + email + "' and conhecimento_nome = " + conhecimento;
+						 "desenvolvedor_email = '" + email + "' and conhecimento_nome = '" + conhecimento+"';";
 			
+			System.out.println("getQTDADE!!: "+sql);
 			ResultSet rs = stm.executeQuery(sql);
-			
-			return rs.getInt(1);
+			System.out.println("PASSOU DO EXECUTEQUERY");
+			int teste = rs.getInt(1);
+			System.out.println(teste);
+			return teste;
 				
 		} catch(SQLException e){
+			System.out.println("Bugou o getQtdadeRespostas");
+			e.printStackTrace();
 			return -1;
 		} finally {
 			try {

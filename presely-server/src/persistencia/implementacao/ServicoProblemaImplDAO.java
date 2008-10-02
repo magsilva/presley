@@ -317,5 +317,40 @@ public class ServicoProblemaImplDAO implements ServicoProblema{
 			}
 		}
 	}
+	
+	public ArrayList<String> getConhecimentosAssociados(String nomeProblema) {
+		Connection conn = MySQLConnectionFactory.open();
+		Statement stm = null;
+		ArrayList<String> list = new ArrayList<String>();
+
+
+		try {
+
+			stm = conn.createStatement();
+
+			//SELECT * FROM problema_has_conhecimento where problema_nome = 'Problema JUNIT';
+			
+			String SQL = " SELECT conhecimento_nome FROM problema_has_conhecimento where problema_nome = '"+nomeProblema+"';";
+
+			System.out.println(SQL);
+			ResultSet rs = stm.executeQuery(SQL);
+
+			while (rs.next()){
+				list.add(rs.getString(1));
+			}
+			return list;
+		} catch (SQLException e) {
+			//e.printStackTrace();
+			return null;
+		} finally {
+			try {
+				stm.close();
+				conn.close();
+			} catch (SQLException onConClose) {
+				System.out.println(" Houve erro no fechamento da conexão ");
+				onConClose.printStackTrace();	             
+			}
+		}
+	}
 
 }

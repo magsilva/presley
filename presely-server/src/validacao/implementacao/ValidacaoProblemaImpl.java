@@ -136,5 +136,11 @@ public class ValidacaoProblemaImpl {
 		ArrayList<Problema> problemas = servicoProblema.getListaProblemas();
 		return problemas;
 	}
+	
+	public ArrayList<String> getConhecimentosAssociados(String nomeDoProblema) {
+		
+		ArrayList<String> problemas = servicoProblema.getConhecimentosAssociados(nomeDoProblema);
+		return problemas;
+	}
 
 }
