@@ -33,6 +33,24 @@
             name="Atividade"
             restorable="true">
       </view>
+      <view
+            class="gui.view.Dominio"
+            id="gui.Dominio"
+            name="Dominio"
+            restorable="true">
+      </view>
+      <view
+            class="gui.view.MensagemAba"
+            id="gui.Mensagem"
+            name="Mensagem"
+            restorable="true">
+      </view>
+      <view
+            class="gui.view.LerMensagem"
+            id="gui.LerMensagem"
+            name="Ler Mensagem"
+            restorable="true">
+      </view>
    </extension>
 
 </plugin>
