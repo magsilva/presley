@@ -97,9 +97,6 @@ public class ServicoAtividadeImplDAO implements ServicoAtividade{
 				retorno = rs.getInt("id");
 			}
 			
-			
-			
-
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
 			e.printStackTrace();
@@ -111,7 +108,7 @@ public class ServicoAtividadeImplDAO implements ServicoAtividade{
 				stm.close();
 				conn.close();
 			} catch (SQLException onConClose) {
-				System.out.println(" Houve erro no fechamento da conexo ");
+				System.out.println(" Houve erro no fechamento da conexão ");
 				onConClose.printStackTrace();	             
 			}
 		}

@@ -3,7 +3,9 @@ package persistencia.interfaces;
 import java.util.ArrayList;
 
 import excessao.ConhecimentoInexistenteException;
+import beans.Arquivo;
 import beans.Conhecimento;
+import beans.Desenvolvedor;
 
 /**
  * 
@@ -90,6 +92,22 @@ public interface ServicoConhecimento {
 	public ArrayList<Conhecimento> getPais(String nomeConhecimentoFilho) throws ConhecimentoInexistenteException;
 
 	public ArrayList<Conhecimento> getListaConhecimento();
+
+	/**
+	 * Esse metodo cria uma associacao do conhecimento com seus arquivos relacionados
+	 * @param conhecimento conhecimento
+	 * @param arquivos lista de arquivos relacionados 
+	 * @return
+	 */
+	public boolean associaArquivo(Conhecimento conhecimento, Arquivo arquivo);
+	
+	/**
+	 * Esse metodo retorna os desenvolvedores que tiveram problemas relacionados ao
+	 * conhecimento fornecido ou que contribuiram com soluções validas
+	 * @param conhecimento
+	 * @return
+	 */
+	public ArrayList<Desenvolvedor> getContribuintesConhecimento(Conhecimento conhecimento); 
 	
 }
 

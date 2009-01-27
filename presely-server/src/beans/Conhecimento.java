@@ -1,6 +1,8 @@
 package beans;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Map;
 
 /**
  * 
@@ -17,8 +19,18 @@ public class Conhecimento implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	private static int idConhecimentoGeral;
+	private int id;
 	private String nome;
 	private String descricao;
+	private ArrayList<Arquivo> arquivos ;
+	
+	public Conhecimento() {
+		id = idConhecimentoGeral ; 
+		arquivos = new ArrayList<Arquivo>();
+		
+		idConhecimentoGeral++;
+	}
 	
 	public String getNome() {
 		return nome;
@@ -26,6 +38,7 @@ public class Conhecimento implements Serializable {
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
+	
 	public String getDescricao() {
 		return descricao;
 	}
@@ -33,15 +46,20 @@ public class Conhecimento implements Serializable {
 		this.descricao = descricao;
 	}
 	
-	@Override
-	public boolean equals(Object obj){
-		return this.nome.equals(((Conhecimento)obj).nome);
+	public int hashCode() {
+		return id;
 	}
 	
-	@Override
-	public int hashCode(){
-		return this.nome.hashCode();
+	public ArrayList<Arquivo> getArquivos() {
+		return arquivos;
 	}
 	
+	public void setArquivos(ArrayList<Arquivo> arquivos) {
+		this.arquivos = arquivos;
+	}
+	
+	public void adcionaArquivo( Arquivo arquivo ){
+		arquivos.add(arquivo);		
+	}
 }
 

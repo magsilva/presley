@@ -37,8 +37,6 @@ public class StartPresleyServer {
 		/* setando serverBridge no servidor. */ 
 		PrincipalSUBJECT.facade(1099, trocaMsg);
 		System.out.println("\n...Servidor Iniciado Com Sucesso!!");
-		
-		
 	}
 	public static void main(String [] args){
 		StartPresleyServer server = new StartPresleyServer();

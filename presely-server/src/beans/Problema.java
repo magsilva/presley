@@ -3,6 +3,8 @@ package beans;
 import java.io.Serializable;
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 
@@ -27,8 +29,31 @@ public class Problema implements Serializable {
 	private TipoAtividade tipoAtividade;
 	private Date data;
 	private String mensagem;
-	private ArrayList<String> conhecimentos;
+	private Map<ClasseJava, ArquivoJava> classesRelacionadas ;
+	private Desenvolvedor desenvolvedorOrigem;
+	private Conhecimento conhecimento;
+
+	public Desenvolvedor getDesenvolvedorOrigem() {
+		return desenvolvedorOrigem;
+	}
+
+	public void setDesenvolvedorOrigem(Desenvolvedor desenvolvedorOrigem) {
+		this.desenvolvedorOrigem = desenvolvedorOrigem;
+	}
+
+	public Problema() {
+		classesRelacionadas = new HashMap<ClasseJava, ArquivoJava>();
+	}
 	
+	public Map<ClasseJava, ArquivoJava> getClassesRelacionadas() {
+		return classesRelacionadas;
+	}
+
+	public void setClassesRelacionadas(
+			Map<ClasseJava, ArquivoJava> classesRelacionadas) {
+		this.classesRelacionadas = classesRelacionadas;
+	}
+
 	public int getId() {
 		return id;
 	}
@@ -71,12 +96,15 @@ public class Problema implements Serializable {
 	public void setMensagem(String mensagem) {
 		this.mensagem = mensagem;
 	}
-	public ArrayList<String> getConhecimentos() {
-		return conhecimentos;
+
+	public Conhecimento getConhecimento() {
+		return conhecimento;
 	}
-	public void setConhecimentos(ArrayList<String> conhecimentos) {
-		this.conhecimentos = conhecimentos;
+
+	public void setConhecimento(Conhecimento conhecimento) {
+		this.conhecimento = conhecimento;
 	}
+	
 	
 }
 

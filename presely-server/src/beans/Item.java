@@ -10,11 +10,8 @@ import java.util.ArrayList;
  */
 public class Item implements Serializable{
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 20L;
-	private String nome;
+	private Conhecimento conhecimento;
 	private ArrayList<Item> filhos;
 	private Item pai;
 	
@@ -23,8 +20,8 @@ public class Item implements Serializable{
 	 * @param nome é o nome deste nó
 	 */
 	
-	public Item(Item pai, String nome){
-		this.nome=nome;
+	public Item(Item pai, Conhecimento conhecimento){
+		this.conhecimento=conhecimento;
 		this.pai=pai;
 		filhos = new ArrayList<Item>();
 	}
@@ -33,8 +30,8 @@ public class Item implements Serializable{
 	 * Retorna o nome deste nó
 	 * @return é o nome deste nó
 	 */
-	public String getNome(){
-		return nome;
+	public Conhecimento getConhecimento(){
+		return conhecimento;
 	}
 	
 	/**
@@ -60,10 +57,10 @@ public class Item implements Serializable{
 	 * @param nome é o nome do nó
 	 * @return o filho que tem o nome do parametro ou null se não existir
 	 */
-	public Item getFilho(String nome){
+	public Item getFilho(Conhecimento conhecimento){
 		Item filho = null;
 		for (Item item : filhos) {
-			if (item.getNome().equals(nome)) {
+			if (item.getConhecimento().getNome().equals(conhecimento.getNome())  ) {
 				filho = item;
 				break;
 			}
@@ -87,16 +84,16 @@ public class Item implements Serializable{
 	 * @param nome é o nome deste nó da árvore
 	 * @return true se foi adicionado com sucesso e false caso contrário
 	 */
-	public boolean adicionaFilho(String nome){
+	public boolean adicionaFilho(Conhecimento conhecimento){
 		try{
 			if (temFilhos()) {
 				for (Item item : filhos) {
-					if (item.getNome().equals(nome)) {
-						throw new Exception ("Já existe nó chamado ' "+nome+" '.");
+					if (item.getConhecimento().getNome().equals( conhecimento.getNome() )) {
+						throw new Exception ("Já existe nó chamado ' "+conhecimento.getNome()+" '.");
 					}
 				}	
 			}
-			filhos.add(new Item(this,nome));
+			filhos.add(new Item(this,conhecimento));
 		}catch(Exception e){
 			System.err.println("ERRO Item: "+e.getMessage());
 			return false;
@@ -109,14 +106,15 @@ public class Item implements Serializable{
 	 * @param nome é o nome do nó da árvore
 	 * @return true se foi removido com sucesso e false caso contrário
 	 */
-	public boolean removeFilho(String nome){
+	public boolean removeFilho(Conhecimento conhecimento){
 		int index = 0;
 		for (Item item : filhos) {
-			index++;
-			if (item.getNome().equals(nome)) {
+			
+			if (item.getConhecimento().getNome().equals( conhecimento.getNome() )) {
 				filhos.remove(index);
 				return true;
 			}
+			index++;
 		}
 		return false;
 	}

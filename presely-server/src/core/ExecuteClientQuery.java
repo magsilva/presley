@@ -9,6 +9,7 @@ package core;
 
 import inferencia.Inferencia;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -23,11 +24,14 @@ import excessao.EmailInvalidoException;
 import excessao.ErroDeAutenticacaoException;
 import excessao.ProblemaInexistenteException;
 import excessao.SenhaInvalidaException;
+import excessao.SolucaoIniexistenteException;
 import validacao.implementacao.ValidacaoAtividadeImpl;
 import validacao.implementacao.ValidacaoConhecimentoImpl;
 import validacao.implementacao.ValidacaoDesenvolvedorImpl;
 import validacao.implementacao.ValidacaoMensagemImpl;
 import validacao.implementacao.ValidacaoProblemaImpl;
+import validacao.implementacao.ValidacaoSolucaoImpl;
+import validacao.implementacao.ValidacaoUtil;
 
 import beans.BuscaDesenvolvedores;
 import beans.Conhecimento;
@@ -37,12 +41,18 @@ import beans.Desenvolvedor;
 import beans.Mensagem;
 import beans.Problema;
 import beans.ProblemaAtividade;
+import beans.Projeto;
 import beans.QualificacaoDesenvolvedor;
+import beans.Solucao;
 import beans.TipoAtividade;
 import beans.Tree;
 import core.interfaces.CorePresleyOperations;
 import facade.PacketStruct;
 
+/**
+ * @author Adm Cleyton
+ *
+ */
 public class ExecuteClientQuery implements CorePresleyOperations{
 
 
@@ -55,6 +65,7 @@ public class ExecuteClientQuery implements CorePresleyOperations{
 	ValidacaoProblemaImpl 	   validacaoProblema; 
 	ValidacaoDesenvolvedorImpl validacaoDesenvolvedor; 
 	ValidacaoMensagemImpl 	   validacaoMensagem;
+	ValidacaoSolucaoImpl       validacaoSolucao;
 
 	public ExecuteClientQuery() {
 		validacaoConhecimento  = new ValidacaoConhecimentoImpl();
@@ -62,6 +73,7 @@ public class ExecuteClientQuery implements CorePresleyOperations{
 		validacaoProblema 	   = new ValidacaoProblemaImpl();
 		validacaoDesenvolvedor = new ValidacaoDesenvolvedorImpl();
 		validacaoMensagem 	   = new ValidacaoMensagemImpl();
+		validacaoSolucao       = new ValidacaoSolucaoImpl();
 	}
 
 	/**
@@ -113,6 +125,7 @@ public class ExecuteClientQuery implements CorePresleyOperations{
 		validacaoAtividade.cadastrarAtividade(atividade);
 		return true;
 	}
+	
 	public boolean adicionaAtividade(TipoAtividade novaAtividade) throws EmailInvalidoException, DescricaoInvalidaException, DataInvalidaException, Exception {
 
 		validacaoAtividade.cadastrarAtividade(novaAtividade.getDesenvolvedor().getEmail(), 
@@ -181,11 +194,11 @@ public class ExecuteClientQuery implements CorePresleyOperations{
 	public boolean associaProblemaAtividade(Problema problema,
 			TipoAtividade atividade, 
 			ArrayList<Conhecimento> listaConhecimentos) throws DescricaoInvalidaException, AtividadeInexistenteException {
-
+/*
 		validacaoProblema.cadastrarProblema(atividade.getId(), problema.getDescricao(), 
 				problema.getData(), problema.getMensagem(), listaConhecimentos);
 
-		return true;
+*/		return true;
 	}
 
 	/**
@@ -233,6 +246,7 @@ public class ExecuteClientQuery implements CorePresleyOperations{
 		return true;
 	}
 
+
 	public boolean desassociaProblemaAtividade(PacketStruct packet) throws ProblemaInexistenteException {
 		if(packet.getData() == null) {
 			return false;
@@ -242,7 +256,20 @@ public class ExecuteClientQuery implements CorePresleyOperations{
 	}
 
 	public boolean desassociaProblemaAtividade(Problema problema) throws ProblemaInexistenteException {
-		return validacaoProblema.removerProblema(problema.getId());
+		return validacaoProblema.removerProblema(problema);
+	}
+	
+	
+	public boolean removerProblema(PacketStruct packet) throws ProblemaInexistenteException {
+		if(packet.getData() == null) {
+			return false;
+		}
+		Problema problema = (Problema)packet.getData();
+		return removerProblema(problema);
+	}
+
+	public boolean removerProblema(Problema problema) throws ProblemaInexistenteException {
+		return validacaoProblema.removerProblema(problema);
 	}
 
 	public boolean encerrarAtividade(PacketStruct packet) throws AtividadeInexistenteException {
@@ -358,8 +385,10 @@ public class ExecuteClientQuery implements CorePresleyOperations{
 		return Ontologia.getArvoreDeConhecimentos();
 	}
 
-	public ArrayList<Problema> getListaProblemas() {
-		ArrayList<Problema> listaProblemas = validacaoProblema.getListaProblema();
+	public ArrayList<Problema> getListaProblemas(PacketStruct packet) {
+		Desenvolvedor desenvolvedor = (Desenvolvedor) packet.getData();
+		
+		ArrayList<Problema> listaProblemas = validacaoProblema.getListaProblema(desenvolvedor);
 		return listaProblemas;
 	}
 
@@ -420,5 +449,146 @@ public class ExecuteClientQuery implements CorePresleyOperations{
 		return validacaoProblema.getConhecimentosAssociados(nomeProblema);
 	}
 
+	/**
+	 * 
+	 * @param packet
+	 * @return
+	 * @throws DescricaoInvalidaException 
+	 * @throws AtividadeInexistenteException 
+	 * @throws DescricaoInvalidaException 
+	 * @throws IOException 
+	 */
+	public boolean adicionaProblema(PacketStruct packet) throws DescricaoInvalidaException, IOException {
+		Problema problema = (Problema) packet.getData();
 
+		if (problema == null) {
+			System.out.println("NULL ><<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
+			return false;
+		}
+		
+		if(problema.getDesenvolvedorOrigem() == null) {
+			System.out.println("NULL DESENVOLVEDOR>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+			return false;
+		}
+		
+		return adicionaProblema(problema);
+	}
+	
+	public boolean adicionaProblema(Problema problema) throws DescricaoInvalidaException, IOException {
+		validacaoProblema.cadastrarProblema(problema);
+
+		return true;
+	}
+	
+	/**
+	 * 
+	 * @param packet
+	 * @return
+	 * @throws ProblemaInexistenteException 
+	 * @throws DesenvolvedorInexistenteException
+	 */
+	public Solucao adicionaSolucao(PacketStruct packet) throws ProblemaInexistenteException, DesenvolvedorInexistenteException {
+		Solucao solucao = (Solucao) packet.getData();
+
+		return adicionaSolucao( solucao );
+	}
+	
+	public Solucao adicionaSolucao(Solucao solucao) throws ProblemaInexistenteException, DesenvolvedorInexistenteException{
+		return validacaoSolucao.cadastrarSolucao(solucao);
+	}
+	
+	
+	/**
+	 * 
+	 * @param packet
+	 * @return
+	 * @throws ProblemaInexistenteException 
+	 * @throws ProblemaInexistenteException 
+	 * @throws DesenvolvedorInexistenteException
+	 */
+	public ArrayList<Solucao> listarSolucoesDoProblema(PacketStruct packet){
+		Problema problema = (Problema) packet.getData();
+		ArrayList<Solucao> listaDeSolucoes = new ArrayList<Solucao>();
+		
+		try {
+			listaDeSolucoes = listarSolucoesDoProblema( problema );
+		} catch (ProblemaInexistenteException e) {
+			e.printStackTrace();
+		}
+		
+		return listaDeSolucoes;
+	}
+	
+	public ArrayList<Solucao> listarSolucoesDoProblema(Problema problema) throws ProblemaInexistenteException{
+		return validacaoSolucao.listarSolucoesDoProblema(problema);
+	}
+	
+	public boolean atualizarStatusSolucao(PacketStruct packet) throws SolucaoIniexistenteException  {
+		Solucao solucao = (Solucao) packet.getData();
+		return atualizarStatusSolucao(solucao);
+	}
+	public boolean atualizarStatusSolucao(Solucao solucao) throws SolucaoIniexistenteException{
+		return validacaoSolucao.atualizarStatusDaSolucao(solucao.getId(), solucao.isAjudou());
+	}
+
+	
+	public boolean atualizarStatusProblema(PacketStruct packet) throws ProblemaInexistenteException  {
+		Problema problema = (Problema) packet.getData();
+		return atualizarStatusProblema(problema);
+	}
+	public boolean atualizarStatusProblema(Problema problema) throws ProblemaInexistenteException {
+		return validacaoProblema.atualizarStatusDoProblema(problema.getId(), problema.isResolvido());
+	}
+	
+	public boolean atualizarSolucao(PacketStruct packet) throws ProblemaInexistenteException, DesenvolvedorInexistenteException {
+		Solucao solucao = (Solucao) packet.getData();
+		return atualizarSolucao(solucao);
+	}
+	public boolean atualizarSolucao(Solucao solucao) throws ProblemaInexistenteException, DesenvolvedorInexistenteException  {
+		return validacaoSolucao.atualizarStatusDoProblema(solucao);
+	}
+	
+
+	/**
+	 * @param packet
+	 * @return
+	 * @throws DesenvolvedorInexistenteException 
+	 */
+	public ArrayList<Solucao> listarSolucoesRetornadasDoDesenvolvedor(PacketStruct packet)
+	throws DesenvolvedorInexistenteException{
+		Desenvolvedor desenvolvedor = (Desenvolvedor) packet.getData();
+		ArrayList<Solucao> listaDeSolucoes = new ArrayList<Solucao>();
+		
+		listaDeSolucoes = listarSolucoesRetornadasDoDesenvolvedor( desenvolvedor );
+		
+		return listaDeSolucoes;
+	}
+	
+	public ArrayList<Solucao> listarSolucoesRetornadasDoDesenvolvedor(Desenvolvedor desenvolvedor)
+	throws DesenvolvedorInexistenteException{
+		return validacaoSolucao.listarSolucoesRetornadasDoDesenvolvedor(desenvolvedor);
+	}
+	
+
+	/**
+	 * 
+	 * @param packet
+	 * @return
+	 * @throws IOException 
+	 * @throws ConhecimentoInexistenteException 
+	 */
+	public Conhecimento associaArquivo(PacketStruct packet) throws ConhecimentoInexistenteException, IOException  {
+		Conhecimento conhecimento = (Conhecimento) packet.getData();
+
+		return associaArquivo(conhecimento);
+	}
+	
+	public Conhecimento associaArquivo(Conhecimento conhecimento) throws ConhecimentoInexistenteException, IOException {
+		return validacaoConhecimento.associaArquivo(conhecimento);
+	}
+
+	public Projeto getProjetoAtivo()  {
+		return ValidacaoUtil.getProjetoAtivo();
+	}
+	
 }

@@ -6,11 +6,19 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 import persistencia.MySQLConnectionFactory;
 import persistencia.interfaces.ServicoAtividade;
+import persistencia.interfaces.ServicoConhecimento;
+import persistencia.interfaces.ServicoDesenvolvedor;
 import persistencia.interfaces.ServicoProblema;
+import beans.ArquivoJava;
+import beans.ClasseJava;
 import beans.Conhecimento;
+import beans.Desenvolvedor;
 import beans.Problema;
 
 public class ServicoProblemaImplDAO implements ServicoProblema{
@@ -54,36 +62,49 @@ public class ServicoProblemaImplDAO implements ServicoProblema{
 
 	}
 
-	public boolean cadastrarProblema(int idAtividade, String descricao,
-			Date dataDoRelato, String mensagem, ArrayList<Conhecimento> conhecimentosAssociados) {
+	public boolean cadastrarProblema(Problema problema) {
 
 		//Connection conn = MySQLConnectionFactory.getConnection();
 		Connection conn = MySQLConnectionFactory.open();
 		
-		for(Conhecimento c  : conhecimentosAssociados)
-			System.out.println("chamada3 >>>>>>>>>>>>>>>>>>>>>> " + c.getNome());
-
+		Map<ClasseJava, ArquivoJava> arquivosAssociados = new HashMap<ClasseJava, ArquivoJava>();
+		arquivosAssociados = problema.getClassesRelacionadas();
 
 		Statement stm = null;
 
 		try {
-
 			stm = conn.createStatement();
 
-			String SQL = " INSERT INTO problema(atividade_id,descricao,dataRelato,mensagem) " +
-			" VALUES("+idAtividade+",'"+descricao+"','"+dataDoRelato+"','"+mensagem+"');";	
+			String SQL = " INSERT INTO problema(descricao,dataRelato,mensagem,desenvolvedor_email, resolvido, conhecimento_nome) " +
+			" VALUES ('"+problema.getDescricao()+"','"+problema.getData()+"','"+problema.getMensagem()+"', '"+
+			problema.getDesenvolvedorOrigem().getEmail()+"', 0, '"+ problema.getConhecimento().getNome() +"');";	
 			System.out.println(SQL);
 			stm.execute(SQL);
 
-			for(Conhecimento conhecimento: conhecimentosAssociados) {
-				SQL = "INSERT INTO problema_has_conhecimento(atividade_id,conhecimento_nome,problema_nome) " + 
-				"VALUES ( " + idAtividade+",'"+conhecimento.getNome()+"','"+ descricao + "');" ;
-				System.out.println(SQL);
-				stm.execute(SQL);
-			}	
+			SQL = " SELECT id FROM problema"+
+			" WHERE descricao = '"+problema.getDescricao()+"' AND dataRelato = '"+problema.getData()+"' AND "+
+			" mensagem = '"+problema.getMensagem()+"' AND desenvolvedor_email = '"+problema.getDesenvolvedorOrigem().getEmail()+"';";	
+			System.out.println(SQL);
+			ResultSet rs = stm.executeQuery(SQL);
+			
+			if (rs.next()){
+				problema.setId( rs.getInt("id") );
+				
+				//percorre o map  
+				for (Iterator<ClasseJava> it = arquivosAssociados.keySet().iterator(); it.hasNext();) {  
+					ClasseJava classe = it.next();  
+					ArquivoJava arquivoJava = arquivosAssociados.get(classe);  
+
+					SQL = "INSERT INTO problema_has_classe(problema_id, arquivo_id, classe) " + 
+					" VALUES ( " + problema.getId()+",'"+arquivoJava.getId()+"','"+ classe.getNomeClasse() + "');" ;
+					System.out.println(SQL);
+					stm.execute(SQL);
+				} 
+			}
+	         
 
 		} catch (SQLException e) {
-			//e.printStackTrace();
+			e.printStackTrace();
 			return false;
 		} finally {
 			try {
@@ -149,7 +170,7 @@ public class ServicoProblemaImplDAO implements ServicoProblema{
 
 	}
 
-	public boolean removerProblema(int id) {
+	public boolean removerProblema(Problema problema) {
 
 		//Connection conn = MySQLConnectionFactory.getConnection();
 		Connection conn = MySQLConnectionFactory.open();
@@ -160,10 +181,13 @@ public class ServicoProblemaImplDAO implements ServicoProblema{
 
 			stm = conn.createStatement();
 
-			if (this.problemaExiste(id)){
-				String SQL = " DELETE FROM problema WHERE " +
-				" id = "+id+";";
-
+			if (this.problemaExiste(problema.getId())){
+				
+				String SQL = "DELETE FROM problema_has_classe WHERE problema_id = " + problema.getId() + ";" ;
+				System.out.println(SQL);
+				stm.execute(SQL);
+				
+				SQL = " DELETE FROM problema WHERE id = "+problema.getId()+";";
 				stm.execute(SQL);
 				return true;
 
@@ -229,14 +253,15 @@ public class ServicoProblemaImplDAO implements ServicoProblema{
 
 		Statement stm = null;
 
-		ServicoAtividade sa = new ServicoAtividadeImplDAO();
+		ServicoDesenvolvedor sd = new ServicoDesenvolvedorImplDAO();
+		ServicoConhecimento servicoConhecimento = new ServicoConhecimentoImplDAO();
 
 		try {
 
 			stm = conn.createStatement();
 
-			String SQL = " SELECT * FROM problema WHERE "+
-			" id = "+id+";";
+			String SQL = " SELECT id, desenvolvedor_email, descricao, resolvido, dataRelato, mensagem, conhecimento_nome "+
+			" FROM problema WHERE id = "+id+";";
 
 
 			ResultSet rs = stm.executeQuery(SQL);
@@ -245,13 +270,14 @@ public class ServicoProblemaImplDAO implements ServicoProblema{
 
 				Problema p = new Problema();
 
-				p.setId(rs.getInt(1));
-				p.setAtividade(sa.getAtividade(rs.getInt(2)));
-				p.setDescricao(rs.getString(3));
-				p.setResolvido(rs.getBoolean(4));
-				p.setData(rs.getDate(5));
-				p.setMensagem(rs.getString(6));
+				p.setId( rs.getInt("id") );
+				p.setDescricao( rs.getString("descricao") );
+				p.setResolvido( rs.getBoolean("resolvido") );
+				p.setData( rs.getDate("dataRelato") );
+				p.setMensagem( rs.getString("mensagem") );
+				p.setDesenvolvedorOrigem( sd.getDesenvolvedor( rs.getString("desenvolvedor_email") ) ) ;
 
+				p.setConhecimento( servicoConhecimento.getConhecimento(rs.getString("conhecimento_nome")) );
 				return p;
 			}else{
 				return null;
@@ -271,7 +297,7 @@ public class ServicoProblemaImplDAO implements ServicoProblema{
 		}
 	}
 
-	public ArrayList<Problema> getListaProblemas() {
+	public ArrayList<Problema> getListaProblemas(Desenvolvedor desenvolvedor) {
 		//Connection conn = MySQLConnectionFactory.getConnection();
 		Connection conn = MySQLConnectionFactory.open();
 
@@ -279,13 +305,14 @@ public class ServicoProblemaImplDAO implements ServicoProblema{
 
 		ArrayList<Problema> list = new ArrayList<Problema>();
 		ServicoAtividade sa = new ServicoAtividadeImplDAO();
-
+		ServicoDesenvolvedor sd = new ServicoDesenvolvedorImplDAO();
+		ServicoConhecimento sc = new ServicoConhecimentoImplDAO();
 		try {
 
 			stm = conn.createStatement();
 
-			String SQL = " SELECT * FROM problema";
-
+			String SQL = " SELECT id, desenvolvedor_email, descricao, resolvido, dataRelato, mensagem, conhecimento_nome" +
+					" FROM problema WHERE resolvido = 0 and desenvolvedor_email = '"+ desenvolvedor.getEmail() +"' ORDER BY descricao;";
 
 			ResultSet rs = stm.executeQuery(SQL);
 
@@ -293,13 +320,14 @@ public class ServicoProblemaImplDAO implements ServicoProblema{
 
 				Problema p = new Problema();
 
-				p.setId(rs.getInt(1));
-				p.setAtividade(sa.getAtividade(rs.getInt(2)));
-				p.setDescricao(rs.getString(3));
-				p.setResolvido(rs.getBoolean(4));
-				p.setData(rs.getDate(5));
-				p.setMensagem(rs.getString(6));
-
+				p.setId(rs.getInt("id"));
+				p.setDesenvolvedorOrigem( sd.getDesenvolvedor(rs.getString("desenvolvedor_email")));
+				p.setDescricao(rs.getString("descricao"));
+				p.setResolvido(rs.getBoolean("resolvido"));
+				p.setData(rs.getDate("dataRelato"));
+				p.setMensagem(rs.getString("mensagem"));
+				p.setConhecimento( sc.getConhecimento(rs.getString("conhecimento_nome")) );
+				
 				list.add(p);
 
 			}

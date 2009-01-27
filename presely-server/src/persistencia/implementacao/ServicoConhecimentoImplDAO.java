@@ -5,11 +5,17 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.Set;
 
+import beans.Arquivo;
 import beans.Conhecimento;
+import beans.Desenvolvedor;
 
 import persistencia.MySQLConnectionFactory;
+import persistencia.interfaces.ServicoArquivo;
 import persistencia.interfaces.ServicoConhecimento;
+import persistencia.interfaces.ServicoDesenvolvedor;
 import excessao.ConhecimentoInexistenteException;
 
 /**
@@ -21,6 +27,8 @@ import excessao.ConhecimentoInexistenteException;
  */
 
 public class ServicoConhecimentoImplDAO implements ServicoConhecimento{
+	ServicoArquivo servicoArquivo= new ServicoArquivoImplDAO();
+	ServicoDesenvolvedor servicoDesenvolvedor = new ServicoDesenvolvedorImplDAO();
 
 	public boolean atualizarConhecimento(String nome, String novoNome,
 			String descricao) {
@@ -179,11 +187,10 @@ public class ServicoConhecimentoImplDAO implements ServicoConhecimento{
 			stm = conn.createStatement();
 			String SQL = ""; 	
 			if (nome != null) {
-
-				SQL = " SELECT * FROM conhecimento WHERE "+
+				SQL = " SELECT nome, descricao FROM conhecimento WHERE "+
 				" nome = '"+nome+"';";
 			} else {
-				SQL = " SELECT * FROM conhecimento;";
+				SQL = " SELECT nome, descricao FROM conhecimento;";
 			}
 
 			System.out.println(SQL);
@@ -193,9 +200,21 @@ public class ServicoConhecimentoImplDAO implements ServicoConhecimento{
 
 				Conhecimento conhecimento = new Conhecimento();
 
-				conhecimento.setNome(rs.getString(1));
-				conhecimento.setDescricao(rs.getString(2));
+				conhecimento.setNome(rs.getString("nome"));
+				conhecimento.setDescricao(rs.getString("descricao"));
+				nome = rs.getString("nome") ;
+				
+				SQL = " SELECT arquivo_id, arquivo_nome, endereco_servidor FROM conhecimento_has_arquivo" +
+				" INNER JOIN arquivo ON id = arquivo_id" +
+				" WHERE conhecimento_nome = '"+nome+"';";
+				rs = stm.executeQuery(SQL);
 
+				while (rs.next()) {
+					Arquivo arquivo = new Arquivo( rs.getString("arquivo_nome") );
+					arquivo.setEnderecoServidor(rs.getString("endereco_servidor"));
+					conhecimento.adcionaArquivo( servicoArquivo.getArquivo(arquivo) ) ;
+				}
+					
 				return conhecimento;
 
 			}else{
@@ -389,14 +408,14 @@ public class ServicoConhecimentoImplDAO implements ServicoConhecimento{
 			stm = conn.createStatement();
 			String SQL = ""; 	
 
-			SQL = " SELECT * FROM conhecimento;";
+			SQL = " SELECT nome, descricao FROM conhecimento;";
 
 			System.out.println(SQL);
 			ResultSet rs = stm.executeQuery(SQL);
 
 			while (rs.next()){
 
-				String nomeConhecimentoPai = rs.getString(1);
+				String nomeConhecimentoPai = rs.getString("nome");
 				Conhecimento conhecimento = getConhecimento(nomeConhecimentoPai);
 				
 				System.out.println("Adicionando novo conhecimento a lista");
@@ -421,6 +440,90 @@ public class ServicoConhecimentoImplDAO implements ServicoConhecimento{
 		}
 
 		return list;
+	}
+
+	public boolean associaArquivo(Conhecimento conhecimento, Arquivo arquivo) {
+
+		//Connection conn = MySQLConnectionFactory.getConnection();
+		Connection conn = MySQLConnectionFactory.open();
+		
+		Statement stm = null;
+
+		try {
+
+			stm = conn.createStatement();
+
+			String SQL = " INSERT INTO conhecimento_has_arquivo (conhecimento_nome, arquivo_id)" +
+			" VALUES ('"+conhecimento.getNome()+"',"+ arquivo.getId()+");";
+
+			stm.execute(SQL);
+		} catch (SQLException e) {
+			//e.printStackTrace();
+			return false;
+		} finally {
+			try {
+				stm.close();
+				conn.close();
+			} catch (SQLException onConClose) {
+				System.out.println(" Houve erro no fechamento da conexão ");
+				onConClose.printStackTrace();	             
+			}
+		}
+
+		return true;
+	}
+
+	
+	public ArrayList<Desenvolvedor> getContribuintesConhecimento(Conhecimento conhecimento){
+		// O ArrayList tem que permitir repetições
+		ArrayList<Desenvolvedor> retorno = new ArrayList<Desenvolvedor>();
+		
+		Connection conn = MySQLConnectionFactory.open();
+		
+		Statement stm = null;
+
+		try {
+
+			stm = conn.createStatement();
+			String SQL = ""; 	
+
+			// Retorna os desenvolvedores que já tiveram problemas relacionados a esse conhecimento 
+			SQL = "SELECT desenvolvedor_email FROM problema " +
+ 					" WHERE resolvido = 1 and conhecimento_nome = '"+ conhecimento.getNome() +"'";
+
+			ResultSet rs = stm.executeQuery(SQL);
+
+			while (rs.next()){
+				Desenvolvedor desenvolvedor = servicoDesenvolvedor.getDesenvolvedor( rs.getString("desenvolvedor_email") ) ;
+				retorno.add(desenvolvedor);
+			}
+
+			// Retorna os desenvolvedores com contribuições aos problemas neste conhecimeto
+			SQL = "SELECT s.desenvolvedor_email FROM problema p " +
+					" INNER JOIN solucao s ON s.problema_id = p.id AND s.resolveu = 1 " +
+					" WHERE p.conhecimento_nome = '"+ conhecimento.getNome() +"' " ;
+
+			while (rs.next()){
+				Desenvolvedor desenvolvedor = servicoDesenvolvedor.getDesenvolvedor( rs.getString("desenvolvedor_email") ) ;
+				retorno.add(desenvolvedor);
+			}
+		} catch (SQLException e) {
+			//e.printStackTrace();
+			return null;
+		} catch (NullPointerException e) {
+			System.out.println("NullPointerException na classe ServicoConhecimentoImplDAO..");
+			e.printStackTrace();
+		} finally {
+			try {
+				stm.close();
+				conn.close();	            
+			} catch (SQLException onConClose) {
+				System.out.println(" Houve erro no fechamento da conexão ");
+				onConClose.printStackTrace();	             
+			}
+		}
+
+		return new ArrayList<Desenvolvedor>();
 	}
 
 }

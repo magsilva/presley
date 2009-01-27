@@ -88,13 +88,13 @@ public class ServicoAtividadeImplDAOTest extends TestCase {
 		Date dataFim2 = new Date(cal.getTimeInMillis());
 		
 		assertTrue(sa.cadastrarAtividade("asju@gmail.com", "amilcarsj@gmail.com", "Criar Relatorio",
-				dataInicio, dataFim));
+				dataInicio, dataFim) == 1);
 		
 		assertTrue(sa.cadastrarAtividade("amilcarsj@gmail.com", "asju@gmail.com", "Executar testes",
-				dataInicio2, dataFim2));
+				dataInicio2, dataFim2) == 1);
 		
 		assertTrue(sa.cadastrarAtividade("amilcarsj@gmail.com", "asju@gmail.com", "Criar testes",
-				dataInicio2, dataFim2));
+				dataInicio2, dataFim2) == 1);
 						
 	}
 	

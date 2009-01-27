@@ -305,26 +305,26 @@ public class Ontologia {
          */
         public static boolean incrementaRespostasDesenvolvedor(Desenvolvedor desenvolvedor, boolean foiUtil, ArrayList<String> conhecimentos) throws ConhecimentoInexistenteException, DesenvolvedorInexistenteException{
 
-                if(foiUtil){
-                        String email = desenvolvedor.getEmail();
-                        System.out.println(">>>>>>>>>>>>>>>>>>>>>>Email do desenvolvedor: "+email);
-                        System.out.println("Tamanho dos conhecimentos: "+conhecimentos.size());
-                        
-                        for(String conhecimentoAtividade : conhecimentos){
-                        		
-                                int quantidade = validacaoDesenvolvedor.getQntResposta(email, conhecimentoAtividade) + 1;
-                                System.out.println("Desenvolvedor: "+email+" no conhecimento "+conhecimentoAtividade+" tinha valor: "+ validacaoDesenvolvedor.getQntResposta(email, conhecimentoAtividade)+ " e agora vai pra: "+quantidade);
-                                boolean resposta = validacaoDesenvolvedor.updateQntResposta(email, conhecimentoAtividade, quantidade);
-                                System.out.println(resposta);
-                                if(!resposta)
-                                return false;
+        	if(foiUtil){
+        		String email = desenvolvedor.getEmail();
+        		System.out.println(">>>>>>>>>>>>>>>>>>>>>>Email do desenvolvedor: "+email);
+        		System.out.println("Tamanho dos conhecimentos: "+conhecimentos.size());
 
-                        }
+        		for(String conhecimentoAtividade : conhecimentos){
 
-                        return true;
+        			int quantidade = validacaoDesenvolvedor.getQntResposta(email, conhecimentoAtividade) + 1;
+//        			System.out.println("Desenvolvedor: "+email+" no conhecimento "+conhecimentoAtividade+" tinha valor: "+ validacaoDesenvolvedor.getQntResposta(email, conhecimentoAtividade)+ " e agora vai pra: "+quantidade);
+        			boolean resposta = validacaoDesenvolvedor.updateQntResposta(email, conhecimentoAtividade, quantidade);
+//        			System.out.println(resposta);
+        			if(!resposta)
+        				return false;
 
-                }
-                return false;
+        		}
+
+        		return true;
+
+        	}
+        	return false;
         }
 
 
@@ -335,25 +335,20 @@ public class Ontologia {
          * @return true se o grau foi incrementado.
          */
         public static boolean atualizaConhecimentosDesenvolvedor(Desenvolvedor desenvolvedor, ArrayList<Conhecimento> conhecimentos){
-                String email = desenvolvedor.getEmail();
+        	String email = desenvolvedor.getEmail();
 
-                for(Conhecimento conhecimento : conhecimentos){                
-                        try{
+        	for(Conhecimento conhecimento : conhecimentos){                
+        		try{
+        			int grau = validacaoDesenvolvedor.getGrau(email, conhecimento.getNome()) + 1;
+        			validacaoDesenvolvedor.updateGrau(email, conhecimento.getNome(), grau);
+        		} catch (DesenvolvedorInexistenteException e){
+        			return false;
+        		} catch (ConhecimentoInexistenteException e){
+        			return false;
+        		}
+        	}
 
-                                int grau = validacaoDesenvolvedor.getGrau(email, conhecimento.getNome()) + 1;
-                                validacaoDesenvolvedor.updateGrau(email, conhecimento.getNome(), grau);
-
-                        } catch(DesenvolvedorInexistenteException e){
-                                return false;
-                        }
-                        catch(ConhecimentoInexistenteException e){
-                                return false;
-                        }
-
-                }
-
-                return true;
-
+        	return true;
         }
 
         /**
@@ -364,44 +359,46 @@ public class Ontologia {
          * @throws ConhecimentoInexistenteException
          */
         public static Tree getArvoreDeConhecimentos() throws ConhecimentoInexistenteException {
-                Tree arvore = new Tree("Raiz");
-               
-                ArrayList<Conhecimento> filhosDoRaiz = new ArrayList<Conhecimento>();
-                System.out.println("Numero de Filhos do raiz = " + filhosDoRaiz.size()); //teste
-                validacaoConhecimento = new ValidacaoConhecimentoImpl();
-               
-                ArrayList<Conhecimento> conhecimentos = validacaoConhecimento.getListaConhecimento();
-                System.out.println("Numero de conhrcimentos no banco = " + conhecimentos.size());
-                Iterator<Conhecimento> it = conhecimentos.iterator();
+        	Conhecimento conhecimentoRaiz =  new Conhecimento();
+        	conhecimentoRaiz.setNome("Raiz") ;
+        	Tree arvore = new Tree( conhecimentoRaiz );
 
-                // Buscando os conhecimentos que nao possuem pais (ou seja, os filhos do raiz).
-                while (it.hasNext()) {
-                        Conhecimento conhecimento = it.next();
-                        ArrayList<Conhecimento> paisDoConhecimento = null;
+        	ArrayList<Conhecimento> filhosDoRaiz = new ArrayList<Conhecimento>();
+//        	System.out.println("Numero de Filhos do raiz = " + filhosDoRaiz.size()); //teste
+        	validacaoConhecimento = new ValidacaoConhecimentoImpl();
 
-                        paisDoConhecimento = validacaoConhecimento.getPais(conhecimento.getNome());
+        	ArrayList<Conhecimento> conhecimentos = validacaoConhecimento.getListaConhecimento();
+//        	System.out.println("Numero de conhrcimentos no banco = " + conhecimentos.size());
+        	Iterator<Conhecimento> it = conhecimentos.iterator();
 
-                        if (paisDoConhecimento.size() == 0) {
-                                filhosDoRaiz.add(conhecimento);
-                        }
-                }
+        	// Buscando os conhecimentos que nao possuem pais (ou seja, os filhos do raiz).
+        	while (it.hasNext()) {
+        		Conhecimento conhecimento = it.next();
+        		ArrayList<Conhecimento> paisDoConhecimento = null;
 
-                // Adicionando os filhos do raiz.
-                Iterator<Conhecimento> it2 = filhosDoRaiz.iterator();
-                while (it2.hasNext()) {
-                        Conhecimento conhecimento = it2.next();
-                        arvore.adicionaFilho(conhecimento.getNome());
-                }
+        		paisDoConhecimento = validacaoConhecimento.getPais(conhecimento.getNome());
 
-                // Obtendo as sub-árvores para montar a arvore completa.
-                Iterator<Conhecimento> it3 = filhosDoRaiz.iterator();
-                while (it3.hasNext()) {
-                        Conhecimento filhoDoRaiz = it3.next();
-                        Item item = arvore.getFilho(filhoDoRaiz.getNome());
-                        montaSubArvore(item);
-                }
+        		if (paisDoConhecimento.size() == 0) {
+        			filhosDoRaiz.add(conhecimento);
+        		}
+        	}
 
-                return arvore;
+        	// Adicionando os filhos do raiz.
+        	Iterator<Conhecimento> it2 = filhosDoRaiz.iterator();
+        	while (it2.hasNext()) {
+        		Conhecimento conhecimento = it2.next();
+        		arvore.adicionaFilho(conhecimento);
+        	}
+
+        	// Obtendo as sub-árvores para montar a arvore completa.
+        	Iterator<Conhecimento> it3 = filhosDoRaiz.iterator();
+        	while (it3.hasNext()) {
+        		Conhecimento filhoDoRaiz = it3.next();
+        		Item item = arvore.getFilho(filhoDoRaiz);
+        		montaSubArvore(item);
+        	}
+
+        	return arvore;
         }
 
         /**
@@ -412,20 +409,20 @@ public class Ontologia {
          * @throws ConhecimentoInexistenteException
          */
         private static void montaSubArvore(Item itemPai) throws ConhecimentoInexistenteException {
-                String nomeItemPai = itemPai.getNome();
-                Conhecimento conhecimento = validacaoConhecimento.getConhecimento(nomeItemPai);
+        	String nomeItemPai = itemPai.getConhecimento().getNome();
+        	Conhecimento conhecimento = validacaoConhecimento.getConhecimento(nomeItemPai);
 
 
-                ArrayList<Conhecimento> filhos = validacaoConhecimento.getFilhos(conhecimento.getNome());
-                if (filhos.size() != 0) {
-                        Iterator<Conhecimento> it1 = filhos.iterator();
+        	ArrayList<Conhecimento> filhos = validacaoConhecimento.getFilhos(conhecimento.getNome());
+        	if (filhos.size() != 0) {
+        		Iterator<Conhecimento> it1 = filhos.iterator();
 
-                        while (it1.hasNext()) {
-                                Conhecimento filho = it1.next();
-                                itemPai.adicionaFilho(filho.getNome());
-                                Item itemFilho = itemPai.getFilho(filho.getNome());
-                                montaSubArvore(itemFilho);
-                        }
-                }
+        		while (it1.hasNext()) {
+        			Conhecimento filho = it1.next();
+        			itemPai.adicionaFilho(filho);
+        			Item itemFilho = itemPai.getFilho(filho);
+        			montaSubArvore(itemFilho);
+        		}
+        	}
         }
 }

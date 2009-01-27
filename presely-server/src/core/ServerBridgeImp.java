@@ -1,5 +1,6 @@
 package core;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import beans.DadosAutenticacao;
@@ -16,6 +17,7 @@ import excessao.EmailInvalidoException;
 import excessao.ErroDeAutenticacaoException;
 import excessao.ProblemaInexistenteException;
 import excessao.SenhaInvalidaException;
+import excessao.SolucaoIniexistenteException;
 import facade.PacketStruct;
 
 /**
@@ -304,7 +306,7 @@ public class ServerBridgeImp implements ServerBridge {
 			// Packet tipo 19: GET_LISTA_PROBLEMAS
 		case CorePresleyOperations.GET_LISTA_PROBLEMAS:
 			try {
-				retorno = executeClientQuery.getListaProblemas();
+				retorno = executeClientQuery.getListaProblemas(packet);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -370,6 +372,119 @@ public class ServerBridgeImp implements ServerBridge {
 			typeRetorno = CorePresleyOperations.BUSCA_CONHECIMENTOS_PROBLEMA;
 			pktRetorno = new PacketStruct(retorno, typeRetorno);
 			break;
+			// Packet tipo 26: ADICIONA_PROBLEMA
+		case CorePresleyOperations.ADICIONA_PROBLEMA:
+			try {
+				retorno = executeClientQuery.adicionaProblema(packet);
+				typeRetorno = CorePresleyOperations.ADICIONA_PROBLEMA;
+			} catch (DescricaoInvalidaException e1) {
+				retorno = "ERRO: Problema Existente.";
+				e1.printStackTrace();
+			} catch (IOException e1) {
+				retorno = "ERRO: Arquivo Inexistente.";
+				e1.printStackTrace();
+			}
+			pktRetorno = new PacketStruct(retorno, typeRetorno);
+			break;				
+			// Packet tipo 27: REMOVER_PROBLEMA
+		case CorePresleyOperations.REMOVER_PROBLEMA:
+			try {
+				retorno     = executeClientQuery.removerProblema(packet);
+				typeRetorno = CorePresleyOperations.REMOVER_PROBLEMA;
+			} catch ( ProblemaInexistenteException e1) {
+				retorno = "ERRO: Problema inexistente.";
+				e1.printStackTrace();
+			}
+			pktRetorno = new PacketStruct(retorno, typeRetorno);
+			break;				
+			// Packet tipo 28: ADICIONA_SOLUCAO
+		case CorePresleyOperations.ADICIONA_SOLUCAO:
+			try {
+				retorno     = executeClientQuery.adicionaSolucao(packet);
+				typeRetorno = CorePresleyOperations.ADICIONA_SOLUCAO;
+			} catch ( DesenvolvedorInexistenteException e1) {
+				retorno = "ERRO: Desenvolvedor inexistente.";
+				e1.printStackTrace();
+			} catch ( ProblemaInexistenteException e1) {
+				retorno = "ERRO: Problema inexistente.";
+				e1.printStackTrace();
+			}
+			pktRetorno = new PacketStruct(retorno, typeRetorno);
+			break;				
+			// Packet tipo 29: GET_LISTA_SOLUCOES_PROBLEMA
+		case CorePresleyOperations.GET_LISTA_SOLUCOES_PROBLEMA:
+			retorno     = executeClientQuery.listarSolucoesDoProblema(packet);
+			typeRetorno = CorePresleyOperations.GET_LISTA_SOLUCOES_PROBLEMA;
+			pktRetorno = new PacketStruct(retorno, typeRetorno);
+			break;				
+			// Packet tipo 30: ATUALIZAR_STATUS_SOLUCAO
+		case CorePresleyOperations.ATUALIZAR_STATUS_SOLUCAO:
+			try {
+				retorno     = executeClientQuery.atualizarStatusSolucao(packet);
+				typeRetorno = CorePresleyOperations.ATUALIZAR_STATUS_SOLUCAO;
+			} catch ( SolucaoIniexistenteException e1) {
+				retorno = "ERRO: Solucao inexistente.";
+				e1.printStackTrace();
+			}
+			pktRetorno = new PacketStruct(retorno, typeRetorno);
+			break;				
+			// Packet tipo 31: ATUALIZAR_STATUS_PROBLEMA
+		case CorePresleyOperations.ATUALIZAR_STATUS_PROBLEMA:
+			try {
+				retorno     = executeClientQuery.atualizarStatusProblema(packet);
+				typeRetorno = CorePresleyOperations.ATUALIZAR_STATUS_PROBLEMA;
+			} catch ( ProblemaInexistenteException e1) {
+				retorno = "ERRO: Problema inexistente.";
+				e1.printStackTrace();
+			}
+			pktRetorno = new PacketStruct(retorno, typeRetorno);
+			break;				
+			// Packet tipo 32: ATUALIZAR_SOLUCAO
+		case CorePresleyOperations.ATUALIZAR_SOLUCAO:
+			try {
+				retorno     = executeClientQuery.atualizarSolucao(packet);
+				typeRetorno = CorePresleyOperations.ATUALIZAR_SOLUCAO;
+			} catch ( ProblemaInexistenteException e1) {
+				retorno = "ERRO: Problema inexistente.";
+				e1.printStackTrace();
+			} catch (DesenvolvedorInexistenteException e) {
+				retorno = "ERRO: Desenvolvedor inexistente.";
+				e.printStackTrace();
+			}
+			pktRetorno = new PacketStruct(retorno, typeRetorno);
+			break;				
+			// Packet tipo 33: GET_LISTA_SOLUCOES_RETORNADAS
+		case CorePresleyOperations.GET_LISTA_SOLUCOES_RETORNADAS:
+			try {
+				retorno = executeClientQuery.listarSolucoesRetornadasDoDesenvolvedor(packet);
+			} catch (DesenvolvedorInexistenteException e) {
+				e.printStackTrace();
+			}
+			typeRetorno = CorePresleyOperations.GET_LISTA_SOLUCOES_RETORNADAS;
+
+			pktRetorno = new PacketStruct(retorno, typeRetorno);
+			break;
+			// Packet tipo 34: ASSOCIA_ARQUIVOS_CONHECIMENTO
+		case CorePresleyOperations.ASSOCIA_ARQUIVO_CONHECIMENTO:
+			try {
+				retorno     = executeClientQuery.associaArquivo(packet);
+				typeRetorno = CorePresleyOperations.ASSOCIA_ARQUIVO_CONHECIMENTO;
+			} catch (ConhecimentoInexistenteException e) {
+				retorno = "ERRO: Conhecimento inexistente.";
+				e.printStackTrace();
+			} catch (IOException e) {
+				retorno = "ERRO: Arquivo não encontrado.";
+				e.printStackTrace();
+			}
+			pktRetorno = new PacketStruct(retorno, typeRetorno);
+			break;				
+			// Packet tipo 35: GET_ONTOLOGIA
+		case CorePresleyOperations.GET_PROJETO:
+			retorno = executeClientQuery.getProjetoAtivo();
+			typeRetorno = CorePresleyOperations.GET_PROJETO;
+
+			pktRetorno = new PacketStruct(retorno, typeRetorno);
+			break;				
 		}
 		
 		return pktRetorno;

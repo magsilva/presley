@@ -3,6 +3,10 @@ package persistencia.interfaces;
 import java.sql.Date;
 import java.util.ArrayList;
 
+import excessao.ProblemaInexistenteException;
+
+import beans.Desenvolvedor;
+import beans.Problema;
 import beans.Solucao;
 
 public interface ServicoSolucao {
@@ -14,10 +18,9 @@ public interface ServicoSolucao {
 	 * @param idProblema Identificador do problema
 	 * @param dataDaProposta Data em que a solucao foi proposta.
 	 * @param mensagem Mensagem da solução sugerida.
-	 * @return true se a solucao foi cadastrada na base de dados.
+	 * @return Solucao solucao cadastrada na base de dados.
 	 */
-	public boolean cadastrarSolucao(String emailDesenvolvedor, int idProblema, 
-			Date dataDaProposta, String mensagem);
+	public Solucao cadastrarSolucao(Solucao solucao);
 	
 	/**
 	 * Esse método atualiza a situacao de uma solução, ou seja, se ela foi útil ou
@@ -43,6 +46,15 @@ public interface ServicoSolucao {
 	 */
 	public ArrayList<Solucao> listarSolucoesDoDesenvolvedor(String emailDesenvolvedor);
 
+	/** 
+	 * Esse metodo retorna uma lista de Soluçoes propostas de um desenvolvedor, no qual
+	 * o desenvolvedor com problema não entendeu a solução
+	 * @param desenvolvedor
+	 * @return
+	 */
+	public ArrayList<Solucao> listarSolucoesRetornadasDoDesenvolvedor(
+			Desenvolvedor desenvolvedor);
+	
 	/**
 	 * Esse método retorna uma lista de soluções que foram aceitas de um desenvolvedor
 	 * para uma todos os problemas cadastrados no banco.
@@ -50,14 +62,6 @@ public interface ServicoSolucao {
 	 * @return ArrayList<Solucao>
 	 */
 	public ArrayList<Solucao> listarSolucoesAceitasDoDesenvolvedor(String emailDesenvolvedor);
-	
-	/**
-	 * Esse método retorna uma lista de soluções que foram rejeitadas de um desenvolvedor
-	 * para uma todos os problemas cadastrados no banco.
-	 * @param emailDesenvolvedor Email do desenvolvedor.
-	 * @return ArrayList<Solucao>
-	 */
-	public ArrayList<Solucao> listarSolucoesRejeitadasDoDesenvolvedor(String emailDesenvolvedor);
 	
 	/**
 	 * Esse método verifica se existe uma solucao com tal identificador.
@@ -79,7 +83,22 @@ public interface ServicoSolucao {
 	 * @Param idProblema identificador do problema.
 	 * @return ArrayList<Solucao> Uma lista com todas as solucoes propostas para o problema.
 	 */
-	public ArrayList<Solucao> getSolucoesDoProblema(int idProblema);
+	public ArrayList<Solucao> getSolucoesDoProblema(Problema problema);
 	
+	/**
+	 * Esse método retorna uma lista de soluções que foram rejeitadas de um desenvolvedor
+	 * para uma todos os problemas cadastrados no banco.
+	 * @param emailDesenvolvedor Email do desenvolvedor.
+	 * @return ArrayList<Solucao>
+	 */
+	public ArrayList<Solucao> listarSolucoesRejeitadasDoDesenvolvedor(String emailDesenvolvedor);
+
+	/**
+	 * Esse método atualiza os dados de uma solução
+	 * @param solucao Solução a ser atualizada
+	 * @return true se a atualizacao foi realizada com sucesso.
+	 */
+	public boolean atualizarSolucao(Solucao solucao);
+
 }
 

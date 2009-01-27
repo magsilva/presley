@@ -6,25 +6,22 @@ import java.util.ArrayList;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.TreeItem;
 
-/**
+/** 
  * Representa uma estruta de dados do tipo árvore e serve para representar a estrutura da ontologia.
  * 
- * @author JP
+ * @author JP 
  *
  */
-public class Tree implements Serializable {
-	/**
-	 * 
-	 */
+public class Tree implements Serializable{
 	private static final long serialVersionUID = 10L;
 	private Item raiz;
 	
 	/**
 	 * Construtor que inicializa uma arvore com uma raiz com nome do parametro
-	 * @param raizNome é o nome da raiz da arvore
+	 * @param raizConhecimento é o nome da raiz da arvore
 	 */
-	public Tree(String raizNome){
-		raiz = new Item(null,raizNome);
+	public Tree(Conhecimento raizConhecimento){
+		raiz = new Item(null,raizConhecimento);
 	}
 	
 	/**
@@ -50,11 +47,11 @@ public class Tree implements Serializable {
 	 * @param nome é o nome do nó filho
 	 * @return Item é o nó filho. É null se não existir nó com o nome indicado
 	 */
-	public Item getFilho(String nome){
+	public Item getFilho(Conhecimento conhecimento){
 		Item filho = null;
 		if (raiz.temFilhos()) {
 			for (Item item : raiz.getFilhos()) {
-				if (item.getNome().equals(nome)) {
+				if (item.getConhecimento().getNome().equals( conhecimento.getNome() )) {
 					filho = item;
 					break;
 				}
@@ -69,16 +66,16 @@ public class Tree implements Serializable {
 	 * @param nome é o nome deste nó da árvore
 	 * @return true se foi adicionado com sucesso e false caso contrário
 	 */
-	public boolean adicionaFilho(String nome){
+	public boolean adicionaFilho(Conhecimento conhecimento){
 		try{
 			if (raiz.temFilhos()) {
 				for (Item item : raiz.getFilhos()) {
-					if (item.getNome().equals(nome)) {
-						throw new Exception ("Já existe nó chamado ' "+nome+" '.");
+					if (item.getConhecimento().getNome().equals( conhecimento.getNome() )) {
+						throw new Exception ("Já existe nó chamado ' "+ conhecimento.getNome() +" '.");
 					}
 				}	
 			}
-			raiz.adicionaFilho(nome);
+			raiz.adicionaFilho( conhecimento );
 		}catch(Exception e){
 			System.err.println("ERRO Tree: "+e.getMessage());
 			return false;
@@ -91,13 +88,13 @@ public class Tree implements Serializable {
 	 * @param nome é o nome do nó da árvore
 	 * @return true se foi removido com sucesso e false caso contrário
 	 */
-	public boolean removeFilho(String nome){
+	public boolean removeFilho(Conhecimento conhecimento){
 		int index = 0;
 		if (raiz.temFilhos()) {
 			for (Item item : raiz.getFilhos()) {
 				index++;
-				if (item.getNome().equals(nome)) {
-					raiz.removeFilho(nome);
+				if (item.getConhecimento().getNome().equals( conhecimento.getNome() )) {
+					raiz.removeFilho(conhecimento);
 					return true;
 				}
 			}	
@@ -115,7 +112,7 @@ public class Tree implements Serializable {
 	public org.eclipse.swt.widgets.Tree constroiArvoreGrafica(Composite parent, int style){
 		org.eclipse.swt.widgets.Tree treeGrafico = new org.eclipse.swt.widgets.Tree(parent,style);
 		org.eclipse.swt.widgets.TreeItem treeItemGrafico = new TreeItem(treeGrafico,style);
-		treeItemGrafico.setText(raiz.getNome());
+		treeItemGrafico.setText( raiz.getConhecimento().getNome() );
 		ArrayList<Item> filhosModelo = this.getRaiz().getFilhos();
 		if (filhosModelo!=null) 
 			for (Item filho : filhosModelo) {
@@ -137,7 +134,8 @@ public class Tree implements Serializable {
 		
 		//PROCESSAMENTO
 		org.eclipse.swt.widgets.TreeItem novoItemGrafico = new TreeItem(arvoreGrafica, arvoreGrafica.getStyle());
-		novoItemGrafico.setText(arvoreModelo.getNome());
+		novoItemGrafico.setData( arvoreModelo.getConhecimento() );
+		novoItemGrafico.setText(arvoreModelo.getConhecimento().getNome());
 		
 		ArrayList<Item> filhos = arvoreModelo.getFilhos(); 
 		if (filhos==null) {
@@ -154,10 +152,10 @@ public class Tree implements Serializable {
 	 * @param nome é o nome do filho que se deseja localizar
 	 * @return a lista de filhos com o nome indicado que foram localizados ou null caso não encontre nenhum.
 	 */
-	public ArrayList<Item> localizaFilho(final String nome){
+	public ArrayList<Item> localizaFilho(final Conhecimento conhecimento){
 		ArrayList<Item> filhosLocalizados = new ArrayList<Item>();
 		
-		if (raiz.getNome().equals(nome)) {
+		if (raiz.getConhecimento().getNome().equals( conhecimento.getNome() ))  {
 			filhosLocalizados.add(raiz);
 		}
 		
@@ -166,7 +164,7 @@ public class Tree implements Serializable {
 		}
 		
 		for (Item item : raiz.getFilhos()) {
-			localizaFilhoHelper(item, filhosLocalizados, nome);
+			localizaFilhoHelper(item, filhosLocalizados, conhecimento);
 		}
 		if (filhosLocalizados.isEmpty()) {
 			return null;
@@ -180,22 +178,22 @@ public class Tree implements Serializable {
 	 * @param localizados é a lista de nós já localizados
 	 * @param nome é o nome do nó que se deseja localizar
 	 */
-	private void localizaFilhoHelper(Item item, ArrayList<Item> localizados, final String nome){
+	private void localizaFilhoHelper(Item item, ArrayList<Item> localizados, final Conhecimento conhecimento){
 		if (item==null) {
 			return;
 		}
 		//PROCESSAMENTO PRINCIPAL
-		if (item.getNome().equals(nome)) {
+		if (item.getConhecimento().getNome().equals( conhecimento.getNome() ))  {
 			localizados.add(item);
 		}
 		
 		ArrayList<Item> filhos = item.getFilhos();
 		if (filhos!=null) {
 			for (Item filho : filhos) {
-				localizaFilhoHelper(filho, localizados, nome);		
+				localizaFilhoHelper(filho, localizados, conhecimento);		
 			}
 		}else{
-			localizaFilhoHelper(null, localizados, nome);
+			localizaFilhoHelper(null, localizados, conhecimento);
 		}
 	}
 	/**
@@ -204,24 +202,28 @@ public class Tree implements Serializable {
 	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		Tree tree = new Tree("CONHECIMENTO");
-		tree.adicionaFilho("Banco de Dados");
-		tree.getFilho("Banco de Dados").adicionaFilho("MySQL");
-		tree.getFilho("Banco de Dados").adicionaFilho("PostgresSQL");
-		tree.adicionaFilho("LP");
-		tree.getFilho("LP").adicionaFilho("JAVA");
-		tree.getFilho("LP").adicionaFilho("C++");
+		Conhecimento conhecimento = new Conhecimento();
+		conhecimento.setNome("CONHECIMENTO");
+		Tree tree = new Tree( conhecimento );
 		
-				
-		ArrayList<Item> localizados = tree.localizaFilho("C++");
-		
-		for (Item item2 : localizados) {
-			item2.adicionaFilho("SmallTalk");
-			System.out.println("Localizado: "+item2.getNome()+", Pai: "+item2.getPai().getNome());
-		}
-		if (localizados==null) {
-			System.out.println("Nao Localizado. ");			
-		}
+//		tree.adicionaFilho("Banco de Dados");
+//		tree.getFilho("Banco de Dados").adicionaFilho("MySQL");
+//		tree.getFilho("Banco de Dados").adicionaFilho("PostgresSQL");
+//		tree.adicionaFilho("LP");
+//		tree.getFilho("LP").adicionaFilho("JAVA");
+//		tree.getFilho("LP").adicionaFilho("C++");
+//		
+//		Item item = tree.getFilho("LP");
+//				
+//		ArrayList<Item> localizados = tree.localizaFilho("C++");
+//		
+//		for (Item item2 : localizados) {
+//			item2.adicionaFilho("SmallTalk");
+//			System.out.println("Localizado: "+item2.getConhecimento()+", Pai: "+item2.getPai().getConhecimento());
+//		}
+//		if (localizados==null) {
+//			System.out.println("Nao Localizado. ");			
+//		}
 		
 
 	}

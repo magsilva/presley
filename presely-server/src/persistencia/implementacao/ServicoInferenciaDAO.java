@@ -25,10 +25,10 @@ public class ServicoInferenciaDAO {
 		try{
 			stm = conn.createStatement();
 			
-			String sql = "select desenvolvedor_email, grau, qtd_resposta from " +
-						 "desenvolvedor_has_conhecimento as dc, desenvolvedor where " +
-						 "dc.conhecimento_nome = '"+conhecimento+"' and dc.desenvolvedor_email = email and " +
-						 		" grau > 0";
+			String sql = "select desenvolvedor_email, grau, qtd_resposta " +
+						 " from desenvolvedor_has_conhecimento as dc, desenvolvedor " +
+						 " where dc.conhecimento_nome = '"+conhecimento+"' and dc.desenvolvedor_email = email " +
+ 				 		 " and grau > 0";
 			
 			ResultSet rs = stm.executeQuery(sql);
 			

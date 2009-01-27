@@ -89,7 +89,6 @@ public class TestOntologia extends TestCase {
 		}
 		
 		assertEquals(expectedScore, ontologia.getScore(0, 4));
-		
 	}
 
 }

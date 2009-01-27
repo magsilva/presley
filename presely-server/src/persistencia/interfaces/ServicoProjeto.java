@@ -1,0 +1,14 @@
+package persistencia.interfaces;
+
+import beans.Projeto;
+
+public interface ServicoProjeto {
+
+	/**
+	 * Esse método retorna o projeto ativo do sistema
+	 * @return Projeto
+	 */
+	public Projeto getProjetoAtivo();
+	
+
+}

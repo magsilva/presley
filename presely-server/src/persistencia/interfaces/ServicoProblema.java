@@ -4,6 +4,7 @@ import java.sql.Date;
 import java.util.ArrayList;
 
 import beans.Conhecimento;
+import beans.Desenvolvedor;
 import beans.Problema;
 
 /**
@@ -18,15 +19,11 @@ import beans.Problema;
 public interface ServicoProblema {
 
 	/**
-	 * Esse método cadastra um novo problema associado a um atividade na base de dados.
-	 * @param idAtividade Identificador da atividade.
-	 * @param descricao Descricao do problema relatado.
-	 * @param dataDoRelato Data em que o problema foi encontrado.
-	 * @param mensagem Mensagem a ser exibida a respeito do tipo do problema.
+	 * Esse método cadastra um novo problema na base de dados.
+	 * @param Problema a ser cadastrado.
 	 * @return true se o problema foi cadastrado com sucesso.
 	 */
-	public boolean cadastrarProblema(int idAtividade, String descricao,
-			Date dataDoRelato, String mensagem, ArrayList<Conhecimento> conhecimento);
+	public boolean cadastrarProblema(Problema problema);
 	
 	/**
 	 * Esse método atualiza o status do problema, ou seja, se ele foi resolvido
@@ -42,7 +39,7 @@ public interface ServicoProblema {
 	 * @param id Identificador do problema
 	 * @return true se o problema foi removido da base de dados.
 	 */
-	public boolean removerProblema(int id);
+	public boolean removerProblema(Problema problema);
 	
 	/**
 	 * Esse método recupera uma lista de problemas relatados durante o desenvolvimento
@@ -67,11 +64,11 @@ public interface ServicoProblema {
 	public Problema getProblema(int id);
 
 	/**
-	 * Esse método retorna o todos os problemas cadastrados no banco
+	 * Esse método retorna o todos os problemas de um desenvolvedor cadastrados no banco
 	 * @param id Identificador do problema.
 	 * @return <Problema>
 	 */	
-	public ArrayList<Problema> getListaProblemas();
+	public ArrayList<Problema> getListaProblemas(Desenvolvedor desenvolvedor);
 	
 	/**
 	 * Esse método retorna todos os conhecimentos associados ao problema
@@ -79,5 +76,6 @@ public interface ServicoProblema {
 	 * @return <String>
 	 */	
 	public ArrayList<String> getConhecimentosAssociados(String nomeProblema);
+	
 }
 

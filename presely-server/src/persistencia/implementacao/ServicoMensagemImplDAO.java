@@ -63,23 +63,24 @@ public class ServicoMensagemImplDAO {
 		try {
 			stm = conn.createStatement();
 
-			String sql = "select desenvolvedor_origem_email, problema, mensagem from mensagem where " +
-			 "mensagem.desenvolvedor_destino_email = '"+emailDesenvolvedorDestino+"'";
+			String sql = "SELECT MEN.problema_id FROM mensagem MEN" +
+			" INNER JOIN problema PRO ON PRO.id = MEN.problema_id AND PRO.resolvido = 0"+
+			" WHERE MEN.desenvolvedor_destino_email = '"+emailDesenvolvedorDestino+"'";
 			ResultSet rs = stm.executeQuery(sql);
 			System.out.println(sql);
 						
 			while(rs.next()) {
 				Mensagem msg = new Mensagem();
-				Desenvolvedor des = new Desenvolvedor();
 				Problema pro = new Problema();
 				
-				des.setEmail(rs.getString(1));
-				int id = rs.getInt(2);
+				int id = rs.getInt(1);
 				pro = servicoProblema.getProblema(id);
 				
+				Desenvolvedor des = pro.getDesenvolvedorOrigem();
 				msg.setDesenvolvedorOrigem(des);
 				msg.setProblema(pro);
-				msg.setTexto(rs.getString(3));
+				
+				// msg.setTexto(rs.getString(3)); *************
 				
 				mensagens.add(msg);
 			}
