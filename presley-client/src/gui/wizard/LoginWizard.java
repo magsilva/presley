@@ -1,6 +1,6 @@
 package gui.wizard;
 
-import gui.view.Atividade;
+import gui.view.MensagemAba;
 import gui.view.comunication.ViewComunication;
 
 import java.lang.reflect.InvocationTargetException;
@@ -27,23 +27,21 @@ public class LoginWizard extends Wizard implements INewWizard {
 
 	private LoginWizardPage page;
     private ISelection selection;
-    private Atividade atividade;
+    private MensagemAba mensagem;
 
     public LoginWizard() {
         super();
         setNeedsProgressMonitor(true);
         ImageDescriptor image =
-            AbstractUIPlugin.
-                imageDescriptorFromPlugin("Add",
-                   "icons/presley.gif");
+            AbstractUIPlugin.imageDescriptorFromPlugin("Add", "icons/presley.gif");
         setDefaultPageImageDescriptor(image);
         
         
     }
     
-    public LoginWizard(Atividade a) {
+    public LoginWizard(MensagemAba m) {
         this();
-        this.atividade = a;
+        this.mensagem = m;
     }
     
     private void performOperation(IProgressMonitor monitor) {
@@ -61,14 +59,14 @@ public class LoginWizard extends Wizard implements INewWizard {
     		String senha = page.getSenha();
     		String ip = page.getIP();
     		
-    		Desenvolvedor des = this.atividade.getViewComunication().login(login, senha);
+    		Desenvolvedor des = this.mensagem.getViewComunication().login(login, senha);
     		
     		if (des== null)
     			return false;
     		else {
-    			this.atividade.setDesenvolvedorLogado(des);
-    			this.atividade.habilitaBotoes();
-    			this.atividade.desabilitaBotaoLogin();
+    			this.mensagem.setDesenvolvedorLogado(des);
+    			this.mensagem.habilitaBotoes();
+    			this.mensagem.desabilitaBotaoLogin();
     		}
 	
     	}catch (Exception e) {
@@ -101,13 +99,13 @@ public class LoginWizard extends Wizard implements INewWizard {
 	}
 	
 	public void addPages() {
-        page=new LoginWizardPage(selection, this.atividade);
+        page = new LoginWizardPage(selection, this.mensagem);
         addPage(page);
 
     }
 
-	public Atividade getAtividade() {
-		return atividade;
+	public MensagemAba getMensagem() {
+		return mensagem;
 	}
 	
 }

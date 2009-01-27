@@ -1,6 +1,7 @@
 package gui.wizard;
 
 import gui.view.Atividade;
+import gui.view.MensagemAba;
 import gui.view.comunication.ViewComunication;
 
 import java.lang.reflect.InvocationTargetException;
@@ -30,7 +31,7 @@ public class AdicionaDesenvolvedorWizard extends Wizard implements INewWizard {
 	private AdicionaDesenvolvedorWizardPage page;
 	private AdicionaDesenvolvedorWizardPage2 page2;
 	private ISelection selection;
-    private Atividade atividade;
+    private MensagemAba mensagemAba;
 
     public AdicionaDesenvolvedorWizard() {
         super();
@@ -44,9 +45,9 @@ public class AdicionaDesenvolvedorWizard extends Wizard implements INewWizard {
         
     }
     
-    public AdicionaDesenvolvedorWizard(Atividade a) {
+    public AdicionaDesenvolvedorWizard(MensagemAba m) {
         this();
-        this.atividade = a;
+        this.mensagemAba = m;
     }
     
     private void performOperation(IProgressMonitor monitor) {
@@ -65,7 +66,7 @@ public class AdicionaDesenvolvedorWizard extends Wizard implements INewWizard {
 		String senha = page.getSenhaDesenvolvedor();
 		ArrayList<Double> graus = page2.pegaGraus();
 		ArrayList<String> conhecimentos = page2.pegaConhecimentos();
-		ArrayList<Conhecimento> listaConhecimentos = this.atividade.getViewComunication().getListaConhecimentos();
+		ArrayList<Conhecimento> listaConhecimentos = this.mensagemAba.getViewComunication().getListaConhecimentos();
 		ArrayList<Conhecimento> listaConhecimentosSelecionados = new ArrayList<Conhecimento>();
 		HashMap<Conhecimento,Double> mapConhecimentoGrau = new HashMap<Conhecimento, Double>();
 		for (String nomeConhecimento : conhecimentos) {
@@ -83,7 +84,7 @@ public class AdicionaDesenvolvedorWizard extends Wizard implements INewWizard {
 		novoDesenvolvedor.setNome(nome);
 		novoDesenvolvedor.setSenha(senha);
 		try {
-			this.atividade.getViewComunication().adicionaDesenvolvedor(novoDesenvolvedor);
+			this.mensagemAba.getViewComunication().adicionaDesenvolvedor(novoDesenvolvedor);
 		} catch (Exception e1) {
 
 			MessageDialog.openError(this.getShell(), "ERROR", e1.getMessage());
@@ -113,15 +114,15 @@ public class AdicionaDesenvolvedorWizard extends Wizard implements INewWizard {
 	}
 	
 	public void addPages() {
-        page=new AdicionaDesenvolvedorWizardPage(selection, this.atividade);
+        page=new AdicionaDesenvolvedorWizardPage(selection, this.mensagemAba);
         addPage(page);
         
-        page2=new AdicionaDesenvolvedorWizardPage2(selection, this.atividade);
+        page2=new AdicionaDesenvolvedorWizardPage2(selection, this.mensagemAba);
         addPage(page2);
       }
 
-	public Atividade getAtividade() {
-		return atividade;
+	public MensagemAba getAtividade() {
+		return mensagemAba;
 	}
 	
 }

@@ -1,6 +1,6 @@
 package gui.wizard;
 
-import gui.view.Atividade;
+import gui.view.MensagemAba;
 
 import java.util.ArrayList;
 import java.util.Hashtable;
@@ -36,7 +36,7 @@ import beans.Desenvolvedor;
 public class AdicionaDesenvolvedorWizardPage2 extends WizardPage {
 
 	private Tree arvoreConhecimento;
-	private Atividade atividade;
+	private MensagemAba mensagemAba;
 	private Hashtable<String,TreeItem> conhecimentosSelecionados;
 	private ArrayList<Conhecimento> conhecimentos;
 	private beans.Tree ontologia;
@@ -49,16 +49,15 @@ public class AdicionaDesenvolvedorWizardPage2 extends WizardPage {
 	private ArrayList<Double> listaGraus;
 	
 
-    public AdicionaDesenvolvedorWizardPage2(ISelection selection, Atividade atividade) {
+    public AdicionaDesenvolvedorWizardPage2(ISelection selection, MensagemAba m) {
         super("wizardPage");
-        this.atividade=atividade;
+        this.mensagemAba = m;
         setTitle("Adiciona Desenvolvedor Wizard");
         setDescription("Adiciona Desenvolvedor");
         conhecimentosSelecionados = new Hashtable<String,TreeItem>();
-        ontologia = atividade.getViewComunication().getOntologia();
+        ontologia = mensagemAba.getViewComunication().getOntologia();
         itensConhecimentos = new ArrayList<String>();
         listaGraus = new ArrayList<Double>();
-        
     }
 
     private void updateStatus(String message) {
@@ -100,7 +99,7 @@ public class AdicionaDesenvolvedorWizardPage2 extends WizardPage {
     	
     	//Fazendo um mapeamento entre o nome dos conhecimentos e o conhecimento
     	//para agilizar a recuperação mais a frente
-    	for (Conhecimento conh : this.atividade.getViewComunication().getListaConhecimentos()) {
+    	for (Conhecimento conh : this.mensagemAba.getViewComunication().getListaConhecimentos()) {
 			tabelaConhecimentos.put(conh.getNome(), conh);
 		}
     	
@@ -124,8 +123,7 @@ public class AdicionaDesenvolvedorWizardPage2 extends WizardPage {
     
     public void createControl(Composite parent) {
     	
-    	 Composite controls =
-             new Composite(parent, SWT.NULL);
+    	 Composite controls = new Composite(parent, SWT.NULL);
          FillLayout layoutFillVertical = new FillLayout();
          layoutFillVertical.type = SWT.VERTICAL;
          
@@ -174,7 +172,7 @@ public class AdicionaDesenvolvedorWizardPage2 extends WizardPage {
         
         try{
         	
-        	final beans.Tree conhecimentosModelo = atividade.getViewComunication().getOntologia();
+        	final beans.Tree conhecimentosModelo = mensagemAba.getViewComunication().getOntologia();
         	arvoreConhecimento = conhecimentosModelo.constroiArvoreGrafica(controls, SWT.BORDER );
         	arvoreConhecimento.addListener(SWT.Selection, new Listener() {
 			
@@ -185,9 +183,9 @@ public class AdicionaDesenvolvedorWizardPage2 extends WizardPage {
 					
 					// TODO Auto-generated method stub
 					//Verifica se é o raiz, se for, não inclui este na lista
-					if (!atual.getText().equals(conhecimentosModelo.getRaiz().getNome())) {
+					if (!atual.getText().equals(conhecimentosModelo.getRaiz().getConhecimento())) {
 														
-						itens = atividade.getViewComunication().getOntologia().localizaFilho(atual.getText());
+						itens = mensagemAba.getViewComunication().getOntologia().localizaFilho( (Conhecimento) atual.getData());
 						
 						for(int i = 0; i < itens.size(); i++){
 							

@@ -1,7 +1,6 @@
 package gui.action;
 
-import gui.view.Atividade;
-import gui.view.Mensagens;
+import gui.view.MensagemAba;
 import gui.wizard.AdicionaAtividadeWizard;
 import gui.wizard.AssociaProblemaAtividadeWizard;
 import gui.wizard.EnviaRespostaWizard;
@@ -17,20 +16,24 @@ import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.IWorkbenchWindowActionDelegate;
 import org.eclipse.ui.PlatformUI;
 
+import beans.Problema;
+import beans.Solucao;
 import beans.TipoAtividade;
 
 public class RunEnviaRespostaWizardAction extends Action implements
 		IWorkbenchWindowActionDelegate {
-	private Mensagens viewMensagens;
-	private String atividadeAssociada;
+	private MensagemAba viewMensagem;
+    private Problema problema;
+    private Solucao solucaoOrigem;
 
 	public RunEnviaRespostaWizardAction() {
 		// TODO Auto-generated constructor stub
 	}
 	
-	public RunEnviaRespostaWizardAction(Mensagens viewMensagens) {
-		// TODO Auto-generated constructor stub
-		this.viewMensagens = viewMensagens;
+	public RunEnviaRespostaWizardAction(MensagemAba viewMensagem, Problema problema, Solucao solucaoOrigem) {
+		this.viewMensagem = viewMensagem;
+		this.problema = problema;
+		this.solucaoOrigem = solucaoOrigem;
 	}
 
 	public RunEnviaRespostaWizardAction(String text) {
@@ -59,17 +62,13 @@ public class RunEnviaRespostaWizardAction extends Action implements
 	}
 
 	public void run(IAction arg0) {
-		
-		 
-		EnviaRespostaWizard wizard = new EnviaRespostaWizard(this.viewMensagens, viewMensagens.getDesenvolvedorLogado(),viewMensagens.getMensagem());
+		EnviaRespostaWizard wizard = new EnviaRespostaWizard(this.viewMensagem, viewMensagem.getDesenvolvedorLogado(), problema, solucaoOrigem);
 		Shell shell = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
 		WizardDialog dialog = new WizardDialog(shell,wizard);
 		dialog.create();
 		dialog.open();
 		dialog.close();
 		wizard.dispose();
-	
-
 	}
 
 	public void selectionChanged(IAction arg0, ISelection arg1) {

@@ -23,8 +23,9 @@ public class Solucao implements Serializable {
 	private Problema problema;
 	private Desenvolvedor desenvolvedor;
 	private Date data;
-	private String mensagem;
+	private String mensagem, retornoSolucao;
 	private boolean ajudou;
+	private Solucao solucaoResposta;
 	
 	public boolean isAjudou() {
 		return ajudou;
@@ -61,6 +62,18 @@ public class Solucao implements Serializable {
 	}
 	public void setMensagem(String mensagem) {
 		this.mensagem = mensagem;
+	}
+	public String getRetornoSolucao() {
+		return retornoSolucao;
+	}
+	public void setRetornoSolucao(String retornoSolucao) {
+		this.retornoSolucao = retornoSolucao;
+	}
+	public Solucao getSolucaoResposta() {
+		return solucaoResposta;
+	}
+	public void setSolucaoResposta(Solucao solucaoOrigem) {
+		this.solucaoResposta = solucaoOrigem;
 	}
 	
 	

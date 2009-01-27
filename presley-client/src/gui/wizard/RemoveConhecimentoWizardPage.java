@@ -123,10 +123,10 @@ public class RemoveConhecimentoWizardPage extends WizardPage {
 				TreeItem[] treeItem = arvoreConhecimento.getSelection();
 											
 				//Remove nó na Ontologia
-				ArrayList<Item> itens = ontologia.localizaFilho(treeItem[0].getText());
+				ArrayList<Item> itens = ontologia.localizaFilho( (Conhecimento) treeItem[0].getData());
 				for (Item item : itens) {
-					item.getPai().removeFilho(treeItem[0].getText());
-					} 
+					item.getPai().removeFilho( (Conhecimento) treeItem[0].getData());
+				} 
 				
 				treeItem[0].dispose();
 			}

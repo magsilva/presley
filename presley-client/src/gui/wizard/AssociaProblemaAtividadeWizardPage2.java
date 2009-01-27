@@ -125,12 +125,12 @@ public class AssociaProblemaAtividadeWizardPage2 extends WizardPage {
 					TreeItem atual=null;
 					atual = (TreeItem)e.item;
 					//Verifica se é o raiz, se for, não inclui este na lista
-					if (!atual.getText().equals(conhecimentosModelo.getRaiz().getNome())) {
+					if (!atual.getText().equals(conhecimentosModelo.getRaiz().getConhecimento())) {
 						conhecimentosSelecionados.put(atual.getText(), atual);	
 					}	
 					for (TreeItem pai = atual.getParentItem(); pai!=null; pai = pai.getParentItem()) {
 						//Verifica se é o raiz, se for, não inclui este na lista
-						if (!pai.getText().equals(conhecimentosModelo.getRaiz().getNome())) {
+						if (!pai.getText().equals(conhecimentosModelo.getRaiz().getConhecimento())) {
 							conhecimentosSelecionados.put(pai.getText(), pai);
 						}
 					}

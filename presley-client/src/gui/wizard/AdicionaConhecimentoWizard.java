@@ -1,6 +1,6 @@
 package gui.wizard;
 
-import gui.view.Atividade;
+import gui.view.Dominio;
 import gui.view.comunication.ViewComunication;
 
 import java.lang.reflect.InvocationTargetException;
@@ -8,6 +8,8 @@ import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -31,7 +33,7 @@ public class AdicionaConhecimentoWizard extends Wizard implements INewWizard {
 	private AdicionaConhecimentoWizardPage page;
 	private AdicionaAtividadeWizardPage2 page2;
     private ISelection selection;
-    private Atividade atividade;
+    private Dominio dominio;
 
     public AdicionaConhecimentoWizard() {
         super();
@@ -45,9 +47,9 @@ public class AdicionaConhecimentoWizard extends Wizard implements INewWizard {
         
     }
     
-    public AdicionaConhecimentoWizard(Atividade a) {
+    public AdicionaConhecimentoWizard(Dominio dominio) {
         this();
-        this.atividade = a;
+        this.dominio = dominio;
     }
     
     private void performOperation(IProgressMonitor monitor) {
@@ -57,34 +59,30 @@ public class AdicionaConhecimentoWizard extends Wizard implements INewWizard {
 
 	@Override
 	public boolean performFinish() {
-		// TODO Auto-generated method stub
         //First save all the page data as variables.
     	try{
-    		//String nome = page.getName();
-    		ArrayList<String> nomesNos = page.getConhecimentos();
-    		String paiConhecimento = page.paiConhecimento();
-    		Conhecimento pai = null;
-    		ArrayList<Conhecimento> listaConhecimento = atividade.getViewComunication().getListaConhecimentos();
-    		for (Conhecimento conhecimento : listaConhecimento) {
-				if (conhecimento.getNome().equals(paiConhecimento)) {
-					pai = conhecimento;
-					break;
-				}
-			}
-    		Conhecimento novoConhecimento = new Conhecimento();
-    		for (String nome : nomesNos) {
-    				novoConhecimento.setNome(nome);
-					atividade.getViewComunication().adicionaConhecimento(novoConhecimento,pai);
-			}
-  
-    		Tree myOntologia = atividade.getViewComunication().getOntologia();
-    		ArrayList<Item> localizados = myOntologia.localizaFilho(paiConhecimento);
-    		if (localizados!=null) {
-    			for (Item conh : localizados) {
-    					conh.adicionaFilho(novoConhecimento.getNome());
-    			}
-    		}
+    		Map<Conhecimento, Conhecimento> conhecimentoFilhoPai = page.conhecimentoFilhoPai();
     		
+    		Set<Conhecimento> conhecimentosFilho = conhecimentoFilhoPai.keySet(); 
+    		ArrayList<Conhecimento> listaConhecimento = dominio.getViewComunication().getListaConhecimentos();
+    		
+    		for (Iterator<Conhecimento> iterator = conhecimentosFilho.iterator(); iterator.hasNext();) {
+    			Conhecimento filho = iterator.next();
+				
+	    		Conhecimento pai = null;
+   				Conhecimento paiConhecimento = conhecimentoFilhoPai.get( filho );
+   				if (paiConhecimento != null){
+   		    		for (Conhecimento conhecimento : listaConhecimento) {
+   						if (conhecimento.getNome().equals(paiConhecimento.getNome())) {
+   							pai = conhecimento;
+   							break;
+   						}
+   					}
+   				}
+   				
+				dominio.getViewComunication().adicionaConhecimento(filho,pai);
+			}
+
     	   
     	}catch (Exception e) {
 			// TODO: handle exception
@@ -116,14 +114,12 @@ public class AdicionaConhecimentoWizard extends Wizard implements INewWizard {
 	}
 	
 	public void addPages() {
-        page=new AdicionaConhecimentoWizardPage(selection, this.atividade);
+        page=new AdicionaConhecimentoWizardPage(selection, this.dominio);
         addPage(page);
-        
-       
     }
 
-	public Atividade getAtividade() {
-		return atividade;
+	public Dominio getDominio() {
+		return dominio;
 	}
 	
 }

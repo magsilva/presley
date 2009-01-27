@@ -129,7 +129,7 @@ public class AssociaConhecimentoWizardPage extends WizardPage {
 						atual = (TreeItem)e.item;
 						if (atual.getChecked()) {
 							//Verifica se é o raiz, se for, não inclui este na lista
-							if (!atual.getText().equals(conhecimentosModelo.getRaiz().getNome())) {
+							if (!atual.getText().equals(conhecimentosModelo.getRaiz().getConhecimento())) {
 									conhecimentosSelecionados.put(atual.getText(), atual);	
 									
 							}	

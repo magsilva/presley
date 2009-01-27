@@ -1,6 +1,6 @@
 package gui.action;
 
-import gui.view.Atividade;
+import gui.view.Dominio;
 import gui.wizard.AdicionaAtividadeWizard;
 import gui.wizard.AdicionaConhecimentoWizard;
 import gui.wizard.AdicionaConhecimentoWizardPage;
@@ -19,15 +19,14 @@ import org.eclipse.ui.PlatformUI;
 
 public class RunAdicionaConhecimentoWizard extends Action implements
 		IWorkbenchWindowActionDelegate {
-	private Atividade atividade;
+	private Dominio dominio;
 
 	public RunAdicionaConhecimentoWizard() {
 		// TODO Auto-generated constructor stub
 	}
 	
-	public RunAdicionaConhecimentoWizard(Atividade a) {
-		// TODO Auto-generated constructor stub
-		this.atividade = a;
+	public RunAdicionaConhecimentoWizard(Dominio dominio) {
+		this.dominio = dominio;
 	}
 
 	public RunAdicionaConhecimentoWizard(String text) {
@@ -56,7 +55,7 @@ public class RunAdicionaConhecimentoWizard extends Action implements
 	}
 
 	public void run(IAction arg0) {
-		AdicionaConhecimentoWizard wizard = new AdicionaConhecimentoWizard(this.atividade);
+		AdicionaConhecimentoWizard wizard = new AdicionaConhecimentoWizard(this.dominio);
 		Shell shell = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
 		WizardDialog dialog = new WizardDialog(shell,wizard);
 		dialog.create();

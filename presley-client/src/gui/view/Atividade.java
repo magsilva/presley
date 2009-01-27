@@ -38,7 +38,7 @@ public class Atividade extends ViewPart {
 	private List listaAtividades, listaConhecimentos, listaProblemas, listaDesenvolvedores; 
 	private Label conhecimentoLabel, problemaLabel, contatosLabel;
 	private Composite parentComposite;
-	private Button login, logout, addAtividade, addUser,removeUser, addConhecimento,removeConhecimento, removeAtividade, 
+	private Button login, logout, addAtividade, addUser, removeUser, addConhecimento, removeConhecimento, removeAtividade, 
 	encerraAtividade, associaConhecimento, desassociaConhecimento,
 	associaProblema, desassociaProblema, buscaDesenvolvedor, enviaMensagem;
 
@@ -1104,9 +1104,8 @@ public class Atividade extends ViewPart {
 	}
 
 	private void RunAdicionaConhecimentoWizardAction() {
-		gui.action.RunAdicionaConhecimentoWizard runLogin = new gui.action.RunAdicionaConhecimentoWizard(this);
-		runLogin.run(null);
-
+//		gui.action.RunAdicionaConhecimentoWizard runLogin = new gui.action.RunAdicionaConhecimentoWizard(this);
+//		runLogin.run(null);
 	}
 
 	private void RunAssociaConhecimentoAtividade(){
@@ -1115,8 +1114,8 @@ public class Atividade extends ViewPart {
 	}
 
 	private void RunAdicionaDesenvolvedorWizard() {
-		gui.action.RunAdicionaDesenvolvedorWizardAction runAdicionaDesenvolvedor = new gui.action.RunAdicionaDesenvolvedorWizardAction(this);
-		runAdicionaDesenvolvedor.run(null);
+//		gui.action.RunAdicionaDesenvolvedorWizardAction runAdicionaDesenvolvedor = new gui.action.RunAdicionaDesenvolvedorWizardAction(this);
+//		runAdicionaDesenvolvedor.run(null);
 	}
 
 	public ViewComunication getViewComunication(){

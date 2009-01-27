@@ -1,11 +1,15 @@
 package gui.view.comunication;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
+import beans.Arquivo;
 import beans.Conhecimento;
 import beans.DadosAutenticacao;
 import beans.Desenvolvedor;
 import beans.Problema;
+import beans.Projeto;
+import beans.Solucao;
 import beans.TipoAtividade;
 import beans.Tree;
 import excessao.AtividadeInexistenteException;
@@ -54,6 +58,16 @@ public interface CorePresleyOperations {
 	public static final int REMOVER_DESENVOLVEDOR = 23;
 	public static final int OBTER_MENSAGENS = 24;
 	public static final int BUSCA_CONHECIMENTOS_PROBLEMA = 25;
+	public static final int ADICIONA_PROBLEMA = 26;
+	public static final int REMOVER_PROBLEMA = 27;
+	public static final int ADICIONA_SOLUCAO = 28;
+	public static final int GET_LISTA_SOLUCOES_PROBLEMA = 29;
+	public static final int ATUALIZAR_STATUS_SOLUCAO = 30;
+	public static final int ATUALIZAR_STATUS_PROBLEMA = 31;
+	public static final int ATUALIZAR_SOLUCAO = 32;
+	public static final int GET_LISTA_SOLUCOES_RETORNADAS = 33;
+	public static final int ASSOCIA_ARQUIVO_CONHECIMENTO = 34;
+	public static final int GET_PROJETO = 35;
 	
 	
 	/**
@@ -253,6 +267,88 @@ public interface CorePresleyOperations {
 	
 	public boolean possuiFilhos(Conhecimento conhecimento) throws ConhecimentoInexistenteException;
 	
-
 	public boolean removerDesenvolvedor(Desenvolvedor desenvolvedor);
+
+	/**
+	 * Este método Adiciona um problema 
+	 * CÓDIGO DA OPERAÇÃO -> 26
+	 * @param Problema problema
+	 * @throws Exception 
+	 */
+	public boolean adicionaProblema(Problema problema) throws Exception;
+	
+	/**
+	 * Este método remove um problema 
+	 * CÓDIGO DA OPERAÇÃO -> 27
+	 * @param Problema problema
+	 * @throws Exception 
+	 */
+	public boolean removerProblema(Problema problema) throws ProblemaInexistenteException;
+
+	/**
+	 * Este método Adiciona uma Solucao para um problema 
+	 * CÓDIGO DA OPERAÇÃO -> 28
+	 * @param Problema problema
+	 * @throws Exception 
+	 */
+	public Solucao adicionaSolucao(Solucao solucao) throws Exception;
+	
+	/**
+	 * Este método Lista as Soluções fornceda a um problema 
+	 * CÓDIGO DA OPERAÇÃO -> 29
+	 * @param Problema problema
+	 * @throws Exception 
+	 */
+	public ArrayList<Solucao> listarSolucoesDoProblema(Problema problema) throws Exception;
+
+	/**
+	 * Este método atualiza o status de uma Solucao 
+	 * CÓDIGO DA OPERAÇÃO -> 30 	
+	 * @param Problema problema
+	 * @throws Exception 
+	 */
+	public boolean atualizarStatusSolucao(Solucao solucao) throws Exception;
+
+	/**
+	 * Este método atualiza o status de um Problema 
+	 * CÓDIGO DA OPERAÇÃO -> 31	
+	 * @param Problema problema
+	 * @throws Exception 
+	 */
+	public boolean atualizarStatusProblema(Problema problema) throws Exception;
+	
+	/**
+	 * Este método atualiza os dados de uma Solucao 
+	 * CÓDIGO DA OPERAÇÃO -> 32 	
+	 * @param Solucao solucao
+	 * @throws Exception 
+	 */
+	public boolean atualizarSolucao(Solucao solucao) throws Exception;
+	
+	/**
+	 * Este método Lista as Soluções de um desenvolvedor que foram retornadas 
+	 * CÓDIGO DA OPERAÇÃO -> 33
+	 * @param ArrayList<Solucao>
+	 * @throws Exception 
+	 */
+	public ArrayList<Solucao> listarSolucoesRetornadasDoDesenvolvedor(
+			Desenvolvedor desenvolvedor) throws Exception;
+	
+	/**
+	 * Este método associa um arquivo a um conhecimento e cria a lista de palavras-chave
+	 *  do arquivo
+	 * CÓDIGO DA OPERAÇÃO -> 34
+	 * @param conhecimento
+	 * @return Retorna o conhecimento atualizado
+	 * @throws ConhecimentoInexistenteException
+	 * @throws IOException
+	 */
+	public Conhecimento associaArquivo(Conhecimento conhecimento, Arquivo arquivo) throws Exception;
+
+	/**
+	 * Este método retorna as informações necessarias sobre o projeto em execução no presley
+	 * CÓDIGO DA OPERAÇÃO -> 34
+	 * @return
+	 */
+	public Projeto getProjetoAtivo();
 }

@@ -1,6 +1,7 @@
 package gui.action;
 
 import gui.view.Atividade;
+import gui.view.MensagemAba;
 import gui.wizard.AdicionaAtividadeWizard;
 import gui.wizard.LoginWizard;
 
@@ -18,14 +19,18 @@ import org.eclipse.ui.PlatformUI;
 public class RunLoginWizardAction extends Action implements
 		IWorkbenchWindowActionDelegate {
 	private Atividade atividade;
+	private MensagemAba mensagem;
 
 	public RunLoginWizardAction() {
 		// TODO Auto-generated constructor stub
 	}
 	
 	public RunLoginWizardAction(Atividade a) {
-		// TODO Auto-generated constructor stub
 		this.atividade = a;
+	}
+	
+	public RunLoginWizardAction(MensagemAba m) {
+		this.mensagem = m;
 	}
 
 	public RunLoginWizardAction(String text) {
@@ -54,7 +59,7 @@ public class RunLoginWizardAction extends Action implements
 	}
 
 	public void run(IAction arg0) {
-		LoginWizard wizard = new LoginWizard(this.atividade);
+		LoginWizard wizard = new LoginWizard(this.mensagem);
 		Shell shell = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
 		WizardDialog dialog = new WizardDialog(shell,wizard);
 		dialog.create();

@@ -1,13 +1,9 @@
 package gui.wizard;
 
-import gui.view.Atividade;
+import gui.view.MensagemAba;
 
-import java.security.acl.Group;
-import java.sql.Date;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
-import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
@@ -15,18 +11,16 @@ import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Text;
 
 import beans.Desenvolvedor;
 
 public class AdicionaDesenvolvedorWizardPage extends WizardPage {
 
-	private Atividade atividade;
+	private MensagemAba mensagemAba;
 	private Text nomeDesenvolvedorText;
 	private Text emailText;
 	private Text senhaText;
@@ -34,14 +28,13 @@ public class AdicionaDesenvolvedorWizardPage extends WizardPage {
 	private Combo listaDesenvolvedores;
 	
 	
-	
 	private ArrayList<Desenvolvedor> desenvolvedores;
 
-    public AdicionaDesenvolvedorWizardPage(ISelection selection, Atividade atividade) {
+    public AdicionaDesenvolvedorWizardPage(ISelection selection, MensagemAba m) {
         super("wizardPage");
         setTitle("Adiciona Desenvolvedor Wizard");
         setDescription("Adiciona um novo Desenvolvedor.");
-        this.atividade = atividade;
+        this.mensagemAba = m;
     }
 
     private void updateStatus(String message) {

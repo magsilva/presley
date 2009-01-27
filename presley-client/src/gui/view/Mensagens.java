@@ -183,10 +183,10 @@ public class Mensagens extends ViewPart {
 	
 		qualificaDesenvolvedor = new Button(parentComposite, SWT.NONE);
 		Image ok = new Image(qualificaDesenvolvedor.getDisplay(),this.getClass().getResourceAsStream("/icons/ok.gif"));
-		qualificaDesenvolvedor .setLocation(posHorBotaoNivel3, posVerBotaoNivel1);
-		qualificaDesenvolvedor .setSize(larguraBotao, alturaBotao);
-		qualificaDesenvolvedor .setImage(ok);
-		qualificaDesenvolvedor .setToolTipText("Qualifica resposta do usuario");
+		qualificaDesenvolvedor.setLocation(posHorBotaoNivel3, posVerBotaoNivel1);
+		qualificaDesenvolvedor.setSize(larguraBotao, alturaBotao);
+		qualificaDesenvolvedor.setImage(ok);
+		qualificaDesenvolvedor.setToolTipText("Qualifica resposta do usuario");
 		qualificaDesenvolvedor.setEnabled(true);
 		qualificaDesenvolvedor.addMouseListener(new MouseListener() {
 
@@ -237,8 +237,8 @@ public class Mensagens extends ViewPart {
 	}
 
 	private void runEnviaRespostaWizardAction(Mensagens viewMensagens){
-		this.runEnviaResposta = new RunEnviaRespostaWizardAction(viewMensagens);
-		this.runEnviaResposta.run(null);
+//		this.runEnviaResposta = new RunEnviaRespostaWizardAction(viewMensagens);
+//		this.runEnviaResposta.run(null);
 	}
 
 	public ViewComunication getViewComunication() {

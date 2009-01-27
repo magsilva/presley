@@ -30,10 +30,13 @@ public class EnviaRespostaWizardPage extends WizardPage {
 
 	private Text descricaoProblemaText;
 
-    public EnviaRespostaWizardPage(ISelection selection) {
+    public EnviaRespostaWizardPage(ISelection selection, boolean respostaSolucao) {
         super("wizardPage");
         setTitle("Envia Resposta Wizard");
-        setDescription("Envia uma Resposta para a mensagem do usuario.");
+        if (respostaSolucao)
+        	setDescription("Envia uma RESPOSTA para a solução do usuario.");
+        else
+        	setDescription("Envia uma SOLUÇÃO para o usuario.");
     }
 
     private void updateStatus(String message) {

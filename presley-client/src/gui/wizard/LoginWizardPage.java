@@ -1,6 +1,6 @@
 package gui.wizard;
 
-import gui.view.Atividade;
+import gui.view.MensagemAba;
 
 import java.security.acl.Group;
 import java.sql.Date;
@@ -32,16 +32,16 @@ public class LoginWizardPage extends WizardPage {
 	private Text passwordField;
 	private Text ipField;
 	
-	private Atividade ativ;
+	private MensagemAba mensagem;
 	
 	
 	private ArrayList<Desenvolvedor> desenvolvedores;
 
-    public LoginWizardPage(ISelection selection, Atividade atividade) {
+    public LoginWizardPage(ISelection selection, MensagemAba m) {
         super("wizardPage");
         setTitle("LOGIN");
         setDescription("Forneca Login e Senhas.");
-        this.ativ = atividade;
+        this.mensagem = m;
     }
 
     private void updateStatus(String message) {
@@ -81,6 +81,7 @@ public class LoginWizardPage extends WizardPage {
 
      	    usernameField = new Text(controls, SWT.SINGLE | SWT.BORDER);
      	    GridData data = new GridData(GridData.FILL_HORIZONTAL);
+     	    usernameField.setText("cct@cin.ufpe.br");
      	    usernameField.setLayoutData(data);
 
      	    Label passwordLabel = new Label(controls, SWT.RIGHT);
@@ -88,6 +89,7 @@ public class LoginWizardPage extends WizardPage {
 
      	    passwordField = new Text(controls, SWT.SINGLE | SWT.PASSWORD | SWT.BORDER);
      	    data = new GridData(GridData.FILL_HORIZONTAL);
+     	    passwordField.setText("1");
      	    passwordField.setLayoutData(data);
      	    
      	    Label ipLabel = new Label(controls, SWT.RIGHT);

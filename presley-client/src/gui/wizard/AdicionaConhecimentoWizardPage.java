@@ -1,13 +1,12 @@
 package gui.wizard;
 
-import gui.view.Atividade;
 
-import java.sql.Date;
 import java.util.ArrayList;
-import java.util.Hashtable;
-import java.util.Iterator;
+import java.util.HashMap;
+import java.util.Map;
 
-import org.eclipse.jface.resource.ImageDescriptor;
+import gui.view.Dominio;
+
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
@@ -15,30 +14,23 @@ import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 
 import beans.Conhecimento;
-import beans.Desenvolvedor;
-import beans.Item;
-
 
 public class AdicionaConhecimentoWizardPage extends WizardPage {
 
-	private Atividade atividade;
+	private Dominio dominio;
 	private Text nomeConhecimentoText;
 	private Text descricaoConhecimentoText;
 	private Button addConhecimentoButton;
@@ -47,16 +39,18 @@ public class AdicionaConhecimentoWizardPage extends WizardPage {
 	private beans.Tree ontologia;
 	private ArrayList<String> nomesNosAdicionado;
 	private String paiConhecimento;
+	private Map<Conhecimento, Conhecimento> conhecimentoFilhoPai;
 
-    public AdicionaConhecimentoWizardPage(ISelection selection, Atividade atividade) {
+    public AdicionaConhecimentoWizardPage(ISelection selection, Dominio dominio) {
         super("wizardPage");
         setTitle("Adiciona Conhecimento Wizard");
         setDescription("Adiciona uma novo Conhecimento.");
-        this.atividade = atividade;
+        this.dominio = dominio;
         conhecimentosSelecionados = new ArrayList<TreeItem>();
-        ontologia = atividade.getViewComunication().getOntologia();
+        ontologia = dominio.getViewComunication().getOntologia();
         nomesNosAdicionado = new ArrayList<String>();
-
+        
+        conhecimentoFilhoPai = new HashMap<Conhecimento, Conhecimento>();
     }
 
     private void updateStatus(String message) {
@@ -73,12 +67,11 @@ public class AdicionaConhecimentoWizardPage extends WizardPage {
     }
     
     public ArrayList<String> getConhecimentos(){
-    	
     	return nomesNosAdicionado;
     }
     
-    public String paiConhecimento(){
-    	return paiConhecimento;
+    public Map<Conhecimento, Conhecimento> conhecimentoFilhoPai(){
+    	return conhecimentoFilhoPai;
     }
 
     
@@ -88,8 +81,7 @@ public class AdicionaConhecimentoWizardPage extends WizardPage {
 
     
     public void createControl(Composite parent) {
-    	Composite controls =
-            new Composite(parent, SWT.NULL);
+    	Composite controls = new Composite(parent, SWT.NULL);
         FillLayout layoutFillVertical = new FillLayout();
         layoutFillVertical.type = SWT.VERTICAL;
         
@@ -100,22 +92,16 @@ public class AdicionaConhecimentoWizardPage extends WizardPage {
         layoutTopo.verticalSpacing = 5;
 
         
-        Composite controlsTopo =
-            new Composite(controls, SWT.NULL);
+        Composite controlsTopo = new Composite(controls, SWT.NULL);
         controlsTopo.setLayout(layoutTopo);
 
-        Label label =
-            new Label(controlsTopo, SWT.NULL);
+        Label label = new Label(controlsTopo, SWT.NULL);
         label.setText("Nome do Conhecimento:");
 
-        nomeConhecimentoText = new Text(
-            controlsTopo,
-            SWT.BORDER | SWT.SINGLE);
-        GridData gd = new GridData(
-            GridData.FILL_HORIZONTAL);
+        nomeConhecimentoText = new Text( controlsTopo, SWT.BORDER | SWT.SINGLE);
+        GridData gd = new GridData( GridData.FILL_HORIZONTAL);
         nomeConhecimentoText.setLayoutData(gd);
-        nomeConhecimentoText.addModifyListener(
-            new ModifyListener() {
+        nomeConhecimentoText.addModifyListener( new ModifyListener() {
                 public void modifyText(
                         ModifyEvent e) {
                     dialogChanged();
@@ -135,22 +121,22 @@ public class AdicionaConhecimentoWizardPage extends WizardPage {
 			public void mouseDown(MouseEvent e) {
 				// TODO Auto-generated method stub
 				//Adiciona novo nó na arvore gráfica
-				String nome=null;
-				ArrayList<String> caminhoDaRaiz = new ArrayList<String>();
+				Conhecimento conhecimentoPai=null, conhecimentoFilho=null;
 				TreeItem[] treeItem = arvoreConhecimento.getSelection();
 				treeItem[0].setChecked(true);
-				if (treeItem[0]==null) {
-					paiConhecimento = null;
-				}else{
-					paiConhecimento = treeItem[0].getText();	
+				if (treeItem[0]!=null) {
+					conhecimentoPai = new Conhecimento();
+					conhecimentoPai.setNome( treeItem[0].getText() ) ;
 				}
 				
-				if (treeItem!=null&&treeItem[0]!=null) {
+				if (treeItem!=null && treeItem[0]!=null) {
 					TreeItem novoItem = new TreeItem(treeItem[0],treeItem[0].getStyle());
-					nome = nomeConhecimentoText.getText();
-					if (nome!=null||!nome.equals("")) {
-						novoItem.setText(nome);	
-						nomesNosAdicionado.add(nome);
+					conhecimentoFilho = new Conhecimento();
+					conhecimentoFilho.setNome( nomeConhecimentoText.getText() );
+					if (conhecimentoFilho.getNome()!=null||!conhecimentoFilho.getNome().equals("")) {
+						novoItem.setText(conhecimentoFilho.getNome());	
+						nomesNosAdicionado.add(conhecimentoFilho.getNome());
+						conhecimentoFilhoPai.put(conhecimentoFilho, conhecimentoPai);
 					}else{
 						return;	
 					}
@@ -164,14 +150,14 @@ public class AdicionaConhecimentoWizardPage extends WizardPage {
 			}
 			
         });
+        
         try{
         	
-        	beans.Tree conhecimentosModelo = atividade.getViewComunication().getOntologia();
+        	beans.Tree conhecimentosModelo = dominio.getViewComunication().getOntologia();
         	arvoreConhecimento = conhecimentosModelo.constroiArvoreGrafica(controls, SWT.BORDER | SWT.CHECK);
         	arvoreConhecimento.addListener(SWT.Selection, new Listener() {
 			
 				public void handleEvent(Event e) {
-					// TODO Auto-generated method stub
 					TreeItem atual=null;
 					if (e.detail==SWT.CHECK) {
 						atual = (TreeItem)e.item;
@@ -189,7 +175,6 @@ public class AdicionaConhecimentoWizardPage extends WizardPage {
             
             	
         }catch (Exception e) {
-			// TODO: handle exception
         	System.out.println("ERRO ERRO: "+e.getMessage());
         	e.printStackTrace();
 		}

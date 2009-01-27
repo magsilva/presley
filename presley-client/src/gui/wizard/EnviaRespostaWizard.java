@@ -1,13 +1,9 @@
 package gui.wizard;
 
-import gui.view.Atividade;
-import gui.view.Mensagens;
-import gui.view.comunication.ViewComunication;
+import gui.view.MensagemAba;
 
 import java.lang.reflect.InvocationTargetException;
 import java.sql.Date;
-import java.util.ArrayList;
-import java.util.Hashtable;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -20,39 +16,32 @@ import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 
-import beans.Conhecimento;
 import beans.Desenvolvedor;
-import beans.Mensagem;
 import beans.Problema;
-import beans.TipoAtividade;
+import beans.Solucao;
 
 public class EnviaRespostaWizard extends Wizard implements INewWizard {
 
 	private EnviaRespostaWizardPage page;
 	private ISelection selection;
     private Desenvolvedor desenvolvedorLogado;
-    private Mensagem mensagemEntrada;
-    private Mensagem mensagemSaida = null;
-    private Mensagens viewMensagens;
+    private Problema problema;
+    private MensagemAba viewMensagem;
+    private Solucao solucaoOrigem;
     
     public EnviaRespostaWizard() {
         super();
         setNeedsProgressMonitor(true);
-        ImageDescriptor image =
-            AbstractUIPlugin.
-                imageDescriptorFromPlugin("Add",
-                   "icons/presley.gif");
+        ImageDescriptor image = AbstractUIPlugin.imageDescriptorFromPlugin("Add", "icons/presley.gif");
         setDefaultPageImageDescriptor(image);
-        
-        
     }
     
-    public EnviaRespostaWizard(Mensagens viewMensagens, Desenvolvedor desenvolvedorLogado, Mensagem mensagemEntrada) {
+    public EnviaRespostaWizard(MensagemAba viewMensagem, Desenvolvedor desenvolvedorLogado, Problema problema, Solucao solucaoOrigem) {
         this();
         this.desenvolvedorLogado = desenvolvedorLogado;
-        this.mensagemEntrada = mensagemEntrada;
-        this.viewMensagens = viewMensagens;
-        
+        this.problema = problema;
+        this.viewMensagem = viewMensagem;
+        this.solucaoOrigem = solucaoOrigem;
     }
     
     private void performOperation(IProgressMonitor monitor) {
@@ -62,17 +51,24 @@ public class EnviaRespostaWizard extends Wizard implements INewWizard {
 
 	@Override
 	public boolean performFinish() {
-		// TODO Auto-generated method stub
         //First save all the page data as variables.
 
     	try{
     		String resposta = page.getDescricao();
-    		ArrayList<Desenvolvedor> desenvolvedoresDestino = new ArrayList<Desenvolvedor>();
-    		desenvolvedoresDestino.add(mensagemEntrada.getDesenvolvedorOrigem());
 
+    		Solucao solucao = new Solucao();
+    		solucao.setDesenvolvedor( this.desenvolvedorLogado );
+    		solucao.setProblema( problema );
+    		solucao.setMensagem( resposta );
+    		solucao.setData( new Date(System.currentTimeMillis()) ) ;
+    		
     		//Colocando no banco
-    		viewMensagens.getViewComunication().enviarMensagem(this.desenvolvedorLogado,
-    				desenvolvedoresDestino, mensagemEntrada.getProblema(), resposta);
+    		solucao = viewMensagem.getViewComunication().adicionaSolucao(solucao);
+    		
+    		if (solucaoOrigem != null){
+    			solucaoOrigem.setSolucaoResposta(solucao);
+    			viewMensagem.getViewComunication().atualizarSolucao( solucaoOrigem ) ;
+    		}
 
     	}catch (Exception e) {
     		MessageDialog.openError(this.getShell(), "ERRO", e.getMessage());
@@ -102,14 +98,11 @@ public class EnviaRespostaWizard extends Wizard implements INewWizard {
 	}
 	
 	public void addPages() {
-        page=new EnviaRespostaWizardPage(selection);
+        page = new EnviaRespostaWizardPage(selection, solucaoOrigem != null);
         addPage(page);
     }
 
 
-	public Mensagem getMensagemSaida() {
-		return mensagemSaida;
-	}
 	
 }
 

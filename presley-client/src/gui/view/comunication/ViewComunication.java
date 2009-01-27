@@ -1,25 +1,21 @@
 package gui.view.comunication;
 
-import java.sql.Date;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.ui.actions.RetargetAction;
-
-
+import beans.Arquivo;
 import beans.BuscaDesenvolvedores;
 import beans.Conhecimento;
 import beans.ConhecimentoAtividade;
 import beans.DadosAutenticacao;
 import beans.Desenvolvedor;
-import beans.Item;
 import beans.Mensagem;
 import beans.Problema;
 import beans.ProblemaAtividade;
+import beans.Projeto;
 import beans.QualificacaoDesenvolvedor;
+import beans.Solucao;
 import beans.TipoAtividade;
 import beans.Tree;
 import facade.PacketStruct;
@@ -37,7 +33,6 @@ public class ViewComunication implements CorePresleyOperations{
 	private ArrayList<Conhecimento> listaConhecimentos = new ArrayList<Conhecimento>();//Lista de todos os conhecimentos
 	private ArrayList<Problema> listaProblemas = new ArrayList<Problema>();//Lista de todos os problemas
 	private HashMap<String,ArrayList<Conhecimento>> conhecimentos = new HashMap<String,ArrayList<Conhecimento>>();//mapeamento nome de atividade e seus conhecimentos associados
-	private HashMap<String,ArrayList<Problema>> problemas = new HashMap<String,ArrayList<Problema>>();//mapeamento nome de atividade e seus problemas associados
 	private beans.Tree ontologia;//Armazena a ontologia
 
 	
@@ -77,7 +72,6 @@ public class ViewComunication implements CorePresleyOperations{
 			listaConhecimentos = new ArrayList<Conhecimento>();//Lista de todos os conhecimentos
 			listaProblemas = new ArrayList<Problema>();//Lista de todos os problemas
 			conhecimentos = new HashMap<String,ArrayList<Conhecimento>>();//mapeamento nome de atividade e seus conhecimentos associados
-			problemas = new HashMap<String,ArrayList<Problema>>();//mapeamento nome de atividade e seus problemas associados
 			ontologia = null;//Armazena a ontologia
 			
 			System.out.println("instanciando cliente");
@@ -195,6 +189,7 @@ public class ViewComunication implements CorePresleyOperations{
 	}
 	
 	/**
+	 * *****************************************
 	 * Retorna os problemas associados a uma dada atividade
 	 * @param atividade é o nome da atividade
 	 * @return ArrayList<String> é a lista de problemas
@@ -219,11 +214,43 @@ public class ViewComunication implements CorePresleyOperations{
     		return null;
     	}
        	
-       	problemas.put(atividade, resposta);
-		
-		return this.problemas.get(atividade);
+		return this.listaProblemas;
+	
 	}
 	
+	/**
+	 * Retorna os problemas associados a um desenvolvedor
+	 * @param atividade é o nome da atividade
+	 * @return ArrayList<String> é a lista de problemas
+	 */
+	public ArrayList<Problema> getProblemas(Desenvolvedor desenvolvedor)
+	{
+		PacketStruct respostaPacket = sendPack(desenvolvedor,CorePresleyOperations.GET_LISTA_PROBLEMAS);
+    	ArrayList<Problema> resposta = (ArrayList<Problema>)respostaPacket.getData();
+    	
+    	
+       	if(resposta == null){ 
+    		System.out.println("RESPOSTA NULL");
+    		return null;
+    	}
+       	
+       	listaProblemas = resposta;
+		
+		return this.listaProblemas;
+	}
+
+	/**
+	 * Remove o problema informado
+	 * @param problema é o problema a ser excluido
+	 * @return boolean se a exclusão ocorreu bem
+	 */
+	public boolean removerProblema(Problema problema) throws ProblemaInexistenteException{
+		PacketStruct respostaPacket = sendPack(problema, CorePresleyOperations.REMOVER_PROBLEMA);
+		if(respostaPacket.getData() != null){
+			return true;
+		}
+		return false;
+	}
 	
 	/**
 	 * Mótodo de teste que cria uma ontologia e uma atividade com seus conhecimentos e problemas associados.
@@ -400,6 +427,22 @@ public class ViewComunication implements CorePresleyOperations{
 		return true;
 	}
 
+	public boolean adicionaProblema(Problema problema) throws Exception{
+		PacketStruct respostaPacket  = sendPack(problema, CorePresleyOperations.ADICIONA_PROBLEMA);
+
+		if(respostaPacket.getId() == CorePresleyOperations.ERRO) {
+			throw new Exception((String) respostaPacket.getData());
+		}
+		
+		Boolean resposta = (Boolean)respostaPacket.getData();
+    	if (resposta!=null&&resposta.booleanValue()==true) {
+    		this.listaProblemas.add(problema);
+    		return true;
+		}
+		
+		return false;
+	}
+	
 	public boolean associaProblemaAtividade(
 			Problema problema,
 			TipoAtividade atividade,
@@ -421,7 +464,7 @@ public class ViewComunication implements CorePresleyOperations{
 			throw new Exception((String) respostaPacket.getData());
 		}
 		
-		Boolean resposta = (Boolean)respostaPacket.getData();
+/*		Boolean resposta = (Boolean)respostaPacket.getData();
     	if (resposta!=null&&resposta.booleanValue()==true) {
     		this.listaProblemas.add(problema);
     		ArrayList<Problema> problemasAssociados = this.problemas.get(atividade.getDescricao());
@@ -433,7 +476,7 @@ public class ViewComunication implements CorePresleyOperations{
     		this.problemas.put(atividade.getDescricao(), problemasAssociados);
     			
     		return true;
-		}
+		}*/
 		
 		return false;
 	}
@@ -565,7 +608,7 @@ public class ViewComunication implements CorePresleyOperations{
 		PacketStruct respostaPacket = sendPack(null,CorePresleyOperations.GET_LISTA_CONHECIMENTO);
     	System.out.println("Passe do sendPack");
 		ArrayList<Conhecimento> resposta = (ArrayList<Conhecimento>)respostaPacket.getData();
-    	System.out.println(resposta.get(0).getNome() + "  " + resposta.get(0).getDescricao() );
+//    	System.out.println(resposta.get(0).getNome() + "  " + resposta.get(0).getDescricao() );
 		listaConhecimentos = resposta;
     	
 		return listaConhecimentos;
@@ -696,8 +739,87 @@ public class ViewComunication implements CorePresleyOperations{
 	public ArrayList<String> getConhecimentosAssociados(String problema) {
 		PacketStruct respostaPacket = sendPack(problema,CorePresleyOperations.BUSCA_CONHECIMENTOS_PROBLEMA);
 		
-		return (ArrayList<String>)respostaPacket.getData();
+		return (ArrayList<String>) respostaPacket.getData();
 	}
+	
+
+	public Solucao adicionaSolucao(Solucao solucao) {
+		PacketStruct respostaPacket = sendPack(solucao, CorePresleyOperations.ADICIONA_SOLUCAO);
+		Solucao retorno;
+		retorno = (Solucao)respostaPacket.getData();
+		System.out.println("Retorno do enviar mensagem: " +retorno);
+		return retorno;
+	}
+	
+	public ArrayList<Solucao> listarSolucoesDoProblema(Problema problema) {
+		PacketStruct respostaPacket = sendPack(problema,CorePresleyOperations.GET_LISTA_SOLUCOES_PROBLEMA);
+		
+		return (ArrayList<Solucao>) respostaPacket.getData();
+	}
+
+	public boolean atualizarStatusSolucao(Solucao solucao) {
+		PacketStruct respostaPacket = sendPack( solucao, CorePresleyOperations.ATUALIZAR_STATUS_SOLUCAO);
+		boolean retorno = false;
+		if(respostaPacket.getData() != null){
+			retorno = (Boolean)respostaPacket.getData();
+		}		
+		return retorno;
+	}
+	
+	public boolean atualizarStatusProblema(Problema problema) {
+		PacketStruct respostaPacket = sendPack( problema, CorePresleyOperations.ATUALIZAR_STATUS_PROBLEMA);
+		boolean retorno = false;
+		if(respostaPacket.getData() != null){
+			retorno = (Boolean)respostaPacket.getData();
+		}		
+		return retorno;
+	}
+	
+	public boolean atualizarSolucao(Solucao solucao) {
+		PacketStruct respostaPacket = sendPack( solucao, CorePresleyOperations.ATUALIZAR_SOLUCAO);
+		boolean retorno = false;
+		if(respostaPacket.getData() != null){
+			retorno = (Boolean)respostaPacket.getData();
+		}		
+		return retorno;
+	}
+
+	public ArrayList<Solucao> listarSolucoesRetornadasDoDesenvolvedor(
+			Desenvolvedor desenvolvedor){
+		PacketStruct respostaPacket = sendPack(desenvolvedor,CorePresleyOperations.GET_LISTA_SOLUCOES_RETORNADAS);
+		
+		return (ArrayList<Solucao>) respostaPacket.getData();
+	}
+	
+	public Conhecimento associaArquivo(Conhecimento conhecimento, Arquivo arquivo) throws Exception{
+
+		ArrayList<Arquivo> arquivos = new ArrayList<Arquivo>();
+		arquivos.add(arquivo);
+		conhecimento.setArquivos(arquivos);
+		
+		PacketStruct respostaPacket = sendPack(conhecimento, CorePresleyOperations.ASSOCIA_ARQUIVO_CONHECIMENTO);
+
+		if(respostaPacket.getId() == CorePresleyOperations.ERRO) {
+			throw new Exception((String)  respostaPacket.getData());
+		}
+
+		if(respostaPacket.getData() != null){
+			conhecimento = (Conhecimento)respostaPacket.getData();
+		}		
+		return conhecimento;
+	}
+
+	/**
+	 * Retorna o Projeto utilizado no Presley.
+	 * @return 
+	 */
+	public Projeto getProjetoAtivo(){
+		PacketStruct respostaPacket = sendPack(null, GET_PROJETO);
+		Projeto projeto = (Projeto)respostaPacket.getData();
+    	
+		return projeto;
+	}
+	
 }
 
 
