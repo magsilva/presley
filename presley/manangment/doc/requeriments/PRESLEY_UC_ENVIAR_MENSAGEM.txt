@@ -1,0 +1,68 @@
+
+
+
+
+
+
+
+
+
+
+
+
+Caso de Uso – Enviar Mensagem
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Projeto: Presley
+
+
+Data29/07/08ResponsávelEduardo Paz SerafimID do documentoPRESLEY_UC_ENVIAR MENSAGEMLocalização\gigabug\management\docs\requirements\Versão do Documento0.01
+
+
+Histórico de Revisões
+
+DataVersãoAutorDescrição
+Revisores
+ 
+NomeFunçãoData
+Presley
+Use-Case: Enviar Mensagem
+1 Descrição Breve
+Descreve como o desenvolvedor envia mensagem de dúvida sobre uma determinado dificuldade encontrada
+2 Ator
+2.1 Desenvolvedor
+3 Precondições
+Existência de uma dificuldade associada à uma tarefa
+4 Fluxo Básico de Eventos
+1. O desenvolvedor seleciona a dificuldade e a opção “Enviar Mensagem a Colaboradores”.
+2. O sistema dispõe a área para entrada da mensagem, juntamente com uma lista de prováveis colaboradores que estejam aptos a solucionar a dificuldade.
+3. O desenvolvedor cria a mensagem e seleciona os colaboradores e envia a mensagem.
+4. O sistema envia a mensagem para os colaboradores selecionados 
+5. O sistema confirma que a mensagem foi enviada.
+6. Caso de uso finalizado com sucesso
+5 Fluxo Alternativo
+5.1 Informações não foram inseridas na base de dados
+Se no passo 5 do fluxo básico o sistema não conseguir enviar a mensagem, 
+1. O sistema avisará ao desenvolvedor que a mensagem não foi entregue com sucesso.
+2. Retorna ao passo 3 ou cancelamento do caso de uso.
+6 Pós Condições 
+6.1 Status da mensagem de dificuldade enviada com sucesso
+A mensagem de dificuldade foi enviada com sucesso.
+
+
+PresleyUse-case Specification: Enviar Mensagem  Date:  28/07/2008
+
+Confidencial?BOPE & ?GigaBug, 2008Page 1 of 4
+
