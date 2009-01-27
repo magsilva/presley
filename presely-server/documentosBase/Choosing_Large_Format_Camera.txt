@@ -1,0 +1,76 @@
+(Choosing a Large Format Camera. SIM X
+by Philip Greenspun
+
+
+Contents 12.000,02
+1. Top
+2. Size
+3. Staying at Home, Staying with the Car, or Packing into the Bush?
+4. The camera for the studio
+5. The camera for the road
+6. The camera for the wilderness
+7. Which lenses
+8. A few other items
+9. More
+10. Inspiration
+11. Reader's Comments<</a>
+
+If you don't know what a view camera does or why you might need one, please read my camera tutorial before trying to wade through this document, which assumes that you already know why you need the perspective control and image quality of a view camera.
+Size
+I'm going to risk crucifixion by saying that you shouldn't consider a 8x10 view camera unless you are planning to make contact prints. Note that contact printing is how Ansel Adams and Edward Weston made some of their most famous and valuable prints. Without the distortions of the enlarger lens or contrast reduction of enlarger flare (stray light from one portion of the image scattering into another portion), a contact print is a beautiful thing to behold. Nonetheless, if you're too lazy to do it then an 8x10 should be scratched from your shopping list. The cameras are simply too huge. The film is too expensive. You can't get Fuji Quickload film in 8x10 size. The only way to scan 8x10 is with a ruinously expensive drum scanner (i.e., no Kodak PhotoCD). You can't get simple Polaroid film in 8x10 size.
+At the other end of the spectrum are medium-format view cameras, such as the Horseman VH 6x9 cm camera. These have the advantages of compactness and roll-film loading ease. However, they are about as cumbersome and slow to operate as a 4x5 camera. You could put a roll film back on a 4x5 camera if you wanted to avoid loading film holders. At the end of the day a medium-format view camera won't give you a beautiful 4x5 sheet of film for your light table. And the resulting negative won't be cheap to scan like a 35mm neg would be. So scratch anything smaller than 4x5 from the list.
+Where does that leave us? With 4x5 view camera. If you need a bunch of images scanned, you can get a Kodak PhotoCD made from 4x5 film. You have the widest selection of emulsions in 4x5 size. The latest and best view camera lens designs are intended to cover 4x5. 
+Staying at Home, Staying with the Car, or Packing into the Bush?
+The next big decision that you have to make is whether you are going to
+* take pictures at home in a studio 
+* take pictures on the road but close to the car 
+* take pictures in the wilderness 
+If you're going to take pictures at home in the studio, then what you want is a 12 lb. monorail camera with beautifully precise and geared movements. If you're going to travel but stay reasonably close to the car, then you probably want a camera that won't break your arm if you have to carry it 200 yards: a 6 lb. monorail. If you're going to take the camera into the wilderness and trek for 5 hours before setting up for the perfect photo, what you need is a camera that folds up compactly and is also fairly lightweight.
+Let's treat each of these situations in turn. 
+The camera for the studio
+My favorite studio camera is the Sinar X. Let's look first at why Sinar and then at why this specific model of Sinar. Suppose that Joe Clueless person looks through a catalog of photographic equipment. After doing extensive research through product literature and by testing some sample cameras and lenses, Joe tells you that Canon, Contax, Leica, Minolta, Nikon, Pentax, and Sigma camera systems are all basically just fine. The usability and final image quality on film are tough to distinguish.
+Yet a working photographer knows that only Canon and Nikon make complete professional systems with the full range of lenses, attachments, and accessories that they'd be likely to need. Moreover, those are the only two systems for which they'd have a prayer of renting lenses, attachments, and accessories for a special job.
+The view camera world is more or less the same. Leaving through catalogs and, if you're lucky enough to live near a good shop, playing with various view cameras, you would be likely to conclude that they are all the same. This is particularly the case since a view camera is really only a light-tight box. You can use any lens or film back on any view camera. So what difference does the box make?
+At least in the United States, the only comprehensive view camera system available is Sinar. It is also the only system for which you can find rental gear. Since it isn't really any more expensive than other brands, there is no reason to ever consider another brand for studio work.
+Now that we've settled on Sinar, let's look at what we've got. Every Sinar seems to have little calculator wheels that tell you (1) what aperture you need to get enough depth of field, and (2) at what angle you need to tilt the lens and/or film plane to bring a tabletop into focus via the Scheimpflug Rule. Every Sinar has lots of parts that interchange with other Sinar models. If you start with a cheap lightweight Sinar for use while traveling, you will be able to use all of your extension rails, bellows, etc. on the top-of-the-line studio cameras.
+Let's get back now to my recommendation of the specific Sinar X model. Like the $6000 Sinar P2 it has geared and calibrated movements (and sadly, like the Sinar P2, it is a heavy camera). What is good about the Sinar X is that you can buy it for about $3000 at the end of every calendar year when Sinar has a sale. You can get it for pretty close to this price the rest of the year if you're affiliated with a university. Otherwise, budget a little over $4000. What you give up compared to the P2 is the ability to convert to 8x10 without having to buy a whole new rear standard and also the ability to stick a meter probe in the film plane. 
+The camera for the road
+If you're going to stick close to the car but want a more easily luggable camera than the X, I recommend the Sinar F1 or F2. These are about half the weight of the X and start at under $2000, which is a much better deal than the X except at the end of the year. 
+The camera for the wilderness
+I tried to do this with my Linhof Master Technika but it is simply too heavy and, in virtue of its being a view camera, requires too many accessories to take any pictures. The Horseman field cameras have always attracted me because of their impossibly light weight. Wooden field cameras drive me insane because the movements aren't precise and it is tough to even get the standards parallel. Actually, when I think about it, all field cameras inevitably drive me insane because they don't have the movement flexibility to which I became accustomed with my first view camera (a Sinar F2).
+Check the comments at the end of this article to see if any other photo.net community members have found nirvana in this area. 
+Which lenses
+Real view camera photographers will tell you that you should buy all your lenses from one company because they will be matched for color and contrast. Unless you're doing catalog photography, I think this is bad advice. First, in a world of digital imaging and color negative film, I don't see why color consistency should be so important. Second, one of the joys of view camera ownership is that you can choose any lens from any manufacturer.
+Here are some of my favorite lens ideas:
+* the Schneider Super Angulon XL series; these are innovative wide angles introduced with great fanfare in the late-1990s. They are revolutionary in that they cover the full 4x5 frame while going as wide as 47mm (equivalent to a 15mm lens on a Nikon). Personally, I would get a 72mm XL. Don't forget to budget $500 extra for a center filter that corrects for the inevitable wide-angle light falloff in the corners. 
+* Nikkor AM 210 ED macro lens. This is an apochromatic lens at 1:1 and covers 8x10 easily. It is frighteningly sharp. 
+* Nikkor T 360mm lens. This is part of the Nikon telephoto series introduced in the 1980s. They have ED glass and, because of their telephoto design, let you take portraits without racking the bellows out to an absurd and usntable degree. Even more interestingly, you can get an extra rear element for the lens and convert it to 500 or 720 mm. Caveat 1: these are big long lenses. If you want a 300 for field use, consider an older 300/9 non-telephoto design. Caveat 2: because the telephoto design puts the nodal point way out in front of the lens, and therefore in front of the lens board, tilts and swings will not work as expected. 
+* Rodenstock 250mm Imagon. This is a very strange soft-focus lens that covers 4x5. Use it for portraits and landscapes. 
+* oh yes... a normal lens. The 210 macro will work reasonably well at longer distance so you might as well get a 150. Schneider's APO Symmar and Rodenstock's APO Sironar S are indistinguishable. If you want to get extreme with movements, the Schneider Super Symmar HM 150 is unique. 
+* finally, for those times when the Super Angulon XL is simply too wide, you need a Schneider Super Symmar XL 120. 
+A potentially good strategy for saving some money is finding a set of Fuji lenses. These are very similar in quality to Nikon, Rodenstock, and Schneider but were always a bit cheaper and then Fuji withdrew from the American market. 
+A few other items
+If you want to attach your fancy new lenses to your fancy new camera, you need lens boards, one for each lens. Generally it is best to buy the lenses already mounted on boards by a professional camera shop. Otherwise, you will have to invest in a spanner wrench and some brain effort.
+To focus a wide angle lens at infinity requires mushing the front and rear standards very close together (about 72mm for a 72mm lens, for example). If you can do it at all, you'll find that the bellows becomes very stiff and it is hard to use the view camera perspective controls. One solution is a recessed lens board that holds the lens back behind the front standard. I don't like recessed boards because they make it hard to adjust aperture and shutter speed. A better solution is the wide-angle or "bag" bellows. These are, well, bags. On a Sinar, you can switch from regular to bag bellows in about 30 seconds. The bellows that are you aren't using becomes a lens hood. It is a very slick system.
+To focus a long lens on a close-up object requires a lot of bellows extension. You'll probably need a 6-inch extension rail for your Sinar.
+Personally, I find that my photography is improved when I put film behind the rear standard. This isn't so easy with 4x5. The traditional way is to buy a stack of film holders (Rite-Way are the best), a box of film, and a brush or can of compressed air to get the dust off the holders before putting the film in. After you've done this a few times, you'll probably decide that you'd get better results if you did it in total darkness, either by building a special room in your house or by purchasing a PhotoFlex Changing Room or similar tent-like changing bag (Jobo and Calumet sell them also). You put in the film, zip it up, and stick your arms in through elastic sleeves.
+After you've loaded film this way for a few years, you decide to buy into the Kodak Readyload system. Kodak packages the film for you in their factory. Each pair of sheets comes in a light-tight dust-free cardboard sleeve. You stick the sleeve into a special Kodak holder and can take pictures almost as easily as with a roll-film camera. The film stays in its sleeve until the lab removes it for development. The system is perfect except for the 20-30% of exposures that are ruined due to light leaks and other system failures.
+After you've gotten tired of Kodak's incompetently-designed system, you switch to Fuji Quickload, a system that appears on the surface to be similar to Kodak's. There must be some big difference because I've been using the Fuji system for almost ten years and have never had a single failure. Nor have I ever talked with anyone who has had a problem with Fuji. Nort have I ever talked with anyone who has gotten Kodak Readyload to work reliably. Kodak periodically comes out with a new film holder for Readyload and issues a press release saying "we've fixed Readyload so that it works".
+But of course it doesn't.
+So the right thing to do is either be a real photographer and take the time to load film holders or use Fuji Quickload and bitch and complain about the limited variety of emulsions available. As of December 1998 you could only get Velvia (ISO 50 slides; delicious but lurid), Astia (ISO 100 slides; delicious), Provia (ISO 100 slides; "the worst slide film ever made" according to one of my friends and I couldn't disagree), and Fujichrome 64T (tungsten slides).
+Before putting that film in the rear standard, you might want to check that your camera is pointed at something interesting. For that you'll want a dark cloth that you can drape around the ground glass and your head.
+In order to see if your subject is in focus, you need a magnifying loupe. My favorite is the "Toyo 3.6X Groundglass Focusing Magnifier" (about $40), though expensive German loupes lifted from the light table work reasonably well also.
+As you're stopping down the lens to the correct aperture and adjusting the Copal shutter, you may wonder whether these settings are correct for the light and your subject's tone. A handheld meter is useful at this point. Real view camera nerds generally use a dedicated spot meter but I prefer the Sekonic L-508 (spot, incident, reflected, weatherproof).
+Once your exposure is set, if your subject isn't at infinity you might want to make sure that a bellows extension exposure correction isn't required. For this you need a QuickDisc (free) or Quick Stick (not free).
+If you're still not able to nail exposure, or if you're using studio strobes, you'll definitely want a Polaroid 545 back and some Polaroid 4x5 film (about $3 per exposure).
+At this point you need a humungoid case to hold everything. The most convenient are those that let your camera hang from its rails. Lightware and Tenba make soft-sided versions of this age-old design. My Lightware case is a persistent source of difficulty and the doesn't seem to be great with support, so I'd personally get a Tenba View 45 case or maybe one of the Sinar-brand cases. 
+More
+* reviews of specific cameras in photo.net 
+* Large Format threads in the Q&A forum 
+* Quang-Tuan Luong's comprehensive large-format page 
+* View Camera Technique; book review 
+* once you get your camera: the QuickDisc exposure tool
+* vendor smut, but comes with interesting MTF diagrams (warning: these are calculated, not measured): http://www.schneideroptics.com/
+Inspiration
+I'm going to try to keep tossing in photos here that show the advantages of large format photography.
+

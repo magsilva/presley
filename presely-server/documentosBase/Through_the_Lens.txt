@@ -1,0 +1,69 @@
+ael Karbo, Denmark, Europe.
+
+?  Next chapter. 
+?  Previous chapter. 
+
+Chapter 6. Viewfinders and displays
+
+Operating the camera is more complicated than just looking through a little window and pressing the button. We should be able to read information while we take photographs and be able to scroll through menus. At the same time, the viewfinder has to give us a correct image of the subject, irrespective of light and zoom conditions. This means that the camera’s viewfinder and information systems are central when we take photographs – and it is important that they are good! 
+Normal optical viewfinder 
+There are several systems, which are used in different camera types. First of all we have the traditional optical viewfinder. This consists of a little window, which you can look through. 
+The viewfinder window is proportioned so that it ideally shows the section of the subject, which will be included in the exposure. The optical viewfinder is, however, not the best invention in the world; the image section is not exactly precise. A lot more will appear in the image than is shown in the viewfinder. 
+
+Figur 16. A view through an optical viewfinder, which doesn’t always have the most practical value. 
+An optical viewfinder is, in fact, not very precise and the problem becomes greater the more you zoom in. With a 4X zoom, the optical viewfinder shows a 30-40% too small subject section. So it is very difficult to take a precise exposure. 
+An optical viewfinder has, however, one advantage. It always works – regardless of light conditions. Which is why they are still used in many cameras. If you are standing in harsh sunlight, you probably have to use the viewfinder just to be able to see what you are photographing. 
+
+Figur 17. In an optical viewfinder you only see a part of the subject, which is to be photographed. This isn’t particularly practical because you are not sure of how the final image will look. The LCD screen is much more precise; it reproduces the subject with almost 100% correctness in proportion to the exposure. 
+TTL viewfinder with LCD screen 
+
+It is difficult to manufacture a good and precise optical viewfinder. This is why digital cameras have a LCD screen installed on the back of the camera body. 
+A LCD screen has several functions: 
+?  It functions as a viewfinder when we select (”trim”) a subject and by this compose an image. 
+*  It gives us information during and after an exposure. 
+*  It playbacks exposures so you can assess them and, if necessary, delete superfluous images. 
+The most important function is the subject viewfinder. A LCD screen functions much better than a traditional optical “look-through viewfinder”. 
+The absolutely best thing about a LCD screen is that it shows the subject as it is seen through the lenses. This is what is called TTL - Through The Lens, and it gives a very precise viewing of the subject. 
+Light comes into the camera through the lens and then hits the image sensor. The light’s energy is converted to data, which is processed by the computer’s image computer and is then sent on to the LCD screen. This process takes place continually so the LCD screen is constantly active displaying the subject in front of the objective. 
+Another big advantage of a LCD screen is that it can display an almost completely precise subject section. You can see the effect directly and correctly when you zoom. Most of the better cameras show a reproduction of the image, which is nearly 99% correct, but the reproduction can be less precise in other models. 
+For example, the little Fujifilm S5000 only shows 91% of the subject, it is photographing. This is irritating because the subject will be somewhat larger than what can be seen on the screen. At worst it can be necessary to trim the image to get rid of unwanted image elements. A LCD screen works better than an optical viewfinder, which is much less precise. 
+Lots of pixels – good viewfinders 
+Most of the larger modern cameras have a LCD screen of 118.000 pixels with a decently large diameter of 1,8” (1,8 inches, corresponding to 4,6 cm). The less compact cameras (like Sony DSC-V1 and Nikon Coolpix 5400) have only enough room for the smaller 1,5” screens. They are a little difficult to look at, from a distance anyway. 
+There is, by the way, also rather a lot of difference in the quality of LCD screens. Some of them have a lot of digital noise (dots and flecks in the image), while others don’t. Some of the very best 1,8”-screens are found on Canon’s G3- and G5-cameras. 
+Figur 18. LCD screens display a lot of information at the same time. (Minolta A1) 
+The screens can be moved 
+Ideally a LCD screen ought to be able to be turned round in nearly all sorts of angles. So you can take photographs with the camera high up in the air or stuck out of a window. You can still see the subject even though the camera is at an angle and held away from yourself. It gives a new and more creative way of taking photographs when the screen can be twisted around. Even though you have only used it for a while, it will feel very peculiar having to do without a twistable screen. 
+
+Figur 19. A LCD screen, which can be twisted around in all directions is the best thing (Canon G5). 
+Internal LCD viewfinder (EVF)
+Some cameras have two LCD screens. The ”usual” one is on the back of the camera body, while the other one is installed inside the camera. The last-named is called an EVF (Electronic View Finder), which is already well-known from many types of video cameras. 
+You look into a little hole just like you do with a normal viewfinder. But at the back of the hole, there is a mini LCD screen, which is seen through a magnifying glass. This electronic viewfinder displays exactly the same image as the LCD screen, but it is inside the camera. 
+The image can be seen in an EVF even though the sunlight is sharp. It can be very difficult to see an image on a LCD screen, if the sun shines on it. In this case, you just change over to the EVF, which can’t be caught by the sun’s rays. 
+As mentioned earlier, a normal optical viewfinder doesn’t work when we zoom. Cameras with 6X, 7X, 8X and 10X zoom always have an EVF as a supplement to the LCD screen. 
+The more pixels there are in an EVF, the better the viewfinder will but this will be at the expense of a great deal of power consumption. A camera like the otherwise excellent Fujifilm S7000 has a resolution of full 180.000 pixels in the viewfinder, which measures 0,44” in diameter. 
+The smaller model Fujifilm S5000 has an EVF with a diameter of just 0,33” and 110.000 pixels. This doesn’t give anywhere as near an excellent viewfinder, but on the other hand the camera consumes much less power. 
+
+Figur 20. An image sensor receives light information through the objective, where it is caught by the electronic image sensor (CCD element). From there (and via the image computer) the image is sent to the LCD screen. 
+This camera has two LCD screens, one on the back of the camera body and the other one (an EVF) inside the camera, where it can be seen through the viewfinder on the top. 
+
+Figur 21. At the bottom a LCD screen, at the top an EVF screen. To the right you can see a button (EVF/LCD), which alternates between them. The dioptric dial (marked with a yellow circle) is used for eyesight correction. 
+Other displays 
+Apart from the LCD screen many cameras have one or even two extra black and white displays, which give extra information about current settings, etc. They are small LCD screens, which don’t require very much power, as they are not lit up. 
+A display is usually used to show the current status for the exposure. The camera’s menu system enables you to alter a number of the exposure’s parameters and it is not always easy to remember, what you have selected. The settings can be seen on a little display, which also tells you how many exposures there is room for on the memory card. It really is rather a practical thing. 
+Information, which can be read at the top of the camera, is often more easily available than when it is displayed on a normal LCD screen, where it easily becomes very confusing with 10-12 different sets of information displayed on top of the subject viewfinder’s image. 
+
+Figur 22. An example of information about the camera’s current settings, as it is displayed in the status panel (Canon G5). 
+The LCD display on the top of the camera body gives a status for the camera’s current settings. 
+SLR cameras 
+If we talk about viewfinders, then we have to remember the Single Lens Reflexcamera (SLR). This type of camera has a purely optical viewfinder, which functions directly through the objective. 
+In a SLR camera the light is guided into the viewfinder with the help of a mirror. During the exposure itself the mirror pops up for split second and the light flies directly into the film/sensor. 
+In some advertisements, small zoom cameras are described as digital Single Lens Reflexcameras. This is not quite correct because there are no mirrors. But an electronic viewfinder (EVF) can give a camera the same mirror reflex-like feeling. This especially applies to a camera like Minolta A1, where you don’t zoom in by pressing on small buttons but by twisting the objective. The feeling here is very close to what one is used to with real Single Lens Reflexcameras. 
+Digital Single Lens Reflexcameras are a completely different type of camera. They are recognised by the fact that their LCD screens cannot be used as viewfinders; you can only find views by looking through the objective. Digital Single Lens Reflexcameras are rather larger and heavier, and their objectives can be replaced. 
+
+Figur 23. A genuine Single Lens Reflex camera, where the light is reflected from the lens up into the viewfinder. 
+
+?  Next chapter. 
+?  Previous chapter. 
+
+?  Photo book overview. 
+

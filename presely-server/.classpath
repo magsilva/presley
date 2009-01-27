@@ -4,7 +4,7 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/3"/>
 	<classpathentry kind="lib" path="lib/mysql-connector-java-5.1.6-bin.jar"/>
-	<classpathentry kind="lib" path="C:/Documents and Settings/Maria de Fátima/Meus documentos/eclipse/plugins/org.eclipse.swt.win32.win32.x86_3.3.0.v3346.jar" sourcepath="C:/Arquivos de programas/eclipse/plugins/org.eclipse.swt.win32.win32.x86_3.4.0.v3448f.jar">
+	<classpathentry kind="lib" path="C:/java/eclipse/plugins/org.eclipse.swt.win32.win32.x86_3.4.1.v3449c.jar" sourcepath="C:/java/eclipse/plugins/org.eclipse.swt.win32.win32.x86_3.4.1.v3449c.jar">
 		<accessrules>
 			<accessrule kind="accessible" pattern="org/eclipse/swt/*"/>
 			<accessrule kind="accessible" pattern="org/eclipse/swt/accessibility/*"/>
@@ -30,5 +30,6 @@
 			<accessrule ignoreifbetter="true" kind="nonaccessible" pattern="**/*"/>
 		</accessrules>
 	</classpathentry>
+	<classpathentry kind="lib" path="D:/workspace/presley-server/libExterna/svnkit.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

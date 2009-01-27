@@ -1,0 +1,82 @@
+XP – Extreme Programming – Parte 1
+Publicado em: 19/07/2005
+
+Dentre as metodologias para desenvolvimento de software existentes no mercado hoje, ouvimos falar bastante da XP, que é a programação extrema, o próprio nome deriva-se da idéia de se utilizar boas práticas e valores defendidos pela XP em extremo, e não apenas comprar algumas idéias e mudanças e aplicar, este pode ser um fator determinante para definir o seu sucesso ou o seu fracasso.
+
+Como é um assunto extenso com muitas partes em seu contexto, vou separá-la em partes para que possamos entender o todo.
+
+A XP foi desenvolvida por Kent Beck, dono e presidente da First Class Software Inc, onde seus dois maiores interesses são patterns (padrões) e Programação Extrema. A XP foi concebida a partir da idéia que desenvolver software é difícil, e desenvolver software de qualidade no prazo combinado é ainda mais difícil. Para funcionar, é preciso o uso disciplinado de práticas-modelo adicionais.
+
+Alguns pontos que algumas metodologias não dão tanto valor ou mesmo não mencionam, e a XP leva ao extremo são:
+
+    * Se revisar o código é bom, revisaremos código o tempo inteiro (Programação em pares)
+    * Se testar é bom, todos vão testar o tempo inteiro (teste de unidade), até mesmo os clientes (testes funcionais)
+    * Se o projeto é bom, ele fará parte das funções diárias de todos (refatoração)
+    * Se simplicidade é bom, sempre deixaremos o sistema com o projeto mais simples que suporte a funcionalidade atual (a coisa mais simples que possa funcionar)
+    * Se arquitetura é importante, todos trabalharão para definir a redefinir a arquitetura o tempo inteiro
+    * Se testes de integração são importantes, então vamos integrar e testar várias vezes ao dia
+    * Se iterações curtas são boas, faremos iterações muito, muito pequenas – segundos, minutos e horas, não semanas, meses e anos.
+    * 40 horas semanais de trabalho. Na XP, horas extras não são bem-vindas, na sexta feira os integrantes devem terminar o seu turno e terem 2 dias para não pensarem em trabalho, para chegarem na segunda-feira cheio de energias e idéias.
+    * O cliente deve estar sempre disponível para responder questões e redefinir prioridades de menor escala.
+    * Padrões de codificação. Por vezes as duplas serão trocadas e talvez partes do sistema serão feitos por outras duplas, portanto é necessário a adoção de padrões de codificação com uma restrição, o mais simples possível e que seja aprovada por todo o grupo.
+
+1) Definição da XP
+
+“A XP é uma maneira leve, eficiente, de baixo risco, flexível, previsível, científica e divertida de desenvolver software” Kent
+
+Ela é única pelos seguintes motivos:
+
+    * Ter feedback antecipado, concreto e contínuo pelos ciclos curtos
+    * Por sua abordagem incremental de planejamento, que gera rapidamente um plano geral que vai evoluir com o decorrer do projeto
+    * Habilidade de agendar de forma flexível a implementação das funcionalidades, respondendo às mutáveis necessidades do negócio
+    * Confiança nos testes automatizados escritos por programadores e clientes para monitorar o progresso do desenvolvimento, para permitir que o sistema evolua e para detectar cedo os erros
+    * Comunicação oral, testes e código fonte para comunicar a estrutura e o objetivo do sistema
+    * Confiança na intensa colaboração de programadores com habilidades comuns
+    * Confiança nas práticas que combinam tanto com os instintos de curto prazo dos programadores quanto os interesses de longo prazo do projeto.
+
+A XP é considerada uma disciplina de desenvolvimento de software, porque há certas coisas que você precisa fazer para estar desenvolvendo a XP, se você optar por não fazer testes você não estará sendo Extremo.
+
+2) Aplicação da XP
+
+A XP foi desenvolvida para ser aplicada em projetos com times de dois a 10 programadores que não sejam severamente restringidos pelo ambiente computacional existente e no qual boa parte da execução de testes possa ser feita em pouco tempo no dia.
+
+A XP assusta ou irrita algumas pessoas que tem o primeiro contato. Mas nenhumas das idéias defendidas pela XP são novas. A maioria delas é tão velha quanto à própria programação, todas as técnicas da XP foram testadas há décadas. As grandes mudanças que a XP traz são:
+
+   1. Colocar todas as práticas juntas
+   2. Garantir que elas sejam praticadas a fundo
+   3. Garantir que as práticas apóiem umas às outras em Extremo
+
+3) Fundamentas da XP
+
+   1. Distinguir entre decisões que devem ser tomadas por interesses dos negócios e aquelas que devem ser tomadas pelos envolvidos no projeto
+   2. Escrever testes de unidades antes de programar e manter todos os testes executando o tempo todo
+   3. Integrar e testar todo o sistema várias vezes ao dia
+   4. Produzir o software em pares, dois programadores em um único computador (não o dia inteiro)
+   5. Começar o desenvolvimento com um projeto simples, que evolui constantemente a fim de adicionar a flexibilidade necessária e eliminar a complexidade desnecessária.
+   6. Colocar um sistema mínimo em produção rapidamente e desenvolvê-lo na direção que se mostra mais favorável.
+
+4) Papéis
+
+Os papéis são muito importantes não só dentro do XP, mas em qualquer metodologia de desenvolvimento, ela é o responsável por dizer quem fará o que, como em um jogo de futebol. Estas funções precisam estar claras e bem definidas no início do projeto.
+
+   1. Programador
+      É o coração da XP, uma das principais habilidades que o programador XP deve aprender é a programação em pares e a simplicidade, e acima de tudo coragem.
+
+
+   2. Cliente
+      O Programador sabe como programar e o cliente sabe o que programar. Ser um cliente XP não é fácil, como tomar decisões, dizer o que é mais importante em que momento, mudar de idéia quando preciso e, acima de tudo mais uma vez coragem.
+
+
+   3. Rastreador
+      O rastreador faz estimativas de tempo e checa se se ajustou à realidade, isto é uma questão de prática e feedback. Ele é responsável pela visão global do andamento também, se durante uma iteração o que foi previsto será executado, ou se é preciso modificar algo. A maior habilidade aqui é a capacidade de coletar informações de que precisa sem perturbar o processo.
+
+
+   4. Treinador
+      É preciso notar quando as pessoas estão se desviando do processo do time e chama a atenção deste para isto. Todos no Time XP devem compreender a aplicação, mas o treinador muito mais e profundamente. Este papel diminui proporcionalmente com o amadurecimento do time.
+
+
+   5. O Chefão
+      O Maior atributo do chefe são coragem, confiança e insistência ocasional para que façam o que dizem fazer. Isto quer dizer comunicação franca. Neste caso você chegou onde está por algum motivo, o time quer colocar esta habilidade em prática quando precisarem. E querem mantê-la distante quando não precisar dela.
+
+Logo mais teremos continuidade desta coluna vendo como se aplicar, ciclo de vida e outras características da XP.
+
