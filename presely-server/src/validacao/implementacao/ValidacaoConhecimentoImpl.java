@@ -1,13 +1,20 @@
 package validacao.implementacao;
 
+import processaTexto.ProcessaDocumento;
+
+import java.io.IOException; 
 import java.util.ArrayList;
 import java.util.Iterator;
+
+import beans.Arquivo;
 import beans.Conhecimento;
 import beans.Desenvolvedor;
 import beans.TipoAtividade;
+import persistencia.implementacao.ServicoArquivoImplDAO;
 import persistencia.implementacao.ServicoAtividadeImplDAO;
 import persistencia.implementacao.ServicoConhecimentoImplDAO;
 import persistencia.implementacao.ServicoDesenvolvedorImplDAO;
+import persistencia.interfaces.ServicoArquivo;
 import persistencia.interfaces.ServicoAtividade;
 import persistencia.interfaces.ServicoConhecimento;
 import persistencia.interfaces.ServicoDesenvolvedor;
@@ -28,11 +35,13 @@ public class ValidacaoConhecimentoImpl {
 	ServicoConhecimento servicoConhecimento;
 	ServicoAtividade servicoAtividade;
 	ServicoDesenvolvedor servicoDesenvolvedor;
+	ServicoArquivo servicoArquivo; 
 	
 	public ValidacaoConhecimentoImpl() {
-		servicoAtividade = new ServicoAtividadeImplDAO();
-		servicoConhecimento = new ServicoConhecimentoImplDAO();
-		servicoDesenvolvedor = new ServicoDesenvolvedorImplDAO();
+		servicoAtividade		= new ServicoAtividadeImplDAO();
+		servicoConhecimento		= new ServicoConhecimentoImplDAO();
+		servicoDesenvolvedor	= new ServicoDesenvolvedorImplDAO();
+		servicoArquivo			= new ServicoArquivoImplDAO();
 	}
 	
 	/**
@@ -238,4 +247,38 @@ public class ValidacaoConhecimentoImpl {
 		return true;
 	}
 
+	/**
+	 * Esse metodo cria associa os arquivos no conhecimento passado como paramentro
+	 * e cria a lista de palavras-chave do arquivo
+	 * @param conhecimento
+	 * @return
+	 * @throws ConhecimentoInexistenteException
+	 * @throws IOException
+	 */
+	public Conhecimento associaArquivo(Conhecimento conhecimento) throws ConhecimentoInexistenteException, IOException {
+		
+		if (!servicoConhecimento.conhecimentoExiste(conhecimento.getNome())) 
+			throw new ConhecimentoInexistenteException();
+
+		ArrayList<Arquivo> arquivos = conhecimento.getArquivos();
+		
+		for (Iterator<Arquivo> iterator = arquivos.iterator(); iterator.hasNext();) {
+			Arquivo arquivo = iterator.next();
+			ProcessaDocumento processaDocumento = new ProcessaDocumento() ;
+			arquivo = processaDocumento.getDocumentoProcessado(arquivo) ;
+			
+			if (!servicoArquivo.arquivoExiste(arquivo)){
+				servicoArquivo.criarArquivo(arquivo);
+			}
+			
+			arquivo.setId( servicoArquivo.getArquivo(arquivo).getId() );
+
+			servicoArquivo.associaPalavrasArquivo(arquivo, arquivo.getTermosSelecionados());
+			servicoConhecimento.associaArquivo(conhecimento, arquivo);
+		}
+		
+		
+		return conhecimento; 
+	}
+	
 }

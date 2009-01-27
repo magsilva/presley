@@ -285,7 +285,7 @@ public class ValidacaoAtividadeImpl {
 			
 			while (it3.hasNext()) {
 				Problema problema = it3.next();
-				validacaoProblema.removerProblema(problema.getId());
+				validacaoProblema.removerProblema(problema);
 			}
 		}
 		

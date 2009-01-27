@@ -2,6 +2,11 @@ package validacao.implementacao;
 
 import java.sql.Date;
 
+import persistencia.implementacao.ServicoProjetoImplDAO;
+import persistencia.interfaces.ServicoProjeto;
+
+import beans.Projeto;
+
 public class ValidacaoUtil {
 	
 	public static boolean validaNome(String nome) {		
@@ -49,5 +54,10 @@ public class ValidacaoUtil {
 	public static boolean validaSenha(String senha) {
 		if (senha.length() < 6) return false;
 		else return true;
+	}
+	
+	public static Projeto getProjetoAtivo(){
+		ServicoProjeto servicoProjeto = new ServicoProjetoImplDAO();
+		return servicoProjeto.getProjetoAtivo();
 	}
 }

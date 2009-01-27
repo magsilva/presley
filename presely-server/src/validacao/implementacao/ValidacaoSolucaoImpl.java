@@ -5,8 +5,11 @@ import java.sql.Date;
 import java.util.ArrayList;
 
 import excessao.DescricaoInvalidaException;
+import excessao.DesenvolvedorInexistenteException;
 import excessao.ProblemaInexistenteException;
 import excessao.SolucaoIniexistenteException;
+import beans.Desenvolvedor;
+import beans.Problema;
 import beans.Solucao;
 import persistencia.implementacao.ServicoDesenvolvedorImplDAO;
 import persistencia.implementacao.ServicoProblemaImplDAO;
@@ -51,6 +54,18 @@ public class ValidacaoSolucaoImpl {
 	}
 	
 	/**
+	 * Esse método atualiza os dados uma solução
+	 * @param solucao Solução a ser atualizada.
+	 * @return true se a atualizacao foi realizada com sucesso.
+	 * @throws SolucaoIniexistenteException 
+	 */
+	public boolean atualizarSolucao(Solucao solucao) throws SolucaoIniexistenteException {
+		if (!servicoSolucao.solucaoExiste(solucao.getId())) throw new SolucaoIniexistenteException();
+		
+		return servicoSolucao.atualizarSolucao(solucao);
+	}
+	
+	/**
 	 * Esse método cadastra uma nova solução proposta por um desenvolvedor para
 	 * um problema.
 	 * @param emailDesenvolvedor Email do desenvolvedor.
@@ -60,12 +75,32 @@ public class ValidacaoSolucaoImpl {
 	 * @return true se a solucao foi cadastrada na base de dados.
 	 * @throws ProblemaInexistenteException 
 	 */
-	public boolean cadastrarSolucao(String emailDesenvolvedor, int idProblema,
-			Date dataDaProposta, String mensagem) throws ProblemaInexistenteException {
+	public Solucao cadastrarSolucao(Solucao solucao) throws ProblemaInexistenteException, DesenvolvedorInexistenteException {
 		
-		if (!servicoProblema.problemaExiste(idProblema)) throw new ProblemaInexistenteException();
+		if (!servicoProblema.problemaExiste( solucao.getProblema().getId() )) 
+			throw new ProblemaInexistenteException();
 
-		return servicoSolucao.cadastrarSolucao(emailDesenvolvedor, idProblema, dataDaProposta, mensagem);
+		if (!servicoDesenvolvedor.desenvolvedorExiste( solucao.getDesenvolvedor().getEmail() )) 
+			throw new DesenvolvedorInexistenteException();
+		
+		return servicoSolucao.cadastrarSolucao( solucao );
+	}
+	
+	/**
+	 * Esse método atualiza uma solução com os dados fornecidos no paramentro.
+	 * @param solucao Solucao a ser atulizada 
+	 * @return true se a solucao foi cadastrada na base de dados.
+	 * @throws ProblemaInexistenteException, DesenvolvedorInexistenteException 
+	 */
+	public boolean atualizarStatusDoProblema(Solucao solucao) throws ProblemaInexistenteException, DesenvolvedorInexistenteException {
+		
+		if (!servicoProblema.problemaExiste( solucao.getProblema().getId() )) 
+			throw new ProblemaInexistenteException();
+
+		if (!servicoDesenvolvedor.desenvolvedorExiste( solucao.getDesenvolvedor().getEmail() )) 
+			throw new DesenvolvedorInexistenteException();
+		
+		return servicoSolucao.atualizarSolucao( solucao );
 	}
 	
 	/**
@@ -154,4 +189,34 @@ public class ValidacaoSolucaoImpl {
 		return servicoSolucao.solucaoExiste(id);
 	}
 
+	/**
+	 * Esse método retorna uma lista de soluções que foram rejeitadas de um desenvolvedor
+	 * para uma todos os problemas cadastrados no banco.
+	 * @param emailDesenvolvedor Email do desenvolvedor.
+	 * @return ArrayList<Solucao>
+	 * @throws DescricaoInvalidaException 
+	 */
+	public ArrayList<Solucao> listarSolucoesDoProblema(
+			Problema problema) throws ProblemaInexistenteException {
+		
+		if (!servicoProblema.problemaExiste( problema.getId() )) throw new ProblemaInexistenteException();
+
+		return servicoSolucao.getSolucoesDoProblema(problema);
+	}
+	
+
+	/**
+	 * Esse método retorna uma lista de soluções que foram retornadas de um desenvolvedor
+	 * @param emailDesenvolvedor Email do desenvolvedor.
+	 * @return ArrayList<Solucao>
+	 * @throws DesenvolvedorInexistenteException 
+	 */
+	public ArrayList<Solucao> listarSolucoesRetornadasDoDesenvolvedor(
+			Desenvolvedor desenvolvedor) throws DesenvolvedorInexistenteException  {
+		
+		if (!servicoDesenvolvedor.desenvolvedorExiste(desenvolvedor.getEmail())) throw new DesenvolvedorInexistenteException();
+
+		return servicoSolucao.listarSolucoesRetornadasDoDesenvolvedor(desenvolvedor);
+	}
+	
 }

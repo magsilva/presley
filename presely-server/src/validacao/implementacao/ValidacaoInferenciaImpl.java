@@ -16,15 +16,15 @@ public class ValidacaoInferenciaImpl {
 	}
 	
 	public HashMap<Desenvolvedor, Double> getDesenvolvedoresByConhecimento(String c) throws DesenvolvedorInexistenteException{
-		System.out.println("GET DENSENVOLVEDORES BY CONHECIMENTO");
+//		System.out.println("GET DENSENVOLVEDORES BY CONHECIMENTO");
 		HashMap<Desenvolvedor, Double> m = null;
-		System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!Antes de chamar o banco");
+//		System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!Antes de chamar o banco");
 		m = servico.getDesenvolvedoresByConhecimento(c);
-		System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!Depois de chamar o banco");
-		if(m == null) {
-			System.out.println("M NULL!!!!");
-		}
-		System.out.println(m.toString());
+//		System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!Depois de chamar o banco");
+//		if(m == null) {
+//			System.out.println("M NULL!!!!");
+//		}
+//		System.out.println(m.toString());
 		return m;
 	}
 }

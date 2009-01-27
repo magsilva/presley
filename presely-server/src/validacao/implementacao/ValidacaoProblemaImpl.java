@@ -1,19 +1,31 @@
 package validacao.implementacao;
 
 
-import java.sql.Date;
-import java.util.ArrayList;
-import java.util.Iterator;
+import inferencia.Inferencia;
 
-import beans.Conhecimento;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+
+import beans.Arquivo;
+import beans.ArquivoJava;
+import beans.ClasseJava;
+import beans.Desenvolvedor;
 import beans.Problema;
+import beans.Projeto;
 import beans.Solucao;
+import persistencia.implementacao.ServicoArquivoImplDAO;
 import persistencia.implementacao.ServicoAtividadeImplDAO;
 import persistencia.implementacao.ServicoProblemaImplDAO;
 import persistencia.implementacao.ServicoSolucaoImplDAO;
+import persistencia.interfaces.ServicoArquivo;
 import persistencia.interfaces.ServicoAtividade;
 import persistencia.interfaces.ServicoProblema;
 import persistencia.interfaces.ServicoSolucao;
+import processaTexto.ProcessaSimilaridade;
 import excessao.AtividadeInexistenteException;
 import excessao.DescricaoInvalidaException;
 import excessao.ProblemaInexistenteException;
@@ -31,11 +43,16 @@ public class ValidacaoProblemaImpl {
 	ServicoAtividade servicoAtividade;
 	ServicoSolucao servicoSolucao;
 	ServicoProblema servicoProblema;
+	ServicoArquivo servicoArquivo;
+	ValidacaoArquivoImpl validacaoArquivo ;
 	
 	public ValidacaoProblemaImpl() {
-		servicoProblema = new ServicoProblemaImplDAO();
+		servicoProblema  = new ServicoProblemaImplDAO();
 		servicoAtividade = new ServicoAtividadeImplDAO();
-		servicoSolucao = new ServicoSolucaoImplDAO();
+		servicoSolucao   = new ServicoSolucaoImplDAO();
+		servicoArquivo   = new ServicoArquivoImplDAO();
+		
+		validacaoArquivo = new ValidacaoArquivoImpl();
 	}
 	
 	/**
@@ -53,26 +70,52 @@ public class ValidacaoProblemaImpl {
 	}
 	
 	/**
-	 * Esse método cadastra um novo problema associado a um atividade na base de dados.
+	 * Esse método cadastra um novo problema na base de dados.
 	 * @param idAtividade Identificador da atividade.
 	 * @param descricao Descricao do problema relatado.
 	 * @param dataDoRelato Data em que o problema foi encontrado.
 	 * @param mensagem Mensagem a ser exibida a respeito do tipo do problema.
 	 * @return true se o problema foi cadastrado com sucesso.
+	 * @throws IOException 
 	 */
-	public boolean cadastrarProblema(int idAtividade, String descricao,
-			Date dataDoRelato, String mensagem, ArrayList<Conhecimento> listaConhecimentos) 
-			throws DescricaoInvalidaException, AtividadeInexistenteException {
+	public boolean cadastrarProblema(Problema problema) 
+			throws DescricaoInvalidaException, IOException {
+		if (!ValidacaoUtil.validaDescricao( problema.getDescricao() )) throw new DescricaoInvalidaException();
 		
-		if (!servicoAtividade.atividadeExiste(idAtividade)) throw new AtividadeInexistenteException();
+		Projeto projeto = ValidacaoUtil.getProjetoAtivo();
+		// Cria uma lista com os Desenvolvedores de cada arquivo java		 
+		Map<ArquivoJava, ArrayList<Desenvolvedor>> arquivoDesenvolvedores = new HashMap<ArquivoJava, ArrayList<Desenvolvedor>>();
 		
-		if (!ValidacaoUtil.validaDescricao(descricao)) throw new DescricaoInvalidaException();
-		
-		for(Conhecimento c  : listaConhecimentos)
-			System.out.println("chamada2 >>>>>>>>>>>>>>>>>>>>>> " + c.getNome());
+		// Cadastra as classes envolvidas no problema
+		Map<ClasseJava, ArquivoJava> arquivos = problema.getClassesRelacionadas();
+		for (Iterator<ClasseJava> it = arquivos.keySet().iterator(); it.hasNext();) {  
+			ClasseJava classe = it.next();  
+			ArquivoJava arquivoJava = arquivos.get(classe);  
+			arquivoJava.localizaEndereco( projeto.getEndereco_Servidor_Leitura() );
+			if (!servicoArquivo.arquivoExiste(arquivoJava)){
+				servicoArquivo.criarArquivo(arquivoJava);
+			}
+			arquivoJava.setId( servicoArquivo.getArquivo(arquivoJava).getId() );
 
+			arquivoDesenvolvedores.put(arquivoJava, validacaoArquivo.getDesenvolvedoresArquivo(arquivoJava));
+			try {
+				System.out.println( "Conteudo do Arquivo Java " + arquivoJava.getNome() + "  ||  " + arquivoJava.getTexto() );
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		} 
+		
+		problema.setClassesRelacionadas(arquivos);
+		
+		// Identifica o conhecimeto do problema a se cadastrar
+		ProcessaSimilaridade processaSimilaridade = new ProcessaSimilaridade();
+		problema.setConhecimento( processaSimilaridade.verificaConhecimentoDoTexto( problema.getDescricao() + "  " + problema.getMensagem() ) ) ;
 
-		return servicoProblema.cadastrarProblema(idAtividade, descricao, dataDoRelato, mensagem, listaConhecimentos);
+		// Retorna os desenvolvedores que receberam o problema
+		Inferencia.getDesenvolvedores(arquivoDesenvolvedores, problema.getConhecimento());
+		
+		return servicoProblema.cadastrarProblema(problema);
+//		return true;
 	}
 	
 	/**
@@ -116,12 +159,11 @@ public class ValidacaoProblemaImpl {
 	 * @return true se o problema foi removido da base de dados.
 	 * @throws ProblemaInexistenteException 
 	 */
-	public boolean removerProblema(int id) throws ProblemaInexistenteException {
-		
-		if (!servicoProblema.problemaExiste(id)) throw new ProblemaInexistenteException();
+	public boolean removerProblema(Problema problema) throws ProblemaInexistenteException {
+		if (!servicoProblema.problemaExiste(problema.getId())) throw new ProblemaInexistenteException();
 		
 		// Remover Solucoes do Problema
-		ArrayList<Solucao> solucoes = servicoSolucao.getSolucoesDoProblema(id);
+		ArrayList<Solucao> solucoes = servicoSolucao.getSolucoesDoProblema(problema);
 		Iterator<Solucao> it1 = solucoes.iterator();
 		
 		while (it1.hasNext()) {
@@ -129,11 +171,11 @@ public class ValidacaoProblemaImpl {
 			servicoSolucao.removerSolucao(solucao.getId());
 		}
 
-		return servicoProblema.removerProblema(id);
+		return servicoProblema.removerProblema(problema);
 	}
 
-	public ArrayList<Problema> getListaProblema() {
-		ArrayList<Problema> problemas = servicoProblema.getListaProblemas();
+	public ArrayList<Problema> getListaProblema(Desenvolvedor desenvolvedor) {
+		ArrayList<Problema> problemas = servicoProblema.getListaProblemas(desenvolvedor);
 		return problemas;
 	}
 	
