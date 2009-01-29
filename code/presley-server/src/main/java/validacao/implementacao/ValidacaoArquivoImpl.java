@@ -12,16 +12,16 @@ import org.tmatesoft.svn.core.wc.SVNClientManager;
 import org.tmatesoft.svn.core.wc.SVNLogClient;
 import org.tmatesoft.svn.core.wc.SVNRevision;
 
-import persistencia.implementacao.ServicoArquivoImplDAO;
-import persistencia.implementacao.ServicoDesenvolvedorImplDAO;
-import persistencia.interfaces.ServicoArquivo;
-import persistencia.interfaces.ServicoDesenvolvedor;
 
 import com.hukarz.presley.beans.Arquivo;
 import com.hukarz.presley.beans.Desenvolvedor;
+import com.hukarz.presley.excessao.ArquivoInexistenteException;
+import com.hukarz.presley.excessao.NomeInvalidoException;
+import com.hukarz.presley.server.persistencia.implementacao.ServicoArquivoImplDAO;
+import com.hukarz.presley.server.persistencia.implementacao.ServicoDesenvolvedorImplDAO;
+import com.hukarz.presley.server.persistencia.interfaces.ServicoArquivo;
+import com.hukarz.presley.server.persistencia.interfaces.ServicoDesenvolvedor;
 
-import excessao.ArquivoInexistenteException;
-import excessao.NomeInvalidoException;
 
 public class ValidacaoArquivoImpl {
 	ServicoArquivo servicoArquivo;

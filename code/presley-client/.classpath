@@ -5,6 +5,6 @@
 	<classpathentry kind="src" path="src/main/java"/>
 	<classpathentry kind="src" path="src/test/java"/>
 	<classpathentry kind="lib" path="src/main/resources/ca.mcgill.cs.swevo.jayfx_0.0.3.jar"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/presley-communication"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/presley-common"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

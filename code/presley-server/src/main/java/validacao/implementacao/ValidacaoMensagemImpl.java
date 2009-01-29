@@ -2,12 +2,12 @@ package validacao.implementacao;
 
 import java.util.ArrayList;
 
-import persistencia.implementacao.ServicoMensagemImplDAO;
 
 import com.hukarz.presley.beans.Desenvolvedor;
 import com.hukarz.presley.beans.Mensagem;
 import com.hukarz.presley.beans.Problema;
 import com.hukarz.presley.excessao.DesenvolvedorInexistenteException;
+import com.hukarz.presley.server.persistencia.implementacao.ServicoMensagemImplDAO;
 
 
 

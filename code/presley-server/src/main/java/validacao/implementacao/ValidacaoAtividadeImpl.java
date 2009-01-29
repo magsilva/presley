@@ -4,24 +4,24 @@ import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import persistencia.implementacao.ServicoAtividadeImplDAO;
-import persistencia.implementacao.ServicoConhecimentoImplDAO;
-import persistencia.implementacao.ServicoProblemaImplDAO;
-import persistencia.interfaces.ServicoAtividade;
-import persistencia.interfaces.ServicoConhecimento;
-import persistencia.interfaces.ServicoProblema;
 
 import com.hukarz.presley.beans.Conhecimento;
 import com.hukarz.presley.beans.Problema;
 import com.hukarz.presley.beans.TipoAtividade;
+import com.hukarz.presley.excessao.AssociacaoAtividadesException;
 import com.hukarz.presley.excessao.AtividadeInexistenteException;
 import com.hukarz.presley.excessao.ConhecimentoInexistenteException;
 import com.hukarz.presley.excessao.DataInvalidaException;
 import com.hukarz.presley.excessao.DescricaoInvalidaException;
 import com.hukarz.presley.excessao.EmailInvalidoException;
 import com.hukarz.presley.excessao.ProblemaInexistenteException;
+import com.hukarz.presley.server.persistencia.implementacao.ServicoAtividadeImplDAO;
+import com.hukarz.presley.server.persistencia.implementacao.ServicoConhecimentoImplDAO;
+import com.hukarz.presley.server.persistencia.implementacao.ServicoProblemaImplDAO;
+import com.hukarz.presley.server.persistencia.interfaces.ServicoAtividade;
+import com.hukarz.presley.server.persistencia.interfaces.ServicoConhecimento;
+import com.hukarz.presley.server.persistencia.interfaces.ServicoProblema;
 
-import excessao.AssociacaoAtividadesException;
 
 /**
  * 

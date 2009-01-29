@@ -1,7 +1,6 @@
 package validacao.implementacao;
 
 
-import inferencia.Inferencia;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -9,15 +8,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import persistencia.implementacao.ServicoArquivoImplDAO;
-import persistencia.implementacao.ServicoAtividadeImplDAO;
-import persistencia.implementacao.ServicoProblemaImplDAO;
-import persistencia.implementacao.ServicoSolucaoImplDAO;
-import persistencia.interfaces.ServicoArquivo;
-import persistencia.interfaces.ServicoAtividade;
-import persistencia.interfaces.ServicoProblema;
-import persistencia.interfaces.ServicoSolucao;
-import processaTexto.ProcessaSimilaridade;
 
 import com.hukarz.presley.beans.ArquivoJava;
 import com.hukarz.presley.beans.ClasseJava;
@@ -28,6 +18,16 @@ import com.hukarz.presley.beans.Solucao;
 import com.hukarz.presley.excessao.AtividadeInexistenteException;
 import com.hukarz.presley.excessao.DescricaoInvalidaException;
 import com.hukarz.presley.excessao.ProblemaInexistenteException;
+import com.hukarz.presley.server.inferencia.Inferencia;
+import com.hukarz.presley.server.persistencia.implementacao.ServicoArquivoImplDAO;
+import com.hukarz.presley.server.persistencia.implementacao.ServicoAtividadeImplDAO;
+import com.hukarz.presley.server.persistencia.implementacao.ServicoProblemaImplDAO;
+import com.hukarz.presley.server.persistencia.implementacao.ServicoSolucaoImplDAO;
+import com.hukarz.presley.server.persistencia.interfaces.ServicoArquivo;
+import com.hukarz.presley.server.persistencia.interfaces.ServicoAtividade;
+import com.hukarz.presley.server.persistencia.interfaces.ServicoProblema;
+import com.hukarz.presley.server.persistencia.interfaces.ServicoSolucao;
+import com.hukarz.presley.server.processaTexto.ProcessaSimilaridade;
 
 
 /**

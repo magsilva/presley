@@ -6,15 +6,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Set;
 
-import persistencia.implementacao.ServicoAtividadeImplDAO;
-import persistencia.implementacao.ServicoConhecimentoImplDAO;
-import persistencia.implementacao.ServicoDesenvolvedorImplDAO;
-import persistencia.implementacao.ServicoSolucaoImplDAO;
-import persistencia.interfaces.ServicoAtividade;
-import persistencia.interfaces.ServicoConhecimento;
-import persistencia.interfaces.ServicoDesenvolvedor;
-import persistencia.interfaces.ServicoSolucao;
-
 import com.hukarz.presley.beans.Conhecimento;
 import com.hukarz.presley.beans.DadosAutenticacao;
 import com.hukarz.presley.beans.Desenvolvedor;
@@ -22,13 +13,21 @@ import com.hukarz.presley.beans.Solucao;
 import com.hukarz.presley.beans.TipoAtividade;
 import com.hukarz.presley.excessao.ConhecimentoInexistenteException;
 import com.hukarz.presley.excessao.DescricaoInvalidaException;
+import com.hukarz.presley.excessao.DesenvolvedorExisteException;
 import com.hukarz.presley.excessao.DesenvolvedorInexistenteException;
 import com.hukarz.presley.excessao.EmailInvalidoException;
 import com.hukarz.presley.excessao.ErroDeAutenticacaoException;
+import com.hukarz.presley.excessao.ListagemDeConhecimentoInexistenteException;
 import com.hukarz.presley.excessao.SenhaInvalidaException;
+import com.hukarz.presley.server.persistencia.implementacao.ServicoAtividadeImplDAO;
+import com.hukarz.presley.server.persistencia.implementacao.ServicoConhecimentoImplDAO;
+import com.hukarz.presley.server.persistencia.implementacao.ServicoDesenvolvedorImplDAO;
+import com.hukarz.presley.server.persistencia.implementacao.ServicoSolucaoImplDAO;
+import com.hukarz.presley.server.persistencia.interfaces.ServicoAtividade;
+import com.hukarz.presley.server.persistencia.interfaces.ServicoConhecimento;
+import com.hukarz.presley.server.persistencia.interfaces.ServicoDesenvolvedor;
+import com.hukarz.presley.server.persistencia.interfaces.ServicoSolucao;
 
-import excessao.DesenvolvedorExisteException;
-import excessao.ListagemDeConhecimentoInexistenteException;
 
 /**
  * 

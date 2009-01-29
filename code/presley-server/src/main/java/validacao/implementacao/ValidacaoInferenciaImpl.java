@@ -2,10 +2,10 @@ package validacao.implementacao;
 
 import java.util.HashMap;
 
-import persistencia.implementacao.ServicoInferenciaDAO;
 
 import com.hukarz.presley.beans.Desenvolvedor;
 import com.hukarz.presley.excessao.DesenvolvedorInexistenteException;
+import com.hukarz.presley.server.persistencia.implementacao.ServicoInferenciaDAO;
 
 
 

@@ -4,15 +4,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import persistencia.implementacao.ServicoArquivoImplDAO;
-import persistencia.implementacao.ServicoAtividadeImplDAO;
-import persistencia.implementacao.ServicoConhecimentoImplDAO;
-import persistencia.implementacao.ServicoDesenvolvedorImplDAO;
-import persistencia.interfaces.ServicoArquivo;
-import persistencia.interfaces.ServicoAtividade;
-import persistencia.interfaces.ServicoConhecimento;
-import persistencia.interfaces.ServicoDesenvolvedor;
-import processaTexto.ProcessaDocumento;
 
 import com.hukarz.presley.beans.Arquivo;
 import com.hukarz.presley.beans.Conhecimento;
@@ -20,8 +11,17 @@ import com.hukarz.presley.beans.Desenvolvedor;
 import com.hukarz.presley.beans.TipoAtividade;
 import com.hukarz.presley.excessao.ConhecimentoInexistenteException;
 import com.hukarz.presley.excessao.DescricaoInvalidaException;
+import com.hukarz.presley.excessao.NomeInvalidoException;
+import com.hukarz.presley.server.persistencia.implementacao.ServicoArquivoImplDAO;
+import com.hukarz.presley.server.persistencia.implementacao.ServicoAtividadeImplDAO;
+import com.hukarz.presley.server.persistencia.implementacao.ServicoConhecimentoImplDAO;
+import com.hukarz.presley.server.persistencia.implementacao.ServicoDesenvolvedorImplDAO;
+import com.hukarz.presley.server.persistencia.interfaces.ServicoArquivo;
+import com.hukarz.presley.server.persistencia.interfaces.ServicoAtividade;
+import com.hukarz.presley.server.persistencia.interfaces.ServicoConhecimento;
+import com.hukarz.presley.server.persistencia.interfaces.ServicoDesenvolvedor;
+import com.hukarz.presley.server.processaTexto.ProcessaDocumento;
 
-import excessao.NomeInvalidoException;
 
 /**
  * 

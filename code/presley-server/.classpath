@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/presley-communication"/>
+	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/presley-common"/>
 	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/presley-client"/>
 	<classpathentry kind="src" path="src/main/java"/>
 	<classpathentry kind="src" path="src/test/java"/>

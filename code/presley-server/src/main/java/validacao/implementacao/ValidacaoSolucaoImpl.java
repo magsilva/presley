@@ -3,12 +3,6 @@ package validacao.implementacao;
 
 import java.util.ArrayList;
 
-import persistencia.implementacao.ServicoDesenvolvedorImplDAO;
-import persistencia.implementacao.ServicoProblemaImplDAO;
-import persistencia.implementacao.ServicoSolucaoImplDAO;
-import persistencia.interfaces.ServicoDesenvolvedor;
-import persistencia.interfaces.ServicoProblema;
-import persistencia.interfaces.ServicoSolucao;
 
 import com.hukarz.presley.beans.Desenvolvedor;
 import com.hukarz.presley.beans.Problema;
@@ -16,8 +10,14 @@ import com.hukarz.presley.beans.Solucao;
 import com.hukarz.presley.excessao.DescricaoInvalidaException;
 import com.hukarz.presley.excessao.DesenvolvedorInexistenteException;
 import com.hukarz.presley.excessao.ProblemaInexistenteException;
+import com.hukarz.presley.excessao.SolucaoIniexistenteException;
+import com.hukarz.presley.server.persistencia.implementacao.ServicoDesenvolvedorImplDAO;
+import com.hukarz.presley.server.persistencia.implementacao.ServicoProblemaImplDAO;
+import com.hukarz.presley.server.persistencia.implementacao.ServicoSolucaoImplDAO;
+import com.hukarz.presley.server.persistencia.interfaces.ServicoDesenvolvedor;
+import com.hukarz.presley.server.persistencia.interfaces.ServicoProblema;
+import com.hukarz.presley.server.persistencia.interfaces.ServicoSolucao;
 
-import excessao.SolucaoIniexistenteException;
 
 /**
  * 
