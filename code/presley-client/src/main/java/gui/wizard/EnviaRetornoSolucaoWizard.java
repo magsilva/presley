@@ -15,7 +15,8 @@ import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 
-import beans.Solucao;
+import com.hukarz.presley.beans.Solucao;
+
 
 public class EnviaRetornoSolucaoWizard extends Wizard implements INewWizard {
     private Solucao solucao;

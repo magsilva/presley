@@ -4,9 +4,7 @@ import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-import beans.TipoAtividade;
-import beans.Problema;
-import beans.Solucao;
+import junit.framework.TestCase;
 import persistencia.implementacao.ServicoAtividadeImplDAO;
 import persistencia.implementacao.ServicoDesenvolvedorImplDAO;
 import persistencia.implementacao.ServicoProblemaImplDAO;
@@ -15,7 +13,10 @@ import persistencia.interfaces.ServicoAtividade;
 import persistencia.interfaces.ServicoDesenvolvedor;
 import persistencia.interfaces.ServicoProblema;
 import persistencia.interfaces.ServicoSolucao;
-import junit.framework.TestCase;
+
+import com.hukarz.presley.beans.Problema;
+import com.hukarz.presley.beans.Solucao;
+import com.hukarz.presley.beans.TipoAtividade;
 
 public class ServicoSolucaoImplDAOTest extends TestCase {
 	private ServicoDesenvolvedor sd;

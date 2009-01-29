@@ -15,7 +15,8 @@ import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.IWorkbenchWindowActionDelegate;
 import org.eclipse.ui.PlatformUI;
 
-import beans.TipoAtividade;
+import com.hukarz.presley.beans.TipoAtividade;
+
 
 public class RunAssociaProblemaAtividadeWizardAction extends Action implements
 		IWorkbenchWindowActionDelegate {

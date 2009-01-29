@@ -10,16 +10,18 @@ import persistencia.implementacao.ServicoProblemaImplDAO;
 import persistencia.interfaces.ServicoAtividade;
 import persistencia.interfaces.ServicoConhecimento;
 import persistencia.interfaces.ServicoProblema;
+
+import com.hukarz.presley.beans.Conhecimento;
+import com.hukarz.presley.beans.Problema;
+import com.hukarz.presley.beans.TipoAtividade;
+import com.hukarz.presley.excessao.AtividadeInexistenteException;
+import com.hukarz.presley.excessao.ConhecimentoInexistenteException;
+import com.hukarz.presley.excessao.DataInvalidaException;
+import com.hukarz.presley.excessao.DescricaoInvalidaException;
+import com.hukarz.presley.excessao.EmailInvalidoException;
+import com.hukarz.presley.excessao.ProblemaInexistenteException;
+
 import excessao.AssociacaoAtividadesException;
-import excessao.AtividadeInexistenteException;
-import excessao.ConhecimentoInexistenteException;
-import excessao.DataInvalidaException;
-import excessao.DescricaoInvalidaException;
-import excessao.EmailInvalidoException;
-import excessao.ProblemaInexistenteException;
-import beans.Problema;
-import beans.TipoAtividade;
-import beans.Conhecimento;
 
 /**
  * 

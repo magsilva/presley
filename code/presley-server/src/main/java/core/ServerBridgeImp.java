@@ -3,20 +3,22 @@ package core;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import beans.DadosAutenticacao;
-import beans.Desenvolvedor;
-import core.interfaces.CorePresleyOperations;
 import server.ServerBridge;
-import excessao.AtividadeInexistenteException;
-import excessao.ConhecimentoInexistenteException;
-import excessao.DataInvalidaException;
-import excessao.DescricaoInvalidaException;
+
+import com.hukarz.presley.beans.DadosAutenticacao;
+import com.hukarz.presley.beans.Desenvolvedor;
+import com.hukarz.presley.excessao.AtividadeInexistenteException;
+import com.hukarz.presley.excessao.ConhecimentoInexistenteException;
+import com.hukarz.presley.excessao.DataInvalidaException;
+import com.hukarz.presley.excessao.DescricaoInvalidaException;
+import com.hukarz.presley.excessao.DesenvolvedorInexistenteException;
+import com.hukarz.presley.excessao.EmailInvalidoException;
+import com.hukarz.presley.excessao.ErroDeAutenticacaoException;
+import com.hukarz.presley.excessao.ProblemaInexistenteException;
+import com.hukarz.presley.excessao.SenhaInvalidaException;
+
+import core.interfaces.CorePresleyOperations;
 import excessao.DesenvolvedorExisteException;
-import excessao.DesenvolvedorInexistenteException;
-import excessao.EmailInvalidoException;
-import excessao.ErroDeAutenticacaoException;
-import excessao.ProblemaInexistenteException;
-import excessao.SenhaInvalidaException;
 import excessao.SolucaoIniexistenteException;
 import facade.PacketStruct;
 
@@ -207,7 +209,7 @@ public class ServerBridgeImp implements ServerBridge {
 			System.out.println("busca desenvolvedores ");
 			try {
 				retorno = executeClientQuery.buscaDesenvolvedores(packet);
-				ArrayList<beans.Desenvolvedor> des = (ArrayList<Desenvolvedor>)retorno;
+				ArrayList<com.hukarz.presley.beans.Desenvolvedor> des = (ArrayList<Desenvolvedor>)retorno;
 				System.out.println("Email do desenvolvedor retornado: "+des.get(0).getEmail());
 				typeRetorno = CorePresleyOperations.BUSCA_DESENVOLVEDORES;
 			} catch (DesenvolvedorInexistenteException e2) {

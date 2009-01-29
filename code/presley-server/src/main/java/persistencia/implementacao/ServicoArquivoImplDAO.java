@@ -8,10 +8,10 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
-import beans.Arquivo;
 import persistencia.MySQLConnectionFactory;
 import persistencia.interfaces.ServicoArquivo;
-import persistencia.interfaces.ServicoConhecimento;
+
+import com.hukarz.presley.beans.Arquivo;
 
 public class ServicoArquivoImplDAO implements ServicoArquivo {
 

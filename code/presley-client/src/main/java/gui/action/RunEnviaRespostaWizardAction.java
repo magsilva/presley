@@ -16,9 +16,10 @@ import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.IWorkbenchWindowActionDelegate;
 import org.eclipse.ui.PlatformUI;
 
-import beans.Problema;
-import beans.Solucao;
-import beans.TipoAtividade;
+import com.hukarz.presley.beans.Problema;
+import com.hukarz.presley.beans.Solucao;
+import com.hukarz.presley.beans.TipoAtividade;
+
 
 public class RunEnviaRespostaWizardAction extends Action implements
 		IWorkbenchWindowActionDelegate {

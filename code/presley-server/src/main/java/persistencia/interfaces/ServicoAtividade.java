@@ -3,8 +3,9 @@ package persistencia.interfaces;
 import java.sql.Date;
 import java.util.ArrayList;
 
-import beans.TipoAtividade;
-import beans.Conhecimento;
+import com.hukarz.presley.beans.Conhecimento;
+import com.hukarz.presley.beans.TipoAtividade;
+
 
 /**
  * 

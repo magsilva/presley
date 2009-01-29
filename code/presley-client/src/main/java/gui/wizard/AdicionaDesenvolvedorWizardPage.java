@@ -16,7 +16,8 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
-import beans.Desenvolvedor;
+import com.hukarz.presley.beans.Desenvolvedor;
+
 
 public class AdicionaDesenvolvedorWizardPage extends WizardPage {
 

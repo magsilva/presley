@@ -23,7 +23,8 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Text;
 
-import beans.Desenvolvedor;
+import com.hukarz.presley.beans.Desenvolvedor;
+
 
 public class LoginWizardPage extends WizardPage {
 

@@ -31,9 +31,10 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 
-import beans.Conhecimento;
-import beans.Desenvolvedor;
-import beans.Item;
+import com.hukarz.presley.beans.Conhecimento;
+import com.hukarz.presley.beans.Desenvolvedor;
+import com.hukarz.presley.beans.Item;
+
 
 
 public class RemoveConhecimentoWizardPage extends WizardPage {
@@ -43,7 +44,7 @@ public class RemoveConhecimentoWizardPage extends WizardPage {
 	private Button remConhecimentoButton;
 	private Tree arvoreConhecimento;
 	private ArrayList<TreeItem> conhecimentosSelecionados;
-	private beans.Tree ontologia;
+	private com.hukarz.presley.beans.Tree ontologia;
 	
 	
 
@@ -138,7 +139,7 @@ public class RemoveConhecimentoWizardPage extends WizardPage {
         });
         try{
         	
-        	beans.Tree conhecimentosModelo = atividade.getViewComunication().getOntologia();
+        	com.hukarz.presley.beans.Tree conhecimentosModelo = atividade.getViewComunication().getOntologia();
         	arvoreConhecimento = conhecimentosModelo.constroiArvoreGrafica(controls, SWT.BORDER | SWT.CHECK);
         	arvoreConhecimento.addListener(SWT.Selection, new Listener() {
 			

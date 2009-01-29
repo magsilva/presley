@@ -1,6 +1,6 @@
 package persistencia.interfaces;
 
-import beans.Projeto;
+import com.hukarz.presley.beans.Projeto;
 
 public interface ServicoProjeto {
 

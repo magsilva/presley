@@ -7,12 +7,13 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
-import beans.TipoAtividade;
-import beans.Conhecimento;
 import persistencia.MySQLConnectionFactory;
 import persistencia.interfaces.ServicoAtividade;
 import persistencia.interfaces.ServicoConhecimento;
 import persistencia.interfaces.ServicoDesenvolvedor;
+
+import com.hukarz.presley.beans.Conhecimento;
+import com.hukarz.presley.beans.TipoAtividade;
 
 /**
  * 

@@ -3,9 +3,11 @@ package validacao.implementacao;
 import java.util.HashMap;
 
 import persistencia.implementacao.ServicoInferenciaDAO;
-import excessao.DesenvolvedorInexistenteException;
 
-import beans.Desenvolvedor;
+import com.hukarz.presley.beans.Desenvolvedor;
+import com.hukarz.presley.excessao.DesenvolvedorInexistenteException;
+
+
 
 public class ValidacaoInferenciaImpl {
 	

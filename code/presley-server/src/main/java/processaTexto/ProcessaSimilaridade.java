@@ -11,8 +11,9 @@ import java.util.Set;
 import persistencia.implementacao.ServicoConhecimentoImplDAO;
 import persistencia.interfaces.ServicoConhecimento;
 
-import beans.Arquivo;
-import beans.Conhecimento;
+import com.hukarz.presley.beans.Arquivo;
+import com.hukarz.presley.beans.Conhecimento;
+
 
 
 public class ProcessaSimilaridade {

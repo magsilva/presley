@@ -22,10 +22,11 @@ import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 import org.eclipse.ui.part.ViewPart;
 
-import beans.Desenvolvedor;
-import beans.Mensagem;
-import beans.Problema;
-import beans.ProblemaMensagens;
+import com.hukarz.presley.beans.Desenvolvedor;
+import com.hukarz.presley.beans.Mensagem;
+import com.hukarz.presley.beans.Problema;
+import com.hukarz.presley.beans.ProblemaMensagens;
+
 
 public class Mensagens extends ViewPart {
 

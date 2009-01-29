@@ -1,22 +1,22 @@
 package testes.atividade;
 
-import java.util.ArrayList;
 import java.sql.Date;
+import java.util.ArrayList;
+
+import junit.framework.TestCase;
+import validacao.implementacao.ValidacaoAtividadeImpl;
+
+import com.hukarz.presley.beans.Conhecimento;
+import com.hukarz.presley.beans.Desenvolvedor;
+import com.hukarz.presley.beans.TipoAtividade;
+import com.hukarz.presley.excessao.AtividadeInexistenteException;
+import com.hukarz.presley.excessao.DataInvalidaException;
+import com.hukarz.presley.excessao.DescricaoInvalidaException;
+import com.hukarz.presley.excessao.EmailInvalidoException;
+import com.hukarz.presley.excessao.ProblemaInexistenteException;
 
 import core.ExecuteClientQuery;
 import facade.PacketStruct;
-
-import excessao.AtividadeInexistenteException;
-import excessao.DataInvalidaException;
-import excessao.DescricaoInvalidaException;
-import excessao.EmailInvalidoException;
-import excessao.ProblemaInexistenteException;
-import validacao.implementacao.ValidacaoAtividadeImpl;
-
-import junit.framework.TestCase;
-import beans.Conhecimento;
-import beans.Desenvolvedor;
-import beans.TipoAtividade;
 
 public class AtividadeTest extends TestCase{
 	

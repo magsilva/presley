@@ -7,8 +7,10 @@ import java.sql.Statement;
 import java.util.HashMap;
 
 import persistencia.MySQLConnectionFactory;
-import excessao.DesenvolvedorInexistenteException;
-import beans.Desenvolvedor;
+
+import com.hukarz.presley.beans.Desenvolvedor;
+import com.hukarz.presley.excessao.DesenvolvedorInexistenteException;
+
 
 public class ServicoInferenciaDAO {
 	

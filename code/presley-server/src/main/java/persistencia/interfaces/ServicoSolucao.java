@@ -1,13 +1,11 @@
 package persistencia.interfaces;
 
-import java.sql.Date;
 import java.util.ArrayList;
 
-import excessao.ProblemaInexistenteException;
+import com.hukarz.presley.beans.Desenvolvedor;
+import com.hukarz.presley.beans.Problema;
+import com.hukarz.presley.beans.Solucao;
 
-import beans.Desenvolvedor;
-import beans.Problema;
-import beans.Solucao;
 
 public interface ServicoSolucao {
 	

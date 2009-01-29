@@ -3,9 +3,10 @@ package persistencia.interfaces;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import beans.Conhecimento;
-import beans.Desenvolvedor;
-import beans.TipoAtividade;
+import com.hukarz.presley.beans.Conhecimento;
+import com.hukarz.presley.beans.Desenvolvedor;
+import com.hukarz.presley.beans.TipoAtividade;
+
 
 /**
  * 

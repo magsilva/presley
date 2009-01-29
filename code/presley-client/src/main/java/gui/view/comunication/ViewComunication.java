@@ -1,26 +1,29 @@
 package gui.view.comunication;
 
+import facade.PacketStruct;
+import facade.PrincipalSUBJECT;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 
-import beans.Arquivo;
-import beans.BuscaDesenvolvedores;
-import beans.Conhecimento;
-import beans.ConhecimentoAtividade;
-import beans.DadosAutenticacao;
-import beans.Desenvolvedor;
-import beans.Mensagem;
-import beans.Problema;
-import beans.ProblemaAtividade;
-import beans.Projeto;
-import beans.QualificacaoDesenvolvedor;
-import beans.Solucao;
-import beans.TipoAtividade;
-import beans.Tree;
-import facade.PacketStruct;
-import facade.PrincipalSUBJECT;
-import excessao.*;
+import com.hukarz.presley.beans.Arquivo;
+import com.hukarz.presley.beans.BuscaDesenvolvedores;
+import com.hukarz.presley.beans.Conhecimento;
+import com.hukarz.presley.beans.ConhecimentoAtividade;
+import com.hukarz.presley.beans.DadosAutenticacao;
+import com.hukarz.presley.beans.Desenvolvedor;
+import com.hukarz.presley.beans.Mensagem;
+import com.hukarz.presley.beans.Problema;
+import com.hukarz.presley.beans.ProblemaAtividade;
+import com.hukarz.presley.beans.Projeto;
+import com.hukarz.presley.beans.QualificacaoDesenvolvedor;
+import com.hukarz.presley.beans.Solucao;
+import com.hukarz.presley.beans.TipoAtividade;
+import com.hukarz.presley.beans.Tree;
+import com.hukarz.presley.excessao.ConhecimentoInexistenteException;
+import com.hukarz.presley.excessao.DesenvolvedorInexistenteException;
+import com.hukarz.presley.excessao.ProblemaInexistenteException;
 
 /**
  * Esta classe controla a comunicacao entre o cliente e o servidor.
@@ -33,7 +36,7 @@ public class ViewComunication implements CorePresleyOperations{
 	private ArrayList<Conhecimento> listaConhecimentos = new ArrayList<Conhecimento>();//Lista de todos os conhecimentos
 	private ArrayList<Problema> listaProblemas = new ArrayList<Problema>();//Lista de todos os problemas
 	private HashMap<String,ArrayList<Conhecimento>> conhecimentos = new HashMap<String,ArrayList<Conhecimento>>();//mapeamento nome de atividade e seus conhecimentos associados
-	private beans.Tree ontologia;//Armazena a ontologia
+	private com.hukarz.presley.beans.Tree ontologia;//Armazena a ontologia
 
 	
 	/**

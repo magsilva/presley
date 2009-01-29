@@ -1,15 +1,9 @@
 package validacao.implementacao;
 
-import processaTexto.ProcessaDocumento;
-
-import java.io.IOException; 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import beans.Arquivo;
-import beans.Conhecimento;
-import beans.Desenvolvedor;
-import beans.TipoAtividade;
 import persistencia.implementacao.ServicoArquivoImplDAO;
 import persistencia.implementacao.ServicoAtividadeImplDAO;
 import persistencia.implementacao.ServicoConhecimentoImplDAO;
@@ -18,8 +12,15 @@ import persistencia.interfaces.ServicoArquivo;
 import persistencia.interfaces.ServicoAtividade;
 import persistencia.interfaces.ServicoConhecimento;
 import persistencia.interfaces.ServicoDesenvolvedor;
-import excessao.ConhecimentoInexistenteException;
-import excessao.DescricaoInvalidaException;
+import processaTexto.ProcessaDocumento;
+
+import com.hukarz.presley.beans.Arquivo;
+import com.hukarz.presley.beans.Conhecimento;
+import com.hukarz.presley.beans.Desenvolvedor;
+import com.hukarz.presley.beans.TipoAtividade;
+import com.hukarz.presley.excessao.ConhecimentoInexistenteException;
+import com.hukarz.presley.excessao.DescricaoInvalidaException;
+
 import excessao.NomeInvalidoException;
 
 /**

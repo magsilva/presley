@@ -11,7 +11,8 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
-import beans.Solucao;
+import com.hukarz.presley.beans.Solucao;
+
 
 public class EnviaRetornoSolucaoWizardPage extends WizardPage {
 	private Text mensagemRespostaText;

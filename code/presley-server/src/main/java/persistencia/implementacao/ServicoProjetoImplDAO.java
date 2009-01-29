@@ -1,15 +1,14 @@
 package persistencia.implementacao;
 
-import beans.Projeto;
-import persistencia.MySQLConnectionFactory;
-import persistencia.interfaces.ServicoProjeto;
-
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
+
+import persistencia.MySQLConnectionFactory;
+import persistencia.interfaces.ServicoProjeto;
+
+import com.hukarz.presley.beans.Projeto;
 
 
 public class ServicoProjetoImplDAO implements ServicoProjeto {

@@ -1,7 +1,6 @@
 package persistencia.implementacao;
 
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -15,11 +14,11 @@ import persistencia.interfaces.ServicoAtividade;
 import persistencia.interfaces.ServicoConhecimento;
 import persistencia.interfaces.ServicoDesenvolvedor;
 import persistencia.interfaces.ServicoProblema;
-import beans.ArquivoJava;
-import beans.ClasseJava;
-import beans.Conhecimento;
-import beans.Desenvolvedor;
-import beans.Problema;
+
+import com.hukarz.presley.beans.ArquivoJava;
+import com.hukarz.presley.beans.ClasseJava;
+import com.hukarz.presley.beans.Desenvolvedor;
+import com.hukarz.presley.beans.Problema;
 
 public class ServicoProblemaImplDAO implements ServicoProblema{
 

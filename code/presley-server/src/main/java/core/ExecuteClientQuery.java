@@ -14,17 +14,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import ontologia.Ontologia;
-
-import excessao.AtividadeInexistenteException;
-import excessao.ConhecimentoInexistenteException;
-import excessao.DataInvalidaException;
-import excessao.DescricaoInvalidaException;
-import excessao.DesenvolvedorInexistenteException;
-import excessao.EmailInvalidoException;
-import excessao.ErroDeAutenticacaoException;
-import excessao.ProblemaInexistenteException;
-import excessao.SenhaInvalidaException;
-import excessao.SolucaoIniexistenteException;
 import validacao.implementacao.ValidacaoAtividadeImpl;
 import validacao.implementacao.ValidacaoConhecimentoImpl;
 import validacao.implementacao.ValidacaoDesenvolvedorImpl;
@@ -33,20 +22,31 @@ import validacao.implementacao.ValidacaoProblemaImpl;
 import validacao.implementacao.ValidacaoSolucaoImpl;
 import validacao.implementacao.ValidacaoUtil;
 
-import beans.BuscaDesenvolvedores;
-import beans.Conhecimento;
-import beans.ConhecimentoAtividade;
-import beans.DadosAutenticacao;
-import beans.Desenvolvedor;
-import beans.Mensagem;
-import beans.Problema;
-import beans.ProblemaAtividade;
-import beans.Projeto;
-import beans.QualificacaoDesenvolvedor;
-import beans.Solucao;
-import beans.TipoAtividade;
-import beans.Tree;
+import com.hukarz.presley.beans.BuscaDesenvolvedores;
+import com.hukarz.presley.beans.Conhecimento;
+import com.hukarz.presley.beans.ConhecimentoAtividade;
+import com.hukarz.presley.beans.DadosAutenticacao;
+import com.hukarz.presley.beans.Desenvolvedor;
+import com.hukarz.presley.beans.Mensagem;
+import com.hukarz.presley.beans.Problema;
+import com.hukarz.presley.beans.ProblemaAtividade;
+import com.hukarz.presley.beans.Projeto;
+import com.hukarz.presley.beans.QualificacaoDesenvolvedor;
+import com.hukarz.presley.beans.Solucao;
+import com.hukarz.presley.beans.TipoAtividade;
+import com.hukarz.presley.beans.Tree;
+import com.hukarz.presley.excessao.AtividadeInexistenteException;
+import com.hukarz.presley.excessao.ConhecimentoInexistenteException;
+import com.hukarz.presley.excessao.DataInvalidaException;
+import com.hukarz.presley.excessao.DescricaoInvalidaException;
+import com.hukarz.presley.excessao.DesenvolvedorInexistenteException;
+import com.hukarz.presley.excessao.EmailInvalidoException;
+import com.hukarz.presley.excessao.ErroDeAutenticacaoException;
+import com.hukarz.presley.excessao.ProblemaInexistenteException;
+import com.hukarz.presley.excessao.SenhaInvalidaException;
+
 import core.interfaces.CorePresleyOperations;
+import excessao.SolucaoIniexistenteException;
 import facade.PacketStruct;
 
 /**

@@ -1,10 +1,9 @@
 package persistencia.interfaces;
 
-import java.util.ArrayList;
 import java.util.Map;
 
-import beans.Arquivo;
-import beans.Conhecimento;
+import com.hukarz.presley.beans.Arquivo;
+
 
 public interface ServicoArquivo {
 

@@ -23,8 +23,9 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Text;
 
-import beans.Desenvolvedor;
-import beans.TipoAtividade;
+import com.hukarz.presley.beans.Desenvolvedor;
+import com.hukarz.presley.beans.TipoAtividade;
+
 
 public class AssociaProblemaAtividadeWizardPage extends WizardPage {
 

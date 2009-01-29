@@ -1,9 +1,10 @@
 package testes.persistencia;
 
-import beans.Conhecimento;
+import junit.framework.TestCase;
 import persistencia.implementacao.ServicoConhecimentoImplDAO;
 import persistencia.interfaces.ServicoConhecimento;
-import junit.framework.TestCase;
+
+import com.hukarz.presley.beans.Conhecimento;
 
 public class ServicoConhecimentoImplDAOTest extends TestCase {
 

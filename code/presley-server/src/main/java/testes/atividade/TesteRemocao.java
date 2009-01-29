@@ -5,10 +5,12 @@ import java.sql.Date;
 import persistencia.implementacao.ServicoAtividadeImplDAO;
 import persistencia.interfaces.ServicoAtividade;
 import validacao.implementacao.ValidacaoAtividadeImpl;
-import beans.TipoAtividade;
+
+import com.hukarz.presley.beans.TipoAtividade;
+import com.hukarz.presley.excessao.AtividadeInexistenteException;
+import com.hukarz.presley.excessao.ProblemaInexistenteException;
+
 import core.ExecuteClientQuery;
-import excessao.AtividadeInexistenteException;
-import excessao.ProblemaInexistenteException;
 
 public class TesteRemocao {
 	

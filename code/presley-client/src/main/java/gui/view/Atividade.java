@@ -1,16 +1,16 @@
 package gui.view;
 
-import excessao.ConhecimentoInexistenteException;
 import gui.action.RunAdicionaAtividadeWizardAction;
 import gui.action.RunAdicionaDesenvolvedorWizardAction;
 import gui.action.RunAssociaProblemaAtividadeWizardAction;
 import gui.action.RunBuscaDesenvolvedorWizardAction;
 import gui.action.RunRemoveAtividadeWizardAction;
-import gui.view.comunication.CorePresleyOperations;
 import gui.view.comunication.ViewComunication;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Hashtable;
+
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseEvent;
@@ -22,11 +22,13 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.List;
 import org.eclipse.ui.part.ViewPart;
-import beans.Conhecimento;
-import beans.Desenvolvedor;
-import beans.Problema;
-import beans.ProblemaAtividade;
-import beans.TipoAtividade;
+
+import com.hukarz.presley.beans.Conhecimento;
+import com.hukarz.presley.beans.Desenvolvedor;
+import com.hukarz.presley.beans.Problema;
+import com.hukarz.presley.beans.ProblemaAtividade;
+import com.hukarz.presley.beans.TipoAtividade;
+import com.hukarz.presley.excessao.ConhecimentoInexistenteException;
 
 
 public class Atividade extends ViewPart {

@@ -23,9 +23,10 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Text;
 
-import beans.Conhecimento;
-import beans.Desenvolvedor;
-import beans.Problema;
+import com.hukarz.presley.beans.Conhecimento;
+import com.hukarz.presley.beans.Desenvolvedor;
+import com.hukarz.presley.beans.Problema;
+
 
 public class BuscaDesenvolvedoresWizardPage extends WizardPage {
 

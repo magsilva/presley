@@ -6,13 +6,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Set;
 
-import javax.swing.text.StyledEditorKit.ItalicAction;
-
-import beans.DadosAutenticacao;
-import beans.Solucao;
-import beans.TipoAtividade;
-import beans.Conhecimento;
-import beans.Desenvolvedor;
 import persistencia.implementacao.ServicoAtividadeImplDAO;
 import persistencia.implementacao.ServicoConhecimentoImplDAO;
 import persistencia.implementacao.ServicoDesenvolvedorImplDAO;
@@ -21,14 +14,21 @@ import persistencia.interfaces.ServicoAtividade;
 import persistencia.interfaces.ServicoConhecimento;
 import persistencia.interfaces.ServicoDesenvolvedor;
 import persistencia.interfaces.ServicoSolucao;
-import excessao.ConhecimentoInexistenteException;
-import excessao.DescricaoInvalidaException;
+
+import com.hukarz.presley.beans.Conhecimento;
+import com.hukarz.presley.beans.DadosAutenticacao;
+import com.hukarz.presley.beans.Desenvolvedor;
+import com.hukarz.presley.beans.Solucao;
+import com.hukarz.presley.beans.TipoAtividade;
+import com.hukarz.presley.excessao.ConhecimentoInexistenteException;
+import com.hukarz.presley.excessao.DescricaoInvalidaException;
+import com.hukarz.presley.excessao.DesenvolvedorInexistenteException;
+import com.hukarz.presley.excessao.EmailInvalidoException;
+import com.hukarz.presley.excessao.ErroDeAutenticacaoException;
+import com.hukarz.presley.excessao.SenhaInvalidaException;
+
 import excessao.DesenvolvedorExisteException;
-import excessao.DesenvolvedorInexistenteException;
-import excessao.EmailInvalidoException;
-import excessao.ErroDeAutenticacaoException;
 import excessao.ListagemDeConhecimentoInexistenteException;
-import excessao.SenhaInvalidaException;
 
 /**
  * 

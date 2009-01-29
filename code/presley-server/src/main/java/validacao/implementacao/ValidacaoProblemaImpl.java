@@ -5,18 +5,10 @@ import inferencia.Inferencia;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import beans.Arquivo;
-import beans.ArquivoJava;
-import beans.ClasseJava;
-import beans.Desenvolvedor;
-import beans.Problema;
-import beans.Projeto;
-import beans.Solucao;
 import persistencia.implementacao.ServicoArquivoImplDAO;
 import persistencia.implementacao.ServicoAtividadeImplDAO;
 import persistencia.implementacao.ServicoProblemaImplDAO;
@@ -26,9 +18,17 @@ import persistencia.interfaces.ServicoAtividade;
 import persistencia.interfaces.ServicoProblema;
 import persistencia.interfaces.ServicoSolucao;
 import processaTexto.ProcessaSimilaridade;
-import excessao.AtividadeInexistenteException;
-import excessao.DescricaoInvalidaException;
-import excessao.ProblemaInexistenteException;
+
+import com.hukarz.presley.beans.ArquivoJava;
+import com.hukarz.presley.beans.ClasseJava;
+import com.hukarz.presley.beans.Desenvolvedor;
+import com.hukarz.presley.beans.Problema;
+import com.hukarz.presley.beans.Projeto;
+import com.hukarz.presley.beans.Solucao;
+import com.hukarz.presley.excessao.AtividadeInexistenteException;
+import com.hukarz.presley.excessao.DescricaoInvalidaException;
+import com.hukarz.presley.excessao.ProblemaInexistenteException;
+
 
 /**
  * 

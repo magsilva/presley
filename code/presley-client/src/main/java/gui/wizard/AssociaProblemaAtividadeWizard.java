@@ -19,10 +19,11 @@ import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 
-import beans.Conhecimento;
-import beans.Desenvolvedor;
-import beans.Problema;
-import beans.TipoAtividade;
+import com.hukarz.presley.beans.Conhecimento;
+import com.hukarz.presley.beans.Desenvolvedor;
+import com.hukarz.presley.beans.Problema;
+import com.hukarz.presley.beans.TipoAtividade;
+
 
 public class AssociaProblemaAtividadeWizard extends Wizard implements INewWizard {
 

@@ -4,15 +4,15 @@ import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-import beans.TipoAtividade;
-
+import junit.framework.TestCase;
 import persistencia.implementacao.ServicoAtividadeImplDAO;
 import persistencia.implementacao.ServicoConhecimentoImplDAO;
 import persistencia.implementacao.ServicoDesenvolvedorImplDAO;
 import persistencia.interfaces.ServicoAtividade;
 import persistencia.interfaces.ServicoConhecimento;
 import persistencia.interfaces.ServicoDesenvolvedor;
-import junit.framework.TestCase;
+
+import com.hukarz.presley.beans.TipoAtividade;
 
 public class ServicoAtividadeImplDAOTest extends TestCase {
 

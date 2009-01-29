@@ -14,9 +14,10 @@ import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 
+import com.hukarz.presley.beans.Problema;
+
 import gui.view.Atividade;
 import gui.view.MensagemAba;
-import beans.Problema;
 
 public class AdicionaProblemaWizard extends Wizard implements INewWizard {
 	private AdicionaProblemaWizardPage page;

@@ -2,10 +2,11 @@ package persistencia.interfaces;
 
 import java.util.ArrayList;
 
-import excessao.ConhecimentoInexistenteException;
-import beans.Arquivo;
-import beans.Conhecimento;
-import beans.Desenvolvedor;
+import com.hukarz.presley.beans.Arquivo;
+import com.hukarz.presley.beans.Conhecimento;
+import com.hukarz.presley.beans.Desenvolvedor;
+import com.hukarz.presley.excessao.ConhecimentoInexistenteException;
+
 
 /**
  * 

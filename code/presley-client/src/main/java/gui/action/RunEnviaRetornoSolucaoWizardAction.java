@@ -12,7 +12,8 @@ import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.IWorkbenchWindowActionDelegate;
 import org.eclipse.ui.PlatformUI;
 
-import beans.Solucao;
+import com.hukarz.presley.beans.Solucao;
+
 
 public class RunEnviaRetornoSolucaoWizardAction extends Action implements
 		IWorkbenchWindowActionDelegate {

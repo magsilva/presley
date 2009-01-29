@@ -26,7 +26,8 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 
-import beans.Conhecimento;
+import com.hukarz.presley.beans.Conhecimento;
+
 
 public class AdicionaConhecimentoWizardPage extends WizardPage {
 
@@ -36,7 +37,7 @@ public class AdicionaConhecimentoWizardPage extends WizardPage {
 	private Button addConhecimentoButton;
 	private Tree arvoreConhecimento;
 	private ArrayList<TreeItem> conhecimentosSelecionados;
-	private beans.Tree ontologia;
+	private com.hukarz.presley.beans.Tree ontologia;
 	private ArrayList<String> nomesNosAdicionado;
 	private String paiConhecimento;
 	private Map<Conhecimento, Conhecimento> conhecimentoFilhoPai;
@@ -153,7 +154,7 @@ public class AdicionaConhecimentoWizardPage extends WizardPage {
         
         try{
         	
-        	beans.Tree conhecimentosModelo = dominio.getViewComunication().getOntologia();
+        	com.hukarz.presley.beans.Tree conhecimentosModelo = dominio.getViewComunication().getOntologia();
         	arvoreConhecimento = conhecimentosModelo.constroiArvoreGrafica(controls, SWT.BORDER | SWT.CHECK);
         	arvoreConhecimento.addListener(SWT.Selection, new Listener() {
 			

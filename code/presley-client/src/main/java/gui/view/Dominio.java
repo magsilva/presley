@@ -28,9 +28,10 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
 
-import beans.Arquivo;
-import beans.Conhecimento;
-import beans.Projeto;
+import com.hukarz.presley.beans.Arquivo;
+import com.hukarz.presley.beans.Conhecimento;
+import com.hukarz.presley.beans.Projeto;
+
 
 public class Dominio extends ViewPart {
 
@@ -83,7 +84,7 @@ public class Dominio extends ViewPart {
 	{
 		this.parentComposite = parent;
 		
-    	beans.Tree conhecimentosModelo = getViewComunication().getOntologia();
+    	com.hukarz.presley.beans.Tree conhecimentosModelo = getViewComunication().getOntologia();
     	treeConhecimentos = conhecimentosModelo.constroiArvoreGrafica(parentComposite, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
 		treeConhecimentos.setLocation(0, posVerPainelTopicosDominio);
 		treeConhecimentos.setSize(larguraJanela, alturaPainelTopicosDominio);
@@ -128,7 +129,7 @@ public class Dominio extends ViewPart {
 				// exibe o wizard para adicao de novo conhecimento
 				RunAdicionaConhecimentoWizardAction();
 				
-		    	beans.Tree conhecimentosModelo = getViewComunication().getOntologia();
+		    	com.hukarz.presley.beans.Tree conhecimentosModelo = getViewComunication().getOntologia();
 		    	treeConhecimentos = conhecimentosModelo.constroiArvoreGrafica(parentComposite, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
 
 			}

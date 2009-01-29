@@ -8,14 +8,13 @@ import java.util.Map.Entry;
 
 import persistencia.implementacao.ServicoConhecimentoImplDAO;
 import persistencia.interfaces.ServicoConhecimento;
-
-import excessao.DesenvolvedorInexistenteException;
 import validacao.implementacao.ValidacaoInferenciaImpl;
-import beans.Arquivo;
-import beans.ArquivoJava;
-import beans.ClasseJava;
-import beans.Conhecimento;
-import beans.Desenvolvedor;
+
+import com.hukarz.presley.beans.ArquivoJava;
+import com.hukarz.presley.beans.Conhecimento;
+import com.hukarz.presley.beans.Desenvolvedor;
+import com.hukarz.presley.excessao.DesenvolvedorInexistenteException;
+
 
 /*
  * Created on 09/09/2008

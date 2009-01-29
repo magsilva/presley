@@ -12,9 +12,10 @@ import java.util.Map.Entry;
 import persistencia.MySQLConnectionFactory;
 import persistencia.interfaces.ServicoConhecimento;
 import persistencia.interfaces.ServicoDesenvolvedor;
-import beans.Conhecimento;
-import beans.Desenvolvedor;
-import beans.TipoAtividade;
+
+import com.hukarz.presley.beans.Conhecimento;
+import com.hukarz.presley.beans.Desenvolvedor;
+import com.hukarz.presley.beans.TipoAtividade;
 
 /**
  * 

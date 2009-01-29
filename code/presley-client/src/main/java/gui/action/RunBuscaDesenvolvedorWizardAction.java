@@ -15,7 +15,8 @@ import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.IWorkbenchWindowActionDelegate;
 import org.eclipse.ui.PlatformUI;
 
-import beans.BuscaDesenvolvedores;
+import com.hukarz.presley.beans.BuscaDesenvolvedores;
+
 
 public class RunBuscaDesenvolvedorWizardAction extends Action implements
 IWorkbenchWindowActionDelegate{

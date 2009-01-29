@@ -1,7 +1,6 @@
 package persistencia.implementacao;
 
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -11,9 +10,10 @@ import persistencia.MySQLConnectionFactory;
 import persistencia.interfaces.ServicoDesenvolvedor;
 import persistencia.interfaces.ServicoProblema;
 import persistencia.interfaces.ServicoSolucao;
-import beans.Desenvolvedor;
-import beans.Problema;
-import beans.Solucao;
+
+import com.hukarz.presley.beans.Desenvolvedor;
+import com.hukarz.presley.beans.Problema;
+import com.hukarz.presley.beans.Solucao;
 
 public class ServicoSolucaoImplDAO implements ServicoSolucao{
 

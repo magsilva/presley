@@ -2,13 +2,14 @@ package validacao.implementacao;
 
 import java.util.ArrayList;
 
-import excessao.DesenvolvedorInexistenteException;
-
 import persistencia.implementacao.ServicoMensagemImplDAO;
 
-import beans.Desenvolvedor;
-import beans.Mensagem;
-import beans.Problema;
+import com.hukarz.presley.beans.Desenvolvedor;
+import com.hukarz.presley.beans.Mensagem;
+import com.hukarz.presley.beans.Problema;
+import com.hukarz.presley.excessao.DesenvolvedorInexistenteException;
+
+
 
 public class ValidacaoMensagemImpl {
 

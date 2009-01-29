@@ -1,11 +1,10 @@
 package persistencia.interfaces;
 
-import java.sql.Date;
 import java.util.ArrayList;
 
-import beans.Conhecimento;
-import beans.Desenvolvedor;
-import beans.Problema;
+import com.hukarz.presley.beans.Desenvolvedor;
+import com.hukarz.presley.beans.Problema;
+
 
 /**
  * 

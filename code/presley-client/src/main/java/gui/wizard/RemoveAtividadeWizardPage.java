@@ -20,7 +20,8 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Text;
 
-import beans.TipoAtividade;
+import com.hukarz.presley.beans.TipoAtividade;
+
 
 public class RemoveAtividadeWizardPage extends WizardPage {
 

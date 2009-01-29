@@ -3,22 +3,23 @@ package core.interfaces;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import beans.Conhecimento;
-import beans.DadosAutenticacao;
-import beans.Desenvolvedor;
-import beans.Problema;
-import beans.Projeto;
-import beans.Solucao;
-import beans.TipoAtividade;
-import beans.Tree;
-import excessao.AtividadeInexistenteException;
-import excessao.ConhecimentoInexistenteException;
-import excessao.DescricaoInvalidaException;
-import excessao.DesenvolvedorInexistenteException;
-import excessao.EmailInvalidoException;
-import excessao.ErroDeAutenticacaoException;
-import excessao.ProblemaInexistenteException;
-import excessao.SenhaInvalidaException;
+import com.hukarz.presley.beans.Conhecimento;
+import com.hukarz.presley.beans.DadosAutenticacao;
+import com.hukarz.presley.beans.Desenvolvedor;
+import com.hukarz.presley.beans.Problema;
+import com.hukarz.presley.beans.Projeto;
+import com.hukarz.presley.beans.Solucao;
+import com.hukarz.presley.beans.TipoAtividade;
+import com.hukarz.presley.beans.Tree;
+import com.hukarz.presley.excessao.AtividadeInexistenteException;
+import com.hukarz.presley.excessao.ConhecimentoInexistenteException;
+import com.hukarz.presley.excessao.DescricaoInvalidaException;
+import com.hukarz.presley.excessao.DesenvolvedorInexistenteException;
+import com.hukarz.presley.excessao.EmailInvalidoException;
+import com.hukarz.presley.excessao.ErroDeAutenticacaoException;
+import com.hukarz.presley.excessao.ProblemaInexistenteException;
+import com.hukarz.presley.excessao.SenhaInvalidaException;
+
 import facade.PacketStruct;
 
 /**

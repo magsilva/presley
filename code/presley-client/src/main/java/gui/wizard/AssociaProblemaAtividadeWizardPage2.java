@@ -28,8 +28,9 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 
-import beans.Conhecimento;
-import beans.Item;
+import com.hukarz.presley.beans.Conhecimento;
+import com.hukarz.presley.beans.Item;
+
 
 
 public class AssociaProblemaAtividadeWizardPage2 extends WizardPage {
@@ -38,7 +39,7 @@ public class AssociaProblemaAtividadeWizardPage2 extends WizardPage {
 	private Atividade atividade;
 	private Hashtable<String,TreeItem> conhecimentosSelecionados;
 	private ArrayList<Conhecimento> conhecimentos;
-	private beans.Tree ontologia;
+	private com.hukarz.presley.beans.Tree ontologia;
 
     public AssociaProblemaAtividadeWizardPage2(ISelection selection, Atividade atividade) {
         super("wizardPage");
@@ -116,7 +117,7 @@ public class AssociaProblemaAtividadeWizardPage2 extends WizardPage {
         
         try{
         	
-        	final beans.Tree conhecimentosModelo = atividade.getViewComunication().getOntologia();
+        	final com.hukarz.presley.beans.Tree conhecimentosModelo = atividade.getViewComunication().getOntologia();
         	arvoreConhecimento = conhecimentosModelo.constroiArvoreGrafica(controls, SWT.BORDER | SWT.CHECK);
         	arvoreConhecimento.addListener(SWT.Selection, new Listener() {
 			

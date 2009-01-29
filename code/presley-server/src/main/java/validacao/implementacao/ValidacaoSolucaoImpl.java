@@ -1,22 +1,23 @@
 package validacao.implementacao;
 
 
-import java.sql.Date;
 import java.util.ArrayList;
 
-import excessao.DescricaoInvalidaException;
-import excessao.DesenvolvedorInexistenteException;
-import excessao.ProblemaInexistenteException;
-import excessao.SolucaoIniexistenteException;
-import beans.Desenvolvedor;
-import beans.Problema;
-import beans.Solucao;
 import persistencia.implementacao.ServicoDesenvolvedorImplDAO;
 import persistencia.implementacao.ServicoProblemaImplDAO;
 import persistencia.implementacao.ServicoSolucaoImplDAO;
 import persistencia.interfaces.ServicoDesenvolvedor;
 import persistencia.interfaces.ServicoProblema;
 import persistencia.interfaces.ServicoSolucao;
+
+import com.hukarz.presley.beans.Desenvolvedor;
+import com.hukarz.presley.beans.Problema;
+import com.hukarz.presley.beans.Solucao;
+import com.hukarz.presley.excessao.DescricaoInvalidaException;
+import com.hukarz.presley.excessao.DesenvolvedorInexistenteException;
+import com.hukarz.presley.excessao.ProblemaInexistenteException;
+
+import excessao.SolucaoIniexistenteException;
 
 /**
  * 

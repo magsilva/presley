@@ -5,7 +5,8 @@ import java.sql.Date;
 import persistencia.implementacao.ServicoProjetoImplDAO;
 import persistencia.interfaces.ServicoProjeto;
 
-import beans.Projeto;
+import com.hukarz.presley.beans.Projeto;
+
 
 public class ValidacaoUtil {
 	

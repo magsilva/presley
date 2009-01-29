@@ -5,7 +5,6 @@ import java.util.Iterator;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import excessao.ProblemaInexistenteException;
 import gui.action.RunAdcionaProblemaWizardAction;
 import gui.action.RunEnviaRespostaWizardAction;
 import gui.action.RunEnviaRetornoSolucaoWizardAction;
@@ -27,11 +26,13 @@ import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 import org.eclipse.ui.part.ViewPart;
 
-import beans.Desenvolvedor;
-import beans.Mensagem;
-import beans.Problema;
-import beans.Projeto;
-import beans.Solucao;
+import com.hukarz.presley.beans.Desenvolvedor;
+import com.hukarz.presley.beans.Mensagem;
+import com.hukarz.presley.beans.Problema;
+import com.hukarz.presley.beans.Projeto;
+import com.hukarz.presley.beans.Solucao;
+import com.hukarz.presley.excessao.ProblemaInexistenteException;
+
 
 public class MensagemAba extends ViewPart {
 	private Composite parentComposite;

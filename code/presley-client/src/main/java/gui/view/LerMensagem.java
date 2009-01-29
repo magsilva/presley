@@ -10,7 +10,8 @@ import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.part.ViewPart;
 
-import beans.Desenvolvedor;
+import com.hukarz.presley.beans.Desenvolvedor;
+
 
 public class LerMensagem extends ViewPart {
 	private Composite parentComposite;

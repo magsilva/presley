@@ -22,9 +22,10 @@ import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 
-import beans.Conhecimento;
-import beans.Desenvolvedor;
-import beans.TipoAtividade;
+import com.hukarz.presley.beans.Conhecimento;
+import com.hukarz.presley.beans.Desenvolvedor;
+import com.hukarz.presley.beans.TipoAtividade;
+
 
 public class AdicionaDesenvolvedorWizard extends Wizard implements INewWizard {
 

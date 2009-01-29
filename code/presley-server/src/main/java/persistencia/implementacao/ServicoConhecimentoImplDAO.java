@@ -5,18 +5,17 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.Set;
-
-import beans.Arquivo;
-import beans.Conhecimento;
-import beans.Desenvolvedor;
 
 import persistencia.MySQLConnectionFactory;
 import persistencia.interfaces.ServicoArquivo;
 import persistencia.interfaces.ServicoConhecimento;
 import persistencia.interfaces.ServicoDesenvolvedor;
-import excessao.ConhecimentoInexistenteException;
+
+import com.hukarz.presley.beans.Arquivo;
+import com.hukarz.presley.beans.Conhecimento;
+import com.hukarz.presley.beans.Desenvolvedor;
+import com.hukarz.presley.excessao.ConhecimentoInexistenteException;
+
 
 /**
  * 
