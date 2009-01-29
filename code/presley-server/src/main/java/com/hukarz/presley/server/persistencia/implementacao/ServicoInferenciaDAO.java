@@ -6,7 +6,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.HashMap;
 
-
 import com.hukarz.presley.beans.Desenvolvedor;
 import com.hukarz.presley.excessao.DesenvolvedorInexistenteException;
 import com.hukarz.presley.server.persistencia.MySQLConnectionFactory;

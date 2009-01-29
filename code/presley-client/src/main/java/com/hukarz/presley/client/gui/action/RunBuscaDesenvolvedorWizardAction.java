@@ -12,9 +12,7 @@ import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.IWorkbenchWindowActionDelegate;
 import org.eclipse.ui.PlatformUI;
 
-import com.hukarz.presley.beans.BuscaDesenvolvedores;
 import com.hukarz.presley.client.gui.view.Atividade;
-import com.hukarz.presley.client.gui.wizard.AssociaProblemaAtividadeWizard;
 import com.hukarz.presley.client.gui.wizard.BuscaDesenvolvedoresWizard;
 
 

@@ -5,9 +5,7 @@ package com.hukarz.presley.client.gui.view;
 
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Map;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseEvent;
@@ -21,9 +19,7 @@ import org.eclipse.ui.part.ViewPart;
 
 import com.hukarz.presley.beans.Desenvolvedor;
 import com.hukarz.presley.beans.Mensagem;
-import com.hukarz.presley.beans.Problema;
 import com.hukarz.presley.beans.ProblemaMensagens;
-import com.hukarz.presley.client.gui.action.RunAssociaProblemaAtividadeWizardAction;
 import com.hukarz.presley.client.gui.action.RunEnviaRespostaWizardAction;
 import com.hukarz.presley.client.gui.view.comunication.ViewComunication;
 

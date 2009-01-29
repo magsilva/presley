@@ -2,7 +2,6 @@ package com.hukarz.presley.server.validacao.implementacao;
 
 import java.util.ArrayList;
 
-
 import com.hukarz.presley.beans.Desenvolvedor;
 import com.hukarz.presley.beans.Mensagem;
 import com.hukarz.presley.beans.Problema;

@@ -4,7 +4,6 @@ package com.hukarz.presley.client.gui.wizard;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.Date;
 import java.util.ArrayList;
-import java.util.Hashtable;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -18,11 +17,9 @@ import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 import com.hukarz.presley.beans.Conhecimento;
-import com.hukarz.presley.beans.Desenvolvedor;
 import com.hukarz.presley.beans.Problema;
 import com.hukarz.presley.beans.TipoAtividade;
 import com.hukarz.presley.client.gui.view.Atividade;
-import com.hukarz.presley.client.gui.view.comunication.ViewComunication;
 
 
 public class AssociaProblemaAtividadeWizard extends Wizard implements INewWizard {

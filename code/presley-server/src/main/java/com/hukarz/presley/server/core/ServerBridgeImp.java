@@ -3,7 +3,6 @@ package com.hukarz.presley.server.core;
 import java.io.IOException;
 import java.util.ArrayList;
 
-
 import com.hukarz.presley.beans.DadosAutenticacao;
 import com.hukarz.presley.beans.Desenvolvedor;
 import com.hukarz.presley.communication.facade.PacketStruct;

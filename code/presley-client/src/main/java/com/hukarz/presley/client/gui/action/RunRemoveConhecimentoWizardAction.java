@@ -5,7 +5,6 @@ import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.ISelection;
-import org.eclipse.jface.wizard.IWizard;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IWorkbenchWindow;
@@ -13,10 +12,6 @@ import org.eclipse.ui.IWorkbenchWindowActionDelegate;
 import org.eclipse.ui.PlatformUI;
 
 import com.hukarz.presley.client.gui.view.Atividade;
-import com.hukarz.presley.client.gui.wizard.AdicionaAtividadeWizard;
-import com.hukarz.presley.client.gui.wizard.AdicionaConhecimentoWizard;
-import com.hukarz.presley.client.gui.wizard.AdicionaConhecimentoWizardPage;
-import com.hukarz.presley.client.gui.wizard.LoginWizard;
 import com.hukarz.presley.client.gui.wizard.RemoveConhecimentoWizard;
 
 public class RunRemoveConhecimentoWizardAction extends Action implements

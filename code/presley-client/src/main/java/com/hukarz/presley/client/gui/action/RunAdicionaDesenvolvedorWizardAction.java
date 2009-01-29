@@ -12,9 +12,7 @@ import org.eclipse.ui.IWorkbenchWindowActionDelegate;
 import org.eclipse.ui.PlatformUI;
 
 import com.hukarz.presley.client.gui.view.MensagemAba;
-import com.hukarz.presley.client.gui.wizard.AdicionaAtividadeWizard;
 import com.hukarz.presley.client.gui.wizard.AdicionaDesenvolvedorWizard;
-import com.hukarz.presley.client.gui.wizard.LoginWizard;
 
 public class RunAdicionaDesenvolvedorWizardAction extends Action implements
 		IWorkbenchWindowActionDelegate {

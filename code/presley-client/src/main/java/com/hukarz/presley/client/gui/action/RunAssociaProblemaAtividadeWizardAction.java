@@ -11,11 +11,8 @@ import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.IWorkbenchWindowActionDelegate;
 import org.eclipse.ui.PlatformUI;
 
-import com.hukarz.presley.beans.TipoAtividade;
 import com.hukarz.presley.client.gui.view.Atividade;
-import com.hukarz.presley.client.gui.wizard.AdicionaAtividadeWizard;
 import com.hukarz.presley.client.gui.wizard.AssociaProblemaAtividadeWizard;
-import com.hukarz.presley.client.gui.wizard.LoginWizard;
 
 
 public class RunAssociaProblemaAtividadeWizardAction extends Action implements

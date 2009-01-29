@@ -6,7 +6,6 @@ import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.wizard.WizardDialog;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.IWorkbenchWindowActionDelegate;
@@ -14,7 +13,6 @@ import org.eclipse.ui.PlatformUI;
 
 import com.hukarz.presley.client.gui.view.Atividade;
 import com.hukarz.presley.client.gui.view.MensagemAba;
-import com.hukarz.presley.client.gui.wizard.AdicionaAtividadeWizard;
 import com.hukarz.presley.client.gui.wizard.LoginWizard;
 
 public class RunLoginWizardAction extends Action implements

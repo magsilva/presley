@@ -15,7 +15,6 @@ import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 import com.hukarz.presley.beans.Problema;
-import com.hukarz.presley.client.gui.view.Atividade;
 import com.hukarz.presley.client.gui.view.MensagemAba;
 
 

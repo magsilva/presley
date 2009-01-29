@@ -13,12 +13,8 @@ import org.eclipse.ui.PlatformUI;
 
 import com.hukarz.presley.beans.Problema;
 import com.hukarz.presley.beans.Solucao;
-import com.hukarz.presley.beans.TipoAtividade;
 import com.hukarz.presley.client.gui.view.MensagemAba;
-import com.hukarz.presley.client.gui.wizard.AdicionaAtividadeWizard;
-import com.hukarz.presley.client.gui.wizard.AssociaProblemaAtividadeWizard;
 import com.hukarz.presley.client.gui.wizard.EnviaRespostaWizard;
-import com.hukarz.presley.client.gui.wizard.LoginWizard;
 
 
 public class RunEnviaRespostaWizardAction extends Action implements

@@ -9,7 +9,6 @@ import java.util.HashMap;
 import java.util.Set;
 import java.util.Map.Entry;
 
-
 import com.hukarz.presley.beans.Conhecimento;
 import com.hukarz.presley.beans.Desenvolvedor;
 import com.hukarz.presley.beans.TipoAtividade;

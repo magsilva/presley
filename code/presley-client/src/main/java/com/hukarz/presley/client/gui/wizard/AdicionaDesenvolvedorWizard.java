@@ -2,10 +2,8 @@ package com.hukarz.presley.client.gui.wizard;
 
 
 import java.lang.reflect.InvocationTargetException;
-import java.sql.Date;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Hashtable;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -14,17 +12,13 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
-import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 import com.hukarz.presley.beans.Conhecimento;
 import com.hukarz.presley.beans.Desenvolvedor;
-import com.hukarz.presley.beans.TipoAtividade;
-import com.hukarz.presley.client.gui.view.Atividade;
 import com.hukarz.presley.client.gui.view.MensagemAba;
-import com.hukarz.presley.client.gui.view.comunication.ViewComunication;
 
 
 public class AdicionaDesenvolvedorWizard extends Wizard implements INewWizard {

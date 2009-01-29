@@ -2,7 +2,6 @@ package com.hukarz.presley.beans;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Map;
 
 /**
  * 

@@ -4,7 +4,6 @@ import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-
 import com.hukarz.presley.beans.Conhecimento;
 import com.hukarz.presley.beans.Problema;
 import com.hukarz.presley.beans.TipoAtividade;

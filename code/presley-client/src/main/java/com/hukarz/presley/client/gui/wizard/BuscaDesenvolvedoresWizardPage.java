@@ -1,12 +1,8 @@
 package com.hukarz.presley.client.gui.wizard;
 
 
-import java.security.acl.Group;
-import java.sql.Date;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
-import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
@@ -14,16 +10,10 @@ import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Text;
 
-import com.hukarz.presley.beans.Conhecimento;
-import com.hukarz.presley.beans.Desenvolvedor;
-import com.hukarz.presley.beans.Problema;
 import com.hukarz.presley.client.gui.view.Atividade;
 import com.hukarz.presley.client.gui.view.comunication.ViewComunication;
 

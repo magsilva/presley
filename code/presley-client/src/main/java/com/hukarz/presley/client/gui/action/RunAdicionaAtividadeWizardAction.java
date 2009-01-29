@@ -13,7 +13,6 @@ import org.eclipse.ui.PlatformUI;
 
 import com.hukarz.presley.client.gui.view.Atividade;
 import com.hukarz.presley.client.gui.wizard.AdicionaAtividadeWizard;
-import com.hukarz.presley.client.gui.wizard.LoginWizard;
 
 public class RunAdicionaAtividadeWizardAction extends Action implements
 		IWorkbenchWindowActionDelegate {

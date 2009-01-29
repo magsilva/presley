@@ -3,7 +3,6 @@ package com.hukarz.presley.server.ontologia;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-
 import com.hukarz.presley.beans.Conhecimento;
 import com.hukarz.presley.beans.Desenvolvedor;
 import com.hukarz.presley.beans.Item;

@@ -12,7 +12,6 @@ import org.tmatesoft.svn.core.wc.SVNClientManager;
 import org.tmatesoft.svn.core.wc.SVNLogClient;
 import org.tmatesoft.svn.core.wc.SVNRevision;
 
-
 import com.hukarz.presley.beans.Arquivo;
 import com.hukarz.presley.beans.Desenvolvedor;
 import com.hukarz.presley.excessao.ArquivoInexistenteException;
