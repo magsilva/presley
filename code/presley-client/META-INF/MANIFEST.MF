@@ -1,0 +1,13 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Presley_client Plug-in
+Bundle-SymbolicName: presley_client;singleton:=true
+Bundle-Version: 1.0.0
+Bundle-Activator: presley_client.Activator
+Require-Bundle: org.eclipse.ui,org.eclipse.core.runtime,org.eclipse.ui.console,org.eclipse.jdt.ui,org.eclipse.core.resources,org.eclipse.jdt.core;bundle-version="3.4.0",org.junit;bundle-version="3.8.2",
+ org.eclipse.ui,
+ org.eclipse.core.runtime
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Import-Package: org.eclipse.core.resources.refresh
+Bundle-ActivationPolicy: lazy
+Eclipse-LazyStart: true

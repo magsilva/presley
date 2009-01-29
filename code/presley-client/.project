@@ -3,7 +3,6 @@
 	<name>presley-client</name>
 	<comment></comment>
 	<projects>
-		<project>jayfx</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
