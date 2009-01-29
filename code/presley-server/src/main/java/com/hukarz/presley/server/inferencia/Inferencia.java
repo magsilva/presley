@@ -6,7 +6,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Map.Entry;
 
-import validacao.implementacao.ValidacaoInferenciaImpl;
 
 import com.hukarz.presley.beans.ArquivoJava;
 import com.hukarz.presley.beans.Conhecimento;
@@ -14,6 +13,7 @@ import com.hukarz.presley.beans.Desenvolvedor;
 import com.hukarz.presley.excessao.DesenvolvedorInexistenteException;
 import com.hukarz.presley.server.persistencia.implementacao.ServicoConhecimentoImplDAO;
 import com.hukarz.presley.server.persistencia.interfaces.ServicoConhecimento;
+import com.hukarz.presley.server.validacao.implementacao.ValidacaoInferenciaImpl;
 
 
 /*

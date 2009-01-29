@@ -12,13 +12,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import validacao.implementacao.ValidacaoAtividadeImpl;
-import validacao.implementacao.ValidacaoConhecimentoImpl;
-import validacao.implementacao.ValidacaoDesenvolvedorImpl;
-import validacao.implementacao.ValidacaoMensagemImpl;
-import validacao.implementacao.ValidacaoProblemaImpl;
-import validacao.implementacao.ValidacaoSolucaoImpl;
-import validacao.implementacao.ValidacaoUtil;
 
 import com.hukarz.presley.beans.BuscaDesenvolvedores;
 import com.hukarz.presley.beans.Conhecimento;
@@ -47,6 +40,13 @@ import com.hukarz.presley.excessao.SolucaoIniexistenteException;
 import com.hukarz.presley.server.core.interfaces.CorePresleyOperations;
 import com.hukarz.presley.server.inferencia.Inferencia;
 import com.hukarz.presley.server.ontologia.Ontologia;
+import com.hukarz.presley.server.validacao.implementacao.ValidacaoAtividadeImpl;
+import com.hukarz.presley.server.validacao.implementacao.ValidacaoConhecimentoImpl;
+import com.hukarz.presley.server.validacao.implementacao.ValidacaoDesenvolvedorImpl;
+import com.hukarz.presley.server.validacao.implementacao.ValidacaoMensagemImpl;
+import com.hukarz.presley.server.validacao.implementacao.ValidacaoProblemaImpl;
+import com.hukarz.presley.server.validacao.implementacao.ValidacaoSolucaoImpl;
+import com.hukarz.presley.server.validacao.implementacao.ValidacaoUtil;
 
 
 /**

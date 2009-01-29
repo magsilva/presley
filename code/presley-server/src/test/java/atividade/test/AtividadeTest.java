@@ -4,7 +4,6 @@ import java.sql.Date;
 import java.util.ArrayList;
 
 import junit.framework.TestCase;
-import validacao.implementacao.ValidacaoAtividadeImpl;
 
 import com.hukarz.presley.beans.Conhecimento;
 import com.hukarz.presley.beans.Desenvolvedor;
@@ -16,6 +15,7 @@ import com.hukarz.presley.excessao.DescricaoInvalidaException;
 import com.hukarz.presley.excessao.EmailInvalidoException;
 import com.hukarz.presley.excessao.ProblemaInexistenteException;
 import com.hukarz.presley.server.core.ExecuteClientQuery;
+import com.hukarz.presley.server.validacao.implementacao.ValidacaoAtividadeImpl;
 
 
 public class AtividadeTest extends TestCase{

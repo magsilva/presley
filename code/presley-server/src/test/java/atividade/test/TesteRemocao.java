@@ -2,7 +2,6 @@ package atividade.test;
 
 import java.sql.Date;
 
-import validacao.implementacao.ValidacaoAtividadeImpl;
 
 import com.hukarz.presley.beans.TipoAtividade;
 import com.hukarz.presley.excessao.AtividadeInexistenteException;
@@ -10,6 +9,7 @@ import com.hukarz.presley.excessao.ProblemaInexistenteException;
 import com.hukarz.presley.server.core.ExecuteClientQuery;
 import com.hukarz.presley.server.persistencia.implementacao.ServicoAtividadeImplDAO;
 import com.hukarz.presley.server.persistencia.interfaces.ServicoAtividade;
+import com.hukarz.presley.server.validacao.implementacao.ValidacaoAtividadeImpl;
 
 
 public class TesteRemocao {

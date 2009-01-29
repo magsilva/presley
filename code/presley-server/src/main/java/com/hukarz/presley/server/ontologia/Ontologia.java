@@ -3,8 +3,6 @@ package com.hukarz.presley.server.ontologia;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import validacao.implementacao.ValidacaoConhecimentoImpl;
-import validacao.implementacao.ValidacaoDesenvolvedorImpl;
 
 import com.hukarz.presley.beans.Conhecimento;
 import com.hukarz.presley.beans.Desenvolvedor;
@@ -12,6 +10,8 @@ import com.hukarz.presley.beans.Item;
 import com.hukarz.presley.beans.Tree;
 import com.hukarz.presley.excessao.ConhecimentoInexistenteException;
 import com.hukarz.presley.excessao.DesenvolvedorInexistenteException;
+import com.hukarz.presley.server.validacao.implementacao.ValidacaoConhecimentoImpl;
+import com.hukarz.presley.server.validacao.implementacao.ValidacaoDesenvolvedorImpl;
 
 
 /**
