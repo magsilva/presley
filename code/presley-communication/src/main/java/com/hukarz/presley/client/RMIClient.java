@@ -1,11 +1,12 @@
-package client;
+package com.hukarz.presley.client;
 
 import java.rmi.*;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 
-import facade.PacketStruct;
-import facade.StubInterface;
+import com.hukarz.presley.facade.PacketStruct;
+import com.hukarz.presley.facade.StubInterface;
+
 
 
 

@@ -1,4 +1,4 @@
-package facade;
+package com.hukarz.presley.facade;
 
 import java.io.Serializable;
 

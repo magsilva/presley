@@ -1,7 +1,8 @@
-package facade;
-import server.RMIServer;
-import server.ServerBridge;
-import client.RMIClient;
+package com.hukarz.presley.facade;
+import com.hukarz.presley.client.RMIClient;
+import com.hukarz.presley.server.RMIServer;
+import com.hukarz.presley.server.ServerBridge;
+
 
 
 

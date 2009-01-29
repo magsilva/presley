@@ -14,9 +14,9 @@ import com.hukarz.presley.excessao.DataInvalidaException;
 import com.hukarz.presley.excessao.DescricaoInvalidaException;
 import com.hukarz.presley.excessao.EmailInvalidoException;
 import com.hukarz.presley.excessao.ProblemaInexistenteException;
+import com.hukarz.presley.facade.PacketStruct;
 
 import core.ExecuteClientQuery;
-import facade.PacketStruct;
 
 public class AtividadeTest extends TestCase{
 	

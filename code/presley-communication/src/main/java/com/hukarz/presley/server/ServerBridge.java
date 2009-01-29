@@ -1,5 +1,5 @@
-package server;
-import facade.PacketStruct;
+package com.hukarz.presley.server;
+import com.hukarz.presley.facade.PacketStruct;
 
 
 

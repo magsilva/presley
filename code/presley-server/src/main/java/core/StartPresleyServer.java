@@ -1,7 +1,8 @@
 package core;
 
-import server.ServerBridge;
-import facade.PrincipalSUBJECT;
+import com.hukarz.presley.facade.PrincipalSUBJECT;
+import com.hukarz.presley.server.ServerBridge;
+
 
 /**
  * Classe principal de testes do servidor

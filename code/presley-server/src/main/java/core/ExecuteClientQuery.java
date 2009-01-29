@@ -13,7 +13,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import ontologia.Ontologia;
 import validacao.implementacao.ValidacaoAtividadeImpl;
 import validacao.implementacao.ValidacaoConhecimentoImpl;
 import validacao.implementacao.ValidacaoDesenvolvedorImpl;
@@ -44,10 +43,10 @@ import com.hukarz.presley.excessao.EmailInvalidoException;
 import com.hukarz.presley.excessao.ErroDeAutenticacaoException;
 import com.hukarz.presley.excessao.ProblemaInexistenteException;
 import com.hukarz.presley.excessao.SenhaInvalidaException;
+import com.hukarz.presley.facade.PacketStruct;
 
 import core.interfaces.CorePresleyOperations;
 import excessao.SolucaoIniexistenteException;
-import facade.PacketStruct;
 
 /**
  * @author Adm Cleyton

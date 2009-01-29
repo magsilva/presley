@@ -19,8 +19,8 @@ import com.hukarz.presley.excessao.EmailInvalidoException;
 import com.hukarz.presley.excessao.ErroDeAutenticacaoException;
 import com.hukarz.presley.excessao.ProblemaInexistenteException;
 import com.hukarz.presley.excessao.SenhaInvalidaException;
+import com.hukarz.presley.facade.PacketStruct;
 
-import facade.PacketStruct;
 
 /**
  * 

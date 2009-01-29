@@ -1,7 +1,5 @@
 package gui.view.comunication;
 
-import facade.PacketStruct;
-import facade.PrincipalSUBJECT;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -24,6 +22,8 @@ import com.hukarz.presley.beans.Tree;
 import com.hukarz.presley.excessao.ConhecimentoInexistenteException;
 import com.hukarz.presley.excessao.DesenvolvedorInexistenteException;
 import com.hukarz.presley.excessao.ProblemaInexistenteException;
+import com.hukarz.presley.facade.PacketStruct;
+import com.hukarz.presley.facade.PrincipalSUBJECT;
 
 /**
  * Esta classe controla a comunicacao entre o cliente e o servidor.

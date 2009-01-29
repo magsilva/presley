@@ -1,11 +1,12 @@
-package server;
+package com.hukarz.presley.server;
 
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 
-import facade.PacketStruct;
-import facade.StubInterface;
+import com.hukarz.presley.facade.PacketStruct;
+import com.hukarz.presley.facade.StubInterface;
+
 
 
 public class PacketSTUB extends UnicastRemoteObject implements StubInterface {

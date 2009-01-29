@@ -3,7 +3,6 @@ package core;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import server.ServerBridge;
 
 import com.hukarz.presley.beans.DadosAutenticacao;
 import com.hukarz.presley.beans.Desenvolvedor;
@@ -16,11 +15,12 @@ import com.hukarz.presley.excessao.EmailInvalidoException;
 import com.hukarz.presley.excessao.ErroDeAutenticacaoException;
 import com.hukarz.presley.excessao.ProblemaInexistenteException;
 import com.hukarz.presley.excessao.SenhaInvalidaException;
+import com.hukarz.presley.facade.PacketStruct;
+import com.hukarz.presley.server.ServerBridge;
 
 import core.interfaces.CorePresleyOperations;
 import excessao.DesenvolvedorExisteException;
 import excessao.SolucaoIniexistenteException;
-import facade.PacketStruct;
 
 /**
  * Esta classe implementa no servidor metodos para rotear

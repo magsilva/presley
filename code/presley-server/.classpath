@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
+	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/presley-communication"/>
+	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/presley-client"/>
 	<classpathentry kind="src" path="src/main/java"/>
 	<classpathentry kind="src" path="src/test/java"/>
 	<classpathentry kind="lib" path="src/main/resources/jna.jar"/>
@@ -9,8 +11,6 @@
 	<classpathentry kind="lib" path="src/main/resources/svnkit.jar"/>
 	<classpathentry kind="lib" path="src/main/resources/trilead.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/presley-communication"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/presley-client"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

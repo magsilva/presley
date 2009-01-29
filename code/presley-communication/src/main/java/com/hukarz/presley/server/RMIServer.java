@@ -1,11 +1,12 @@
-package server;
+package com.hukarz.presley.server;
 
 import java.rmi.AlreadyBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 
-import facade.StubInterface;
+import com.hukarz.presley.facade.StubInterface;
+
 
 
 public class RMIServer {
