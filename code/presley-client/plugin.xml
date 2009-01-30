@@ -1,47 +1,52 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.2"?>
 <plugin>
-   <extension
-         point="org.eclipse.ui.perspectives">
-      <perspective
-            name="Presley"
-            icon="icons/presley.gif"
-            class="com.hukarz.presley.client.gui.perspectives.RelEngPerspective"
-            id="presley.perspectives.RelEngPerspective">
-      </perspective>
-   </extension>
-   <extension
-         point="org.eclipse.ui.views">
-      <view
-            class="com.hukarz.presley.client.gui.view.Mensagens"
-            id="presley.mensagens"
-            name="Mensagens"
-            restorable="true">
-      </view>
-      <view
-            class="com.hukarz.presley.client.gui.view.Atividade"
-            id="presley.Atividade"
-            name="Atividade"
-            restorable="true">
-      </view>
-      <view
-            class="com.hukarz.presley.client.gui.view.Dominio"
-            id="presley.Dominio"
-            name="Dominio"
-            restorable="true">
-      </view>
-      <view
-            class="com.hukarz.presley.client.gui.view.MensagemAba"
-            id="presley.Mensagem"
-            name="Mensagem"
-            restorable="true">
-      </view>
-      <view
-            class="com.hukarz.presley.client.gui.view.LerMensagem"
-            id="presley.lerMensagem"
-            name="Ler Mensagem"
-            restorable="true">
-      </view>
-   </extension>
+	<extension point="org.eclipse.ui.views">
+		<category
+        	name="Presley"
+            id="presley">
+		</category>
 
+		<view
+    		name="Mensagens"
+        	category="presley"
+        	class="com.hukarz.presley.client.gui.view.Mensagens"
+        	id="com.hukarz.presley.client.gui.view.Mensagens"
+        	restorable="true">
+		</view>
+      
+		<view
+    		name="Atividade"
+        	category="presley"
+        	class="com.hukarz.presley.client.gui.view.Atividade"
+        	id="com.hukarz.presley.client.gui.view.Atividade"
+        	restorable="true">
+		</view>
+		      
+		<view
+    		name="Dominio"
+        	category="presley"
+        	class="com.hukarz.presley.client.gui.view.Dominio"
+        	id="com.hukarz.presley.client.gui.view.Dominio"
+        	restorable="true">
+		</view>
+      
+		<view
+			name="Ler Mensagem"
+			category="presley"
+			class="com.hukarz.presley.client.gui.view.LerMensagem"
+			id="com.hukarz.presley.client.gui.view.LerMensagem"
+			restorable="true">
+		</view>
+      
+      <view
+      		name="Mensagem"
+      		category="presley"
+            class="com.hukarz.presley.client.gui.view.MensagemAba"
+            id="com.hukarz.presley.client.gui.view.MensagemAba"
+            restorable="true">
+      </view>
+      
+   </extension>
+   
 </plugin>
