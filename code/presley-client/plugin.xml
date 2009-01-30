@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+	name="presley"
+   <extension
+         point="org.eclipse.ui.perspectives">
+      <perspective
+            name="Presley"
+            icon="icons/presley.gif"
+            class="gui.perspectives.RelEngPerspective"
+            id="projectpresley.perspectives.RelEngPerspective">
+      </perspective>
+   </extension>
+   <extension
+         point="org.eclipse.ui.views">
+      <category
+            id="ProjectPresley.NovaCategoria"
+            name="NovaCategoria">
+      </category>
+      <view
+            class="gui.view.Mensagens"
+            id="ProjectPresley.NovaVisao"
+            name="Mensagens"
+            restorable="true">
+      </view>
+      <category
+            id="gui.OutraCategoria"
+            name="outraCategoria">
+      </category>
+      <view
+            class="gui.view.Atividade"
+            id="gui.Atividade"
+            name="Atividade"
+            restorable="true">
+      </view>
+      <view
+            class="gui.view.Dominio"
+            id="gui.Dominio"
+            name="Dominio"
+            restorable="true">
+      </view>
+      <view
+            class="gui.view.MensagemAba"
+            id="gui.Mensagem"
+            name="Mensagem"
+            restorable="true">
+      </view>
+      <view
+            class="gui.view.LerMensagem"
+            id="gui.LerMensagem"
+            name="Ler Mensagem"
+            restorable="true">
+      </view>
+   </extension>
+
+</plugin>
