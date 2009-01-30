@@ -1,68 +1,0 @@
-
-
-
-
-
-
-
-
-
-
-
-
-Caso de Uso – Remover Desenvolvedor
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Projeto: Presley
-
-
-Data29/07/08ResponsávelAmilcar Soares Junior, Bruno Rafael de Araújo Sales, Eduardo Paz Serafim, Jonatas Pereira de AraújoID do documentoPRESLEY_USE_CASE_REMOVER_DESENVOLVEDOR_2008_07_29LocalizaçãoVersão do Documento0.01
-
-Histórico de Revisões
-
-DataVersãoAutorDescrição29/07/080.01Amilcar Junior, Bruno Sales, Eduardo Serafim, Jonatas AraújoCriação inicial.
-Revisores
- 
-NomeFunçãoDataAmilcar Soares JuniorAnalista29/07/2008Bruno Rafael de Araújo SalesAnalista29/07/2008Eduardo Paz SerafimAnalista29/07/2008Jonatas Pereira de AraújoAnalista29/07/2008
-Presley
-Use-Case: Remover Desenvolvedor
-1 Descrição Breve
-Descreve como o desenvolvedor/gerente remove dados de outros desenvolvedores do sistema.
-2 Ator
-2.1 Desenvolvedor/Gerente
-3 Pré Condições
-Não existir associação entre um desenvolvedor e uma tarefa não concluída.
-4 Fluxo Básico de Eventos
-1. O desenvolvedor/gerente seleciona a listar desenvolvedores.
-2. O sistema exibe a lista com os desenvolvedores cadastrados no sistema
-3. O desenvolvedor/gerente seleciona o desenvolvedor a ser excluído.
-4. O sistema verifica se existe associação entre uma tarefa não concluída e o desenvolvedor a ser removido.
-5. O sistema remove os dados do desenvolvedor.
-6. O sistema avisa ao desenvolvedor/gerente que os dados foram removidos com sucesso.
-7. Caso de uso finalizado com sucesso.
-5 Fluxo Alternativo
-5.1 Existe associação entre um desenvolvedor.
-Se no passo 4 do fluxo básico existir associação entre uma tarefa não concluída e o desenvolvedor a ser excluído, 
-1. O sistema avisará ao desenvolvedor/gerente que o desenvolvedor não pode ser excluído.
-2. Retorna ao passo 3.
-6 Pós Condições 
-6.1 Desenvolvedor removido com sucesso
-O desenvolvedor foi removido com sucesso.
-
-
-PresleyUse-case Specification: Remover Desenvolvedor  Date:  29/07/2008
-
-Confidencial?BOPE & ?GigaBug, 2008Page 4 of 4
-
