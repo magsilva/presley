@@ -1,6 +1,6 @@
 /* Desenvolvido por Leandro Carlos e Samara Martins */
 
-package project_client;
+package com.hukarz.presley.client;
 
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.plugin.AbstractUIPlugin;

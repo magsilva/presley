@@ -49,7 +49,7 @@ public class AdicionaProblemaWizardPage extends WizardPage {
         listaElementosSelecionados = new ArrayList<String>();
         
         // TODO: Extend JayFX correctly
-        aDB = JayFX.obterInstancia( mensagem.getProjeto() );
+        // aDB = JayFX.obterInstancia( mensagem.getProjeto() );
 	}
 	
     private void updateStatus(String message) {
@@ -87,7 +87,7 @@ public class AdicionaProblemaWizardPage extends WizardPage {
     				elemento = FlyweightElementFactory.getElement( ICategories.CLASS, elementoSelecionado );
     			}
     			// TODO: Extend JayFX correctly
-				retorno.putAll( aDB.getElementoRelacionamento(elemento) );
+				//retorno.putAll( aDB.getElementoRelacionamento(elemento) );
 				
 	    		ClasseJava classe   = new ClasseJava( elemento.getDeclaringClass().getId() ) ;
 	    		ArquivoJava arquivo = new ArquivoJava( aDB.convertToJavaElement(elemento).getResource().getName() );
@@ -144,7 +144,7 @@ public class AdicionaProblemaWizardPage extends WizardPage {
 
         // Busca Todos os Elementos no projeto
      // TODO: Extend JayFX correctly
-        listaElementosProjeto = aDB.getTodasClassesMetodos();
+        //listaElementosProjeto = aDB.getTodasClassesMetodos();
         elementosProjeto = new Combo(controls, SWT.MULTI | SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
         
         //Preenche o combo  
