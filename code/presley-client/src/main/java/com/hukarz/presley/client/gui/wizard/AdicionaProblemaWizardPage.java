@@ -48,7 +48,7 @@ public class AdicionaProblemaWizardPage extends WizardPage {
 
         listaElementosSelecionados = new ArrayList<String>();
         
-        // TODO: Extend JayFX correctly
+        // FIXME: Extend JayFX correctly
         // aDB = JayFX.obterInstancia( mensagem.getProjeto() );
 	}
 	
@@ -86,7 +86,7 @@ public class AdicionaProblemaWizardPage extends WizardPage {
     			} else {
     				elemento = FlyweightElementFactory.getElement( ICategories.CLASS, elementoSelecionado );
     			}
-    			// TODO: Extend JayFX correctly
+    			// FIXME: Extend JayFX correctly
 				//retorno.putAll( aDB.getElementoRelacionamento(elemento) );
 				
 	    		ClasseJava classe   = new ClasseJava( elemento.getDeclaringClass().getId() ) ;
@@ -143,7 +143,7 @@ public class AdicionaProblemaWizardPage extends WizardPage {
         label.setText("Elementos no Projeto");
 
         // Busca Todos os Elementos no projeto
-     // TODO: Extend JayFX correctly
+        // FIXME: Extend JayFX correctly
         //listaElementosProjeto = aDB.getTodasClassesMetodos();
         elementosProjeto = new Combo(controls, SWT.MULTI | SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
         
