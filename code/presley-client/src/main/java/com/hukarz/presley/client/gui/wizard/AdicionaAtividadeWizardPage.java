@@ -94,10 +94,7 @@ public class AdicionaAtividadeWizardPage extends WizardPage {
     
     public boolean getStatus(){
     	String selecao = this.grupoButoesStatus.getSelection()[0];
-    	if (selecao.equals("Concluído"))
-			return true;
-		else
-			return false;
+    	return selecao.equals("Concluído");
     }
 
     private void dialogChanged() {

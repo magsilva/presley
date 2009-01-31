@@ -1,6 +1,5 @@
 package com.hukarz.presley.client.gui.view.comunication;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 import com.hukarz.presley.beans.Arquivo;

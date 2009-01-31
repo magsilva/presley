@@ -25,7 +25,6 @@ import com.hukarz.presley.communication.facade.PacketStruct;
 import com.hukarz.presley.communication.facade.PrincipalSUBJECT;
 import com.hukarz.presley.excessao.ConhecimentoInexistenteException;
 import com.hukarz.presley.excessao.DesenvolvedorInexistenteException;
-import com.hukarz.presley.excessao.ProblemaInexistenteException;
 
 /**
  * Esta classe controla a comunicacao entre o cliente e o servidor.
@@ -245,7 +244,7 @@ public class ViewComunication implements CorePresleyOperations{
 	 * @param problema é o problema a ser excluido
 	 * @return boolean se a exclusão ocorreu bem
 	 */
-	public boolean removerProblema(Problema problema) throws ProblemaInexistenteException{
+	public boolean removerProblema(Problema problema) {
 		PacketStruct respostaPacket = sendPack(problema, CorePresleyOperations.REMOVER_PROBLEMA);
 		if(respostaPacket.getData() != null){
 			return true;
@@ -390,9 +389,9 @@ public class ViewComunication implements CorePresleyOperations{
 	public boolean removerAtividade(TipoAtividade atividade) {
     	PacketStruct respostaPacket = sendPack(atividade, REMOVE_ATIVIDADE);
     	Boolean resposta = (Boolean)respostaPacket.getData();
-    	if (resposta.booleanValue()==true) {
-    		this.atividades.remove(atividade.getDescricao());
-    		this.conhecimentos.remove(atividade.getDescricao());
+    	if (resposta.booleanValue()) {
+    		this.atividades.remove(atividade);
+    		this.conhecimentos.remove(atividade);
 		}
     	
     	this.atividades.remove(atividade);//TESTE

@@ -42,7 +42,7 @@ public class EnviaRetornoSolucaoWizardPage extends WizardPage {
         mensagemRespostaText = new Text( controls, SWT.MULTI | SWT.BORDER | SWT.V_SCROLL | SWT.H_SCROLL);
         GridData gd = new GridData( GridData.FILL_BOTH);
         mensagemRespostaText.setLayoutData(gd);
-        mensagemRespostaText.setText( solucao.getRetornoSolucao() );
+        mensagemRespostaText.setText(solucao.getRetornoSolucao());
         mensagemRespostaText.addModifyListener(
                 new ModifyListener() {
                     public void modifyText(

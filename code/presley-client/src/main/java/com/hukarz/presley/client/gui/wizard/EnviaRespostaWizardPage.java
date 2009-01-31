@@ -20,8 +20,9 @@ public class EnviaRespostaWizardPage extends WizardPage {
     public EnviaRespostaWizardPage(ISelection selection, boolean respostaSolucao) {
         super("wizardPage");
         setTitle("Envia Resposta Wizard");
-        if (respostaSolucao)
+        if (respostaSolucao) {
         	setDescription("Envia uma RESPOSTA para a solução do usuario.");
+        }
         else
         	setDescription("Envia uma SOLUÇÃO para o usuario.");
     }

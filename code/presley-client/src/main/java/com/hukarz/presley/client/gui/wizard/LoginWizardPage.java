@@ -76,10 +76,11 @@ public class LoginWizardPage extends WizardPage {
      	    usernameField.setText("cct@cin.ufpe.br");
      	    usernameField.setLayoutData(data);
 
-     	    Label passwordLabel = new Label(controls, SWT.RIGHT);
+     	    final Label passwordLabel = new Label(controls, SWT.RIGHT);
      	    passwordLabel.setText("Senha: ");
 
-     	    passwordField = new Text(controls, SWT.SINGLE | SWT.PASSWORD | SWT.BORDER);
+     	    passwordField = new Text(controls, SWT.SINGLE 
+     	    		| SWT.PASSWORD | SWT.BORDER);
      	    data = new GridData(GridData.FILL_HORIZONTAL);
      	    passwordField.setText("1");
      	    passwordField.setLayoutData(data);

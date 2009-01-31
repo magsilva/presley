@@ -192,13 +192,13 @@ public class AdicionaDesenvolvedorWizardPage2 extends WizardPage {
 							
 						}
 						
-						if(temFilhos == false){
-							 grauText.setEditable(true);
-							 addConhecimentoButton.setEnabled(true);
-						}
-						else{
+						if (temFilhos) {
 							grauText.setEditable(false);
 							addConhecimentoButton.setEnabled(false);
+						} 
+						else {
+							grauText.setEditable(true);
+							addConhecimentoButton.setEnabled(true);
 						}
 					}
 			

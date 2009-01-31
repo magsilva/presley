@@ -282,11 +282,12 @@ public class Atividade extends ViewPart {
 					ArrayList<String> conh = new ArrayList<String>();
 
 					// Preenche a lista de conhecimentos
-					if (conhecimentos != null)
+					if (conhecimentos != null) {
 						for (Conhecimento c : conhecimentos) {
 							conh.add(c.getNome());
 							listaConhecimentos.add(c.getNome());
 						}
+					}
 
 					// Seleciona o item recem adicionado
 					listaAtividades.select(listaAtividades
@@ -948,8 +949,9 @@ public class Atividade extends ViewPart {
 					 * desassociado
 					 */
 					for (TipoAtividade a : allAtividades) {
-						if (a.getDescricao().equals(nomeAtividade))
+						if (a.getDescricao().equals(nomeAtividade)) {
 							atividadeDesassociada = a;
+						}
 					}
 
 					logger.info("Antes do for");
@@ -1011,8 +1013,9 @@ public class Atividade extends ViewPart {
 					desenvolvedoresNomes.add(d.getNome());
 
 				if (desenvolvedoresNomes != null) {
-					for (String nome : desenvolvedoresNomes)
+					for (String nome : desenvolvedoresNomes) {
 						listaDesenvolvedores.add(nome);
+					}
 				}
 				// ArrayList<Problema> problemasAssocidos;
 				// problemasAssocidos =
@@ -1088,8 +1091,9 @@ public class Atividade extends ViewPart {
 
 				/* Captura a atividade da qual o problema deve ser desassociado */
 				for (Problema a : allProblemas) {
-					if (a.getDescricao().equals(nomeProblema))
+					if (a.getDescricao().equals(nomeProblema)) {
 						problemaAssociado = a;
+					}
 				}
 
 				/* Captura a mensagem a ser enviada */

@@ -71,7 +71,7 @@ public class AssociaConhecimentoWizard extends Wizard implements INewWizard {
 			}
     		
     		//Cria a atividade no banco
-    		if(conhecimentos.isEmpty()) {
+    		if (conhecimentos.isEmpty()) {
     			logger.info("LISTA DE CONHECIMENTO VAZIA");
     		}
     		logger.info(conhecimentos.get(0).getNome() + atividadeAssociada.getDescricao());

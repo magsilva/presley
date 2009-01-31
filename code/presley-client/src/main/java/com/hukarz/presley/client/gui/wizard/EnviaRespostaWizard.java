@@ -70,7 +70,7 @@ public class EnviaRespostaWizard extends Wizard implements INewWizard {
     		
     		if (solucaoOrigem != null){
     			solucaoOrigem.setSolucaoResposta(solucao);
-    			viewMensagem.getViewComunication().atualizarSolucao( solucaoOrigem ) ;
+    			viewMensagem.getViewComunication().atualizarSolucao(solucaoOrigem);
     		}
 
     	}catch (Exception e) {

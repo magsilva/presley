@@ -136,8 +136,8 @@ public class RemoveConhecimentoWizardPage extends WizardPage {
 				public void handleEvent(Event e) {
 					// TODO Auto-generated method stub
 					TreeItem atual=null;
-					if (e.detail==SWT.CHECK) {
-						atual = (TreeItem)e.item;
+					if (e.detail == SWT.CHECK) {
+						atual = (TreeItem) e.item;
 						if (atual.getChecked()) {
 							conhecimentosSelecionados.add(atual);	
 						}

@@ -76,7 +76,7 @@ public class AdicionaAtividadeWizard extends Wizard implements INewWizard {
     		
     		boolean status = page.getStatus();
     		
-    		TipoAtividade novaAtividade = new TipoAtividade(atividade,desenvolvedor,supervisor,
+    		TipoAtividade novaAtividade = new TipoAtividade(atividade, desenvolvedor, supervisor,
     				0,dataInicio,dataFim,status,conhecimentos);
   
     		//Cria a atividade no banco

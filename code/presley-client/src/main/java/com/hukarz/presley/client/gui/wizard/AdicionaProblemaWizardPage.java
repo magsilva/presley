@@ -39,7 +39,6 @@ public class AdicionaProblemaWizardPage extends WizardPage {
 	private Map<String, String> listaElementosProjeto;
 	private ArrayList<String> listaElementosSelecionados;
 	private JayFX aDB;
-    private MensagemAba mensagem;
 	
 	protected AdicionaProblemaWizardPage(MensagemAba mensagem) {
 		super("wizardPage");
@@ -89,8 +88,8 @@ public class AdicionaProblemaWizardPage extends WizardPage {
     			// FIXME: Extend JayFX correctly
 				//retorno.putAll( aDB.getElementoRelacionamento(elemento) );
 				
-	    		ClasseJava classe   = new ClasseJava( elemento.getDeclaringClass().getId() ) ;
-	    		ArquivoJava arquivo = new ArquivoJava( aDB.convertToJavaElement(elemento).getResource().getName() );
+	    		ClasseJava classe   = new ClasseJava(elemento.getDeclaringClass().getId());
+	    		ArquivoJava arquivo = new ArquivoJava(aDB.convertToJavaElement(elemento).getResource().getName());
 	    		
 	    		retorno.put(classe, arquivo);
     		}
