@@ -3,6 +3,7 @@
 	<name>presley-client</name>
 	<comment></comment>
 	<projects>
+		<project>presley-common</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

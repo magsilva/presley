@@ -7,5 +7,6 @@ Bundle-Activator: com.hukarz.presley.client.Activator
 Require-Bundle: org.eclipse.ui, org.eclipse.core.runtime, org.eclipse.ui.console, org.eclipse.jdt.ui, org.eclipse.jdt.core;bundle-version="3.4.0", org.eclipse.core.resources	
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Bundle-ClassPath: src/main/resources/presley-common.jar,
- .
+Bundle-ClassPath: .,
+ src/main/resources/presley-common.jar,
+ src/main/resources/log4j-1.2.15.jar
