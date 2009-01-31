@@ -7,21 +7,7 @@
             id="presley">
 		</category>
 
-		<view
-    		name="Mensagens"
-        	category="presley"
-        	class="com.hukarz.presley.client.gui.view.Mensagens"
-        	id="com.hukarz.presley.client.gui.view.Mensagens"
-        	restorable="true">
-		</view>
       
-		<view
-    		name="Atividade"
-        	category="presley"
-        	class="com.hukarz.presley.client.gui.view.Atividade"
-        	id="com.hukarz.presley.client.gui.view.Atividade"
-        	restorable="true">
-		</view>
 		      
 		<view
     		name="Dominio"

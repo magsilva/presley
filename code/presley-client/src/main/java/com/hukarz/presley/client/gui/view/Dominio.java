@@ -109,7 +109,7 @@ public class Dominio extends ViewPart {
 		});
 
 		incluirTopico = new Button(parentComposite, SWT.NONE);
-		Image obter = new Image(incluirTopico.getDisplay(),this.getClass().getResourceAsStream("/icons/add.gif"));
+		Image obter = new Image(incluirTopico.getDisplay(),this.getClass().getResourceAsStream("/src/main/resources/icons/add.gif"));
 		incluirTopico.setLocation(posHorBotaoNivel1, posVerBotaoNivel1);
 		incluirTopico.setSize(larguraBotao, alturaBotao);
 		incluirTopico.setImage(obter);
@@ -141,7 +141,7 @@ public class Dominio extends ViewPart {
 		});
 		
 		alterarTopico = new Button(parentComposite, SWT.NONE);
-		Image trocaMsg = new Image(alterarTopico.getDisplay(),this.getClass().getResourceAsStream("/icons/trocaMsg.gif"));
+		Image trocaMsg = new Image(alterarTopico.getDisplay(),this.getClass().getResourceAsStream("/src/main/resources/icons/trocaMsg.gif"));
 		alterarTopico.setLocation(posHorBotaoNivel2, posVerBotaoNivel1);
 		alterarTopico.setSize(larguraBotao, alturaBotao);
 		alterarTopico.setImage(trocaMsg);
@@ -182,7 +182,7 @@ public class Dominio extends ViewPart {
 
 
 		incluirDocumentoBase = new Button(parentComposite, SWT.NONE);
-		Image add = new Image(incluirDocumentoBase.getDisplay(),this.getClass().getResourceAsStream("/icons/add.gif"));
+		Image add = new Image(incluirDocumentoBase.getDisplay(),this.getClass().getResourceAsStream("/src/main/resources/icons/add.gif"));
 		incluirDocumentoBase.setLocation(posHorBotaoNivel1, posVerBotaoNivel2);
 		incluirDocumentoBase.setSize(larguraBotao, alturaBotao);
 		incluirDocumentoBase.setImage(add);

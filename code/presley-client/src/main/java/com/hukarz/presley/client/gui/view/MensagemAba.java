@@ -109,7 +109,7 @@ public class MensagemAba extends ViewPart {
 		projeto = viewComunication.getProjetoAtivo();
 		
 		logout = new Button(parentComposite, SWT.NONE);
-		Image logoff = new Image(logout.getDisplay(),this.getClass().getResourceAsStream("/icons/logout.gif"));
+		Image logoff = new Image(logout.getDisplay(),this.getClass().getResourceAsStream("/src/main/resources/icons/logout.gif"));
 		logout.setLocation(posHorBotaoNivel1, posVerBotaoNivel1);
 		logout.setSize(larguraBotao, alturaBotao);
 		logout.setImage(logoff);
@@ -143,7 +143,7 @@ public class MensagemAba extends ViewPart {
 		});
 
 		login = new Button(parentComposite, SWT.NONE);
-		Image log = new Image(login.getDisplay(),this.getClass().getResourceAsStream("/icons/users.gif"));
+		Image log = new Image(login.getDisplay(),this.getClass().getResourceAsStream("/src/main/resources/icons/users.gif"));
 		login.setLocation(posHorBotaoNivel1, posVerBotaoNivel1);
 		login.setSize(larguraBotao, alturaBotao);
 		login.setImage(log);
@@ -173,7 +173,7 @@ public class MensagemAba extends ViewPart {
 		});
 		
 		addUser = new Button(parentComposite, SWT.NONE);
-		Image userAdd = new Image(addUser.getDisplay(),this.getClass().getResourceAsStream("/icons/addUser.gif"));
+		Image userAdd = new Image(addUser.getDisplay(),this.getClass().getResourceAsStream("/src/main/resources/icons/addUser.gif"));
 		addUser.setLocation(posHorBotaoNivel2, posVerBotaoNivel1);
 		addUser.setSize(larguraBotao, alturaBotao);
 		addUser.setImage(userAdd);
@@ -199,7 +199,7 @@ public class MensagemAba extends ViewPart {
 		});
 
 		removeUser = new Button(parentComposite, SWT.NONE);
-		Image userRemove = new Image(removeUser.getDisplay(),this.getClass().getResourceAsStream("/icons/removeUser.gif"));
+		Image userRemove = new Image(removeUser.getDisplay(),this.getClass().getResourceAsStream("/src/main/resources/icons/removeUser.gif"));
 		removeUser.setLocation(posHorBotaoNivel3, posVerBotaoNivel1);
 		removeUser.setSize(larguraBotao, alturaBotao);
 		removeUser.setImage(userRemove);
@@ -270,7 +270,7 @@ public class MensagemAba extends ViewPart {
 
 		
 		incluirProblema = new Button(parentComposite, SWT.NONE);
-		Image obter = new Image(incluirProblema.getDisplay(),this.getClass().getResourceAsStream("/icons/add.gif"));
+		Image obter = new Image(incluirProblema.getDisplay(),this.getClass().getResourceAsStream("/src/main/resources/icons/add.gif"));
 		incluirProblema.setLocation(posHorBotaoNivel4, posVerBotaoNivel1);
 		incluirProblema.setSize(larguraBotao, alturaBotao);
 		incluirProblema.setImage(obter);
@@ -297,7 +297,7 @@ public class MensagemAba extends ViewPart {
 		});
 		
 		excluirProblema = new Button(parentComposite, SWT.NONE);
-		Image trocaMsg = new Image(excluirProblema.getDisplay(),this.getClass().getResourceAsStream("/icons/remove.GIF"));
+		Image trocaMsg = new Image(excluirProblema.getDisplay(),this.getClass().getResourceAsStream("/src/main/resources/icons/remove.GIF"));
 		excluirProblema.setLocation(posHorBotaoNivel5, posVerBotaoNivel1);
 		excluirProblema.setSize(larguraBotao, alturaBotao);
 		excluirProblema.setImage(trocaMsg);
@@ -344,7 +344,7 @@ public class MensagemAba extends ViewPart {
 		});
 		
 		validarSolucao = new Button(parentComposite, SWT.NONE);
-		Image ok = new Image(validarSolucao.getDisplay(),this.getClass().getResourceAsStream("/icons/ok.gif"));
+		Image ok = new Image(validarSolucao.getDisplay(),this.getClass().getResourceAsStream("/src/main/resources/icons/ok.gif"));
 		validarSolucao.setLocation(posHorBotaoNivel6, posVerBotaoNivel1);
 		validarSolucao.setSize(larguraBotao, alturaBotao);
 		validarSolucao.setImage(ok);
@@ -373,7 +373,7 @@ public class MensagemAba extends ViewPart {
 		});
 
 		encerrarProblema = new Button(parentComposite, SWT.NONE);
-		Image encerra = new Image(encerrarProblema.getDisplay(),this.getClass().getResourceAsStream("/icons/encerra.gif"));
+		Image encerra = new Image(encerrarProblema.getDisplay(),this.getClass().getResourceAsStream("/src/main/resources/icons/encerra.gif"));
 		encerrarProblema.setLocation(posHorBotaoNivel7, posVerBotaoNivel1);
 		encerrarProblema.setSize(larguraBotao, alturaBotao);
 		encerrarProblema.setImage(encerra);
@@ -504,7 +504,7 @@ public class MensagemAba extends ViewPart {
 
 	private void preenchelistaProblemasEnviados( ){
 		treeProblemasEnviados.removeAll();
-		Image imgProblema = new Image(addUser.getDisplay(),this.getClass().getResourceAsStream("/icons/problema.gif"));
+		Image imgProblema = new Image(addUser.getDisplay(),this.getClass().getResourceAsStream("/src/main/resources/icons/problema.gif"));
 		
 		ArrayList<Problema> problemasEncontrados = getViewComunication().getProblemas(this.getDesenvolvedorLogado());
 		
@@ -529,7 +529,7 @@ public class MensagemAba extends ViewPart {
 
 	private void preenchelistaProblemasRecebidos( ){
 		treeProblemasRecebidos.removeAll();
-		Image imgProblema = new Image(addUser.getDisplay(),this.getClass().getResourceAsStream("/icons/problema.gif"));
+		Image imgProblema = new Image(addUser.getDisplay(),this.getClass().getResourceAsStream("/src/main/resources/icons/problema.gif"));
 		mensagensExibidas = viewComunication.obterMensagens(getDesenvolvedorLogado());
 		
 		if (mensagensExibidas!=null) {
@@ -556,8 +556,8 @@ public class MensagemAba extends ViewPart {
 
 	private void preecheTreeItemSolucao( ArrayList<Solucao> solucoes, TreeItem itemPai, boolean problemaEnviado ){
 		TreeItem[] item = new TreeItem[ solucoes.size() ];
-		Image imgSolucao = new Image(addUser.getDisplay(),this.getClass().getResourceAsStream("/icons/solucao.gif"));
-		Image imgRespostaSolucao = new Image(addUser.getDisplay(),this.getClass().getResourceAsStream("/icons/respostaSolucao.gif"));
+		Image imgSolucao = new Image(addUser.getDisplay(),this.getClass().getResourceAsStream("/src/main/resources/icons/solucao.gif"));
+		Image imgRespostaSolucao = new Image(addUser.getDisplay(),this.getClass().getResourceAsStream("/src/main/resources/icons/respostaSolucao.gif"));
 		
 		int numItem = 0;
 		for (Iterator<Solucao> iterator = solucoes.iterator(); iterator.hasNext();) {
