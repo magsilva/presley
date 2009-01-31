@@ -4,6 +4,7 @@ package com.hukarz.presley.client.gui.wizard;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 
+import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
@@ -20,6 +21,7 @@ import com.hukarz.presley.client.gui.view.Atividade;
 
 public class BuscaDesenvolvedoresWizard extends Wizard implements INewWizard {
 
+	private static final Logger logger = Logger.getLogger(BuscaDesenvolvedoresWizard.class);
 	private BuscaDesenvolvedoresWizardPage page;
     private ISelection selection;
     private Atividade atividade;
@@ -52,14 +54,14 @@ public class BuscaDesenvolvedoresWizard extends Wizard implements INewWizard {
     	try{
     		ArrayList<String> conhecimentos = page.getConhecimentos();
     		int grauDeConfianca = page.getGrauDeConfianca();
-    		System.out.println("grau de confiança: " + grauDeConfianca);
-    		System.out.println("conhecimentos: " + conhecimentos.toString());
+    		logger.info("grau de confiança: " + grauDeConfianca);
+    		logger.info("conhecimentos: " + conhecimentos.toString());
     		this.atividade.setDesenvolvedores(this.atividade.getViewComunication().buscaDesenvolvedores(conhecimentos, grauDeConfianca));
 	
     	}catch (Exception e) {
 			
     		MessageDialog.openError(this.getShell(), "ERRO", e.getMessage());
-    		System.out.println("ERRO ERRO:"+e.getMessage());
+    		logger.error(e.getMessage());
     		e.printStackTrace();
 		}
     	

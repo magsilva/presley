@@ -3,6 +3,7 @@ package com.hukarz.presley.client.gui.wizard;
 
 import java.util.ArrayList;
 
+import org.apache.log4j.Logger;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
@@ -26,6 +27,7 @@ import com.hukarz.presley.client.gui.view.Atividade;
 
 
 public class RemoveConhecimentoWizardPage extends WizardPage {
+	private static final Logger logger = Logger.getLogger(RemoveConhecimentoWizardPage.class);
 
 	private Atividade atividade;
 	private Text descricaoConhecimentoText;
@@ -151,7 +153,7 @@ public class RemoveConhecimentoWizardPage extends WizardPage {
             	
         }catch (Exception e) {
 			// TODO: handle exception
-        	System.out.println("ERRO ERRO: "+e.getMessage());
+        	logger.error(e.getMessage());
         	e.printStackTrace();
 		}
 

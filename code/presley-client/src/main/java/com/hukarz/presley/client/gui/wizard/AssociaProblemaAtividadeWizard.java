@@ -5,6 +5,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.sql.Date;
 import java.util.ArrayList;
 
+import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
@@ -24,6 +25,7 @@ import com.hukarz.presley.client.gui.view.Atividade;
 
 public class AssociaProblemaAtividadeWizard extends Wizard implements INewWizard {
 
+	private static final Logger logger = Logger.getLogger(AssociaProblemaAtividadeWizard.class);
 	private AssociaProblemaAtividadeWizardPage page;
 	private AssociaProblemaAtividadeWizardPage2 page2;
     private ISelection selection;
@@ -89,13 +91,15 @@ public class AssociaProblemaAtividadeWizard extends Wizard implements INewWizard
     		atividade.associaConhecimentosProblema(problema, conhecimentos);
     		
     		//Associa o problema a atividade no banco
-    		for(Conhecimento c : conhecimentos) System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>" + c.getNome());
+    		for(Conhecimento c : conhecimentos) {
+    			logger.info(c.getNome());
+    		}
     		atividade.getViewComunication().associaProblemaAtividade(problema, atividadeAssociada, conhecimentos);
  
 	
     	}catch (Exception e) {
     		MessageDialog.openError(this.getShell(), "ERRO", e.getMessage());
-    		System.out.println("ERRO ERRO:"+e.getMessage());
+    		logger.error(e.getMessage());
     		e.printStackTrace();
 		}
     	

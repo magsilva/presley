@@ -126,7 +126,7 @@ public class Dominio extends ViewPart {
 			public void mouseDown(MouseEvent e) {
 
 				// exibe o wizard para adicao de novo conhecimento
-				RunAdicionaConhecimentoWizardAction();
+				runAdicionaConhecimentoWizardAction();
 				
 		    	com.hukarz.presley.beans.Tree conhecimentosModelo = getViewComunication().getOntologia();
 		    	treeConhecimentos = conhecimentosModelo.constroiArvoreGrafica(parentComposite, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
@@ -244,7 +244,7 @@ public class Dominio extends ViewPart {
 		return this.viewComunication;
 	}
 	
-	private void RunAdicionaConhecimentoWizardAction() {
+	private void runAdicionaConhecimentoWizardAction() {
 		com.hukarz.presley.client.gui.action.RunAdicionaConhecimentoWizard runLogin = new com.hukarz.presley.client.gui.action.RunAdicionaConhecimentoWizard(this);
 		runLogin.run(null);
 	}

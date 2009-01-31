@@ -79,7 +79,7 @@ public class AdicionaProblemaWizardPage extends WizardPage {
     	for (Iterator<String> iterator = listaElementosSelecionados.iterator(); iterator.hasNext();) {
     		String elementoSelecionado = iterator.next();
 
-    		if ( mensagem.indexOf(listaElementosProjeto.get(elementoSelecionado).toString()) != -1 ){
+    		if ( mensagem.indexOf(listaElementosProjeto.get(elementoSelecionado)) != -1 ){
     			IElement elemento ; 
     			if ( elementoSelecionado.endsWith(")") ){
     				elemento = FlyweightElementFactory.getElement( ICategories.METHOD, elementoSelecionado );

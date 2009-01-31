@@ -141,11 +141,9 @@ public class AdicionaAtividadeWizardPage extends WizardPage {
         try{
         desenvolvedores = this.atividade.getViewComunication().getListaDesenvolvedores();
         ArrayList<String> nomesDesenvolvedores = new ArrayList<String>();
-        if (desenvolvedores!=null) {
 			for (Desenvolvedor desenvolvedor : desenvolvedores) {
 				nomesDesenvolvedores.add(desenvolvedor.getNome());
 			}
-		}
         String[] nomes = new String[nomesDesenvolvedores.size()];
         nomesDesenvolvedores.toArray(nomes);
         listaDesenvolvedores = new Combo(controls,

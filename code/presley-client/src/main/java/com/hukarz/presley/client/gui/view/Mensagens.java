@@ -7,6 +7,7 @@ package com.hukarz.presley.client.gui.view;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
@@ -39,6 +40,7 @@ public class Mensagens extends ViewPart {
 	private ArrayList<ProblemaMensagens> mensagensProblemas;
 	private RunEnviaRespostaWizardAction runEnviaResposta;
 	private Tree tree = null;
+	private static final Logger logger = Logger.getLogger("com.hukarz.presley.client.gui.view.ViewPart");
 
 	public Mensagens() {
 		this.viewComunication = new ViewComunication(ipServidor);
@@ -76,19 +78,19 @@ public class Mensagens extends ViewPart {
 				mensagensProblemas = new ArrayList<ProblemaMensagens>();
 				
 				
-				System.out.println("Antes de chamar o banco");
+				logger.info("Antes de chamar o banco");
 				/*obter as mensagens do desenvolvedor logado*/
 				mensagens = viewComunication.obterMensagens(Atividade.getDesenvolvedorLogado());
 				
 				Iterator it = mensagens.iterator();
 				while(it.hasNext()){	
-					System.out.println("dentro do laco");
+					logger.info("dentro do laco");
 					Mensagem mensagem   = (Mensagem) it.next();
 					String descricaoPro = mensagem.getProblema().getDescricao();
 					
 					
 					if(nomeProblemas.contains(descricaoPro)) {
-						System.out.println("ENTREI IF");
+						logger.info("ENTREI IF");
 						Iterator ite = mensagensProblemas.iterator();
 						
 						/* GAMBIARRA!!!!! */
@@ -101,11 +103,11 @@ public class Mensagens extends ViewPart {
 						}
 					}
 					else {
-						System.out.println("ENTREI ELSE");
+						logger.info("ENTREI ELSE");
 						ProblemaMensagens proMsg = new ProblemaMensagens(descricaoPro, mensagem.getProblema().getId());
 						proMsg.addMensagem(mensagem.getTexto());
 						mensagensProblemas.add(proMsg);
-						System.out.println("Adicionando: "+ descricaoPro + "ao nomeProblemas");
+						logger.info("Adicionando: "+ descricaoPro + "ao nomeProblemas");
 						nomeProblemas.add(descricaoPro);
 					}
 				}
@@ -118,13 +120,10 @@ public class Mensagens extends ViewPart {
 				TreeItem[] item = new TreeItem[mensagensProblemas.size()];
 				
 				int contador = 0;
-				System.out.println("Antes do while");
 				/*No final, map deve conter uma lista de problemas e mensagens associadas*/
 				Iterator ite = mensagensProblemas.iterator();
 				while(ite.hasNext()) {
-					System.out.println("Estou no while");
 					ProblemaMensagens proMsg = (ProblemaMensagens)ite.next();
-					System.out.println("ID DO PROBLEMA: "+proMsg.getIdProblema());
 					item[contador] = new TreeItem(tree, SWT.NONE);
 					item[contador].setText(""+(proMsg.getDescricaoProblema()));	
 					
@@ -141,7 +140,6 @@ public class Mensagens extends ViewPart {
 					
 					contador++;
 				}
-				System.out.println("Depois do while");
 			}
 
 			public void mouseUp(MouseEvent e) {
@@ -220,7 +218,6 @@ public class Mensagens extends ViewPart {
 		TreeItem[] mensagensSelecionadas = tree.getSelection();
 		for(int i =0; i < mensagens.size(); i++) {
 			if(mensagens.get(i).getTexto().equals(mensagensSelecionadas[0].getText())){
-				System.out.println("ACHOU A MENSAGEM!");
 				mensagemSelecionada = mensagens.get(i);
 			}
 		}

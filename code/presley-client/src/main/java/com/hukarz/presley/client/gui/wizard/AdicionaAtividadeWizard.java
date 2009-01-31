@@ -5,6 +5,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.sql.Date;
 import java.util.ArrayList;
 
+import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
@@ -24,6 +25,7 @@ import com.hukarz.presley.client.gui.view.Atividade;
 
 public class AdicionaAtividadeWizard extends Wizard implements INewWizard {
 
+	private static final Logger logger = Logger.getLogger(AdicionaAtividadeWizard.class);
 	private AdicionaAtividadeWizardPage page;
 	private AdicionaAtividadeWizardPage2 page2;
     private ISelection selection;
@@ -82,7 +84,7 @@ public class AdicionaAtividadeWizard extends Wizard implements INewWizard {
 	
     	}catch (Exception e) {
     		MessageDialog.openError(this.getShell(), "ERRO", e.getMessage());
-    		System.out.println("ERRO ERRO:"+e.getMessage());
+    		logger.error("e.getMessage()");
 		}
     	
 		try {

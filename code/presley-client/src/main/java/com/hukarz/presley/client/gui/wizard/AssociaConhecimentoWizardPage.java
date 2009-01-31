@@ -3,6 +3,7 @@ package com.hukarz.presley.client.gui.wizard;
 import java.util.ArrayList;
 import java.util.Hashtable;
 
+import org.apache.log4j.Logger;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
@@ -22,6 +23,7 @@ import com.hukarz.presley.client.gui.view.Atividade;
 
 public class AssociaConhecimentoWizardPage extends WizardPage {
 
+	private static final Logger logger = Logger.getLogger(AssociaConhecimentoWizardPage.class);
 	private Tree arvoreConhecimento;
 	private Atividade atividade;
 	private Hashtable<String,TreeItem> conhecimentosSelecionados;
@@ -60,7 +62,7 @@ public class AssociaConhecimentoWizardPage extends WizardPage {
     	//Fazendo um mapeamento entre o nome dos conhecimentos e o conhecimento
     	//para agilizar a recuperação mais a frente
     	for (Conhecimento conh : this.atividade.getViewComunication().getListaConhecimentos()) {
-    		System.out.println(">>>>>>> CRIANDO TABELA >>>>>>>>>> " + conh.getNome());
+    		logger.info(">>>>>>> CRIANDO TABELA >>>>>>>>>> " + conh.getNome());
     		tabelaConhecimentos.put(conh.getNome(), conh);
 		}
     	
@@ -68,7 +70,7 @@ public class AssociaConhecimentoWizardPage extends WizardPage {
     	
     	//Preenche a lista de conhecimentos para resposta
     	for (String nome : conhecimentosNomes) {
-    		System.out.println(" >>>>>>>>>>>>>>>> KEY >>>>>>>>>>>> " + nome);
+    		logger.info(" >>>>>>>>>>>>>>>> KEY >>>>>>>>>>>> " + nome);
 			Conhecimento conh1 = tabelaConhecimentos.get(nome);
 			if (conh1!=null) {
 				conhecimentos.add(conh1);
@@ -139,7 +141,7 @@ public class AssociaConhecimentoWizardPage extends WizardPage {
             	
         }catch (Exception e) {
 			// TODO: handle exception
-        	System.out.println("ERRO ERRO: "+e.getMessage());
+        	logger.error(e.getMessage());
         	e.printStackTrace();
 		}
         

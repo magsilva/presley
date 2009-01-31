@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
@@ -30,6 +31,7 @@ import com.hukarz.presley.client.gui.view.Dominio;
 
 public class AdicionaConhecimentoWizardPage extends WizardPage {
 
+	private static final Logger logger = Logger.getLogger(AdicionaConhecimentoWizardPage.class);
 	private Dominio dominio;
 	private Text nomeConhecimentoText;
 	private Text descricaoConhecimentoText;
@@ -133,11 +135,12 @@ public class AdicionaConhecimentoWizardPage extends WizardPage {
 					TreeItem novoItem = new TreeItem(treeItem[0],treeItem[0].getStyle());
 					conhecimentoFilho = new Conhecimento();
 					conhecimentoFilho.setNome( nomeConhecimentoText.getText() );
-					if (conhecimentoFilho.getNome()!=null||!conhecimentoFilho.getNome().equals("")) {
+					if (null != conhecimentoFilho.getNome() 
+							&& !conhecimentoFilho.getNome().equals("")) {
 						novoItem.setText(conhecimentoFilho.getNome());	
 						nomesNosAdicionado.add(conhecimentoFilho.getNome());
 						conhecimentoFilhoPai.put(conhecimentoFilho, conhecimentoPai);
-					}else{
+					} else{
 						return;	
 					}
 				}
@@ -175,7 +178,7 @@ public class AdicionaConhecimentoWizardPage extends WizardPage {
             
             	
         }catch (Exception e) {
-        	System.out.println("ERRO ERRO: "+e.getMessage());
+        	logger.error(e.getMessage());
         	e.printStackTrace();
 		}
 

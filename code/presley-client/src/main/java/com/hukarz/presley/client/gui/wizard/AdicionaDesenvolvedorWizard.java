@@ -62,7 +62,6 @@ public class AdicionaDesenvolvedorWizard extends Wizard implements INewWizard {
 		ArrayList<Double> graus = page2.pegaGraus();
 		ArrayList<String> conhecimentos = page2.pegaConhecimentos();
 		ArrayList<Conhecimento> listaConhecimentos = this.mensagemAba.getViewComunication().getListaConhecimentos();
-		ArrayList<Conhecimento> listaConhecimentosSelecionados = new ArrayList<Conhecimento>();
 		HashMap<Conhecimento,Double> mapConhecimentoGrau = new HashMap<Conhecimento, Double>();
 		for (String nomeConhecimento : conhecimentos) {
 			for (Conhecimento conhecimento : listaConhecimentos) {

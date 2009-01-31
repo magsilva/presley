@@ -5,6 +5,7 @@ package com.hukarz.presley.client.gui.wizard;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 
+import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
@@ -23,6 +24,8 @@ import com.hukarz.presley.client.gui.view.Atividade;
 
 public class AssociaConhecimentoWizard extends Wizard implements INewWizard {
 
+	private static final Logger logger = Logger.getLogger(AdicionaConhecimentoWizard.class);
+	
 	private AssociaConhecimentoWizardPage page;
 	//private AdicionaAtividadeWizardPage2 page2;
     private ISelection selection;
@@ -69,15 +72,15 @@ public class AssociaConhecimentoWizard extends Wizard implements INewWizard {
     		
     		//Cria a atividade no banco
     		if(conhecimentos.isEmpty()) {
-    			System.out.println("LISTA DE CONHECIMENTO VAZIA");
+    			logger.info("LISTA DE CONHECIMENTO VAZIA");
     		}
-    		System.out.println(conhecimentos.get(0).getNome() + atividadeAssociada.getDescricao());
+    		logger.info(conhecimentos.get(0).getNome() + atividadeAssociada.getDescricao());
     		
     		this.atividade.getViewComunication().associaConhecimentoAtividade(conhecimentos, atividadeAssociada);
 	
     	}catch (Exception e) {
     		MessageDialog.openError(this.getShell(), "ERRO", e.getMessage());
-    		System.out.println("ERRO ERRO:"+e.getMessage());
+    		logger.error(e.getMessage());
     		e.printStackTrace();
 		}
     	

@@ -7,6 +7,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
@@ -24,6 +25,7 @@ import com.hukarz.presley.client.gui.view.Dominio;
 
 public class AdicionaConhecimentoWizard extends Wizard implements INewWizard {
 
+	private static final Logger logger = Logger.getLogger(AdicionaConhecimentoWizard.class);
 	private AdicionaConhecimentoWizardPage page;
 	private AdicionaAtividadeWizardPage2 page2;
     private ISelection selection;
@@ -81,7 +83,7 @@ public class AdicionaConhecimentoWizard extends Wizard implements INewWizard {
     	}catch (Exception e) {
 			// TODO: handle exception
     		MessageDialog.openError(this.getShell(), "ERRO", e.getMessage());
-    		System.out.println("ERRO ERRO:"+e.getMessage());
+    		logger.error(e.getMessage());
     		e.printStackTrace();
 		}
     	

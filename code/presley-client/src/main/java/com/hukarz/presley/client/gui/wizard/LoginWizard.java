@@ -3,6 +3,7 @@ package com.hukarz.presley.client.gui.wizard;
 
 import java.lang.reflect.InvocationTargetException;
 
+import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
@@ -19,7 +20,8 @@ import com.hukarz.presley.client.gui.view.MensagemAba;
 
 
 public class LoginWizard extends Wizard implements INewWizard {
-
+	private static final Logger logger = Logger.getLogger(RemoveAtividadeWizard.class);
+	
 	private LoginWizardPage page;
     private ISelection selection;
     private MensagemAba mensagem;
@@ -66,7 +68,7 @@ public class LoginWizard extends Wizard implements INewWizard {
 	
     	}catch (Exception e) {
     		MessageDialog.openError(this.getShell(), "Erro", e.getMessage());
-    		System.out.println("ERRO ERRO:"+e.getMessage());
+    		logger.error(e.getMessage());
     		e.printStackTrace();
 		}
     	

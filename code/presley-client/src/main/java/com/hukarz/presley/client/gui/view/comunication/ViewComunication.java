@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 
+import org.apache.log4j.Logger;
+
 import com.hukarz.presley.beans.Arquivo;
 import com.hukarz.presley.beans.BuscaDesenvolvedores;
 import com.hukarz.presley.beans.Conhecimento;
@@ -31,6 +33,8 @@ import com.hukarz.presley.excessao.ProblemaInexistenteException;
  * @since 2008
  */
 public class ViewComunication implements CorePresleyOperations{	
+	private static final Logger logger = Logger.getLogger("com.hukarz.presley.client.gui.view.comunication.ViewComunication");
+	
 	private ArrayList<TipoAtividade> atividades = new ArrayList<TipoAtividade>();	
 	private ArrayList<Desenvolvedor> listaDesenvolvedores = new ArrayList<Desenvolvedor>();//Lista de todos os desenvolvedores
 	private ArrayList<Conhecimento> listaConhecimentos = new ArrayList<Conhecimento>();//Lista de todos os conhecimentos
@@ -44,21 +48,15 @@ public class ViewComunication implements CorePresleyOperations{
 	 * servidor e a porta para acesso remoto (1099 padrao RMI)
 	 */
 	public ViewComunication() {
-		///*
 		try {
-			
-			System.out.println("instanciando cliente");
+			logger.info("instanciando cliente");
 			PrincipalSUBJECT.getInstance("client", "150.165.130.196", 1099);
 			
-			System.out.println("Passou do getInstance");
+			logger.info("Passou do getInstance");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		//*/
-		
 		this.listaDesenvolvedores = getListaDesenvolvedores();
-		
-	//	teste();//TESTE
 	}
 	
 	/**
@@ -77,10 +75,10 @@ public class ViewComunication implements CorePresleyOperations{
 			conhecimentos = new HashMap<String,ArrayList<Conhecimento>>();//mapeamento nome de atividade e seus conhecimentos associados
 			ontologia = null;//Armazena a ontologia
 			
-			System.out.println("instanciando cliente");
+			logger.info("instanciando cliente");
 			PrincipalSUBJECT.getInstance("client", ip, 1099);
 			
-			System.out.println("Passou do getInstance");
+			logger.info("Passou do getInstance");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -148,9 +146,9 @@ public class ViewComunication implements CorePresleyOperations{
     	ArrayList<TipoAtividade> resposta = (ArrayList<TipoAtividade>)respostaPacket.getData();
     	atividades = resposta;
     	
-    	if(resposta == null){ 
-    		System.out.println("RESPOSTA NULL");
-    		return null;
+    	if (resposta == null){ 
+    		logger.info("RESPOSTA NULL");
+    		return new ArrayList<String>();
     	}
 		
 		ArrayList<String> retorno = new ArrayList<String>();
@@ -183,7 +181,7 @@ public class ViewComunication implements CorePresleyOperations{
     	ArrayList<Conhecimento> resposta = (ArrayList<Conhecimento>)respostaPacket.getData();
     	
        	if(resposta == null){ 
-    		System.out.println("RESPOSTA NULL");
+       		logger.info("RESPOSTA NULL");
     		return null;
     	}
        	conhecimentos.put(atividade, resposta);
@@ -213,8 +211,8 @@ public class ViewComunication implements CorePresleyOperations{
     	
     	
        	if(resposta == null){ 
-    		System.out.println("RESPOSTA NULL");
-    		return null;
+       		logger.info("RESPOSTA NULL");
+    		return new ArrayList<Problema>();
     	}
        	
 		return this.listaProblemas;
@@ -233,8 +231,8 @@ public class ViewComunication implements CorePresleyOperations{
     	
     	
        	if(resposta == null){ 
-    		System.out.println("RESPOSTA NULL");
-    		return null;
+    		logger.info("RESPOSTA NULL");
+    		return new ArrayList<Problema>();
     	}
        	
        	listaProblemas = resposta;
@@ -353,7 +351,7 @@ public class ViewComunication implements CorePresleyOperations{
 		
 		PacketStruct pack = new PacketStruct(data, id);
 		PacketStruct packet = PrincipalSUBJECT.facade(pack);
-		System.out.println(packet.getData());
+		logger.info(packet.getData());
 		return packet;
 	}
 
@@ -376,7 +374,7 @@ public class ViewComunication implements CorePresleyOperations{
     			this.atividades.add(atividade);
     			this.conhecimentos.put(atividade.getDescricao(), atividade.getListaDeConhecimentosEnvolvidos());
     		}
-    		System.out.println("Resposta: "+retorno);
+    		logger.info("Resposta: "+retorno);
     	}
     	
     	this.atividades.add(atividade);//TESTE
@@ -397,8 +395,8 @@ public class ViewComunication implements CorePresleyOperations{
     		this.conhecimentos.remove(atividade.getDescricao());
 		}
     	
-    	this.atividades.remove(atividade.getDescricao());//TESTE
-		this.conhecimentos.remove(atividade.getDescricao());//TESTE
+    	this.atividades.remove(atividade);//TESTE
+		this.conhecimentos.remove(atividade);//TESTE
     	
 		return resposta.booleanValue();
     	//return true;
@@ -457,8 +455,14 @@ public class ViewComunication implements CorePresleyOperations{
 		problemaAtividade.setProblema(problema);
 		problemaAtividade.setListaConhecimentos(listaConhecimento);
 		
-		if(problemaAtividade.getListaConhecimentos() == null) System.out.println("Nenhum conhecimento foi selecionado");
-		else for(Conhecimento c : problemaAtividade.getListaConhecimentos()) System.out.println(c.getNome());
+		if(problemaAtividade.getListaConhecimentos() == null) {
+			logger.info("Nenhum conhecimento foi selecionado");
+		}
+		else {
+			for(Conhecimento c : problemaAtividade.getListaConhecimentos()) {
+				logger.info(c.getNome());
+			}
+		}
 		
 		
 		PacketStruct respostaPacket = sendPack(problemaAtividade,CorePresleyOperations.ASSOCIAR_PROBLEMA_ATIVIDADE);
@@ -489,7 +493,7 @@ public class ViewComunication implements CorePresleyOperations{
 		dadosDaBusca.setGrauDeConfianca(grauDeConfianca);
 		dadosDaBusca.setListaConhecimento(conhecimentos);
 		PacketStruct respostaPacket = sendPack(dadosDaBusca, BUSCA_DESENVOLVEDORES);
-		System.out.println("codigo " + BUSCA_DESENVOLVEDORES);
+		logger.info("codigo " + BUSCA_DESENVOLVEDORES);
 		if (respostaPacket.getId() == ERRO || respostaPacket == null) {
 			if(respostaPacket.getId() == CorePresleyOperations.ERRO) {
 				try {
@@ -502,7 +506,7 @@ public class ViewComunication implements CorePresleyOperations{
 			return null;
 		}
 		else{ 
-				System.out.println("get data " + respostaPacket.getData().toString());
+			logger.info("get data " + respostaPacket.getData().toString());
 			ArrayList<Desenvolvedor> desenvolvedores = (ArrayList<Desenvolvedor>)respostaPacket.getData();
 			return desenvolvedores;
 		}
@@ -555,20 +559,20 @@ public class ViewComunication implements CorePresleyOperations{
 		return false;
 	}
 	
-	public ArrayList<Desenvolvedor> getListaDesenvolvedores() {
+	public final ArrayList<Desenvolvedor> getListaDesenvolvedores() {
 		PacketStruct respostaPacket = sendPack(null,CorePresleyOperations.GET_LISTA_DESENVOLVEDORES);
     	ArrayList<Desenvolvedor> resposta = (ArrayList<Desenvolvedor>)respostaPacket.getData();
     	listaDesenvolvedores = resposta;
     	
     	if(resposta == null){ 
-    		System.out.println("RESPOSTA NULL");
-    		return null;
+    		logger.info("RESPOSTA NULL");
+    		return new ArrayList<Desenvolvedor>();
     	}
     	
     	Iterator it = resposta.iterator();
     	while (it.hasNext()) {
     		Desenvolvedor des = (Desenvolvedor)it.next();
-    		System.out.println(des.getNome());
+    		logger.info(des.getNome());
     	}
     	
 		return listaDesenvolvedores;
@@ -607,14 +611,9 @@ public class ViewComunication implements CorePresleyOperations{
 	}
 
 	public ArrayList<Conhecimento> getListaConhecimentos() {
-		System.out.println("Cheguei na View Communication");
 		PacketStruct respostaPacket = sendPack(null,CorePresleyOperations.GET_LISTA_CONHECIMENTO);
-    	System.out.println("Passe do sendPack");
 		ArrayList<Conhecimento> resposta = (ArrayList<Conhecimento>)respostaPacket.getData();
-//    	System.out.println(resposta.get(0).getNome() + "  " + resposta.get(0).getDescricao() );
-		listaConhecimentos = resposta;
-    	
-		return listaConhecimentos;
+		return resposta;
 	}
 	
 	public ArrayList<Problema> getListaProblemas() {
@@ -633,11 +632,11 @@ public class ViewComunication implements CorePresleyOperations{
 		msg.setDesenvolvedoresDestino(desenvolvedoresDestino);
 		msg.setProblema(problema);
 		msg.setTexto(mensagem);
-		System.out.println("Mensagem dentro de view Comunication: "+msg.getTexto());
+		logger.info("Mensagem dentro de view Comunication: "+msg.getTexto());
 		PacketStruct respostaPacket = sendPack(msg, CorePresleyOperations.ENVIAR_MENSAGEM);
 		Boolean retorno;
 		retorno = (Boolean)respostaPacket.getData();
-		System.out.println("Retorno do enviar mensagem: " +retorno);
+		logger.info("Retorno do enviar mensagem: " +retorno);
 		return retorno;
 	}
 
@@ -750,7 +749,7 @@ public class ViewComunication implements CorePresleyOperations{
 		PacketStruct respostaPacket = sendPack(solucao, CorePresleyOperations.ADICIONA_SOLUCAO);
 		Solucao retorno;
 		retorno = (Solucao)respostaPacket.getData();
-		System.out.println("Retorno do enviar mensagem: " +retorno);
+		logger.info("Retorno do enviar mensagem: " +retorno);
 		return retorno;
 	}
 	
@@ -807,7 +806,7 @@ public class ViewComunication implements CorePresleyOperations{
 		}
 
 		if(respostaPacket.getData() != null){
-			conhecimento = (Conhecimento)respostaPacket.getData();
+			return (Conhecimento)respostaPacket.getData();
 		}		
 		return conhecimento;
 	}

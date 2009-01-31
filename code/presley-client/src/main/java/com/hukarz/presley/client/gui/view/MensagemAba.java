@@ -37,16 +37,16 @@ public class MensagemAba extends ViewPart {
 	private Composite parentComposite;
 	private ViewComunication viewComunication;
 	private String ipServidor = "127.0.0.1";
-	
+
 	private static Desenvolvedor desenvolvedorLogado = null;
-	
+
 	private boolean bLogin;
 	private Projeto projeto;
-	
+
 	private Button login, logout, addUser, removeUser,  
-		incluirProblema, excluirProblema,    
-		validarSolucao, encerrarProblema;
-	
+	incluirProblema, excluirProblema,    
+	validarSolucao, encerrarProblema;
+
 	private final int larguraBotao = 20;
 	private final int alturaBotao = 20;
 
@@ -61,32 +61,32 @@ public class MensagemAba extends ViewPart {
 
 	private final int posVerPainelProblemas = 27;
 	private final int posVerPainelLerMensagem = 250; // 230
-	
+
 	private final int alturaPainelProblemas = 200; 
 	private final int alturaPainelLerMensagem = 170; // 85 
-	
+
 	private final int distanciaPanelLabel = 2;
-	
+
 	private final int larguraJanela = 200;
-	
+
 	private Tree treeProblemasEnviados = null, treeProblemasRecebidos = null;
-	
+
 	private Label mensagemRecebida;
 	private Label lblGrupoBotoes1, lblGrupoBotoes2, lblGrupoBotoes3;
 
 	private RunAdcionaProblemaWizardAction runAdcionaProblema;
 	private RunEnviaRespostaWizardAction runEnviaResposta;
 	private RunEnviaRetornoSolucaoWizardAction RunEnviaRetornoSolucao;
-	
+
 	private ArrayList<Mensagem> mensagensExibidas; 
 	private Timer timer;
-	
+
 	public MensagemAba() {
 		this.viewComunication = new ViewComunication(ipServidor);
 		bLogin = false;
-		
+
 	}
-	
+
 	@Override
 	public void createPartControl(Composite parent) {
 		parent.setLayout(null);
@@ -97,17 +97,17 @@ public class MensagemAba extends ViewPart {
 	public void setFocus() {
 		// TODO Auto-generated method stub
 	}
-	
+
 	public ViewComunication getViewComunication(){
 		return this.viewComunication;
 	}
-	
+
 	private void initComponents(Composite parent)
 	{
 		this.parentComposite = parent;
 
 		projeto = viewComunication.getProjetoAtivo();
-		
+
 		logout = new Button(parentComposite, SWT.NONE);
 		Image logoff = new Image(logout.getDisplay(),this.getClass().getResourceAsStream("/src/main/resources/icons/logout.gif"));
 		logout.setLocation(posHorBotaoNivel1, posVerBotaoNivel1);
@@ -157,7 +157,7 @@ public class MensagemAba extends ViewPart {
 
 			public void mouseDown(MouseEvent e) {
 				//Exibe o wizard de login
-				RunLoginWizardAction();
+				runLoginWizardAction();
 				if ( desenvolvedorLogado != null ){
 					preenchelistaProblemasEnviados();
 					preenchelistaProblemasRecebidos();
@@ -171,7 +171,7 @@ public class MensagemAba extends ViewPart {
 			}
 
 		});
-		
+
 		addUser = new Button(parentComposite, SWT.NONE);
 		Image userAdd = new Image(addUser.getDisplay(),this.getClass().getResourceAsStream("/src/main/resources/icons/addUser.gif"));
 		addUser.setLocation(posHorBotaoNivel2, posVerBotaoNivel1);
@@ -188,7 +188,7 @@ public class MensagemAba extends ViewPart {
 
 			public void mouseDown(MouseEvent arg0) {
 				//exibe o wizard de confirmacao para a adicao de desenvolvedor
-				RunAdicionaDesenvolvedorWizard();
+				runAdicionaDesenvolvedorWizard();
 			}
 
 			public void mouseUp(MouseEvent arg0) {
@@ -223,8 +223,8 @@ public class MensagemAba extends ViewPart {
 			}
 
 		});
-		
-		
+
+
 		treeProblemasEnviados = new Tree(parentComposite, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL );  
 		treeProblemasEnviados.setLocation(0, posVerPainelProblemas); // posHorBotaoNivel1 
 		treeProblemasEnviados.setSize(larguraJanela, alturaPainelProblemas);  
@@ -235,7 +235,7 @@ public class MensagemAba extends ViewPart {
 
 			public void widgetSelected(SelectionEvent e) {
 				String titulo, descricao;
-				
+
 				if (treeProblemasEnviados.getSelection()[0].getData() instanceof Problema){
 					Problema problema = (Problema) treeProblemasEnviados.getSelection()[0].getData();
 					titulo            = problema.getDescricao();
@@ -245,11 +245,11 @@ public class MensagemAba extends ViewPart {
 					titulo            = "Re: " +solucao.getProblema().getDescricao();
 					descricao         = solucao.getMensagem();					
 				}
-				
+
 				LerMensagem.setCarregaMensagem(titulo, descricao);
 			}
-			
-			
+
+
 		});
 
 		treeProblemasEnviados.addMouseListener(new MouseListener(){
@@ -257,7 +257,7 @@ public class MensagemAba extends ViewPart {
 			public void mouseDoubleClick(MouseEvent e) {
 				if ((treeProblemasEnviados.getSelectionCount() != 0) && (treeProblemasEnviados.getSelection()[0].getData() instanceof Solucao)){
 					Solucao solucao = (Solucao) treeProblemasEnviados.getSelection()[0].getData();
-					RunEnviaRetornoSolucaoWizardAction(solucao);
+					runEnviaRetornoSolucaoWizardAction(solucao);
 					preenchelistaProblemasEnviados();
 				}
 			}
@@ -265,10 +265,10 @@ public class MensagemAba extends ViewPart {
 			public void mouseDown(MouseEvent e) {}
 
 			public void mouseUp(MouseEvent e) {}
-			
+
 		});
 
-		
+
 		incluirProblema = new Button(parentComposite, SWT.NONE);
 		Image obter = new Image(incluirProblema.getDisplay(),this.getClass().getResourceAsStream("/src/main/resources/icons/add.gif"));
 		incluirProblema.setLocation(posHorBotaoNivel4, posVerBotaoNivel1);
@@ -281,7 +281,7 @@ public class MensagemAba extends ViewPart {
 
 			public void mouseDoubleClick(MouseEvent e) {
 				// TODO Auto-generated method stub
-				
+
 			}
 
 			public void mouseDown(MouseEvent e) {
@@ -291,11 +291,11 @@ public class MensagemAba extends ViewPart {
 
 			public void mouseUp(MouseEvent e) {
 				// TODO Auto-generated method stub
-				
+
 			}
-			
+
 		});
-		
+
 		excluirProblema = new Button(parentComposite, SWT.NONE);
 		Image trocaMsg = new Image(excluirProblema.getDisplay(),this.getClass().getResourceAsStream("/src/main/resources/icons/remove.GIF"));
 		excluirProblema.setLocation(posHorBotaoNivel5, posVerBotaoNivel1);
@@ -308,23 +308,23 @@ public class MensagemAba extends ViewPart {
 
 			public void mouseDoubleClick(MouseEvent e) {
 				// TODO Auto-generated method stub
-				
+
 			}
 
 			public void mouseDown(MouseEvent e) {
 				boolean excluir = (treeProblemasEnviados.getSelectionCount() != 0);
-				
+
 				if (!excluir)
 					MessageDialog.openInformation(excluirProblema.getShell(),
-						"Informação", "O problema deve ser selecionado antes de ser excluido");
+							"Informação", "O problema deve ser selecionado antes de ser excluido");
 				else
 					excluir  = MessageDialog.openQuestion( excluirProblema.getShell(),
-						"Confirmacao", "Tem certeza que deseja excluir o Problema selecionado?");
+							"Confirmacao", "Tem certeza que deseja excluir o Problema selecionado?");
 
 				if (excluir) {
 					//captura o problema selecionado
 					Problema problemaSelecionado = (Problema) treeProblemasEnviados.getSelection()[0].getData() ;
-					
+
 					try {
 						//realiza a remocao do Problema no servidor
 						viewComunication.removerProblema(problemaSelecionado);
@@ -338,11 +338,11 @@ public class MensagemAba extends ViewPart {
 
 			public void mouseUp(MouseEvent e) {
 				// TODO Auto-generated method stub
-				
+
 			}
-			
+
 		});
-		
+
 		validarSolucao = new Button(parentComposite, SWT.NONE);
 		Image ok = new Image(validarSolucao.getDisplay(),this.getClass().getResourceAsStream("/src/main/resources/icons/ok.gif"));
 		validarSolucao.setLocation(posHorBotaoNivel6, posVerBotaoNivel1);
@@ -354,7 +354,7 @@ public class MensagemAba extends ViewPart {
 			public void mouseDoubleClick(MouseEvent e) { }
 
 			public void mouseDown(MouseEvent e) {
-				
+
 				if ((treeProblemasEnviados.getSelectionCount() == 0) || (treeProblemasEnviados.getSelection()[0].getData() instanceof Problema)){
 					MessageDialog.openInformation(validarSolucao.getShell(),
 							"Informação", "A Solução deve ser selecionada antes de ser Aprovada");
@@ -367,9 +367,9 @@ public class MensagemAba extends ViewPart {
 							"Informação", "Solução aprovada com sucesso.");
 				}
 			}
-			
+
 			public void mouseUp(MouseEvent e) { }			
-			
+
 		});
 
 		encerrarProblema = new Button(parentComposite, SWT.NONE);
@@ -398,9 +398,9 @@ public class MensagemAba extends ViewPart {
 			}
 
 			public void mouseUp(MouseEvent e) { }
-			
+
 		});
-		
+
 		mensagemRecebida = new Label(parentComposite, SWT.BORDER | SWT.CENTER);
 		mensagemRecebida.setText("Problemas Recebidos");
 		mensagemRecebida.setLocation(0, posVerPainelProblemas + alturaPainelProblemas + distanciaPanelLabel);
@@ -416,18 +416,18 @@ public class MensagemAba extends ViewPart {
 
 			public void widgetDefaultSelected(SelectionEvent e) {
 				// TODO Auto-generated method stub
-				
+
 			}
 
 			public void widgetSelected(SelectionEvent e) {
 				Mensagem mensagem = getMensagem();
 				Problema problema = mensagem.getProblema() ;
-				
+
 				LerMensagem.setCarregaMensagem(problema.getDescricao(), problema.getMensagem());
 			}
-			
+
 		});
-		
+
 		treeProblemasRecebidos.addMouseListener(new MouseListener(){
 
 			public void mouseDoubleClick(MouseEvent e) {
@@ -456,85 +456,83 @@ public class MensagemAba extends ViewPart {
 		lblGrupoBotoes3.setLocation(posHorBotaoNivel6-2, 2);
 		lblGrupoBotoes3.setSize(50, 24);
 		lblGrupoBotoes3.setVisible(true);
-		
+
 		lblGrupoBotoes2 = new Label(parentComposite, SWT.BORDER_DOT);
 		lblGrupoBotoes2.setText("  ");
 		lblGrupoBotoes2.setBackground(new Color(lblGrupoBotoes2.getDisplay(),51,153,204));
 		lblGrupoBotoes2.setLocation(posHorBotaoNivel4-2, 2);
 		lblGrupoBotoes2.setSize(50, 24);
 		lblGrupoBotoes2.setVisible(true);
-		
+
 		lblGrupoBotoes1 = new Label(parentComposite, SWT.BORDER_DOT);
 		lblGrupoBotoes1.setText("  ");
 		lblGrupoBotoes1.setBackground(new Color(lblGrupoBotoes1.getDisplay(),51,153,0));
 		lblGrupoBotoes1.setLocation(1, 2);
 		lblGrupoBotoes1.setSize(74, 24);
 		lblGrupoBotoes1.setVisible(true);
-		
+
 		desabilitaBotoes();
-		
-        timer = new Timer();
-        timer.schedule(new TimerTask(){
-       	   private Runnable updateAction;
-       	   
+
+		timer = new Timer();
+		timer.schedule(new TimerTask(){
+			private Runnable updateAction;
+
 			public void run() {
 				Display.getDefault().asyncExec(getUpdateAction());
 			}
-			
-            private Runnable getUpdateAction() {
-                if(updateAction == null) {
-                   updateAction = new Runnable() {
-                      
-                      public void run() {
-          	            if (bLogin){
-        	                // System.out.println("Time OK!");
-        	        		treeProblemasEnviados.removeAll();
-        	                preenchelistaProblemasEnviados();
-        	                preenchelistaProblemasRecebidos();
-        	            }
-                      }
-                   };
-                }
-                return updateAction;
-             }	            
-        	
-        }, 0, 300*1000); // 1000 Representa 1 segundo 
-		
+
+			private Runnable getUpdateAction() {
+				if(updateAction == null) {
+					updateAction = new Runnable() {
+
+						public void run() {
+							if (bLogin){
+								// System.out.println("Time OK!");
+								treeProblemasEnviados.removeAll();
+								preenchelistaProblemasEnviados();
+								preenchelistaProblemasRecebidos();
+							}
+						}
+					};
+				}
+				return updateAction;
+			}	            
+
+		}, 0, 300*1000); // 1000 Representa 1 segundo 
+
 	}
 
 	private void preenchelistaProblemasEnviados( ){
 		treeProblemasEnviados.removeAll();
 		Image imgProblema = new Image(addUser.getDisplay(),this.getClass().getResourceAsStream("/src/main/resources/icons/problema.gif"));
-		
+
 		ArrayList<Problema> problemasEncontrados = getViewComunication().getProblemas(this.getDesenvolvedorLogado());
-		
-		if (problemasEncontrados!=null) {
-			TreeItem[] item = new TreeItem[ problemasEncontrados.size() ];
-			
-			int num = 0;
-			for (Problema problema : problemasEncontrados) {
-				// Cria o item de problema
-				item[num] = new TreeItem(treeProblemasEnviados, SWT.NONE);
-				item[num].setText( problema.getDescricao());
-				item[num].setData( problema ) ;
-				item[num].setImage( imgProblema );
 
-				preecheTreeItemSolucao( getViewComunication().listarSolucoesDoProblema(problema), item[num], true);
+		TreeItem[] item = new TreeItem[ problemasEncontrados.size() ];
 
-				num++;
-			}
+		int num = 0;
+		for (Problema problema : problemasEncontrados) {
+			// Cria o item de problema
+			item[num] = new TreeItem(treeProblemasEnviados, SWT.NONE);
+			item[num].setText( problema.getDescricao());
+			item[num].setData( problema ) ;
+			item[num].setImage( imgProblema );
+
+			preecheTreeItemSolucao( getViewComunication().listarSolucoesDoProblema(problema), item[num], true);
+
+			num++;
 		}
-		
+
 	}
 
 	private void preenchelistaProblemasRecebidos( ){
 		treeProblemasRecebidos.removeAll();
 		Image imgProblema = new Image(addUser.getDisplay(),this.getClass().getResourceAsStream("/src/main/resources/icons/problema.gif"));
 		mensagensExibidas = viewComunication.obterMensagens(getDesenvolvedorLogado());
-		
+
 		if (mensagensExibidas!=null) {
 			TreeItem[] item = new TreeItem[ mensagensExibidas.size() ];
-			
+
 			int num = 0;
 			for (Iterator<Mensagem> iteratorMensagem = mensagensExibidas.iterator(); iteratorMensagem.hasNext();) {
 				Mensagem mensagem = iteratorMensagem.next();
@@ -545,24 +543,24 @@ public class MensagemAba extends ViewPart {
 				item[num].setText( problema.getDescricao());
 				item[num].setData( problema ) ;
 				item[num].setImage(imgProblema);
-				
+
 				preecheTreeItemSolucao( getViewComunication().listarSolucoesDoProblema(problema), item[num], false);
-				
+
 				num++;
 			}
 		}
-		
+
 	}
 
 	private void preecheTreeItemSolucao( ArrayList<Solucao> solucoes, TreeItem itemPai, boolean problemaEnviado ){
 		TreeItem[] item = new TreeItem[ solucoes.size() ];
 		Image imgSolucao = new Image(addUser.getDisplay(),this.getClass().getResourceAsStream("/src/main/resources/icons/solucao.gif"));
 		Image imgRespostaSolucao = new Image(addUser.getDisplay(),this.getClass().getResourceAsStream("/src/main/resources/icons/respostaSolucao.gif"));
-		
+
 		int numItem = 0;
 		for (Iterator<Solucao> iterator = solucoes.iterator(); iterator.hasNext();) {
 			Solucao solucao = iterator.next();
-			
+
 			// Apenas preenche as Soluções do Desenvolvedor logado 
 			if ( problemaEnviado ||
 					solucao.getDesenvolvedor().getEmail().equals(getDesenvolvedorLogado().getEmail()) ){
@@ -570,7 +568,7 @@ public class MensagemAba extends ViewPart {
 				item[numItem].setText(solucao.getMensagem());
 				item[numItem].setData(solucao) ;
 				item[numItem].setImage( imgSolucao ) ;
-				
+
 				if (solucao.getRetornoSolucao() != null){
 					TreeItem[] itemResposta = new TreeItem[ solucoes.size() ];
 					itemResposta[numItem] = new TreeItem(item[numItem], SWT.NONE);
@@ -578,7 +576,7 @@ public class MensagemAba extends ViewPart {
 					itemResposta[numItem].setData( solucao ) ;
 					itemResposta[numItem].setImage( imgRespostaSolucao ) ;
 				}
-				
+
 				if ( solucao.getSolucaoResposta() != null ){
 					ArrayList<Solucao> solucaoResposta = new ArrayList<Solucao>();
 					solucaoResposta.add( solucao.getSolucaoResposta() );
@@ -586,18 +584,18 @@ public class MensagemAba extends ViewPart {
 				}
 				numItem++;
 			}
-			
+
 		}
-		
+
 	}
 
-	
+
 	private void runAdcionaProblema(){
 		this.runAdcionaProblema = new RunAdcionaProblemaWizardAction( this );
 		this.runAdcionaProblema.run(null);
 	}
-	
-	private void RunLoginWizardAction() {
+
+	private void runLoginWizardAction() {
 		com.hukarz.presley.client.gui.action.RunLoginWizardAction runLogin = new com.hukarz.presley.client.gui.action.RunLoginWizardAction(this);
 		runLogin.run(null);
 	}
@@ -605,7 +603,7 @@ public class MensagemAba extends ViewPart {
 	public void setDesenvolvedorLogado(Desenvolvedor des) {
 		this.desenvolvedorLogado = des;
 	}
-	
+
 	public static Desenvolvedor getDesenvolvedorLogado() {
 		return desenvolvedorLogado;
 	}
@@ -615,7 +613,7 @@ public class MensagemAba extends ViewPart {
 		excluirProblema.setEnabled(true); 
 		validarSolucao.setEnabled(true);
 		encerrarProblema.setEnabled(true);
-        bLogin = true;
+		bLogin = true;
 	}
 
 	public void desabilitaBotoes() {
@@ -623,9 +621,9 @@ public class MensagemAba extends ViewPart {
 		excluirProblema.setEnabled(false); 
 		validarSolucao.setEnabled(false);
 		encerrarProblema.setEnabled(false);
-        bLogin = false;
+		bLogin = false;
 	}
-	
+
 	public void desabilitaBotaoLogin() {
 		login.setEnabled(false);
 		login.setVisible(false);
@@ -633,7 +631,7 @@ public class MensagemAba extends ViewPart {
 		logout.setVisible(true);
 	}
 
-	private void RunAdicionaDesenvolvedorWizard() {
+	private void runAdicionaDesenvolvedorWizard() {
 		com.hukarz.presley.client.gui.action.RunAdicionaDesenvolvedorWizardAction runAdicionaDesenvolvedor = new com.hukarz.presley.client.gui.action.RunAdicionaDesenvolvedorWizardAction(this);
 		runAdicionaDesenvolvedor.run(null);
 	}
@@ -642,8 +640,8 @@ public class MensagemAba extends ViewPart {
 		this.runEnviaResposta = new RunEnviaRespostaWizardAction(this, problema, solucaoOrigem);
 		this.runEnviaResposta.run(null);
 	}
-	
-	private void RunEnviaRetornoSolucaoWizardAction(Solucao solucao){
+
+	private void runEnviaRetornoSolucaoWizardAction(Solucao solucao){
 		this.RunEnviaRetornoSolucao = new RunEnviaRetornoSolucaoWizardAction(this, solucao);
 		this.RunEnviaRetornoSolucao.run(null);
 	}
@@ -655,5 +653,5 @@ public class MensagemAba extends ViewPart {
 	public Projeto getProjeto() {
 		return projeto;
 	}
-	
+
 }

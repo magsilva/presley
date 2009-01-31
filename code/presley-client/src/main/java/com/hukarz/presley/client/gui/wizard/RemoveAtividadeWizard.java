@@ -4,6 +4,7 @@ package com.hukarz.presley.client.gui.wizard;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 
+import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.resource.ImageDescriptor;
@@ -17,6 +18,7 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
 import com.hukarz.presley.client.gui.view.Atividade;
 
 public class RemoveAtividadeWizard extends Wizard implements INewWizard {
+	private static final Logger logger = Logger.getLogger(RemoveAtividadeWizard.class);
 
 	private RemoveAtividadeWizardPage page;
     private ISelection selection;
@@ -56,7 +58,7 @@ public class RemoveAtividadeWizard extends Wizard implements INewWizard {
 	
     	}catch (Exception e) {
 			// TODO: handle exception
-    		System.out.println("ERRO ERRO:"+e.getMessage());
+    		logger.error(e.getMessage());
 		}
     	
 		try {
