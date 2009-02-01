@@ -20,7 +20,7 @@ import com.hukarz.presley.client.gui.view.MensagemAba;
 
 
 public class LoginWizard extends Wizard implements INewWizard {
-	private static final Logger logger = Logger.getLogger(RemoveAtividadeWizard.class);
+	private static final Logger logger = Logger.getLogger(AdicionaConhecimentoWizard.class);
 
 	private LoginWizardPage page;
 	private ISelection selection;
@@ -30,7 +30,7 @@ public class LoginWizard extends Wizard implements INewWizard {
 		super();
 		setNeedsProgressMonitor(true);
 		ImageDescriptor image =
-			AbstractUIPlugin.imageDescriptorFromPlugin("Add", "icons/presley.gif");
+			AbstractUIPlugin.imageDescriptorFromPlugin("Add", "/src/main/resources/icons/presley.gif");
 		setDefaultPageImageDescriptor(image);
 
 

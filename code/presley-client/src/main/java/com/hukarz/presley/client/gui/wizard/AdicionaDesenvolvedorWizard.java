@@ -34,7 +34,7 @@ public class AdicionaDesenvolvedorWizard extends Wizard implements INewWizard {
         ImageDescriptor image =
             AbstractUIPlugin.
                 imageDescriptorFromPlugin("Add",
-                   "icons/presley.gif");
+                   "/src/main/resources/icons/presley.gif");
         setDefaultPageImageDescriptor(image);
         
         

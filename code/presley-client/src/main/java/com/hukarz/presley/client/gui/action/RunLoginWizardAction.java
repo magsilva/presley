@@ -11,21 +11,15 @@ import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.IWorkbenchWindowActionDelegate;
 import org.eclipse.ui.PlatformUI;
 
-import com.hukarz.presley.client.gui.view.Atividade;
 import com.hukarz.presley.client.gui.view.MensagemAba;
 import com.hukarz.presley.client.gui.wizard.LoginWizard;
 
 public class RunLoginWizardAction extends Action implements
 		IWorkbenchWindowActionDelegate {
-	private Atividade atividade;
 	private MensagemAba mensagem;
 
 	public RunLoginWizardAction() {
 		// TODO Auto-generated constructor stub
-	}
-	
-	public RunLoginWizardAction(Atividade a) {
-		this.atividade = a;
 	}
 	
 	public RunLoginWizardAction(MensagemAba m) {

@@ -20,8 +20,9 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
+import ca.mcgill.cs.swevo.PresleyJayFX;
 import ca.mcgill.cs.swevo.jayfx.ConversionException;
-import ca.mcgill.cs.swevo.jayfx.JayFX;
+import ca.mcgill.cs.swevo.jayfx.model.ClassElement;
 import ca.mcgill.cs.swevo.jayfx.model.FlyweightElementFactory;
 import ca.mcgill.cs.swevo.jayfx.model.ICategories;
 import ca.mcgill.cs.swevo.jayfx.model.IElement;
@@ -38,7 +39,7 @@ public class AdicionaProblemaWizardPage extends WizardPage {
 	private int minimumHeight = 100;
 	private Map<String, String> listaElementosProjeto;
 	private ArrayList<String> listaElementosSelecionados;
-	private JayFX aDB;
+	private PresleyJayFX aDB;
 	
 	protected AdicionaProblemaWizardPage(MensagemAba mensagem) {
 		super("wizardPage");
@@ -48,7 +49,7 @@ public class AdicionaProblemaWizardPage extends WizardPage {
         listaElementosSelecionados = new ArrayList<String>();
         
         // FIXME: Extend JayFX correctly
-        // aDB = JayFX.obterInstancia( mensagem.getProjeto() );
+        aDB = PresleyJayFX.obterInstancia( mensagem.getProjeto() );
 	}
 	
     private void updateStatus(String message) {
@@ -86,9 +87,14 @@ public class AdicionaProblemaWizardPage extends WizardPage {
     				elemento = FlyweightElementFactory.getElement( ICategories.CLASS, elementoSelecionado );
     			}
     			// FIXME: Extend JayFX correctly
-				//retorno.putAll( aDB.getElementoRelacionamento(elemento) );
+				retorno.putAll( aDB.getElementoRelacionamento(elemento) );
 				
-	    		ClasseJava classe   = new ClasseJava(elemento.getDeclaringClass().getId());
+				ClasseJava classe;   
+				if ( elemento instanceof ClassElement)
+					classe   = new ClasseJava( elemento.getId() ); 
+				else
+					classe   = new ClasseJava(elemento.getDeclaringClass().getId());
+				
 	    		ArquivoJava arquivo = new ArquivoJava(aDB.convertToJavaElement(elemento).getResource().getName());
 	    		
 	    		retorno.put(classe, arquivo);
@@ -143,7 +149,7 @@ public class AdicionaProblemaWizardPage extends WizardPage {
 
         // Busca Todos os Elementos no projeto
         // FIXME: Extend JayFX correctly
-        //listaElementosProjeto = aDB.getTodasClassesMetodos();
+        listaElementosProjeto = aDB.getTodasClassesMetodos();
         elementosProjeto = new Combo(controls, SWT.MULTI | SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
         
         //Preenche o combo  

@@ -29,7 +29,7 @@ public class EnviaRetornoSolucaoWizard extends Wizard implements INewWizard {
     public EnviaRetornoSolucaoWizard() {
         super();
         setNeedsProgressMonitor(true);
-        ImageDescriptor image = AbstractUIPlugin.imageDescriptorFromPlugin("Add", "icons/presley.gif");
+        ImageDescriptor image = AbstractUIPlugin.imageDescriptorFromPlugin("Add", "/src/main/resources/icons/presley.gif");
         setDefaultPageImageDescriptor(image);
     }
     

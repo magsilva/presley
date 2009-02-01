@@ -35,7 +35,7 @@ public class EnviaRespostaWizard extends Wizard implements INewWizard {
     public EnviaRespostaWizard() {
         super();
         setNeedsProgressMonitor(true);
-        ImageDescriptor image = AbstractUIPlugin.imageDescriptorFromPlugin("Add", "icons/presley.gif");
+        ImageDescriptor image = AbstractUIPlugin.imageDescriptorFromPlugin("Add", "/src/main/resources/icons/presley.gif");
         setDefaultPageImageDescriptor(image);
     }
     

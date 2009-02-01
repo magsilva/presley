@@ -9,4 +9,5 @@ Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ClassPath: .,
  src/main/resources/presley-common.jar,
- src/main/resources/log4j-1.2.15.jar
+ src/main/resources/log4j-1.2.15.jar,
+ src/main/resources/ca.mcgill.cs.swevo.jayfx_0.0.3.jar

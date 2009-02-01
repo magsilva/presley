@@ -27,7 +27,7 @@ public class AdicionaConhecimentoWizard extends Wizard implements INewWizard {
 
 	private static final Logger logger = Logger.getLogger(AdicionaConhecimentoWizard.class);
 	private AdicionaConhecimentoWizardPage page;
-	private AdicionaAtividadeWizardPage2 page2;
+//	private AdicionaAtividadeWizardPage2 page2;
     private ISelection selection;
     private Dominio dominio;
 
@@ -37,7 +37,7 @@ public class AdicionaConhecimentoWizard extends Wizard implements INewWizard {
         ImageDescriptor image =
             AbstractUIPlugin.
                 imageDescriptorFromPlugin("Add",
-                   "icons/presley.gif");
+                   "/src/main/resources/icons/presley.gif");
         setDefaultPageImageDescriptor(image);
         
         
