@@ -50,44 +50,7 @@ public class ServerBridgeImp implements ServerBridge {
 		int typeRetorno = CorePresleyOperations.ERRO;
 
 		switch ( packet.getId() ) {
-		// Packet tipo 1: adicionaAtividade(TipoAtividade atividade) - ok
-		case CorePresleyOperations.ADICIONA_ATIVIDADE:
-			try {
-				retorno = executeClientQuery.adicionaAtividade(packet);
-				typeRetorno = CorePresleyOperations.ADICIONA_ATIVIDADE;
-			} catch (EmailInvalidoException e1) {
-				retorno = "ERRO: Email inválido.";
-			} catch (DescricaoInvalidaException e1) {
-				retorno = "ERRO: Descrição inválida.";
-			} catch (DataInvalidaException e1) {
-				retorno = "ERRO: Data inválida.";
-			} catch (Exception e1) {
-				retorno = "ERRO: Operação falhou.";
-			}
-			pktRetorno = new PacketStruct(retorno, typeRetorno);
-			break;				
-
-			// Packet tipo 2: removerAtividade(TipoAtividade atividade) -ok
-		case CorePresleyOperations.REMOVE_ATIVIDADE:
-			try {
-				retorno = executeClientQuery.removerAtividade(packet);
-				typeRetorno = CorePresleyOperations.REMOVE_ATIVIDADE;
-			} catch (AtividadeInexistenteException e2) {
-				retorno = "ERRO: Atividade inexistente.";
-			} catch (ProblemaInexistenteException e) {
-				retorno = "ERRO: Problema inexistente.";
-			}
-			pktRetorno = new PacketStruct(retorno, typeRetorno);
-			break;				
-
-			// Packet tipo 3: BUSCA_ATIVIDADE()			
-		case CorePresleyOperations.BUSCA_ATIVIDADE:
-			typeRetorno = CorePresleyOperations.BUSCA_ATIVIDADE;
-			retorno = executeClientQuery.buscaAtividades();
-			pktRetorno = new PacketStruct(retorno, typeRetorno);
-			break;				
-
-			// Packet tipo 4: ADICIONA_CONHECIMENTO
+		// Packet tipo 4: ADICIONA_CONHECIMENTO
 		case CorePresleyOperations.ADICIONA_CONHECIMENTO:
 			try {
 				retorno = executeClientQuery.adicionaConhecimento(packet);
@@ -128,49 +91,6 @@ public class ServerBridgeImp implements ServerBridge {
 		case CorePresleyOperations.LOG_OUT:
 			typeRetorno = CorePresleyOperations.LOG_OUT;
 			retorno = executeClientQuery.logout(packet);
-			pktRetorno = new PacketStruct(retorno, typeRetorno);
-			break;				
-
-			// Packet tipo 7: ENCERRAR_ATIVIDADE
-		case CorePresleyOperations.ENCERRAR_ATIVIDADE:
-			typeRetorno = CorePresleyOperations.ENCERRAR_ATIVIDADE;
-			try {
-				retorno = executeClientQuery.encerrarAtividade(packet);
-			} catch (AtividadeInexistenteException e3) {
-				e3.printStackTrace();
-				retorno = "ERRO: Atividade Inexistente.";
-			}
-			pktRetorno = new PacketStruct(retorno, typeRetorno);
-			break;				
-
-			// Packet tipo 8: ASSOCIAR_CONHECIMENTO_ATIVIDADE
-		case CorePresleyOperations.ASSOCIAR_CONHECIMENTO_ATIVIDADE:
-			try {
-				retorno = executeClientQuery.associaConhecimentoAtividade(packet);
-				typeRetorno = CorePresleyOperations.ASSOCIAR_CONHECIMENTO_ATIVIDADE;
-			} catch (AtividadeInexistenteException e) {
-				retorno = "ERRO: Atividade inexistente.";
-			} catch (ConhecimentoInexistenteException e) {
-				retorno = "ERRO: Conhecimento inexistente.";
-			} catch (Exception e) {
-				retorno = "ERRO: Operação falhou.";
-			}
-
-			pktRetorno = new PacketStruct(retorno, typeRetorno);
-			break;				
-
-			// Packet tipo 9: DESSASOCIAR_CONHECIMENTO_ATIVIDADE
-		case CorePresleyOperations.DESSASOCIAR_CONHECIMENTO_ATIVIDADE:
-			try {
-				retorno = executeClientQuery.desassociaConhecimentoAtividade(packet);
-				typeRetorno = CorePresleyOperations.DESSASOCIAR_CONHECIMENTO_ATIVIDADE;
-			} catch (ConhecimentoInexistenteException e1) {
-				retorno = "ERRO: Conhecimento inexistente.";
-				e1.printStackTrace();
-			} catch (AtividadeInexistenteException e1) {
-				retorno = "ERRO: Atividade inexistente.";
-				e1.printStackTrace();
-			}
 			pktRetorno = new PacketStruct(retorno, typeRetorno);
 			break;				
 
@@ -316,18 +236,6 @@ public class ServerBridgeImp implements ServerBridge {
 			pktRetorno = new PacketStruct(retorno, typeRetorno);
 			break;
 
-			// Packet tipo 20: BUSCA_CONHECIMENTOS_RELACIONADOS
-		case CorePresleyOperations.BUSCA_CONHECIMENTOS_RELACIONADOS:
-			try {
-				retorno = executeClientQuery.getListaConhecimentosEnvolvidos(packet);
-			} catch (ConhecimentoInexistenteException e) {
-				e.printStackTrace();
-			}
-			typeRetorno = CorePresleyOperations.BUSCA_CONHECIMENTOS_RELACIONADOS;
-
-
-			pktRetorno = new PacketStruct(retorno, typeRetorno);
-			break;
 		case CorePresleyOperations.REMOVER_CONHECIMENTO:
 			try {
 				retorno = executeClientQuery.removerConhecimento(packet);

@@ -12,11 +12,9 @@ import com.hukarz.presley.excessao.ConhecimentoInexistenteException;
 import com.hukarz.presley.excessao.DescricaoInvalidaException;
 import com.hukarz.presley.excessao.NomeInvalidoException;
 import com.hukarz.presley.server.persistencia.implementacao.ServicoArquivoImplDAO;
-import com.hukarz.presley.server.persistencia.implementacao.ServicoAtividadeImplDAO;
 import com.hukarz.presley.server.persistencia.implementacao.ServicoConhecimentoImplDAO;
 import com.hukarz.presley.server.persistencia.implementacao.ServicoDesenvolvedorImplDAO;
 import com.hukarz.presley.server.persistencia.interfaces.ServicoArquivo;
-import com.hukarz.presley.server.persistencia.interfaces.ServicoAtividade;
 import com.hukarz.presley.server.persistencia.interfaces.ServicoConhecimento;
 import com.hukarz.presley.server.persistencia.interfaces.ServicoDesenvolvedor;
 import com.hukarz.presley.server.processaTexto.ProcessaDocumento;
@@ -33,12 +31,10 @@ import com.hukarz.presley.server.processaTexto.ProcessaDocumento;
 public class ValidacaoConhecimentoImpl {
 	
 	ServicoConhecimento servicoConhecimento;
-	ServicoAtividade servicoAtividade;
 	ServicoDesenvolvedor servicoDesenvolvedor;
 	ServicoArquivo servicoArquivo; 
 	
 	public ValidacaoConhecimentoImpl() {
-		servicoAtividade		= new ServicoAtividadeImplDAO();
 		servicoConhecimento		= new ServicoConhecimentoImplDAO();
 		servicoDesenvolvedor	= new ServicoDesenvolvedorImplDAO();
 		servicoArquivo			= new ServicoArquivoImplDAO();
@@ -135,19 +131,6 @@ public class ValidacaoConhecimentoImpl {
 			while (it2.hasNext()) {
 				Conhecimento conhecimentoPai = it2.next();
 				servicoConhecimento.desassociaConhecimentos(conhecimentoPai.getNome(), nome);
-			}
-		}
-		
-		// Desassociar atividades:
-		ArrayList<TipoAtividade> atividades = servicoAtividade.listarAtividades();
-		if (atividades != null) {
-			Iterator<TipoAtividade> it3 = atividades.iterator();
-			
-			while (it3.hasNext()) {
-				TipoAtividade atividade = it3.next();
-				if (servicoAtividade.atividadeAssociadaAConhecimentoExiste(atividade.getId(), nome)) {
-					servicoAtividade.removerConhecimentoDaAtividade(atividade.getId(), nome);
-				}
 			}
 		}
 		

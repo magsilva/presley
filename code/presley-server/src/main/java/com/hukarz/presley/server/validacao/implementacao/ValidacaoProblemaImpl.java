@@ -19,11 +19,9 @@ import com.hukarz.presley.excessao.DescricaoInvalidaException;
 import com.hukarz.presley.excessao.ProblemaInexistenteException;
 import com.hukarz.presley.server.inferencia.Inferencia;
 import com.hukarz.presley.server.persistencia.implementacao.ServicoArquivoImplDAO;
-import com.hukarz.presley.server.persistencia.implementacao.ServicoAtividadeImplDAO;
 import com.hukarz.presley.server.persistencia.implementacao.ServicoProblemaImplDAO;
 import com.hukarz.presley.server.persistencia.implementacao.ServicoSolucaoImplDAO;
 import com.hukarz.presley.server.persistencia.interfaces.ServicoArquivo;
-import com.hukarz.presley.server.persistencia.interfaces.ServicoAtividade;
 import com.hukarz.presley.server.persistencia.interfaces.ServicoProblema;
 import com.hukarz.presley.server.persistencia.interfaces.ServicoSolucao;
 import com.hukarz.presley.server.processaTexto.ProcessaSimilaridade;
@@ -39,7 +37,6 @@ import com.hukarz.presley.server.processaTexto.ProcessaSimilaridade;
 
 public class ValidacaoProblemaImpl {
 	
-	ServicoAtividade servicoAtividade;
 	ServicoSolucao servicoSolucao;
 	ServicoProblema servicoProblema;
 	ServicoArquivo servicoArquivo;
@@ -47,7 +44,6 @@ public class ValidacaoProblemaImpl {
 	
 	public ValidacaoProblemaImpl() {
 		servicoProblema  = new ServicoProblemaImplDAO();
-		servicoAtividade = new ServicoAtividadeImplDAO();
 		servicoSolucao   = new ServicoSolucaoImplDAO();
 		servicoArquivo   = new ServicoArquivoImplDAO();
 		
@@ -127,19 +123,6 @@ public class ValidacaoProblemaImpl {
 		if (!servicoProblema.problemaExiste(id)) throw new ProblemaInexistenteException();
 
 		return servicoProblema.getProblema(id);
-	}
-	
-	/**
-	 * Esse método recupera uma lista de problemas relatados durante o desenvolvimento
-	 * de uma atividade.
-	 * @param idAtividade Identificador da atividade
-	 * @return ArrayList<Problema>
-	 */
-	public ArrayList<Problema> listarProblemasDaAtividade(int idAtividade) throws AtividadeInexistenteException {
-		
-		if (!servicoAtividade.atividadeExiste(idAtividade)) throw new AtividadeInexistenteException();
-		
-		return servicoProblema.listarProblemasDaAtividade(idAtividade);
 	}
 	
 	/**

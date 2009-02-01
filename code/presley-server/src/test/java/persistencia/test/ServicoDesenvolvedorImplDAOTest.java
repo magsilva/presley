@@ -9,10 +9,8 @@ import junit.framework.TestCase;
 import com.hukarz.presley.beans.Conhecimento;
 import com.hukarz.presley.beans.Desenvolvedor;
 import com.hukarz.presley.beans.TipoAtividade;
-import com.hukarz.presley.server.persistencia.implementacao.ServicoAtividadeImplDAO;
 import com.hukarz.presley.server.persistencia.implementacao.ServicoConhecimentoImplDAO;
 import com.hukarz.presley.server.persistencia.implementacao.ServicoDesenvolvedorImplDAO;
-import com.hukarz.presley.server.persistencia.interfaces.ServicoAtividade;
 import com.hukarz.presley.server.persistencia.interfaces.ServicoConhecimento;
 import com.hukarz.presley.server.persistencia.interfaces.ServicoDesenvolvedor;
 
@@ -20,14 +18,12 @@ public class ServicoDesenvolvedorImplDAOTest extends TestCase {
 
 	private ServicoConhecimento sc;
 	private ServicoDesenvolvedor sd;
-	private ServicoAtividade sa;
 	
 	
 	
 	protected void setUp() throws Exception {
 		sc = new ServicoConhecimentoImplDAO();
 		sd = new ServicoDesenvolvedorImplDAO();
-		sa = new ServicoAtividadeImplDAO();
 		super.setUp();
 	}
 
@@ -157,25 +153,6 @@ public class ServicoDesenvolvedorImplDAOTest extends TestCase {
 			fail("Não existe essa associacao!");
 		
 		this.removerConhecimentos();
-	}
-	
-	public void testGetAtividadesDoDesenvolvedor() {
-		
-		Calendar cal = Calendar.getInstance();
-		cal.set(2007, 01, 01);
-		Date dataInicio = new Date(cal.getTimeInMillis());
-		cal.set(2008,01,01);
-		Date dataFim = new Date(cal.getTimeInMillis());
-		
-		sa.cadastrarAtividade("asju@gmail.com", "amilcarpiox@hotmail.com", "Criar Relatorio",
-				dataInicio, dataFim);
-		
-		ArrayList<TipoAtividade> list = sd.getAtividadesDoDesenvolvedor("asju@gmail.com");
-		
-		assertTrue(list.get(0).getSupervisor().getEmail().equals("amilcarpiox@hotmail.com"));
-		
-		sa.removerAtividade(list.get(0).getId());
-		
 	}
 	
 	public void testRemoverDesenvolvedor() {

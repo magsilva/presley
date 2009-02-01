@@ -39,7 +39,6 @@ import com.hukarz.presley.excessao.SolucaoIniexistenteException;
 import com.hukarz.presley.server.core.interfaces.CorePresleyOperations;
 import com.hukarz.presley.server.inferencia.Inferencia;
 import com.hukarz.presley.server.ontologia.Ontologia;
-import com.hukarz.presley.server.validacao.implementacao.ValidacaoAtividadeImpl;
 import com.hukarz.presley.server.validacao.implementacao.ValidacaoConhecimentoImpl;
 import com.hukarz.presley.server.validacao.implementacao.ValidacaoDesenvolvedorImpl;
 import com.hukarz.presley.server.validacao.implementacao.ValidacaoMensagemImpl;
@@ -60,7 +59,6 @@ public class ExecuteClientQuery implements CorePresleyOperations{
 	 * persistência oferecidos pelas classes de validação
 	 */
 	ValidacaoConhecimentoImpl  validacaoConhecimento;
-	ValidacaoAtividadeImpl 	   validacaoAtividade;
 	ValidacaoProblemaImpl 	   validacaoProblema; 
 	ValidacaoDesenvolvedorImpl validacaoDesenvolvedor; 
 	ValidacaoMensagemImpl 	   validacaoMensagem;
@@ -68,7 +66,6 @@ public class ExecuteClientQuery implements CorePresleyOperations{
 
 	public ExecuteClientQuery() {
 		validacaoConhecimento  = new ValidacaoConhecimentoImpl();
-		validacaoAtividade 	   = new ValidacaoAtividadeImpl();
 		validacaoProblema 	   = new ValidacaoProblemaImpl();
 		validacaoDesenvolvedor = new ValidacaoDesenvolvedorImpl();
 		validacaoMensagem 	   = new ValidacaoMensagemImpl();
@@ -107,58 +104,6 @@ public class ExecuteClientQuery implements CorePresleyOperations{
 		}
 		return true;
 
-	}
-
-	/**
-	 * OK
-	 * @param packet
-	 * @return
-	 * @throws Exception 
-	 * @throws DataInvalidaException 
-	 * @throws DescricaoInvalidaException 
-	 * @throws EmailInvalidoException 
-	 */
-	public boolean adicionaAtividade(PacketStruct packet) throws EmailInvalidoException, DescricaoInvalidaException, DataInvalidaException, Exception {
-		TipoAtividade atividade = (TipoAtividade) packet.getData();
-
-		validacaoAtividade.cadastrarAtividade(atividade);
-		return true;
-	}
-	
-	public boolean adicionaAtividade(TipoAtividade novaAtividade) throws EmailInvalidoException, DescricaoInvalidaException, DataInvalidaException, Exception {
-
-		validacaoAtividade.cadastrarAtividade(novaAtividade.getDesenvolvedor().getEmail(), 
-				novaAtividade.getSupervisor().getEmail(), 
-				novaAtividade.getDescricao(), 
-				novaAtividade.getDataInicio(), 
-				novaAtividade.getDataFinal(),
-				novaAtividade.getListaDeConhecimentosEnvolvidos());
-		return true;
-	}
-
-	/**
-	 * OK
-	 * @param packet
-	 * @return
-	 * @throws Exception 
-	 */
-	public boolean associaConhecimentoAtividade(PacketStruct packet) throws AtividadeInexistenteException, 
-	ConhecimentoInexistenteException, 
-	Exception {
-
-		ConhecimentoAtividade conhecimentoAtividade = (ConhecimentoAtividade)packet.getData();
-		ArrayList<Conhecimento> listaConhecimento = conhecimentoAtividade.getConhecimentos();
-		TipoAtividade atividade = conhecimentoAtividade.getAtividade();
-
-		return associaConhecimentoAtividade(listaConhecimento, atividade);
-	}
-	public boolean associaConhecimentoAtividade(ArrayList<Conhecimento> listaConhecimento, 
-			TipoAtividade atividade) throws AtividadeInexistenteException, ConhecimentoInexistenteException, Exception {
-
-		for(Conhecimento c : listaConhecimento) {
-			validacaoAtividade.adicionarConhecimentoAAtividade(atividade.getId(), c.getNome());
-		}
-		return true;
 	}
 
 	/**
@@ -226,26 +171,6 @@ public class ExecuteClientQuery implements CorePresleyOperations{
 	}
 
 
-	public boolean desassociaConhecimentoAtividade(PacketStruct packet) throws ConhecimentoInexistenteException, AtividadeInexistenteException {
-		ConhecimentoAtividade conhecimentoAtividade = (ConhecimentoAtividade)packet.getData();
-		ArrayList<Conhecimento> listaConhecimento = conhecimentoAtividade.getConhecimentos();
-		TipoAtividade atividade = conhecimentoAtividade.getAtividade();
-
-		return desassociaConhecimentoAtividade(listaConhecimento, atividade);
-	}
-
-	public boolean desassociaConhecimentoAtividade(
-			ArrayList<Conhecimento> listaConhecimento, TipoAtividade atividade) throws ConhecimentoInexistenteException, AtividadeInexistenteException {
-
-		Iterator<Conhecimento> it = listaConhecimento.iterator();
-		while(it.hasNext()) {
-			Conhecimento conhecimento = (Conhecimento) it.next();
-			validacaoAtividade.removerConhecimentoDaAtividade(atividade.getId(), conhecimento.getNome());
-		}
-		return true;
-	}
-
-
 	public boolean desassociaProblemaAtividade(PacketStruct packet) throws ProblemaInexistenteException {
 		if(packet.getData() == null) {
 			return false;
@@ -269,14 +194,6 @@ public class ExecuteClientQuery implements CorePresleyOperations{
 
 	public boolean removerProblema(Problema problema) throws ProblemaInexistenteException {
 		return validacaoProblema.removerProblema(problema);
-	}
-
-	public boolean encerrarAtividade(PacketStruct packet) throws AtividadeInexistenteException {
-		TipoAtividade atividade = (TipoAtividade) packet.getData();
-		return encerrarAtividade(atividade);
-	}
-	public boolean encerrarAtividade(TipoAtividade atividade) throws AtividadeInexistenteException {
-		return validacaoAtividade.atualizarStatusDaAtividade(atividade.getId(), true);
 	}
 
 	public boolean enviarMensagem(PacketStruct packet) throws DesenvolvedorInexistenteException {
@@ -337,28 +254,10 @@ public class ExecuteClientQuery implements CorePresleyOperations{
 		return Ontologia.incrementaRespostasDesenvolvedor(desenvolvedor, qualificacao, conhecimentos);
 	}
 
-	public boolean removerAtividade(PacketStruct packet) throws AtividadeInexistenteException, ProblemaInexistenteException {
-		TipoAtividade atividade = (TipoAtividade) packet.getData();
-		return removerAtividade(atividade);
-	}
-	public boolean removerAtividade(TipoAtividade atividade) throws AtividadeInexistenteException, ProblemaInexistenteException {
-		if(atividade == null) {
-			System.out.println("atividade null");
-		} else {
-			System.out.println("ID ativiadade " + atividade.getId());
-			validacaoAtividade.removerAtividade(atividade.getId());
-		}
-		return true;
-	}
-
 	public ArrayList<Conhecimento> getListaConhecimentos() {
 		ArrayList<Conhecimento> retorno = null;
 		retorno = validacaoConhecimento.getListaConhecimento();
 		return retorno;
-	}
-
-	public ArrayList<TipoAtividade> getListaAtividades() {
-		return validacaoAtividade.listarAtividades();
 	}
 
 	public boolean adicionaDesenvolvedor(PacketStruct packet) throws Exception {
@@ -374,11 +273,6 @@ public class ExecuteClientQuery implements CorePresleyOperations{
 		return true;
 	}
 
-	public ArrayList<TipoAtividade> buscaAtividades() {
-		return validacaoAtividade.listarAtividades();
-	}
-
-
 	public Tree getOntologia() throws ConhecimentoInexistenteException {
 		//Ontologia ontologia = new Ontologia(null, null);
 
@@ -393,25 +287,6 @@ public class ExecuteClientQuery implements CorePresleyOperations{
 		return listaProblemas;
 	}
 
-
-	public ArrayList<Conhecimento> getListaConhecimentosEnvolvidos(
-			PacketStruct packet) throws ConhecimentoInexistenteException {
-		TipoAtividade atividade = (TipoAtividade) packet.getData();
-
-		return getListaConhecimentosEnvolvidos(atividade);
-	}	
-
-	public ArrayList<Conhecimento> getListaConhecimentosEnvolvidos(
-			TipoAtividade atividade) throws ConhecimentoInexistenteException {
-
-		ArrayList<Conhecimento> listaConhecimento = new ArrayList<Conhecimento>();
-		try {
-			listaConhecimento = validacaoAtividade.getConhecimentosEnvolvidosNaAtividade(atividade.getId());
-		} catch (AtividadeInexistenteException e) {
-			e.printStackTrace();
-		}
-		return listaConhecimento;
-	}
 
 	public Object removerConhecimento(PacketStruct packet) throws ConhecimentoInexistenteException {
 		Conhecimento conhecimento = (Conhecimento) packet.getData();

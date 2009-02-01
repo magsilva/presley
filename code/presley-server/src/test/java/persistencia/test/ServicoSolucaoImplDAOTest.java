@@ -9,11 +9,9 @@ import junit.framework.TestCase;
 import com.hukarz.presley.beans.Problema;
 import com.hukarz.presley.beans.Solucao;
 import com.hukarz.presley.beans.TipoAtividade;
-import com.hukarz.presley.server.persistencia.implementacao.ServicoAtividadeImplDAO;
 import com.hukarz.presley.server.persistencia.implementacao.ServicoDesenvolvedorImplDAO;
 import com.hukarz.presley.server.persistencia.implementacao.ServicoProblemaImplDAO;
 import com.hukarz.presley.server.persistencia.implementacao.ServicoSolucaoImplDAO;
-import com.hukarz.presley.server.persistencia.interfaces.ServicoAtividade;
 import com.hukarz.presley.server.persistencia.interfaces.ServicoDesenvolvedor;
 import com.hukarz.presley.server.persistencia.interfaces.ServicoProblema;
 import com.hukarz.presley.server.persistencia.interfaces.ServicoSolucao;
@@ -22,14 +20,12 @@ public class ServicoSolucaoImplDAOTest extends TestCase {
 	private ServicoDesenvolvedor sd;
 	private ServicoProblema sp;
 	private ServicoSolucao ss;
-	private ServicoAtividade sa;
 	
 	protected void setUp() throws Exception {
 		
 		sd = new ServicoDesenvolvedorImplDAO();
 		sp = new ServicoProblemaImplDAO();
 		ss = new ServicoSolucaoImplDAO();
-		sa = new ServicoAtividadeImplDAO();
 		super.setUp();
 	}
 
@@ -46,7 +42,6 @@ public class ServicoSolucaoImplDAOTest extends TestCase {
 	}
 	
 	private void criarProblema() {
-		this.cadastrarAtividades();
 /*		
 		Calendar cal = Calendar.getInstance();
 		cal.set(2008, 02, 15);
@@ -66,46 +61,9 @@ public class ServicoSolucaoImplDAOTest extends TestCase {
 */
 	}
 	
-	private void cadastrarAtividades() {
-		this.criarDesenvolvedores();
-		
-		Calendar cal = Calendar.getInstance();
-		cal.set(2007, 01, 01);
-		Date dataInicio = new Date(cal.getTimeInMillis());
-		cal.set(2008,01,01);
-		Date dataFim = new Date(cal.getTimeInMillis());
-		
-		cal.set(2005, 01, 01);
-		Date dataInicio2 = new Date(cal.getTimeInMillis());
-		cal.set(2006,10,01);
-		Date dataFim2 = new Date(cal.getTimeInMillis());
-		
-		assertTrue(sa.cadastrarAtividade("asju@gmail.com", "amilcarsj@gmail.com", "Criar Relatorio",
-				dataInicio, dataFim) == 1);
-		
-		assertTrue(sa.cadastrarAtividade("amilcarsj@gmail.com", "asju@gmail.com", "Executar testes",
-				dataInicio2, dataFim2) == 1);
-		
-		assertTrue(sa.cadastrarAtividade("amilcarsj@gmail.com", "asju@gmail.com", "Criar testes",
-				dataInicio2, dataFim2) == 1);
-		
-	}
-
-	private void removerAtividade() {
-		
-		ArrayList<TipoAtividade> list = sd.getAtividadesDoDesenvolvedor("asju@gmail.com");
-		
-		assertTrue(sa.removerAtividade(list.get(0).getId()));
-			
-		list = sd.getAtividadesDoDesenvolvedor("amilcarsj@gmail.com");
-		
-		assertTrue(sa.removerAtividade(list.get(0).getId()));
-		assertTrue(sa.removerAtividade(list.get(1).getId()));
-		
-	}
 
 	private void removerProblemas() {
-		ArrayList<TipoAtividade> list = sd.getAtividadesDoDesenvolvedor("amilcarsj@gmail.com");
+/*		ArrayList<TipoAtividade> list = sd.getAtividadesDoDesenvolvedor("amilcarsj@gmail.com");
 		
 		ArrayList<Problema> plist = sp.listarProblemasDaAtividade(list.get(0).getId());
 		
@@ -119,18 +77,17 @@ public class ServicoSolucaoImplDAOTest extends TestCase {
 		plist = sp.listarProblemasDaAtividade(list.get(0).getId());
 		
 		assertTrue(sp.removerProblema(plist.get(0)));
-		
+*/		
 	}
 	
 	private void removerDesenvolvedores(){
-		
 		assertTrue(sd.removerDesenvolvedor("amilcarsj@gmail.com"));
 		
 		assertTrue(sd.removerDesenvolvedor("asju@gmail.com"));
 	}
 	public void testCadastrarSolucao() {
 				
-		this.criarProblema();
+/*		this.criarProblema();
 		
 		ArrayList<TipoAtividade> list = sd.getAtividadesDoDesenvolvedor("asju@gmail.com");
 				
@@ -140,7 +97,7 @@ public class ServicoSolucaoImplDAOTest extends TestCase {
 		cal.set(2008, 01, 01);
 		Date dataDaProposta = new Date(cal.getTimeInMillis());
 		
-		
+*/		
 /*
   		assertTrue(ss.cadastrarSolucao("amilcarsj@gmail.com", plist.get(0).getId(), 
 				dataDaProposta, "Isso provavelmente é erro no classpath, tente alterá-lo..."));
@@ -220,7 +177,7 @@ public class ServicoSolucaoImplDAOTest extends TestCase {
 
 	public void testRemoverSolucao() {
 		this.removerProblemas();
-		this.removerAtividade();
+//		this.removerAtividade();
 		
 		ArrayList<Solucao> list = ss.listarSolucoesDoDesenvolvedor("amilcarsj@gmail.com");
 		

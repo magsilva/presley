@@ -14,7 +14,6 @@ import com.hukarz.presley.beans.ClasseJava;
 import com.hukarz.presley.beans.Desenvolvedor;
 import com.hukarz.presley.beans.Problema;
 import com.hukarz.presley.server.persistencia.MySQLConnectionFactory;
-import com.hukarz.presley.server.persistencia.interfaces.ServicoAtividade;
 import com.hukarz.presley.server.persistencia.interfaces.ServicoConhecimento;
 import com.hukarz.presley.server.persistencia.interfaces.ServicoDesenvolvedor;
 import com.hukarz.presley.server.persistencia.interfaces.ServicoProblema;
@@ -115,56 +114,6 @@ public class ServicoProblemaImplDAO implements ServicoProblema{
 		}
 
 		return true;
-
-	}
-
-	public ArrayList<Problema> listarProblemasDaAtividade(int idAtividade) {
-
-		//Connection conn = MySQLConnectionFactory.getConnection();
-		Connection conn = MySQLConnectionFactory.open();
-
-		Statement stm = null;
-
-		ArrayList<Problema> list = new ArrayList<Problema>();
-		ServicoAtividade sa = new ServicoAtividadeImplDAO();
-
-		try {
-
-			stm = conn.createStatement();
-
-			String SQL = " SELECT * FROM problema WHERE "+
-			" atividade_id = "+idAtividade+" ORDER BY atividade_id;";
-
-
-			ResultSet rs = stm.executeQuery(SQL);
-
-			while (rs.next()){
-
-				Problema p = new Problema();
-
-				p.setId(rs.getInt(1));
-				p.setAtividade(sa.getAtividade(rs.getInt(2)));
-				p.setDescricao(rs.getString(3));
-				p.setResolvido(rs.getBoolean(4));
-				p.setData(rs.getDate(5));
-				p.setMensagem(rs.getString(6));
-
-				list.add(p);
-
-			}
-			return list;
-		} catch (SQLException e) {
-			//e.printStackTrace();
-			return null;
-		} finally {
-			try {
-				stm.close();
-				conn.close();
-			} catch (SQLException onConClose) {
-				System.out.println(" Houve erro no fechamento da conexão ");
-				onConClose.printStackTrace();	             
-			}
-		}
 
 	}
 
@@ -302,7 +251,6 @@ public class ServicoProblemaImplDAO implements ServicoProblema{
 		Statement stm = null;
 
 		ArrayList<Problema> list = new ArrayList<Problema>();
-		ServicoAtividade sa = new ServicoAtividadeImplDAO();
 		ServicoDesenvolvedor sd = new ServicoDesenvolvedorImplDAO();
 		ServicoConhecimento sc = new ServicoConhecimentoImplDAO();
 		try {

@@ -19,11 +19,9 @@ import com.hukarz.presley.excessao.EmailInvalidoException;
 import com.hukarz.presley.excessao.ErroDeAutenticacaoException;
 import com.hukarz.presley.excessao.ListagemDeConhecimentoInexistenteException;
 import com.hukarz.presley.excessao.SenhaInvalidaException;
-import com.hukarz.presley.server.persistencia.implementacao.ServicoAtividadeImplDAO;
 import com.hukarz.presley.server.persistencia.implementacao.ServicoConhecimentoImplDAO;
 import com.hukarz.presley.server.persistencia.implementacao.ServicoDesenvolvedorImplDAO;
 import com.hukarz.presley.server.persistencia.implementacao.ServicoSolucaoImplDAO;
-import com.hukarz.presley.server.persistencia.interfaces.ServicoAtividade;
 import com.hukarz.presley.server.persistencia.interfaces.ServicoConhecimento;
 import com.hukarz.presley.server.persistencia.interfaces.ServicoDesenvolvedor;
 import com.hukarz.presley.server.persistencia.interfaces.ServicoSolucao;
@@ -40,12 +38,10 @@ import com.hukarz.presley.server.persistencia.interfaces.ServicoSolucao;
 public class ValidacaoDesenvolvedorImpl {
 	
 	ServicoConhecimento servicoConhecimento;
-	ServicoAtividade servicoAtividade;
 	ServicoSolucao servicoSolucao;
 	ServicoDesenvolvedor servicoDesenvolvedor;
 	
 	public ValidacaoDesenvolvedorImpl() {
-		servicoAtividade = new ServicoAtividadeImplDAO();
 		servicoConhecimento = new ServicoConhecimentoImplDAO();
 		servicoDesenvolvedor = new ServicoDesenvolvedorImplDAO();
 		servicoSolucao = new ServicoSolucaoImplDAO();

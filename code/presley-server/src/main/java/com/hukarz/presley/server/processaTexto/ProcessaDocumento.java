@@ -194,21 +194,25 @@ public class ProcessaDocumento {
 	}
 
 	private String remocaoDePalavrasNegativas(String texto){
-		File diretorioCD = new File ("D:/workspace/presley-server/src/processaTexto/Stopwords");   
+		// presley-server/src/main/java/com/hukarz/presley/server/processaTexto/Stopwords 
+		// C:/Java/presley/trunk/code/presley-server/src/main/java/com/hukarz/presley/server/processaTexto/Stopwords
+		                                                                       
+		File diretorioCD = new File("C:/Java/presley/trunk/code/presley-server/src/main/java/com/hukarz/presley/server/processaTexto/Stopwords");   
 		File[] listagemDiretorio = diretorioCD.listFiles(); 
 		texto = " " + texto + " ";
 
 		try {
 			for (int i = 0; i < listagemDiretorio.length; i++) {  
+				if (listagemDiretorio[i].isFile()){
+					File file = new File( listagemDiretorio[i].getAbsolutePath() );
+					FileReader fileReader = new FileReader(file);
+					BufferedReader reader = new BufferedReader(fileReader);
 
-				File file = new File( listagemDiretorio[i].getAbsolutePath() );
-				FileReader fileReader = new FileReader(file);
-				BufferedReader reader = new BufferedReader(fileReader);
+					String palavra = "";
 
-				String palavra = "";
-
-				while( (palavra = reader.readLine()) != null ){
-					texto = texto.replaceAll(" " + palavra + " ", " ");
+					while( (palavra = reader.readLine()) != null ){
+						texto = texto.replaceAll(" " + palavra + " ", " ");
+					}
 				}
 			}
 		} catch (IOException e) {

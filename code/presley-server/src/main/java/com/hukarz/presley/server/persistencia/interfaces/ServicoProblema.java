@@ -41,14 +41,6 @@ public interface ServicoProblema {
 	public boolean removerProblema(Problema problema);
 	
 	/**
-	 * Esse método recupera uma lista de problemas relatados durante o desenvolvimento
-	 * de uma atividade.
-	 * @param idAtividade Identificador da atividade
-	 * @return ArrayList<Problema>
-	 */
-	public ArrayList<Problema> listarProblemasDaAtividade(int idAtividade);
-	
-	/**
 	 * Esse método verifica se um dado problema existe na base de dados.
 	 * @param id Identificador do problema
 	 * @return true se o problema existir na base de dados.
