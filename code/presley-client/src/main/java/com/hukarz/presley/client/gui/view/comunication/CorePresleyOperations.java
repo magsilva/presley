@@ -33,15 +33,15 @@ import com.hukarz.presley.excessao.SenhaInvalidaException;
 public interface CorePresleyOperations {
 	
 	public static final int ERRO = -1;
-	public static final int ADICIONA_ATIVIDADE = 1;
-	public static final int REMOVE_ATIVIDADE = 2;
-	public static final int BUSCA_ATIVIDADE = 3;
+//	public static final int ADICIONA_ATIVIDADE = 1;
+//	public static final int REMOVE_ATIVIDADE = 2;
+//	public static final int BUSCA_ATIVIDADE = 3;
 	public static final int ADICIONA_CONHECIMENTO = 4;
 	public static final int LOG_IN = 5;
 	public static final int LOG_OUT = 6;
-	public static final int ENCERRAR_ATIVIDADE = 7;
-	public static final int ASSOCIAR_CONHECIMENTO_ATIVIDADE = 8;
-	public static final int DESSASOCIAR_CONHECIMENTO_ATIVIDADE = 9;
+//	public static final int ENCERRAR_ATIVIDADE = 7;
+//	public static final int ASSOCIAR_CONHECIMENTO_ATIVIDADE = 8;
+//	public static final int DESSASOCIAR_CONHECIMENTO_ATIVIDADE = 9;
 	public static final int ASSOCIAR_PROBLEMA_ATIVIDADE = 10;
 	public static final int DESSASOCIAR_PROBLEMA_ATIVIDADE = 11;
 	public static final int BUSCA_DESENVOLVEDORES = 12;
@@ -52,7 +52,7 @@ public interface CorePresleyOperations {
 	public static final int ADICIONA_DESENVOLVEDOR = 17;
 	public static final int GET_ONTOLOGIA = 18;
 	public static final int GET_LISTA_PROBLEMAS = 19;
-	public static final int BUSCA_CONHECIMENTOS_RELACIONADOS = 20;
+//	public static final int BUSCA_CONHECIMENTOS_RELACIONADOS = 20;
 	public static final int REMOVER_CONHECIMENTO = 21;
 	public static final int CONHECIMENTO_POSSUI_FILHOS = 22;
 	public static final int REMOVER_DESENVOLVEDOR = 23;
@@ -69,32 +69,6 @@ public interface CorePresleyOperations {
 	public static final int ASSOCIA_ARQUIVO_CONHECIMENTO = 34;
 	public static final int GET_PROJETO = 35;
 	
-	
-	/**
-	 * Este método cadastra uma nova atividade na base de dados.
-	 * CÓDIGO DA OPERAÇÃO -> 01
-	 * @param TipoAtividade atividade 
-	 * @return true se a atividade foi adicionada com sucesso.
-	 * @throws Exception 
-	 */
-	public boolean adicionaAtividade(TipoAtividade atividade) throws Exception;
-	
-	/**
-	 * Este método remove a atividade da base de dados.
-	 * CÓDIGO DA OPERAÇÃO -> 02
-	 * @param TipoAtividade atividade 
-	 * @return true se a atividade foi removida com sucesso.
-	 * @throws AtividadeInexistenteException 
-	 * @throws ProblemaInexistenteException 
-	 */
-	public boolean removerAtividade(TipoAtividade atividade) throws AtividadeInexistenteException, ProblemaInexistenteException;
-
-	/**
-	 * Este método retorna as atividades cadastradas
-	 * CÓDIGO DA OPERAÇÃO -> 03
-	 * @return ArrayList<TipoAtividade> lista de atividades.
-	 */
-	public ArrayList<TipoAtividade> buscaAtividades();
 	
 	/**
 	 * Este método solicita a arvore de ontologia
@@ -127,39 +101,6 @@ public interface CorePresleyOperations {
 	 * @return true se o conhecimento foi adicionado com sucesso.
 	 */
 	public boolean logout(Desenvolvedor desenvolvedor);
-
-	/**
-	 * Este método seta a atividade como encerrada
-	 * CÓDIGO DA OPERAÇÃO -> 07
-	 * @param TipoAtividade atividade
-	 * @return true se a atividade for encerrada com sucesso.
-	 * @throws AtividadeInexistenteException 
-	 */
-	public boolean encerrarAtividade(TipoAtividade atividade) throws AtividadeInexistenteException;
-
-	/**
-	 * Este método associa conhecimentos a uma atividade
-	 * CÓDIGO DA OPERAÇÃO -> 08
-	 * @param ArrayList<Conhecimento> listaConhecimento
-	 * @param TipoAtividade atividade
-	 * @return true se a associação foi realizada com sucesso.
-	 * @throws ConhecimentoInexistenteException 
-	 * @throws AtividadeInexistenteException 
-	 * @throws Exception 
-	 */
-	public boolean associaConhecimentoAtividade(ArrayList<Conhecimento> listaConhecimento, TipoAtividade atividade) throws AtividadeInexistenteException, ConhecimentoInexistenteException, Exception;
-
-	/**
-	 * Este método desassocia conhecimentos a uma atividade
-	 * CÓDIGO DA OPERAÇÃO -> 09
-	 * @param ArrayList<Conhecimento> listaConhecimento
-	 * @param TipoAtividade atividade
-	 * @return true se a desassociação foi realizada com sucesso.
-	 * @throws AtividadeInexistenteException 
-	 * @throws ConhecimentoInexistenteException 
-	 * @throws Exception 
-	 */
-	public boolean desassociaConhecimentoAtividade(ArrayList<Conhecimento> listaConhecimento, TipoAtividade atividade) throws ConhecimentoInexistenteException, AtividadeInexistenteException, Exception;
 
 	/**
 	 * Este método associa um problema a uma atividade
@@ -261,8 +202,6 @@ public interface CorePresleyOperations {
 	 */
 	public ArrayList<Problema> getListaProblemas();
 	
-	public ArrayList<Conhecimento> getListaConhecimentosEnvolvidos(TipoAtividade atividade) throws ConhecimentoInexistenteException;
-
 	public boolean removerConhecimento(Conhecimento conhecimento) throws ConhecimentoInexistenteException;
 	
 	public boolean possuiFilhos(Conhecimento conhecimento) throws ConhecimentoInexistenteException;

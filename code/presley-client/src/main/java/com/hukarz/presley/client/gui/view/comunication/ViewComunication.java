@@ -23,8 +23,10 @@ import com.hukarz.presley.beans.TipoAtividade;
 import com.hukarz.presley.beans.Tree;
 import com.hukarz.presley.communication.facade.PacketStruct;
 import com.hukarz.presley.communication.facade.PrincipalSUBJECT;
+import com.hukarz.presley.excessao.AtividadeInexistenteException;
 import com.hukarz.presley.excessao.ConhecimentoInexistenteException;
 import com.hukarz.presley.excessao.DesenvolvedorInexistenteException;
+import com.hukarz.presley.excessao.ProblemaInexistenteException;
 
 /**
  * Esta classe controla a comunicacao entre o cliente e o servidor.
@@ -134,60 +136,7 @@ public class ViewComunication implements CorePresleyOperations{
 		return mensagens;
 	}
 	
-	/**
-	 * Retorna os nomes das atividades cadastradas
-	 * @return ArrayList<String> é a lista de atividades
-	 */
-	public ArrayList<String> getAtividades()
-	{
-	
-		PacketStruct respostaPacket = sendPack(null,CorePresleyOperations.BUSCA_ATIVIDADE);
-    	ArrayList<TipoAtividade> resposta = (ArrayList<TipoAtividade>)respostaPacket.getData();
-    	atividades = resposta;
-    	
-    	if (resposta == null){ 
-    		logger.info("RESPOSTA NULL");
-    		return new ArrayList<String>();
-    	}
-		
-		ArrayList<String> retorno = new ArrayList<String>();
-		if (this.atividades!=null) {
-			for (TipoAtividade atividade : this.atividades) {
-				retorno.add(atividade.getDescricao());
-			}
-			
-		}
-		return retorno;
-	}
-	
-	/**
-	 * Retorna os conhecimentos envolvidos em uma dada atividade
-	 * @param atividade é o nome da atividade
-	 * @return ArrayList<String> é a lista de conhecimentos associados a atividade
-	 */
-	public ArrayList<Conhecimento> getConhecimentosEnvolvidos(String atividade)
-	{
-		TipoAtividade tipoAtividadeSelecionado = null;
-		
-		for (TipoAtividade atividadeAtual : atividades) {
-			if (atividadeAtual.getDescricao().equals(atividade)) {
-				tipoAtividadeSelecionado = atividadeAtual;
-				break;
-			}
-		}
-		
-		PacketStruct respostaPacket = sendPack(tipoAtividadeSelecionado,CorePresleyOperations.BUSCA_CONHECIMENTOS_RELACIONADOS);
-    	ArrayList<Conhecimento> resposta = (ArrayList<Conhecimento>)respostaPacket.getData();
-    	
-       	if(resposta == null){ 
-       		logger.info("RESPOSTA NULL");
-    		return null;
-    	}
-       	conhecimentos.put(atividade, resposta);
-    	
-		return this.conhecimentos.get(atividade);
-	}
-	
+
 	/**
 	 * *****************************************
 	 * Retorna os problemas associados a uma dada atividade
@@ -354,79 +303,6 @@ public class ViewComunication implements CorePresleyOperations{
 		return packet;
 	}
 
-	/**
-	 * Adiciona uma nova atividade a lista já existente e envia um pacote para o servidor
-	 * para incluir essa ativadade no BD.
-	 * @param atividade contem a descriçao da atividade, os conhecimentos envolvidos, os desenvolvedores e as datas
-	 */
-	public boolean adicionaAtividade(TipoAtividade atividade) throws Exception {
-
-		boolean retorno = false;
-		
-		PacketStruct respostaPacket = sendPack(atividade, CorePresleyOperations.ADICIONA_ATIVIDADE);
-    	if(respostaPacket.getId() == CorePresleyOperations.ERRO) {
-    		throw new Exception((String)respostaPacket.getData());
-    	}
-    	else {
-    		retorno = (Boolean)respostaPacket.getData();
-    		if (retorno == true) {
-    			this.atividades.add(atividade);
-    			this.conhecimentos.put(atividade.getDescricao(), atividade.getListaDeConhecimentosEnvolvidos());
-    		}
-    		logger.info("Resposta: "+retorno);
-    	}
-    	
-    	this.atividades.add(atividade);//TESTE
-		this.conhecimentos.put(atividade.getDescricao(), atividade.getListaDeConhecimentosEnvolvidos());//TESTE
-    	
-		return retorno;
-	}
-	
-	/**
-	 * Remove uma ativadade da lista existente
-	 * @param atividade é a atividade que será removida
-	 */
-	public boolean removerAtividade(TipoAtividade atividade) {
-    	PacketStruct respostaPacket = sendPack(atividade, REMOVE_ATIVIDADE);
-    	Boolean resposta = (Boolean)respostaPacket.getData();
-    	if (resposta.booleanValue()) {
-    		this.atividades.remove(atividade);
-    		this.conhecimentos.remove(atividade);
-		}
-    	
-    	this.atividades.remove(atividade);//TESTE
-		this.conhecimentos.remove(atividade);//TESTE
-    	
-		return resposta.booleanValue();
-    	//return true;
-	}
-
-	public boolean associaConhecimentoAtividade(
-		ArrayList<Conhecimento> listaConhecimento, TipoAtividade atividade) throws Exception{
-
-		ConhecimentoAtividade ca = new ConhecimentoAtividade();
-		ca.setAtividade(atividade);
-		ca.setConhecimento(listaConhecimento);
-		
-		PacketStruct respostaPacket = sendPack(ca, CorePresleyOperations.ASSOCIAR_CONHECIMENTO_ATIVIDADE);
-		
-		if(respostaPacket.getId() == CorePresleyOperations.ERRO) {
-			throw new Exception((String)  respostaPacket.getData());
-		}
-		ArrayList<Conhecimento> conhecimentosAssociados = conhecimentos.get(atividade.getDescricao());
-		if (conhecimentosAssociados==null) {
-			conhecimentosAssociados = new ArrayList<Conhecimento>();
-		}
-		
-		for (Conhecimento conhecimento : listaConhecimento) {
-				conhecimentosAssociados.add(conhecimento);			
-		}	
-		
-	
-		
-		return true;
-	}
-
 	public boolean adicionaProblema(Problema problema) throws Exception{
 		PacketStruct respostaPacket  = sendPack(problema, CorePresleyOperations.ADICIONA_PROBLEMA);
 
@@ -509,33 +385,6 @@ public class ViewComunication implements CorePresleyOperations{
 			ArrayList<Desenvolvedor> desenvolvedores = (ArrayList<Desenvolvedor>)respostaPacket.getData();
 			return desenvolvedores;
 		}
-	}
-
-	public boolean desassociaConhecimentoAtividade(
-			ArrayList<Conhecimento> listaConhecimento, TipoAtividade atividade) throws Exception {
-		ConhecimentoAtividade ca = new ConhecimentoAtividade();
-		ca.setAtividade(atividade);
-		ca.setConhecimento(listaConhecimento);
-		
-		PacketStruct respostaPacket = sendPack(ca, CorePresleyOperations.DESSASOCIAR_CONHECIMENTO_ATIVIDADE);
-		
-		if(respostaPacket.getId() == CorePresleyOperations.ERRO) {
-			throw new Exception((String)  respostaPacket.getData());
-		}
-		ArrayList<Conhecimento> conhecimentosAssociados = conhecimentos.get(atividade.getDescricao());
-		if (conhecimentosAssociados==null) {
-			return false;
-		}
-		
-		for (Conhecimento conhecimento : listaConhecimento) {
-			for (int i = 0; i < conhecimentosAssociados.size(); i++) {
-				if (conhecimentosAssociados.get(i).getNome().equals(conhecimento.getNome())) {
-					conhecimentosAssociados.remove(i);
-					break;	
-				}
-			}	
-		}	
-		return true;
 	}
 
 	public boolean desassociaProblemaAtividade(Problema problema,
@@ -660,20 +509,6 @@ public class ViewComunication implements CorePresleyOperations{
 		//return true;
 	}
 
-	/**
-	 * Retorna uma lista de Atividades
-	 * @return ArrayList<TipoAtividade> é a lista de atividades cadastradas
-	 */
-	public ArrayList<TipoAtividade> buscaAtividades() {
-		PacketStruct respostaPacket = sendPack(null, BUSCA_ATIVIDADE);
-		ArrayList<TipoAtividade> resposta = (ArrayList<TipoAtividade>)respostaPacket.getData();
-    	if (resposta!=null) {
-    		atividades = resposta;
-		}
-    	
-		return atividades;
-	}
-
 	public Desenvolvedor login(DadosAutenticacao authData) {
 		PacketStruct respostaPacket = sendPack(authData, CorePresleyOperations.LOG_IN);
 		if(respostaPacket.getData() != null) {
@@ -689,14 +524,6 @@ public class ViewComunication implements CorePresleyOperations{
 			return true;
 		}
 		return false;
-	}
-
-	public ArrayList<Conhecimento> getListaConhecimentosEnvolvidos(TipoAtividade atividade) {
-		PacketStruct respostaPacket = sendPack(atividade, CorePresleyOperations.BUSCA_CONHECIMENTOS_RELACIONADOS);
-		if(respostaPacket.getData() != null){
-			return (ArrayList<Conhecimento>) respostaPacket.getData();
-		}
-		return null;
 	}
 
 	public boolean removerConhecimento(Conhecimento conhecimento) {
