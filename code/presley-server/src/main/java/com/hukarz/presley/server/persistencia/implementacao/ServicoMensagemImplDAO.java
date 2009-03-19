@@ -10,30 +10,25 @@ import com.hukarz.presley.beans.Desenvolvedor;
 import com.hukarz.presley.beans.Mensagem;
 import com.hukarz.presley.beans.Problema;
 import com.hukarz.presley.server.persistencia.MySQLConnectionFactory;
+import com.hukarz.presley.server.persistencia.interfaces.ServicoMensagem;
 
 
-
-public class ServicoMensagemImplDAO {
+public class ServicoMensagemImplDAO implements ServicoMensagem{
 
 	ServicoProblemaImplDAO servicoProblema = new ServicoProblemaImplDAO();
-	public boolean adicionarMensagem(Desenvolvedor desenvolvedorOrigem, ArrayList<Desenvolvedor> desenvolvedoresDestino, Problema problema, String texto) {
-		
-		//MySQLConnectionFactory factory = new MySQLConnectionFactory();
 
-		//Connection conn = MySQLConnectionFactory.getConnection();
+	public boolean adicionarMensagem(ArrayList<Desenvolvedor> desenvolvedoresDestino, Problema problema) {
 		Connection conn = MySQLConnectionFactory.open();
 		
 		Statement stm = null;		
-		System.out.println("Dentro do banco, desOrigem email: "+desenvolvedorOrigem.getEmail());
-		System.out.println("Dentro do banco, mensagem: "+texto);
 		try {
 			stm = conn.createStatement();
 
 			for (int i = 0; i < desenvolvedoresDestino.size(); i++) {
-			String SQL = " INSERT INTO mensagem(desenvolvedor_origem_email, desenvolvedor_destino_email, problema, mensagem) VALUES ('"
-				+desenvolvedorOrigem.getEmail()+"','" +desenvolvedoresDestino.get(i).getEmail()+"','"+problema.getId()+"','"+texto+"');";
-			System.out.println(SQL);
-			stm.execute(SQL);
+				String SQL = " INSERT INTO mensagem(desenvolvedor_destino_email, problema_id) VALUES ('"
+					+desenvolvedoresDestino.get(i).getEmail()+"','"+problema.getId()+"');";
+				System.out.println(SQL);
+				stm.execute(SQL);
 			}
 
 		} catch (SQLException e) {

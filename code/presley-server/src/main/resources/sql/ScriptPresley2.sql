@@ -108,3 +108,11 @@ CREATE TABLE conhecimento_pai_filho (
   FOREIGN KEY (conhecimento_filho_nome) REFERENCES conhecimento (nome) ON DELETE CASCADE
 );
 
+CREATE TABLE desenvolvedor_has_conhecimento (
+  desenvolvedor_email VARCHAR(40) NOT NULL,
+  conhecimento_nome VARCHAR(40) NOT NULL,
+  grau real NOT NULL,
+  PRIMARY KEY(desenvolvedor_email, conhecimento_nome),
+  FOREIGN KEY (desenvolvedor_email) REFERENCES desenvolvedor (email) ON DELETE CASCADE, 
+  FOREIGN KEY (conhecimento_nome) REFERENCES conhecimento (nome) ON DELETE CASCADE
+);

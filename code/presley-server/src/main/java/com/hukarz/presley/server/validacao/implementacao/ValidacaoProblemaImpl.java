@@ -19,9 +19,11 @@ import com.hukarz.presley.excessao.DescricaoInvalidaException;
 import com.hukarz.presley.excessao.ProblemaInexistenteException;
 import com.hukarz.presley.server.inferencia.Inferencia;
 import com.hukarz.presley.server.persistencia.implementacao.ServicoArquivoImplDAO;
+import com.hukarz.presley.server.persistencia.implementacao.ServicoMensagemImplDAO;
 import com.hukarz.presley.server.persistencia.implementacao.ServicoProblemaImplDAO;
 import com.hukarz.presley.server.persistencia.implementacao.ServicoSolucaoImplDAO;
 import com.hukarz.presley.server.persistencia.interfaces.ServicoArquivo;
+import com.hukarz.presley.server.persistencia.interfaces.ServicoMensagem;
 import com.hukarz.presley.server.persistencia.interfaces.ServicoProblema;
 import com.hukarz.presley.server.persistencia.interfaces.ServicoSolucao;
 import com.hukarz.presley.server.processaTexto.ProcessaSimilaridade;
@@ -40,12 +42,15 @@ public class ValidacaoProblemaImpl {
 	ServicoSolucao servicoSolucao;
 	ServicoProblema servicoProblema;
 	ServicoArquivo servicoArquivo;
+	ServicoMensagem servicoMensagem;
+	
 	ValidacaoArquivoImpl validacaoArquivo ;
 	
 	public ValidacaoProblemaImpl() {
 		servicoProblema  = new ServicoProblemaImplDAO();
 		servicoSolucao   = new ServicoSolucaoImplDAO();
 		servicoArquivo   = new ServicoArquivoImplDAO();
+		servicoMensagem  = new ServicoMensagemImplDAO();
 		
 		validacaoArquivo = new ValidacaoArquivoImpl();
 	}
@@ -79,7 +84,36 @@ public class ValidacaoProblemaImpl {
 		
 		Projeto projeto = ValidacaoUtil.getProjetoAtivo();
 		// Cria uma lista com os Desenvolvedores de cada arquivo java		 
+		Map<ArquivoJava, ArrayList<Desenvolvedor>> arquivoDesenvolvedores = getDesenvolvedoresArquivo(problema);
+		
+		// Identifica o conhecimeto do problema a se cadastrar
+		ProcessaSimilaridade processaSimilaridade = new ProcessaSimilaridade();
+		problema.setConhecimento( processaSimilaridade.verificaConhecimentoDoTexto( problema.getDescricao() + "  " + problema.getMensagem() ) ) ;
+
+		// Retorna os desenvolvedores que receberão o problema
+		ArrayList<Desenvolvedor> desenvolvedores = Inferencia.getDesenvolvedores(arquivoDesenvolvedores, problema.getConhecimento());
+		
+		boolean retorno = servicoProblema.cadastrarProblema(problema);
+		if (retorno){
+			problema = servicoProblema.getProblema(problema.getDescricao(),
+					problema.getData(), problema.getMensagem(),
+					problema.getDesenvolvedorOrigem());
+			servicoMensagem.adicionarMensagem(desenvolvedores, problema);
+		}
+		
+		return retorno;
+	}
+
+	/**
+	 * Cria uma lista com os Desenvolvedores de cada arquivo java	
+	 * @param problema
+	 * @return
+	 */
+	public Map<ArquivoJava, ArrayList<Desenvolvedor>> getDesenvolvedoresArquivo(Problema problema){
+		// Cria uma lista com os Desenvolvedores de cada arquivo java		 
 		Map<ArquivoJava, ArrayList<Desenvolvedor>> arquivoDesenvolvedores = new HashMap<ArquivoJava, ArrayList<Desenvolvedor>>();
+		
+		Projeto projeto = ValidacaoUtil.getProjetoAtivo();
 		
 		// Cadastra as classes envolvidas no problema
 		Map<ClasseJava, ArquivoJava> arquivos = problema.getClassesRelacionadas();
@@ -98,19 +132,11 @@ public class ValidacaoProblemaImpl {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-		} 
+		}
 		
-		problema.setClassesRelacionadas(arquivos);
+		//problema.setClassesRelacionadas(arquivos);
 		
-		// Identifica o conhecimeto do problema a se cadastrar
-		ProcessaSimilaridade processaSimilaridade = new ProcessaSimilaridade();
-		problema.setConhecimento( processaSimilaridade.verificaConhecimentoDoTexto( problema.getDescricao() + "  " + problema.getMensagem() ) ) ;
-
-		// Retorna os desenvolvedores que receberam o problema
-		Inferencia.getDesenvolvedores(arquivoDesenvolvedores, problema.getConhecimento());
-		
-		return servicoProblema.cadastrarProblema(problema);
-//		return true;
+		return arquivoDesenvolvedores;
 	}
 	
 	/**

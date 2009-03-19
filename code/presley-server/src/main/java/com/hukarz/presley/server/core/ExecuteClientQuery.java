@@ -152,20 +152,13 @@ public class ExecuteClientQuery implements CorePresleyOperations{
 	 * @throws DesenvolvedorInexistenteException 
 	 */
 	public ArrayList<Desenvolvedor> buscaDesenvolvedores(PacketStruct packet) throws DesenvolvedorInexistenteException {
-		BuscaDesenvolvedores busca = (BuscaDesenvolvedores)packet.getData();
-		ArrayList<String> listaConhecimento = busca.getListaConhecimento();
-		int grauDeConfianca = busca.getGrauDeConfianca();
+		Problema problema = (Problema) packet.getData();
 
-		return buscaDesenvolvedores(listaConhecimento, grauDeConfianca);
+		return buscaDesenvolvedores(problema);
 	}	
 
-	public ArrayList<Desenvolvedor> buscaDesenvolvedores(ArrayList<String> listaConhecimento, int grauDeConfianca) throws DesenvolvedorInexistenteException {
-
-		String[] conhecimentos = new String[listaConhecimento.size()];
-		for(int i = 0; i < listaConhecimento.size(); i++)
-			conhecimentos[i] = listaConhecimento.get(i);
-
-		ArrayList<Desenvolvedor> listaDesenvolvedores = Inferencia.getDesenvolvedores(conhecimentos, grauDeConfianca);
+	public ArrayList<Desenvolvedor> buscaDesenvolvedores(Problema problema) throws DesenvolvedorInexistenteException {
+		ArrayList<Desenvolvedor> listaDesenvolvedores = Inferencia.getDesenvolvedores(validacaoProblema.getDesenvolvedoresArquivo(problema), problema.getConhecimento());
 
 		return listaDesenvolvedores;
 	}
@@ -198,16 +191,12 @@ public class ExecuteClientQuery implements CorePresleyOperations{
 
 	public boolean enviarMensagem(PacketStruct packet) throws DesenvolvedorInexistenteException {
 		Mensagem msg = (Mensagem) packet.getData();
-		System.out.println("Mensagem dentro do execute client query: "+msg.getTexto());
-		return enviarMensagem(msg.getDesenvolvedorOrigem(), msg.getDesenvolvedoresDestino(), msg.getProblema(), msg.getTexto());
-
+		return enviarMensagem(msg.getDesenvolvedoresDestino(), msg.getProblema());
 	}
 
-	public boolean enviarMensagem(Desenvolvedor desenvolvedorOrigem,
-			ArrayList<Desenvolvedor> desenvolvedoresDestino, Problema problema,
-			String texto) throws DesenvolvedorInexistenteException {
-		System.out.println("Mensagem dentro do execute client query 2: "+ texto);
-		return validacaoMensagem.adicionarMensagem(desenvolvedorOrigem, desenvolvedoresDestino, problema, texto);
+	public boolean enviarMensagem(
+			ArrayList<Desenvolvedor> desenvolvedoresDestino, Problema problema) throws DesenvolvedorInexistenteException {
+		return validacaoMensagem.adicionarMensagem(desenvolvedoresDestino, problema);
 	}
 
 	public ArrayList<Mensagem> requisitaMensagens(Desenvolvedor desenvolvedorDestino) {

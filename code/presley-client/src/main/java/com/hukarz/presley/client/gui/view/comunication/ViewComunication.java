@@ -547,8 +547,7 @@ public class ViewComunication implements CorePresleyOperations{
 	
 	
 	//TODO
-	public ArrayList<Desenvolvedor> buscaDesenvolvedores(Problema problema,
-			ArrayList<Conhecimento> listaConhecimento, int grauDeConfianca)
+	public ArrayList<Desenvolvedor> buscaDesenvolvedores(Problema problema)
 			throws DesenvolvedorInexistenteException {
 		// TODO Auto-generated method stub
 		return null;

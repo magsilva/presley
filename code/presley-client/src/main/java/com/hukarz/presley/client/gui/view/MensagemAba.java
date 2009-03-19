@@ -570,8 +570,7 @@ public class MensagemAba extends ViewPart {
 		treeProblemasRecebidos.removeAll();
 		Image imgProblema = new Image(addUser.getDisplay(), this.getClass()
 				.getResourceAsStream("/src/main/resources/icons/problema.gif"));
-		mensagensExibidas = viewComunication
-				.obterMensagens(getDesenvolvedorLogado());
+		mensagensExibidas = viewComunication.obterMensagens(getDesenvolvedorLogado());
 
 		if (mensagensExibidas != null) {
 			TreeItem[] item = new TreeItem[mensagensExibidas.size()];

@@ -11,7 +11,9 @@ import com.hukarz.presley.beans.Conhecimento;
 import com.hukarz.presley.beans.Desenvolvedor;
 import com.hukarz.presley.excessao.DesenvolvedorInexistenteException;
 import com.hukarz.presley.server.persistencia.implementacao.ServicoConhecimentoImplDAO;
+import com.hukarz.presley.server.persistencia.implementacao.ServicoDesenvolvedorImplDAO;
 import com.hukarz.presley.server.persistencia.interfaces.ServicoConhecimento;
+import com.hukarz.presley.server.persistencia.interfaces.ServicoDesenvolvedor;
 import com.hukarz.presley.server.validacao.implementacao.ValidacaoInferenciaImpl;
 
 
@@ -42,12 +44,12 @@ public class Inferencia {
 	//	}
 
 	public static ArrayList<Desenvolvedor> getDesenvolvedores(Map<ArquivoJava, ArrayList<Desenvolvedor>> arquivoDesenvolvedores, Conhecimento conhecimento) {
-
 		Map<Desenvolvedor, Double> porcentagemDesenvolvedorArq = getParticipacaoDesenvolvedores(arquivoDesenvolvedores);
 		Map<Desenvolvedor, Double> porcentagemDesenvolvedorConhecimento = getParticipacaoDesenvolvedores(conhecimento);
 		
-		
-		return new ArrayList<Desenvolvedor>();
+		Map<Desenvolvedor, Double> participacaoDesenvolvedor = somarParticipacaoDosDesenvolvedores(porcentagemDesenvolvedorArq, porcentagemDesenvolvedorConhecimento);
+
+		return retornarMelhoresDesenvolvedores(participacaoDesenvolvedor, 5);
 	}
 	
 	/*	1º Passo 
@@ -86,6 +88,7 @@ public class Inferencia {
 	 */
 	private static Map<Desenvolvedor, Double> getParticipacaoDesenvolvedores(Conhecimento conhecimento){
 		ServicoConhecimento servicoConhecimento = new ServicoConhecimentoImplDAO();
+		ServicoDesenvolvedor servicoDesenvolvedor = new ServicoDesenvolvedorImplDAO();
 		
 		ArrayList<Desenvolvedor> desenvolvedoresConhecimento = servicoConhecimento.getContribuintesConhecimento(conhecimento);
 
@@ -104,86 +107,92 @@ public class Inferencia {
 		for (Iterator<Desenvolvedor> it = desenvolvedorPorConhecimento.keySet().iterator(); it.hasNext();) {
 			Desenvolvedor desenvolvedor = it.next();
 
+			// Calcula a porcentagem de participação do desenvolvedor nos registros do conhecimento
 			double porcentagem = (desenvolvedorPorConhecimento.get(desenvolvedor) * 100)/qtdeContribuicoes;
+			porcentagemDesenvolvedorConhecimento.put(desenvolvedor, porcentagem);			
+		}
+		
+
+		// Calcula o conhecimento informado pelo cadastro de desenvolvedor
+		desenvolvedoresConhecimento = servicoDesenvolvedor.getDesenvolvedoresPorConhecimento(conhecimento);
+		for (Iterator<Desenvolvedor> iterator = desenvolvedoresConhecimento.iterator(); iterator.hasNext();) {
+			Desenvolvedor desenvolvedor =  iterator.next();
+			double porcentagem = porcentagemDesenvolvedorConhecimento.get(desenvolvedor) ;
+
+			if (porcentagem ==0)
+				porcentagem = desenvolvedor.getListaConhecimento().get(conhecimento);
+			else
+				porcentagem *= desenvolvedor.getListaConhecimento().get(conhecimento); 
+					
 			porcentagemDesenvolvedorConhecimento.put(desenvolvedor, porcentagem);			
 		}
 		
 		
 		return porcentagemDesenvolvedorConhecimento;
 	}
+
 	
-	public static ArrayList<Desenvolvedor> getDesenvolvedores(String[] conhecimentos, double conf) throws DesenvolvedorInexistenteException{
-
-		int max = conhecimentos.length;
-		int cont = 1;
-		validaInf = new ValidacaoInferenciaImpl();
-		HashMap<Desenvolvedor, Double> mCand = new HashMap<Desenvolvedor, Double>();
-//		System.out.println("Tamanho do array de strings de conhecimentos " + max);
-		for(String c : conhecimentos){
-//			System.out.println("Iterador" + c);
-			HashMap<Desenvolvedor, Double> mCandidatos = validaInf.getDesenvolvedoresByConhecimento(c);
-//			System.out.println(mCandidatos.toString());
-			atualizaPossiveisDesenvolvedores(mCand, mCandidatos, ((double)cont)/max);
-
-			cont++; // Proximo conhecimento
+	/*	3º Passo 
+	(Soma os vetores de participação dos Desenvolvedor nos Arquivos e nas mensagens)
+	 */
+	private static Map<Desenvolvedor, Double> somarParticipacaoDosDesenvolvedores(Map<Desenvolvedor, Double> porcentagemDesenvolvedorArq, 
+			Map<Desenvolvedor, Double> porcentagemDesenvolvedorConhecimento ){
+		Map<Desenvolvedor, Double> somaPorcentagemParticipacaoDesenvolvedor = porcentagemDesenvolvedorArq ;
+		
+		for (Iterator<Desenvolvedor> it = porcentagemDesenvolvedorConhecimento.keySet().iterator(); it.hasNext();) {
+			Desenvolvedor desenvolvedor = it.next();
+			double porcentagem = porcentagemDesenvolvedorConhecimento.get(desenvolvedor) ;
+			
+			if ( somaPorcentagemParticipacaoDesenvolvedor.keySet().contains(desenvolvedor) ){
+				porcentagem += somaPorcentagemParticipacaoDesenvolvedor.get(desenvolvedor) ;
+			}
+			
+			somaPorcentagemParticipacaoDesenvolvedor.put(desenvolvedor, porcentagem);			
 		}
-
-		return (getDesenvolvedoresAptos(mCand, conf));
-
+		
+		return somaPorcentagemParticipacaoDesenvolvedor;
 	}
+	
 
-	private static ArrayList<Desenvolvedor> getDesenvolvedoresAptos(HashMap<Desenvolvedor, Double> cand, double conf){
-		int pos = 0;
-		ArrayList<Desenvolvedor> arDes = new ArrayList<Desenvolvedor>();
-
-		while(cand.size() != 0){
-			Object[] obj = getMaiorCandidato(cand);
-
-			if (((Double)obj[1] > conf)){
-				arDes.add(pos++, (Desenvolvedor)obj[0]);
+	/*	4º Passo 
+	(Seleciona os melhores desenvolvedores como retorno)
+	 */
+	private static ArrayList<Desenvolvedor> retornarMelhoresDesenvolvedores(Map<Desenvolvedor, Double> participacaoDesenvolvedor, int qtde ){
+		ArrayList<Desenvolvedor> listaDesenvolvedores = new ArrayList<Desenvolvedor>();
+		Desenvolvedor desenvolvedorMenor = new Desenvolvedor();
+		
+		for (Iterator<Desenvolvedor> it = participacaoDesenvolvedor.keySet().iterator(); it.hasNext();) {
+			Desenvolvedor desenvolvedor = it.next();
+			double porcentagem = participacaoDesenvolvedor.get(desenvolvedor) ;
+			
+			if ( listaDesenvolvedores.size() < qtde )
+				listaDesenvolvedores.add( desenvolvedor );
+			else {
+				double porcentagemRetorno = participacaoDesenvolvedor.get(desenvolvedorMenor) ;
+				if (porcentagem > porcentagemRetorno){
+					listaDesenvolvedores.remove(desenvolvedorMenor);
+					listaDesenvolvedores.add(desenvolvedor);
+				}
+			}
+				
+			
+			// Seleciona o Desenvolvedor com menor porcentagem
+			if ( listaDesenvolvedores.size() == qtde ){
+				for (int i = 0; i == qtde; i++) {
+					if (i==0)
+						desenvolvedorMenor = listaDesenvolvedores.get(i);
+					else{
+						double porcentagemDesenvolvedor = participacaoDesenvolvedor.get(listaDesenvolvedores.get(i)) ;
+						double porcentagemDesenvolvedorMenor = participacaoDesenvolvedor.get(desenvolvedorMenor) ;
+						
+						if (porcentagemDesenvolvedor < porcentagemDesenvolvedorMenor)
+							desenvolvedorMenor = listaDesenvolvedores.get(i);
+					}
+				}
 			}
 		}
-
-		return arDes;
+		
+		
+		return listaDesenvolvedores;
 	}
-
-	private static void atualizaPossiveisDesenvolvedores(HashMap<Desenvolvedor, Double> cand, HashMap<Desenvolvedor, Double> aux, double peso){
-
-		Set<Entry<Desenvolvedor, Double>> conj = aux.entrySet();
-
-		for(Entry<Desenvolvedor, Double> d : conj){
-			double value = peso*d.getValue();
-			if(cand.containsKey(d.getKey())){
-				cand.put(d.getKey(), cand.get(d.getKey())+value);
-			} else{
-				cand.put(d.getKey(), value);
-			}
-		}
-	}
-
-	private static Object[] getMaiorCandidato(HashMap<Desenvolvedor, Double> cand){
-		double temp = 0.0;
-
-		Desenvolvedor d = null;
-
-		Set<Entry<Desenvolvedor, Double>> s = cand.entrySet();
-
-		/* Buscando o maior candidato da tabela */
-		for(Entry<Desenvolvedor, Double> row : s){
-			if(row.getValue() > temp){
-				temp = row.getValue();
-				d = row.getKey();
-			}
-		}
-		/* ---------------- */
-
-		cand.remove(d);
-		Object[] obj = new Object[2];
-		obj[0] = d;
-		obj[1] = temp;
-
-		return (obj[0]==null)?null:obj;
-
-	}
-
 }

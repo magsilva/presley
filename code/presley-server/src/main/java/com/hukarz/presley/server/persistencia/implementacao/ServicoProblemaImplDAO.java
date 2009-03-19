@@ -5,6 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -63,7 +64,7 @@ public class ServicoProblemaImplDAO implements ServicoProblema{
 
 		//Connection conn = MySQLConnectionFactory.getConnection();
 		Connection conn = MySQLConnectionFactory.open();
-		
+
 		Map<ClasseJava, ArquivoJava> arquivosAssociados = new HashMap<ClasseJava, ArquivoJava>();
 		arquivosAssociados = problema.getClassesRelacionadas();
 
@@ -78,27 +79,19 @@ public class ServicoProblemaImplDAO implements ServicoProblema{
 			System.out.println(SQL);
 			stm.execute(SQL);
 
-			SQL = " SELECT id FROM problema"+
-			" WHERE descricao = '"+problema.getDescricao()+"' AND dataRelato = '"+problema.getData()+"' AND "+
-			" mensagem = '"+problema.getMensagem()+"' AND desenvolvedor_email = '"+problema.getDesenvolvedorOrigem().getEmail()+"';";	
-			System.out.println(SQL);
-			ResultSet rs = stm.executeQuery(SQL);
-			
-			if (rs.next()){
-				problema.setId( rs.getInt("id") );
-				
-				//percorre o map  
-				for (Iterator<ClasseJava> it = arquivosAssociados.keySet().iterator(); it.hasNext();) {  
-					ClasseJava classe = it.next();  
-					ArquivoJava arquivoJava = arquivosAssociados.get(classe);  
+			problema = getProblema(problema.getDescricao(), problema.getData(),
+					problema.getMensagem(), problema.getDesenvolvedorOrigem());
 
-					SQL = "INSERT INTO problema_has_classe(problema_id, arquivo_id, classe) " + 
-					" VALUES ( " + problema.getId()+",'"+arquivoJava.getId()+"','"+ classe.getNomeClasse() + "');" ;
-					System.out.println(SQL);
-					stm.execute(SQL);
-				} 
-			}
-	         
+			//percorre o map  
+			for (Iterator<ClasseJava> it = arquivosAssociados.keySet().iterator(); it.hasNext();) {  
+				ClasseJava classe = it.next();  
+				ArquivoJava arquivoJava = arquivosAssociados.get(classe);  
+
+				SQL = "INSERT INTO problema_has_classe(problema_id, arquivo_id, classe) " + 
+				" VALUES ( " + problema.getId()+",'"+arquivoJava.getId()+"','"+ classe.getNomeClasse() + "');" ;
+				System.out.println(SQL);
+				stm.execute(SQL);
+			} 
 
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -325,6 +318,52 @@ public class ServicoProblemaImplDAO implements ServicoProblema{
 				onConClose.printStackTrace();	             
 			}
 		}
+	}
+
+	@Override
+	public Problema getProblema(String descricao, Date dataRelato,
+			String mensagem, Desenvolvedor desenvolvedor_email) {
+		//Connection conn = MySQLConnectionFactory.getConnection();
+		Connection conn = MySQLConnectionFactory.open();
+		Statement stm = null;
+
+		ServicoDesenvolvedor sd = new ServicoDesenvolvedorImplDAO();
+		ServicoConhecimento servicoConhecimento = new ServicoConhecimentoImplDAO();
+
+		Problema p = new Problema();
+
+		try {
+			stm = conn.createStatement();
+
+			String SQL = " SELECT id FROM problema"+
+			" WHERE descricao = '"+descricao+"' AND dataRelato = '"+dataRelato+"' AND "+
+			" mensagem = '"+mensagem+"' AND desenvolvedor_email = '"+desenvolvedor_email.getEmail()+"';";	
+			System.out.println(SQL);
+			ResultSet rs = stm.executeQuery(SQL);
+
+			p.setId( rs.getInt("id") );
+			p.setDescricao( rs.getString("descricao") );
+			p.setResolvido( rs.getBoolean("resolvido") );
+			p.setData( rs.getDate("dataRelato") );
+			p.setMensagem( rs.getString("mensagem") );
+			p.setDesenvolvedorOrigem( sd.getDesenvolvedor( rs.getString("desenvolvedor_email") ) ) ;
+
+			p.setConhecimento( servicoConhecimento.getConhecimento(rs.getString("conhecimento_nome")) );
+			return p;
+
+		} catch (SQLException e) {
+			//e.printStackTrace();
+			return null;
+		} finally {
+			try {
+				stm.close();
+				conn.close();
+			} catch (SQLException onConClose) {
+				System.out.println(" Houve erro no fechamento da conexão ");
+				onConClose.printStackTrace();	             
+			}
+		}
+
 	}
 
 }

@@ -137,7 +137,7 @@ public interface CorePresleyOperations {
 	 * @return ArrayList<Desenvolvedor> lista de desenvolvedores aptos a resolver o problema
 	 * @throws DesenvolvedorInexistenteException 
 	 */
-	public ArrayList<Desenvolvedor> buscaDesenvolvedores(ArrayList<String> conhecimentos, int grauDeConfianca) throws Exception;
+	public ArrayList<Desenvolvedor> buscaDesenvolvedores(Problema problema) throws Exception;
 
 	/**
 	 * Este método qualifica o desenvolvedor de acordo com as respostas dele aos problemas

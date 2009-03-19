@@ -301,7 +301,7 @@ public class ServicoDesenvolvedorImplDAO implements ServicoDesenvolvedor{
 
 			stm = conn.createStatement();
 
-			String SQL = " SELECT * FROM desenvolvedor WHERE "+
+			String SQL = " SELECT email, nome, localidade FROM desenvolvedor WHERE "+
 			" email = '"+email+"';";
 
 
@@ -312,10 +312,10 @@ public class ServicoDesenvolvedorImplDAO implements ServicoDesenvolvedor{
 
 				Desenvolvedor desenvolvedor = new Desenvolvedor();
 
-				desenvolvedor.setEmail(rs.getString(1));
-				desenvolvedor.setNome(rs.getString(2));
-				desenvolvedor.setLocalidade(rs.getString(3));
-				//desenvolvedor.setListaConhecimento(this.getConhecimentosDoDesenvolvedor(rs.getString(1), 1));
+				desenvolvedor.setEmail(rs.getString("email"));
+				desenvolvedor.setNome(rs.getString("nome"));
+				desenvolvedor.setLocalidade(rs.getString("localidade"));
+				desenvolvedor.setListaConhecimento(this.getConhecimentosDoDesenvolvedor(rs.getString("email"), 1));
 				desenvolvedor.setSenha("");
 
 				return desenvolvedor;
@@ -717,4 +717,53 @@ public class ServicoDesenvolvedorImplDAO implements ServicoDesenvolvedor{
 		}
 	}
 
+	
+	public ArrayList<Desenvolvedor> getDesenvolvedoresPorConhecimento(Conhecimento conhecimento) {
+		//Connection conn = MySQLConnectionFactory.getConnection();
+		Connection conn = MySQLConnectionFactory.open();
+		
+		Statement stm = null;
+		
+		ArrayList<Desenvolvedor> list = new ArrayList<Desenvolvedor>();
+
+		try {
+			stm = conn.createStatement();
+
+			String SQL = 
+				"SELECT DS.email, DS.nome, DS.localidade, DC.desenvolvedor_email, DC.conhecimento_nome, DC.grau" +
+				" FROM desenvolvedor_has_conhecimento AS DC" +
+				" INNER JOIN desenvolvedor AS DS ON DS.email = DC.desenvolvedor_email" +
+				" WHERE conhecimento_nome = '"+ conhecimento.getNome() +"'";
+				
+			System.out.println(SQL);
+			ResultSet rs = stm.executeQuery(SQL);
+
+			while (rs.next()){
+				Desenvolvedor desenvolvedor = new Desenvolvedor();
+
+				desenvolvedor.setEmail(rs.getString("email"));
+				desenvolvedor.setNome(rs.getString("nome"));
+				desenvolvedor.setLocalidade(rs.getString("localidade"));
+				desenvolvedor.setListaConhecimento(this.getConhecimentosDoDesenvolvedor(rs.getString("email"), 1));
+				desenvolvedor.setSenha("");
+
+				list.add(desenvolvedor);
+			}
+
+		} catch (SQLException e) {
+			//e.printStackTrace();
+			return null;
+		} finally {
+			try {
+				stm.close();
+				conn.close();
+			} catch (SQLException onConClose) {
+				System.out.println(" Houve erro no fechamento da conexão ");
+				onConClose.printStackTrace();	             
+			}
+		}
+		
+		return list;
+	}
+	
 }

@@ -1,6 +1,7 @@
 package com.hukarz.presley.server.persistencia.interfaces;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import com.hukarz.presley.beans.Desenvolvedor;
 import com.hukarz.presley.beans.Problema;
@@ -54,6 +55,16 @@ public interface ServicoProblema {
 	 */	
 	public Problema getProblema(int id);
 
+	/**
+	 * Esse método retorna um objeto problema 
+	 * @param id Identificador do problema.
+	 * @return <Problema>
+	 */	
+	public Problema getProblema(String descricao,
+			Date dataRelato,
+			String mensagem,
+			Desenvolvedor desenvolvedor_email);
+	
 	/**
 	 * Esse método retorna o todos os problemas de um desenvolvedor cadastrados no banco
 	 * @param id Identificador do problema.

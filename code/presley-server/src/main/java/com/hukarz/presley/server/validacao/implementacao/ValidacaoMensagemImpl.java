@@ -31,14 +31,13 @@ public class ValidacaoMensagemImpl {
 	 * @return true caso a mensagem seja armazenada com sucesso no banco de dados.
 	 * @throws DesenvolvedorInexistenteException 
 	 */
-	public boolean adicionarMensagem(Desenvolvedor desenvolvedorOrigem, ArrayList<Desenvolvedor> desenvolvedoresDestino, Problema problema, String texto) throws DesenvolvedorInexistenteException {
+	public boolean adicionarMensagem(ArrayList<Desenvolvedor> desenvolvedoresDestino, Problema problema) throws DesenvolvedorInexistenteException {
 
-		if(!validacaoDesenvolvedor.desenvolvedorExiste(desenvolvedorOrigem.getEmail())) throw new DesenvolvedorInexistenteException();
 		for(Desenvolvedor d : desenvolvedoresDestino) {
 			if(!validacaoDesenvolvedor.desenvolvedorExiste(d.getEmail())) throw new DesenvolvedorInexistenteException();
 		}
 		
-		return servicoMensagem.adicionarMensagem(desenvolvedorOrigem, desenvolvedoresDestino, problema, texto);
+		return servicoMensagem.adicionarMensagem(desenvolvedoresDestino, problema);
 	}
 
 	/**

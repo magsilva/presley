@@ -153,4 +153,11 @@ public interface ServicoDesenvolvedor {
 	 */
 	public Desenvolvedor autenticaDesenvolvedor(String email, String senha);
 	
+	/**
+	 * Esse Metodo retorna todos os desenvolvedores que no seu cadastro informou
+	 * ter algum grau de conhecimento sobre algum item do dominio
+	 * @param conhecimento
+	 * @return
+	 */
+	public ArrayList<Desenvolvedor> getDesenvolvedoresPorConhecimento(Conhecimento conhecimento);
 }
