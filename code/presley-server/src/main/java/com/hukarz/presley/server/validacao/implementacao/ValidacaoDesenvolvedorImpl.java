@@ -26,7 +26,6 @@ import com.hukarz.presley.server.persistencia.interfaces.ServicoConhecimento;
 import com.hukarz.presley.server.persistencia.interfaces.ServicoDesenvolvedor;
 import com.hukarz.presley.server.persistencia.interfaces.ServicoSolucao;
 
-
 /**
  * 
  * @author RodrigoCMD

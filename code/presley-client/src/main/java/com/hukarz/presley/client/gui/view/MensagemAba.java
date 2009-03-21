@@ -41,20 +41,23 @@ public class MensagemAba extends ViewPart {
 	private boolean bLogin;
 	private Projeto projeto;
 
-	private Button login, logout, addUser, removeUser, incluirProblema,
-			excluirProblema, validarSolucao, encerrarProblema;
+	private Button cadastroProjeto, login, logout, addUser, removeUser, 
+			incluirProblema, excluirProblema, validarSolucao, encerrarProblema;
 
 	private final int larguraBotao = 20;
 	private final int alturaBotao = 20;
 
+	private final int posDistancia = 22;
+	
 	private final int posVerBotaoNivel1 = 4;
-	private final int posHorBotaoNivel1 = 4;
-	private final int posHorBotaoNivel2 = 28;
-	private final int posHorBotaoNivel3 = 52;
-	private final int posHorBotaoNivel4 = 76;
-	private final int posHorBotaoNivel5 = 100;
-	private final int posHorBotaoNivel6 = 124;
-	private final int posHorBotaoNivel7 = 148;
+	private final int posHorBotaoNivel1 = 4; 
+	private final int posHorBotaoNivel2 = posHorBotaoNivel1 + posDistancia;
+	private final int posHorBotaoNivel3 = posHorBotaoNivel2 + posDistancia;
+	private final int posHorBotaoNivel4 = posHorBotaoNivel3 + posDistancia;
+	private final int posHorBotaoNivel5 = posHorBotaoNivel4 + posDistancia;
+	private final int posHorBotaoNivel6 = posHorBotaoNivel5 + posDistancia;
+	private final int posHorBotaoNivel7 = posHorBotaoNivel6 + posDistancia;
+	private final int posHorBotaoNivel8 = posHorBotaoNivel7 + posDistancia;
 
 	private final int posVerPainelProblemas = 27;
 	private final int posVerPainelLerMensagem = 250; // 230
@@ -104,10 +107,36 @@ public class MensagemAba extends ViewPart {
 
 		projeto = viewComunication.getProjetoAtivo();
 
+		cadastroProjeto = new Button(parentComposite, SWT.NONE);
+		Image log = new Image(cadastroProjeto.getDisplay(), this.getClass()
+				.getResourceAsStream("/src/main/resources/icons/projeto.gif"));
+		cadastroProjeto.setLocation(posHorBotaoNivel1, posVerBotaoNivel1);
+		cadastroProjeto.setSize(larguraBotao, alturaBotao);
+		cadastroProjeto.setImage(log);
+		cadastroProjeto.setToolTipText("Projetos");
+		cadastroProjeto.setEnabled(true);
+		cadastroProjeto.addMouseListener(new MouseListener() {
+			public void mouseDoubleClick(MouseEvent e) {
+				// TODO Auto-generated method stub
+
+			}
+
+			public void mouseDown(MouseEvent e) {
+				runAdcionaProjetoWizardAction();
+			}
+
+			public void mouseUp(MouseEvent e) {
+				// TODO Auto-generated method stub
+
+			}
+
+		});
+		
+		
 		logout = new Button(parentComposite, SWT.NONE);
 		Image logoff = new Image(logout.getDisplay(), this.getClass()
 				.getResourceAsStream("/src/main/resources/icons/logout.gif"));
-		logout.setLocation(posHorBotaoNivel1, posVerBotaoNivel1);
+		logout.setLocation(posHorBotaoNivel2, posVerBotaoNivel1);
 		logout.setSize(larguraBotao, alturaBotao);
 		logout.setImage(logoff);
 		logout.setToolTipText("Logout");
@@ -141,9 +170,9 @@ public class MensagemAba extends ViewPart {
 		});
 
 		login = new Button(parentComposite, SWT.NONE);
-		Image log = new Image(login.getDisplay(), this.getClass()
+		log = new Image(login.getDisplay(), this.getClass()
 				.getResourceAsStream("/src/main/resources/icons/users.gif"));
-		login.setLocation(posHorBotaoNivel1, posVerBotaoNivel1);
+		login.setLocation(posHorBotaoNivel2, posVerBotaoNivel1);
 		login.setSize(larguraBotao, alturaBotao);
 		login.setImage(log);
 		login.setToolTipText("Login");
@@ -173,7 +202,7 @@ public class MensagemAba extends ViewPart {
 		addUser = new Button(parentComposite, SWT.NONE);
 		Image userAdd = new Image(addUser.getDisplay(), this.getClass()
 				.getResourceAsStream("/src/main/resources/icons/addUser.gif"));
-		addUser.setLocation(posHorBotaoNivel2, posVerBotaoNivel1);
+		addUser.setLocation(posHorBotaoNivel3, posVerBotaoNivel1);
 		addUser.setSize(larguraBotao, alturaBotao);
 		addUser.setImage(userAdd);
 		addUser.setToolTipText("Adiciona novo desenvolvedor");
@@ -201,7 +230,7 @@ public class MensagemAba extends ViewPart {
 		Image userRemove = new Image(removeUser.getDisplay(),
 				this.getClass().getResourceAsStream(
 						"/src/main/resources/icons/removeUser.gif"));
-		removeUser.setLocation(posHorBotaoNivel3, posVerBotaoNivel1);
+		removeUser.setLocation(posHorBotaoNivel4, posVerBotaoNivel1);
 		removeUser.setSize(larguraBotao, alturaBotao);
 		removeUser.setImage(userRemove);
 		removeUser.setToolTipText("Remove novo desenvolvedor");
@@ -278,7 +307,7 @@ public class MensagemAba extends ViewPart {
 		incluirProblema = new Button(parentComposite, SWT.NONE);
 		Image obter = new Image(incluirProblema.getDisplay(), this.getClass()
 				.getResourceAsStream("/src/main/resources/icons/add.gif"));
-		incluirProblema.setLocation(posHorBotaoNivel4, posVerBotaoNivel1);
+		incluirProblema.setLocation(posHorBotaoNivel5, posVerBotaoNivel1);
 		incluirProblema.setSize(larguraBotao, alturaBotao);
 		incluirProblema.setImage(obter);
 		incluirProblema.setToolTipText("Inserir Problema");
@@ -307,7 +336,7 @@ public class MensagemAba extends ViewPart {
 		Image trocaMsg = new Image(excluirProblema.getDisplay(), this
 				.getClass().getResourceAsStream(
 						"/src/main/resources/icons/remove.GIF"));
-		excluirProblema.setLocation(posHorBotaoNivel5, posVerBotaoNivel1);
+		excluirProblema.setLocation(posHorBotaoNivel6, posVerBotaoNivel1);
 		excluirProblema.setSize(larguraBotao, alturaBotao);
 		excluirProblema.setImage(trocaMsg);
 		excluirProblema.setToolTipText("Excluir Problema");
@@ -355,7 +384,7 @@ public class MensagemAba extends ViewPart {
 		validarSolucao = new Button(parentComposite, SWT.NONE);
 		Image ok = new Image(validarSolucao.getDisplay(), this.getClass()
 				.getResourceAsStream("/src/main/resources/icons/ok.gif"));
-		validarSolucao.setLocation(posHorBotaoNivel6, posVerBotaoNivel1);
+		validarSolucao.setLocation(posHorBotaoNivel7, posVerBotaoNivel1);
 		validarSolucao.setSize(larguraBotao, alturaBotao);
 		validarSolucao.setImage(ok);
 		validarSolucao.setToolTipText("Valida a resposta do usuario");
@@ -392,7 +421,7 @@ public class MensagemAba extends ViewPart {
 		Image encerra = new Image(encerrarProblema.getDisplay(), this
 				.getClass().getResourceAsStream(
 						"/src/main/resources/icons/encerra.gif"));
-		encerrarProblema.setLocation(posHorBotaoNivel7, posVerBotaoNivel1);
+		encerrarProblema.setLocation(posHorBotaoNivel8, posVerBotaoNivel1);
 		encerrarProblema.setSize(larguraBotao, alturaBotao);
 		encerrarProblema.setImage(encerra);
 		encerrarProblema.setToolTipText("Encerra o Problema Selecionado");
@@ -489,7 +518,7 @@ public class MensagemAba extends ViewPart {
 		lblGrupoBotoes3.setText("  ");
 		lblGrupoBotoes3.setBackground(new Color(lblGrupoBotoes3.getDisplay(),
 				204, 204, 204));
-		lblGrupoBotoes3.setLocation(posHorBotaoNivel6 - 2, 2);
+		lblGrupoBotoes3.setLocation(posHorBotaoNivel7 - 2, 2);
 		lblGrupoBotoes3.setSize(50, 24);
 		lblGrupoBotoes3.setVisible(true);
 
@@ -497,7 +526,7 @@ public class MensagemAba extends ViewPart {
 		lblGrupoBotoes2.setText("  ");
 		lblGrupoBotoes2.setBackground(new Color(lblGrupoBotoes2.getDisplay(),
 				51, 153, 204));
-		lblGrupoBotoes2.setLocation(posHorBotaoNivel4 - 2, 2);
+		lblGrupoBotoes2.setLocation(posHorBotaoNivel5 - 2, 2);
 		lblGrupoBotoes2.setSize(50, 24);
 		lblGrupoBotoes2.setVisible(true);
 
@@ -505,7 +534,7 @@ public class MensagemAba extends ViewPart {
 		lblGrupoBotoes1.setText("  ");
 		lblGrupoBotoes1.setBackground(new Color(lblGrupoBotoes1.getDisplay(),
 				51, 153, 0));
-		lblGrupoBotoes1.setLocation(1, 2);
+		lblGrupoBotoes1.setLocation(posHorBotaoNivel2 -2, 2);
 		lblGrupoBotoes1.setSize(74, 24);
 		lblGrupoBotoes1.setVisible(true);
 
@@ -646,6 +675,12 @@ public class MensagemAba extends ViewPart {
 		this.runAdcionaProblema.run(null);
 	}
 
+	private void runAdcionaProjetoWizardAction() {
+		com.hukarz.presley.client.gui.action.RunAdcionaProjetoWizardAction runProjeto = new com.hukarz.presley.client.gui.action.RunAdcionaProjetoWizardAction(
+				this);
+		runProjeto.run(null);
+	}
+	
 	private void runLoginWizardAction() {
 		com.hukarz.presley.client.gui.action.RunLoginWizardAction runLogin = new com.hukarz.presley.client.gui.action.RunLoginWizardAction(
 				this);

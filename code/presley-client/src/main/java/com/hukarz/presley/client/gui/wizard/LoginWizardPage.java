@@ -67,7 +67,7 @@ public class LoginWizardPage extends WizardPage {
             GridLayout layout = new GridLayout();
             controls.setLayout(layout);
             layout.numColumns = 2;
-
+            
      	    Label usernameLabel = new Label(controls, SWT.RIGHT);
      	    usernameLabel.setText("Usuario: ");
 

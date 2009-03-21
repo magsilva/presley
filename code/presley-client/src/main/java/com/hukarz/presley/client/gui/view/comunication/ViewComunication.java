@@ -26,7 +26,9 @@ import com.hukarz.presley.communication.facade.PrincipalSUBJECT;
 import com.hukarz.presley.excessao.AtividadeInexistenteException;
 import com.hukarz.presley.excessao.ConhecimentoInexistenteException;
 import com.hukarz.presley.excessao.DesenvolvedorInexistenteException;
+import com.hukarz.presley.excessao.NomeInvalidoException;
 import com.hukarz.presley.excessao.ProblemaInexistenteException;
+import com.hukarz.presley.excessao.ProjetoInexistenteException;
 
 /**
  * Esta classe controla a comunicacao entre o cliente e o servidor.
@@ -641,10 +643,47 @@ public class ViewComunication implements CorePresleyOperations{
 	 * @return 
 	 */
 	public Projeto getProjetoAtivo(){
-		PacketStruct respostaPacket = sendPack(null, GET_PROJETO);
+		PacketStruct respostaPacket = sendPack(null, GET_PROJETOATIVO);
 		Projeto projeto = (Projeto)respostaPacket.getData();
     	
 		return projeto;
+	}
+
+	public boolean atualizarStatusProjeto(Projeto projeto)
+			throws ProjetoInexistenteException {
+		PacketStruct respostaPacket = sendPack(projeto,CorePresleyOperations.ATUALIZAR_STATUS_PROJETO);
+    	
+		if(respostaPacket.getId() == CorePresleyOperations.ERRO) {
+			throw new ProjetoInexistenteException();
+		}
+
+		return (Boolean)respostaPacket.getData();
+	}
+
+	public boolean criarProjeto(Projeto projeto) throws NomeInvalidoException {
+		PacketStruct respostaPacket = sendPack(projeto,CorePresleyOperations.CRIAR_PROJETO);
+    	
+		if(respostaPacket.getId() == CorePresleyOperations.ERRO) {
+			throw new NomeInvalidoException();
+		}
+
+		return (Boolean)respostaPacket.getData();
+	}
+
+	public ArrayList<Projeto> getListaProjetos(PacketStruct packet) {
+		PacketStruct respostaPacket = sendPack(null,CorePresleyOperations.GET_PROJETOS);
+		return (ArrayList<Projeto>) respostaPacket.getData();
+	}
+
+	public boolean removerProjeto(Projeto projeto)
+			throws ProjetoInexistenteException {
+		PacketStruct respostaPacket = sendPack(projeto,CorePresleyOperations.REMOVER_PROJETO);
+    	
+		if(respostaPacket.getId() == CorePresleyOperations.ERRO) {
+			throw new ProjetoInexistenteException();
+		}
+
+		return (Boolean)respostaPacket.getData();
 	}
 	
 }

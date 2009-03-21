@@ -56,8 +56,4 @@ public class ValidacaoUtil {
 		else return true;
 	}
 	
-	public static Projeto getProjetoAtivo(){
-		ServicoProjeto servicoProjeto = new ServicoProjetoImplDAO();
-		return servicoProjeto.getProjetoAtivo();
-	}
 }

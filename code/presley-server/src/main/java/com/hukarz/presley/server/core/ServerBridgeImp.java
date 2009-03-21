@@ -15,7 +15,9 @@ import com.hukarz.presley.excessao.DesenvolvedorExisteException;
 import com.hukarz.presley.excessao.DesenvolvedorInexistenteException;
 import com.hukarz.presley.excessao.EmailInvalidoException;
 import com.hukarz.presley.excessao.ErroDeAutenticacaoException;
+import com.hukarz.presley.excessao.NomeInvalidoException;
 import com.hukarz.presley.excessao.ProblemaInexistenteException;
+import com.hukarz.presley.excessao.ProjetoInexistenteException;
 import com.hukarz.presley.excessao.SenhaInvalidaException;
 import com.hukarz.presley.excessao.SolucaoIniexistenteException;
 import com.hukarz.presley.server.core.interfaces.CorePresleyOperations;
@@ -387,11 +389,50 @@ public class ServerBridgeImp implements ServerBridge {
 			}
 			pktRetorno = new PacketStruct(retorno, typeRetorno);
 			break;				
-			// Packet tipo 35: GET_ONTOLOGIA
-		case CorePresleyOperations.GET_PROJETO:
+			// Packet tipo 35: GET_PROJETOATIVO
+		case CorePresleyOperations.GET_PROJETOATIVO:
 			retorno = executeClientQuery.getProjetoAtivo();
-			typeRetorno = CorePresleyOperations.GET_PROJETO;
+			typeRetorno = CorePresleyOperations.GET_PROJETOATIVO;
 
+			pktRetorno = new PacketStruct(retorno, typeRetorno);
+			break;				
+			// Packet tipo 36: CRIAR_PROJETO
+		case CorePresleyOperations.CRIAR_PROJETO:
+			try {
+				retorno     = executeClientQuery.criarProjeto(packet);
+				typeRetorno = CorePresleyOperations.CRIAR_PROJETO;
+			} catch (NomeInvalidoException e) {
+				retorno = "ERRO: Projeto já Cadastrado.";
+				e.printStackTrace();
+			}
+			pktRetorno = new PacketStruct(retorno, typeRetorno);
+			break;				
+			// Packet tipo 37: REMOVER_PROJETO
+		case CorePresleyOperations.REMOVER_PROJETO:
+			try {
+				retorno     = executeClientQuery.removerProjeto(packet);
+				typeRetorno = CorePresleyOperations.REMOVER_PROJETO;
+			} catch (ProjetoInexistenteException e) {
+				retorno = "ERRO: Projeto Inexistente.";
+				e.printStackTrace();
+			}
+			pktRetorno = new PacketStruct(retorno, typeRetorno);
+			break;				
+			// Packet tipo 38: ATUALIZAR_STATUS_PROJETO
+		case CorePresleyOperations.ATUALIZAR_STATUS_PROJETO:
+			try {
+				retorno     = executeClientQuery.atualizarStatusProjeto(packet);
+				typeRetorno = CorePresleyOperations.ATUALIZAR_STATUS_PROJETO;
+			} catch (ProjetoInexistenteException e) {
+				retorno = "ERRO: Projeto Inexistente.";
+				e.printStackTrace();
+			}
+			pktRetorno = new PacketStruct(retorno, typeRetorno);
+			break;				
+			// Packet tipo 39: GET_PROJETOS
+		case CorePresleyOperations.GET_PROJETOS:
+			retorno     = executeClientQuery.getListaProjetos(packet);
+			typeRetorno = CorePresleyOperations.GET_PROJETOS;
 			pktRetorno = new PacketStruct(retorno, typeRetorno);
 			break;				
 		}

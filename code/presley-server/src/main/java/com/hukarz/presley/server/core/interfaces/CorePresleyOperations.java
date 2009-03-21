@@ -18,7 +18,9 @@ import com.hukarz.presley.excessao.DescricaoInvalidaException;
 import com.hukarz.presley.excessao.DesenvolvedorInexistenteException;
 import com.hukarz.presley.excessao.EmailInvalidoException;
 import com.hukarz.presley.excessao.ErroDeAutenticacaoException;
+import com.hukarz.presley.excessao.NomeInvalidoException;
 import com.hukarz.presley.excessao.ProblemaInexistenteException;
+import com.hukarz.presley.excessao.ProjetoInexistenteException;
 import com.hukarz.presley.excessao.SenhaInvalidaException;
 
 
@@ -72,8 +74,12 @@ public interface CorePresleyOperations {
 	public static final int ATUALIZAR_SOLUCAO = 32;
 	public static final int GET_LISTA_SOLUCOES_RETORNADAS = 33;
 	public static final int ASSOCIA_ARQUIVO_CONHECIMENTO = 34;
-	public static final int GET_PROJETO = 35;
-		
+	
+	public static final int GET_PROJETOATIVO = 35;
+	public static final int CRIAR_PROJETO = 36;
+	public static final int REMOVER_PROJETO = 37;
+	public static final int ATUALIZAR_STATUS_PROJETO = 38;
+	public static final int GET_PROJETOS = 39;
 
 	/**
 	 * Este método solicita a arvore de ontologia
@@ -287,8 +293,39 @@ public interface CorePresleyOperations {
 
 	/**
 	 * Este método retorna as informações necessarias sobre o projeto em execução no presley
-	 * CÓDIGO DA OPERAÇÃO -> 34
+	 * CÓDIGO DA OPERAÇÃO -> 35
 	 * @return
 	 */
 	public Projeto getProjetoAtivo();
+	
+	/**
+	 * Este método cadastra as informações sobre o projeto em execução no presley
+	 * CÓDIGO DA OPERAÇÃO -> 36
+	 * @return
+	 */
+	public boolean criarProjeto(Projeto projeto) throws NomeInvalidoException;
+	
+	
+	/**
+	 * Este método exclui um projeto em execução no presley
+	 * CÓDIGO DA OPERAÇÃO -> 37
+	 * @return
+	 */
+	public boolean removerProjeto(Projeto projeto) throws ProjetoInexistenteException;
+	
+
+	/**
+	 * Este método atualiza o status do projeto no presley (Ativado/Desativado)
+	 * CÓDIGO DA OPERAÇÃO -> 38
+	 * @return
+	 */
+	public boolean atualizarStatusProjeto(Projeto projeto) throws ProjetoInexistenteException;
+
+	/**
+	 * Este método uma lista com todos os projetos cadastrados
+	 * CÓDIGO DA OPERAÇÃO -> 39
+	 * @return ArrayList<Projeto> lista de projetos.
+	 */
+	public ArrayList<Projeto> getListaProjetos(PacketStruct packet);
+
 }

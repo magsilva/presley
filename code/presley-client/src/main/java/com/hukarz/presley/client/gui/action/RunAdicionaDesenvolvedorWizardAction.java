@@ -1,6 +1,5 @@
 package com.hukarz.presley.client.gui.action;
 
-
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.resource.ImageDescriptor;
@@ -13,6 +12,7 @@ import org.eclipse.ui.PlatformUI;
 
 import com.hukarz.presley.client.gui.view.MensagemAba;
 import com.hukarz.presley.client.gui.wizard.AdicionaDesenvolvedorWizard;
+import com.hukarz.presley.client.gui.wizard.AdicionaProjetoWizard;
 
 public class RunAdicionaDesenvolvedorWizardAction extends Action implements
 		IWorkbenchWindowActionDelegate {

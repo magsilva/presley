@@ -33,7 +33,9 @@ import com.hukarz.presley.excessao.DescricaoInvalidaException;
 import com.hukarz.presley.excessao.DesenvolvedorInexistenteException;
 import com.hukarz.presley.excessao.EmailInvalidoException;
 import com.hukarz.presley.excessao.ErroDeAutenticacaoException;
+import com.hukarz.presley.excessao.NomeInvalidoException;
 import com.hukarz.presley.excessao.ProblemaInexistenteException;
+import com.hukarz.presley.excessao.ProjetoInexistenteException;
 import com.hukarz.presley.excessao.SenhaInvalidaException;
 import com.hukarz.presley.excessao.SolucaoIniexistenteException;
 import com.hukarz.presley.server.core.interfaces.CorePresleyOperations;
@@ -43,6 +45,7 @@ import com.hukarz.presley.server.validacao.implementacao.ValidacaoConhecimentoIm
 import com.hukarz.presley.server.validacao.implementacao.ValidacaoDesenvolvedorImpl;
 import com.hukarz.presley.server.validacao.implementacao.ValidacaoMensagemImpl;
 import com.hukarz.presley.server.validacao.implementacao.ValidacaoProblemaImpl;
+import com.hukarz.presley.server.validacao.implementacao.ValidacaoProjetoImpl;
 import com.hukarz.presley.server.validacao.implementacao.ValidacaoSolucaoImpl;
 import com.hukarz.presley.server.validacao.implementacao.ValidacaoUtil;
 
@@ -63,13 +66,15 @@ public class ExecuteClientQuery implements CorePresleyOperations{
 	ValidacaoDesenvolvedorImpl validacaoDesenvolvedor; 
 	ValidacaoMensagemImpl 	   validacaoMensagem;
 	ValidacaoSolucaoImpl       validacaoSolucao;
+	ValidacaoProjetoImpl       validacaoProjeto;
 
 	public ExecuteClientQuery() {
-		validacaoConhecimento  = new ValidacaoConhecimentoImpl();
-		validacaoProblema 	   = new ValidacaoProblemaImpl();
-		validacaoDesenvolvedor = new ValidacaoDesenvolvedorImpl();
-		validacaoMensagem 	   = new ValidacaoMensagemImpl();
-		validacaoSolucao       = new ValidacaoSolucaoImpl();
+		validacaoConhecimento	= new ValidacaoConhecimentoImpl();
+		validacaoProblema		= new ValidacaoProblemaImpl();
+		validacaoDesenvolvedor	= new ValidacaoDesenvolvedorImpl();
+		validacaoMensagem		= new ValidacaoMensagemImpl();
+		validacaoSolucao		= new ValidacaoSolucaoImpl();
+		validacaoProjeto		= new ValidacaoProjetoImpl();
 	}
 
 	/**
@@ -453,7 +458,37 @@ public class ExecuteClientQuery implements CorePresleyOperations{
 	}
 
 	public Projeto getProjetoAtivo()  {
-		return ValidacaoUtil.getProjetoAtivo();
+		return validacaoProjeto.getProjetoAtivo();
+	}
+
+	public boolean atualizarStatusProjeto(PacketStruct packet) throws ProjetoInexistenteException{
+		Projeto projeto = (Projeto) packet.getData();
+		return atualizarStatusProjeto( projeto );
+	}
+	public boolean atualizarStatusProjeto(Projeto projeto)
+			throws ProjetoInexistenteException {
+		return validacaoProjeto.atualizarStatusProjeto(projeto);
+	}
+	
+	public boolean criarProjeto(PacketStruct packet) throws NomeInvalidoException {
+		Projeto projeto = (Projeto) packet.getData();
+		return criarProjeto( projeto );
+	}
+	public boolean criarProjeto(Projeto projeto) throws NomeInvalidoException {
+		return validacaoProjeto.criarProjeto(projeto);
+	}
+
+	public boolean removerProjeto(PacketStruct packet) throws ProjetoInexistenteException {
+		Projeto projeto = (Projeto) packet.getData();
+		return removerProjeto( projeto );
+	}
+	public boolean removerProjeto(Projeto projeto)
+			throws ProjetoInexistenteException {
+		return validacaoProjeto.removerProjeto(projeto);
+	}
+
+	public ArrayList<Projeto> getListaProjetos(PacketStruct packet) {
+		return validacaoProjeto.getProjetos();
 	}
 	
 }

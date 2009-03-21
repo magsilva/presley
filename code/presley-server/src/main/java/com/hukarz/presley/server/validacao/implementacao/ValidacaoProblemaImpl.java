@@ -21,10 +21,12 @@ import com.hukarz.presley.server.inferencia.Inferencia;
 import com.hukarz.presley.server.persistencia.implementacao.ServicoArquivoImplDAO;
 import com.hukarz.presley.server.persistencia.implementacao.ServicoMensagemImplDAO;
 import com.hukarz.presley.server.persistencia.implementacao.ServicoProblemaImplDAO;
+import com.hukarz.presley.server.persistencia.implementacao.ServicoProjetoImplDAO;
 import com.hukarz.presley.server.persistencia.implementacao.ServicoSolucaoImplDAO;
 import com.hukarz.presley.server.persistencia.interfaces.ServicoArquivo;
 import com.hukarz.presley.server.persistencia.interfaces.ServicoMensagem;
 import com.hukarz.presley.server.persistencia.interfaces.ServicoProblema;
+import com.hukarz.presley.server.persistencia.interfaces.ServicoProjeto;
 import com.hukarz.presley.server.persistencia.interfaces.ServicoSolucao;
 import com.hukarz.presley.server.processaTexto.ProcessaSimilaridade;
 
@@ -39,18 +41,20 @@ import com.hukarz.presley.server.processaTexto.ProcessaSimilaridade;
 
 public class ValidacaoProblemaImpl {
 	
-	ServicoSolucao servicoSolucao;
+	ServicoSolucao  servicoSolucao;
 	ServicoProblema servicoProblema;
-	ServicoArquivo servicoArquivo;
+	ServicoArquivo  servicoArquivo;
 	ServicoMensagem servicoMensagem;
+	ServicoProjeto  servicoProjeto;
 	
 	ValidacaoArquivoImpl validacaoArquivo ;
 	
 	public ValidacaoProblemaImpl() {
-		servicoProblema  = new ServicoProblemaImplDAO();
-		servicoSolucao   = new ServicoSolucaoImplDAO();
-		servicoArquivo   = new ServicoArquivoImplDAO();
-		servicoMensagem  = new ServicoMensagemImplDAO();
+		servicoProblema = new ServicoProblemaImplDAO();
+		servicoSolucao  = new ServicoSolucaoImplDAO();
+		servicoArquivo  = new ServicoArquivoImplDAO();
+		servicoMensagem = new ServicoMensagemImplDAO();
+		servicoProjeto	= new ServicoProjetoImplDAO();
 		
 		validacaoArquivo = new ValidacaoArquivoImpl();
 	}
@@ -82,7 +86,7 @@ public class ValidacaoProblemaImpl {
 			throws DescricaoInvalidaException, IOException {
 		if (!ValidacaoUtil.validaDescricao( problema.getDescricao() )) throw new DescricaoInvalidaException();
 		
-		Projeto projeto = ValidacaoUtil.getProjetoAtivo();
+		// Projeto projeto = ValidacaoUtil.getProjetoAtivo();
 		// Cria uma lista com os Desenvolvedores de cada arquivo java		 
 		Map<ArquivoJava, ArrayList<Desenvolvedor>> arquivoDesenvolvedores = getDesenvolvedoresArquivo(problema);
 		
@@ -113,7 +117,7 @@ public class ValidacaoProblemaImpl {
 		// Cria uma lista com os Desenvolvedores de cada arquivo java		 
 		Map<ArquivoJava, ArrayList<Desenvolvedor>> arquivoDesenvolvedores = new HashMap<ArquivoJava, ArrayList<Desenvolvedor>>();
 		
-		Projeto projeto = ValidacaoUtil.getProjetoAtivo();
+		Projeto projeto = servicoProjeto.getProjetoAtivo();
 		
 		// Cadastra as classes envolvidas no problema
 		Map<ClasseJava, ArquivoJava> arquivos = problema.getClassesRelacionadas();
