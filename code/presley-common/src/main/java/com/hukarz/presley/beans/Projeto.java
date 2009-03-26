@@ -23,13 +23,26 @@ public class Projeto implements Serializable {
 		this.ativo = ativo;
 	}
 	public String getEndereco_Servidor_Leitura() {
-		return endereco_Servidor_Leitura;
+		return ajustar_Endereco( endereco_Servidor_Leitura );
 	}
+	
+	private String ajustar_Endereco( String enderecoAtual ){
+    	String endereco = "";
+        for(int x=0; x< enderecoAtual.length();x++){
+        	if (enderecoAtual.charAt(x)=='\\' )
+        		endereco += "/";
+        	else
+        		endereco += enderecoAtual.charAt(x);
+        }
+		
+		return endereco;
+	}
+	
 	public void setEndereco_Servidor_Leitura(String endereco_Servidor_Leitura) {
 		this.endereco_Servidor_Leitura = endereco_Servidor_Leitura;
 	}
 	public String getEndereco_Servidor_Gravacao() {
-		return endereco_Servidor_Gravacao;
+		return ajustar_Endereco( endereco_Servidor_Gravacao );
 	}
 	public void setEndereco_Servidor_Gravacao(String endereco_Servidor_Gravacao) {
 		this.endereco_Servidor_Gravacao = endereco_Servidor_Gravacao;
