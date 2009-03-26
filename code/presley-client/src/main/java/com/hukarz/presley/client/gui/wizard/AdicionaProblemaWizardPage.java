@@ -48,7 +48,6 @@ public class AdicionaProblemaWizardPage extends WizardPage {
 
         listaElementosSelecionados = new ArrayList<String>();
         
-        // FIXME: Extend JayFX correctly
         aDB = PresleyJayFX.obterInstancia( mensagem.getProjeto() );
 	}
 	
@@ -86,7 +85,7 @@ public class AdicionaProblemaWizardPage extends WizardPage {
     			} else {
     				elemento = FlyweightElementFactory.getElement( ICategories.CLASS, elementoSelecionado );
     			}
-    			// FIXME: Extend JayFX correctly
+    			
 				retorno.putAll( aDB.getElementoRelacionamento(elemento) );
 				
 				ClasseJava classe;   
@@ -106,10 +105,9 @@ public class AdicionaProblemaWizardPage extends WizardPage {
     
     
 	public void createControl(Composite parent) {
-		// TODO Auto-generated method stub
         Composite controls = new Composite(parent, SWT.NULL);
         GridLayout layout  = new GridLayout();
-        controls.setLayout(layout);
+        controls.setLayout(layout); //layout
         
         layout.numColumns  = 2;
         layout.verticalSpacing = 3;
@@ -148,9 +146,11 @@ public class AdicionaProblemaWizardPage extends WizardPage {
         label.setText("Elementos no Projeto");
 
         // Busca Todos os Elementos no projeto
-        // FIXME: Extend JayFX correctly
         listaElementosProjeto = aDB.getTodasClassesMetodos();
         elementosProjeto = new Combo(controls, SWT.MULTI | SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
+ 	    GridData gdElementos = new GridData(GridData.FILL_HORIZONTAL);
+        elementosProjeto.setLayoutData(gdElementos);
+        
         
         //Preenche o combo  
         Object[] elementos = listaElementosProjeto.keySet().toArray() ;
