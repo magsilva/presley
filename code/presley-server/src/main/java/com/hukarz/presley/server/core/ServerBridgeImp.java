@@ -74,7 +74,7 @@ public class ServerBridgeImp implements ServerBridge {
 				retorno = executeClientQuery.login(packet);
 				typeRetorno = CorePresleyOperations.LOG_IN;
 			} catch (DesenvolvedorInexistenteException e2) {
-				e2.printStackTrace();
+				//e2.printStackTrace();
 				retorno = "ERRO: Desenvolvedor inexistente.";
 			} catch (EmailInvalidoException e2) {
 				e2.printStackTrace();

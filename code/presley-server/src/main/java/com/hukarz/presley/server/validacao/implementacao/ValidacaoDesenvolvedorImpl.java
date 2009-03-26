@@ -318,7 +318,7 @@ public class ValidacaoDesenvolvedorImpl {
 		
 		Desenvolvedor desenvolvedor = servicoDesenvolvedor.autenticaDesenvolvedor(email, senha);
 		
-		if (desenvolvedor == null) throw new ErroDeAutenticacaoException();
+		if (desenvolvedor == null) throw new DesenvolvedorInexistenteException();
 		
 		return desenvolvedor;
 	}
