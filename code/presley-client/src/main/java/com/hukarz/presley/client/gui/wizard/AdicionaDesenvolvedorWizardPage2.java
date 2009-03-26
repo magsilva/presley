@@ -1,6 +1,5 @@
 package com.hukarz.presley.client.gui.wizard;
 
-
 import java.util.ArrayList;
 import java.util.Hashtable;
 
@@ -16,6 +15,7 @@ import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
@@ -29,7 +29,6 @@ import com.hukarz.presley.beans.Item;
 import com.hukarz.presley.client.gui.view.MensagemAba;
 
 
-
 public class AdicionaDesenvolvedorWizardPage2 extends WizardPage {
 
 	private static final Logger logger = Logger.getLogger(AdicionaDesenvolvedorWizardPage2.class);
@@ -39,7 +38,7 @@ public class AdicionaDesenvolvedorWizardPage2 extends WizardPage {
 	private ArrayList<Conhecimento> conhecimentos;
 	private com.hukarz.presley.beans.Tree ontologia;
 	private ArrayList<Item> itens;
-	private Text grauText;
+	private Combo grauConhecimento;
 	private Button addConhecimentoButton;
 	private AdicionaDesenvolvedorWizardPage page;
 	private AdicionaDesenvolvedorWizardPage2 page2;
@@ -63,14 +62,12 @@ public class AdicionaDesenvolvedorWizardPage2 extends WizardPage {
         setPageComplete(message == null);
     }
     
-    public String getGrauConhecimento() {
-        return grauText.getText();
+    public int getGrauConhecimento() {
+        return grauConhecimento.getSelectionIndex()+1;
     }
     
       
     public ArrayList<String> pegaConhecimentos(){
-    
-    	
     	return itensConhecimentos;
     }
     
@@ -113,12 +110,6 @@ public class AdicionaDesenvolvedorWizardPage2 extends WizardPage {
     	return conhecimentos;
     }
 
-    private void dialogChanged() {
-		// TODO Auto-generated method stub
-
-    }
-
-    
     public void createControl(Composite parent) {
     	
     	 Composite controls = new Composite(parent, SWT.NULL);
@@ -140,23 +131,13 @@ public class AdicionaDesenvolvedorWizardPage2 extends WizardPage {
             new Label(controls2, SWT.NULL);
         label2.setText("Grau de Conhecimento:");
 
-        
-        grauText = new Text(
-                controls2,
-                SWT.BORDER | SWT.SINGLE);
-            GridData gd3 = new GridData(
-                GridData.FILL_HORIZONTAL);
-            grauText.setLayoutData(gd3);
-            grauText.addModifyListener(
-                new ModifyListener() {
-                    public void modifyText(
-                            ModifyEvent e) {
-                        dialogChanged();
-                    }
-                 });
-
-        grauText.setEditable(false);
-        
+        grauConhecimento = new Combo(controls2, SWT.MULTI | SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
+        GridData gd3 = new GridData(GridData.FILL_HORIZONTAL);
+        grauConhecimento.setLayoutData(gd3);
+        grauConhecimento.setEnabled(false);
+        grauConhecimento.add( "Regular" );
+        grauConhecimento.add( "Bom" );
+        grauConhecimento.add( "Excelente" );
         
         addConhecimentoButton = new Button(controls2,SWT.ICON);
         addConhecimentoButton.setVisible(true);
@@ -193,11 +174,11 @@ public class AdicionaDesenvolvedorWizardPage2 extends WizardPage {
 						}
 						
 						if (temFilhos) {
-							grauText.setEditable(false);
+							grauConhecimento.setEnabled(false);
 							addConhecimentoButton.setEnabled(false);
 						} 
 						else {
-							grauText.setEditable(true);
+							grauConhecimento.setEnabled(true);
 							addConhecimentoButton.setEnabled(true);
 						}
 					}
@@ -221,7 +202,7 @@ public class AdicionaDesenvolvedorWizardPage2 extends WizardPage {
 					selecoes = arvoreConhecimento.getSelection();
 					atual = (TreeItem)selecoes[0];
 					String recebeNome = atual.getText();
-					String grauTexto =  getGrauConhecimento();
+					int grauTexto =  getGrauConhecimento();
 					Double grauDouble = new Double(grauTexto);
 						
 					itensConhecimentos.add(recebeNome);
