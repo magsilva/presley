@@ -70,7 +70,7 @@ public class LoginWizard extends Wizard implements INewWizard {
 		}catch (Exception e) {
 			MessageDialog.openError(this.getShell(), "Erro", e.getMessage());
 			logger.error(e.getMessage());
-			e.printStackTrace();
+			//e.printStackTrace();
 		}
 
 		try {

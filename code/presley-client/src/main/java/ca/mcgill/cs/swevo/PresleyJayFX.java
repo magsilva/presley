@@ -118,7 +118,8 @@ public class PresleyJayFX extends JayFX {
 			if ( element.getCategory() == ICategories.METHOD ){
 				try {
 					IMethod metodo = (IMethod) convertToJavaElement(element);
-					elemento = element.getPackageName() +"."+ element.getShortName();
+					//elemento = element.getPackageName() +"."+ element.getShortName();
+					elemento = element.getShortName();
 					elemento = elemento.substring(0, elemento.indexOf("(") ) +"(" ;
 					
 					String[] parameterNames = metodo.getParameterNames();
@@ -139,7 +140,8 @@ public class PresleyJayFX extends JayFX {
 				}
 			// Classe	
 			} else if ( element.getCategory() == ICategories.CLASS )
-				elemento = element.getPackageName() +"."+ element.getShortName();
+				elemento = element.getShortName();
+//				elemento = element.getPackageName() +"."+ element.getShortName();
 
 			if (!elemento.equals(""))
 				listaElementos.put(element.getId(), elemento);
