@@ -182,7 +182,7 @@ public class ProcessaDocumento {
 	private String remocaoDePalavrasNegativas(String texto){
 		
 		// C:/JAVA/presley/code/presley-server/src/main/java/com/hukarz/presley/server/processaTexto/Stopwords
-		File diretorioCD = new File("C:/JAVA/presley/code/presley-server/src/main/java/com/hukarz/presley/server/processaTexto/Stopwords");   
+		File diretorioCD = new File("./src/main/java/com/hukarz/presley/server/processaTexto/Stopwords");   
 		File[] listagemDiretorio = diretorioCD.listFiles(); 
 		texto = " " + texto + " ";
 
