@@ -20,6 +20,7 @@ public class Arquivo implements Serializable{
 	
 	public Arquivo(String nome) {
 		this.nome = nome;
+		this.texto = "";
 	}
 
 	public int getId() {

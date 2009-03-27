@@ -2,7 +2,6 @@ create database presley;
 
 use presley;
 
-
 CREATE TABLE projeto (
   nome VARCHAR(40) NOT NULL,
   ativo BOOL NULL,
@@ -34,14 +33,20 @@ CREATE TABLE conhecimento_has_arquivo (
   FOREIGN KEY (arquivo_id) REFERENCES arquivo (id) ON DELETE CASCADE
 );
 
+CREATE TABLE palavra(
+  id INTEGER UNSIGNED NOT NULL auto_increment,
+  palavra VARCHAR(50) NOT NULL,
+  PRIMARY KEY  (id)
+);
 
 CREATE TABLE arquivo_has_palavras (
   arquivo_id INTEGER UNSIGNED NOT NULL,
-  palavra VARCHAR(50) NOT NULL,
+  palavra_id INTEGER UNSIGNED NOT NULL,
   quantidade INTEGER UNSIGNED NOT NULL,
-  PRIMARY KEY(arquivo_id, palavra),
+  PRIMARY KEY(arquivo_id, palavra_id),
   INDEX arquivo_has_palavras(arquivo_id),
-  FOREIGN KEY (arquivo_id) REFERENCES arquivo (id) ON DELETE CASCADE
+  FOREIGN KEY (arquivo_id) REFERENCES arquivo (id) ON DELETE CASCADE,
+  FOREIGN KEY (palavra_id) REFERENCES palavra (id) ON DELETE CASCADE
 );
 
 CREATE TABLE desenvolvedor (

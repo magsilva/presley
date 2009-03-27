@@ -137,8 +137,10 @@ public class ServicoArquivoImplDAO implements ServicoArquivo {
 				arquivoRetorno.setEnderecoServidor(rs.getString("endereco_servidor"));
 				arquivoRetorno.setQtdPalavrasTotal(rs.getInt("quantidadePalavras"));
 				
-				SQL = " SELECT palavra, quantidade FROM arquivo_has_palavras " +
-						" WHERE arquivo_id ="+ arquivoRetorno.getId()+";";
+				SQL = "SELECT AP.quantidade, P.palavra " +
+						" FROM arquivo_has_palavras AS AP" +
+						" INNER JOIN palavra AS P ON P.id = AP.arquivo_id " +
+						" WHERE AP.arquivo_id ="+ arquivoRetorno.getId()+";";
 				rs = stm.executeQuery(SQL);
 				
 				while (rs.next()){
@@ -220,8 +222,8 @@ public class ServicoArquivoImplDAO implements ServicoArquivo {
 			for (Iterator<String> iterator = palavras.iterator(); iterator.hasNext();) {
 				String palavra = iterator.next();
 				
-				SQL = " INSERT INTO arquivo_has_palavras (arquivo_id, palavra, quantidade)" +
-				 " VALUES ("+ arquivo.getId()+",'"+palavra+"',"+  termosSelecionados.get(palavra) +");";
+				SQL = " INSERT INTO arquivo_has_palavras (arquivo_id, palavra_id, quantidade)" +
+				 " VALUES ("+ arquivo.getId()+","+retornarIdPalavra(palavra)+","+  termosSelecionados.get(palavra) +");";
 
 				stm.execute(SQL);
 			}
@@ -242,5 +244,30 @@ public class ServicoArquivoImplDAO implements ServicoArquivo {
 		
 		arquivo.setTermosSelecionados(termosSelecionados);
 		return arquivo;
+	}
+	
+	private int retornarIdPalavra(String palavra) throws SQLException {
+		Connection conn = MySQLConnectionFactory.open();
+		Statement stm = null;
+		int id = 0 ;
+		
+		stm = conn.createStatement();
+		String SQL = "SELECT id FROM palavra WHERE palavra = '"+palavra+"';";
+		ResultSet rs = stm.executeQuery(SQL);
+		
+		if (! rs.next() ){
+			SQL = "INSERT INTO palavra (palavra) VALUES ('"+palavra+"');" ;
+			stm.execute(SQL);
+			
+			SQL = "SELECT id FROM palavra WHERE palavra = '"+palavra+"';";
+			rs = stm.executeQuery(SQL);
+			rs.next();
+		}
+		
+		id = rs.getInt("id");
+		stm.close();
+		conn.close();
+		
+		return id;
 	}
 }

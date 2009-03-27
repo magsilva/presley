@@ -1,4 +1,5 @@
 package com.hukarz.presley.server.processaTexto;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -10,24 +11,9 @@ import java.util.StringTokenizer;
 
 import com.hukarz.presley.beans.Arquivo;
 
-
-
 public class ProcessaDocumento {
 	
 	public Arquivo getDocumentoProcessado(Arquivo arquivo) throws IOException {
-		
-		// Esse codigo foi para o metodo getTexto da classe Arquivo 
-//		File file = new File(arquivo.getEnderecoServidor());
-//		FileReader fileReader = new FileReader(file);
-//		BufferedReader reader = new BufferedReader(fileReader);
-//		
-//		String textoTemp = null;
-//		String texto = "";
-//		while( (textoTemp = reader.readLine()) != null )
-//			texto += textoTemp + " ";
-//			
-//		fileReader.close();
-//		reader.close();
 		
 		arquivo.setQtdPalavrasTotal( qtdPalavrasTotal( arquivo.getTexto() ) ) ;
 		arquivo.setTexto( identificacaoDePalavras( arquivo.getTexto().toUpperCase() ) ) ;
@@ -194,10 +180,9 @@ public class ProcessaDocumento {
 	}
 
 	private String remocaoDePalavrasNegativas(String texto){
-		// presley-server/src/main/java/com/hukarz/presley/server/processaTexto/Stopwords 
-		// C:/Java/presley/trunk/code/presley-server/src/main/java/com/hukarz/presley/server/processaTexto/Stopwords
-		                                                                       
-		File diretorioCD = new File("C:/Java/presley/trunk/code/presley-server/src/main/java/com/hukarz/presley/server/processaTexto/Stopwords");   
+		
+		// C:/JAVA/presley/code/presley-server/src/main/java/com/hukarz/presley/server/processaTexto/Stopwords
+		File diretorioCD = new File("C:/JAVA/presley/code/presley-server/src/main/java/com/hukarz/presley/server/processaTexto/Stopwords");   
 		File[] listagemDiretorio = diretorioCD.listFiles(); 
 		texto = " " + texto + " ";
 
