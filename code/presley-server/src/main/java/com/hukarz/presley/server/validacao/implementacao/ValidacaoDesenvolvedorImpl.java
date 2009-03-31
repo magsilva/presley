@@ -70,18 +70,18 @@ public class ValidacaoDesenvolvedorImpl {
 	 * @param email Email do novo desenvolvedor.
 	 * @param novoEmail novo email do desenvolvedor.
 	 * @param nome Nome do novo desenvolvedor.
-	 * @param localidade Local onde o desenvolvedor reside.
+	 * @param cvsNome Local onde o desenvolvedor reside.
 	 * @return true se a atualizacao foi concluida com sucesso.
 	 * @throws DesenvolvedorInexistenteException 
 	 * @throws SenhaInvalidaException 
 	 */
 	public boolean atualizarDesenvolvedor(String email, String novoEmail,
-			String nome, String localidade, String senha) throws DesenvolvedorInexistenteException, SenhaInvalidaException {
+			String nome, String cvsNome, String senha) throws DesenvolvedorInexistenteException, SenhaInvalidaException {
 		
 		if (!servicoDesenvolvedor.desenvolvedorExiste(email)) throw new DesenvolvedorInexistenteException();
 		if (!ValidacaoUtil.validaSenha(senha)) throw new SenhaInvalidaException();
 		
-		return servicoDesenvolvedor.atualizarDesenvolvedor(email, novoEmail, nome, localidade, senha);
+		return servicoDesenvolvedor.atualizarDesenvolvedor(email, novoEmail, nome, cvsNome, senha);
 	}
 	
 	/**
@@ -105,19 +105,19 @@ public class ValidacaoDesenvolvedorImpl {
 	 * Esse mtodo adiciona um novo desenvolvedor na base de dados.
 	 * @param email Email do novo desenvolvedor.
 	 * @param nome Nome do novo desenvolvedor.
-	 * @param localidade Local onde o desenvolvedor reside.
+	 * @param cvsNome Local onde o desenvolvedor reside.
 	 * @return true se o desenvolvedor foi criado com sucesso.
 	 * @throws DesenvolvedorInexistenteException 
 	 * @throws SenhaInvalidaException 
 	 * @throws ListagemDeConhecimentoInexistenteException 
 	 */
 	public boolean criarDesenvolvedor(String email, String nome,
-			String localidade, String senha, HashMap<Conhecimento, Double> hashMap) throws DesenvolvedorExisteException, SenhaInvalidaException, ListagemDeConhecimentoInexistenteException {
+			String cvsNome, String senha, HashMap<Conhecimento, Double> hashMap) throws DesenvolvedorExisteException, SenhaInvalidaException, ListagemDeConhecimentoInexistenteException {
 		
 		if (servicoDesenvolvedor.desenvolvedorExiste(email)) throw new DesenvolvedorExisteException();
 		if (!ValidacaoUtil.validaSenha(senha)) throw new SenhaInvalidaException();
 		
-		boolean teste = servicoDesenvolvedor.criarDesenvolvedor(email, nome, localidade, senha);
+		boolean teste = servicoDesenvolvedor.criarDesenvolvedor(email, nome, cvsNome, senha);
 		
 		Set<Conhecimento> setConhecimento = null;
 		if(hashMap != null) {

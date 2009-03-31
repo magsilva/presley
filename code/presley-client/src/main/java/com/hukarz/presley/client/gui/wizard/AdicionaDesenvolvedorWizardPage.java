@@ -25,7 +25,7 @@ public class AdicionaDesenvolvedorWizardPage extends WizardPage {
 	private Text nomeDesenvolvedorText;
 	private Text emailText;
 	private Text senhaText;
-	private Text localidadeText;
+	private Text cvsIdentificacaoText;
 	private Combo listaDesenvolvedores;
 	
 	
@@ -55,8 +55,8 @@ public class AdicionaDesenvolvedorWizardPage extends WizardPage {
         return senhaText.getText();
     }
     
-    public String getLocalidadeDesenvolvedor() {
-        return localidadeText.getText();
+    public String getIdentificacaoCVS() {
+        return cvsIdentificacaoText.getText();
     }
     
     public Desenvolvedor getDesenvolvedor(){
@@ -80,22 +80,17 @@ public class AdicionaDesenvolvedorWizardPage extends WizardPage {
 
     
     public void createControl(Composite parent) {
-    	 Composite controls =
-             new Composite(parent, SWT.NULL);
-         GridLayout layout = new GridLayout();
+    	 Composite controls	= new Composite(parent, SWT.NULL);
+         GridLayout layout	= new GridLayout();
          controls.setLayout(layout);
-         layout.numColumns = 3;
+         layout.numColumns	= 3;
          layout.verticalSpacing = 5;
 
-        Label label =
-            new Label(controls, SWT.NULL);
+        Label label = new Label(controls, SWT.NULL);
         label.setText("Nome:");
 
-        nomeDesenvolvedorText = new Text(
-            controls,
-            SWT.BORDER | SWT.SINGLE);
-        GridData gd = new GridData(
-            GridData.FILL_HORIZONTAL);
+        nomeDesenvolvedorText = new Text( controls, SWT.BORDER | SWT.SINGLE);
+        GridData gd = new GridData(GridData.FILL_HORIZONTAL);
         nomeDesenvolvedorText.setLayoutData(gd);
         nomeDesenvolvedorText.addModifyListener(
             new ModifyListener() {
@@ -108,15 +103,11 @@ public class AdicionaDesenvolvedorWizardPage extends WizardPage {
         Label labelExplicativo = new Label(controls, SWT.NULL);
         labelExplicativo.setText("digite o nome do Desenvolvedor");
 
-        Label label2 =
-            new Label(controls, SWT.NULL);
+        Label label2 = new Label(controls, SWT.NULL);
         label2.setText("Email:");
 
-        emailText = new Text(
-            controls,
-            SWT.BORDER | SWT.SINGLE);
-        GridData gd2 = new GridData(
-            GridData.FILL_HORIZONTAL);
+        emailText = new Text( controls, SWT.BORDER | SWT.SINGLE);
+        GridData gd2 = new GridData(GridData.FILL_HORIZONTAL);
         emailText.setLayoutData(gd2);
         emailText.addModifyListener(
             new ModifyListener() {
@@ -130,17 +121,13 @@ public class AdicionaDesenvolvedorWizardPage extends WizardPage {
         labelExplicativo2.setText("digite o email do Desenvolvedor");
         
         
-        Label label4 =
-            new Label(controls, SWT.NULL);
-        label4.setText("Localidade:");
+        Label label4 = new Label(controls, SWT.NULL);
+        label4.setText("Identificação no CVS:");
 
-        localidadeText = new Text(
-            controls,
-            SWT.BORDER | SWT.SINGLE);
-        GridData gd3 = new GridData(
-            GridData.FILL_HORIZONTAL);
-        localidadeText.setLayoutData(gd3);
-        localidadeText.addModifyListener(
+        cvsIdentificacaoText = new Text(controls, SWT.BORDER | SWT.SINGLE);
+        GridData gd3 = new GridData(GridData.FILL_HORIZONTAL);
+        cvsIdentificacaoText.setLayoutData(gd3);
+        cvsIdentificacaoText.addModifyListener(
             new ModifyListener() {
                 public void modifyText(
                         ModifyEvent e) {
@@ -149,14 +136,13 @@ public class AdicionaDesenvolvedorWizardPage extends WizardPage {
              });
 
         Label labelExplicativo3 = new Label(controls, SWT.NULL);
-        labelExplicativo3.setText("digite a localidade do Desenvolvedor");
+        labelExplicativo3.setText("digite a Identificação do Desenvolvedor no CVS");
         
-        Label label3 =
-            new Label(controls, SWT.NULL);
+        Label label3 = new Label(controls, SWT.NULL);
         label3.setText("Senha:");
 
-        senhaText = new Text(controls, SWT.SINGLE | SWT.PASSWORD | SWT.BORDER);
-        GridData data = new GridData(GridData.FILL_HORIZONTAL);
+        senhaText		= new Text(controls, SWT.SINGLE | SWT.PASSWORD | SWT.BORDER);
+        GridData data	= new GridData(GridData.FILL_HORIZONTAL);
  	    senhaText.setLayoutData(data);
 
         Label labelExplicativo4 = new Label(controls, SWT.NULL);

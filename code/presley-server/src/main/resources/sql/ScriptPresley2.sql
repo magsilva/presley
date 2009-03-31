@@ -52,7 +52,7 @@ CREATE TABLE arquivo_has_palavras (
 CREATE TABLE desenvolvedor (
   email VARCHAR(50) NOT NULL,
   nome VARCHAR(100) NULL,
-  localidade VARCHAR(50) NULL,
+  cvsNome VARCHAR(50) NULL,
   senha VARCHAR(40) NOT NULL,
   PRIMARY KEY(email)
 );

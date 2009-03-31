@@ -64,7 +64,7 @@ public class ServicoDesenvolvedorImplDAO implements ServicoDesenvolvedor{
 	}
 
 	public boolean atualizarDesenvolvedor(String email, String novoEmail, String nome,
-			String localidade, String senha) {
+			String cvsNome, String senha) {
 
 		//Connection conn = MySQLConnectionFactory.getConnection();
 		Connection conn = MySQLConnectionFactory.open();
@@ -76,7 +76,7 @@ public class ServicoDesenvolvedorImplDAO implements ServicoDesenvolvedor{
 			stm = conn.createStatement();
 
 			String SQL = " UPDATE desenvolvedor SET email = '"+novoEmail+"',"+
-			" nome = '"+nome+"', localidade = '"+localidade+"', senha = '"+senha+
+			" nome = '"+nome+"', cvsNome = '"+cvsNome+"', senha = '"+senha+
 			"' WHERE email = '"+email+"';";
 
 			System.out.println(SQL);
@@ -100,7 +100,7 @@ public class ServicoDesenvolvedorImplDAO implements ServicoDesenvolvedor{
 	}
 
 	public boolean criarDesenvolvedor(String email, String nome,
-			String localidade, String senha) {
+			String cvsNome, String senha) {
 
 		//Connection conn = MySQLConnectionFactory.getConnection();
 		Connection conn = MySQLConnectionFactory.open();
@@ -113,7 +113,7 @@ public class ServicoDesenvolvedorImplDAO implements ServicoDesenvolvedor{
 
 			String SQL = " INSERT INTO desenvolvedor " +
 			" VALUES('"+email+"','"+
-			nome+"','"+localidade+"','"+senha+"');";
+			nome+"','"+cvsNome+"','"+senha+"');";
 
 			System.out.println(SQL);
 			stm.execute(SQL);
@@ -301,7 +301,7 @@ public class ServicoDesenvolvedorImplDAO implements ServicoDesenvolvedor{
 
 			stm = conn.createStatement();
 
-			String SQL = " SELECT email, nome, localidade FROM desenvolvedor WHERE "+
+			String SQL = " SELECT email, nome, cvsNome FROM desenvolvedor WHERE "+
 			" email = '"+email+"';";
 
 
@@ -314,7 +314,54 @@ public class ServicoDesenvolvedorImplDAO implements ServicoDesenvolvedor{
 
 				desenvolvedor.setEmail(rs.getString("email"));
 				desenvolvedor.setNome(rs.getString("nome"));
-				desenvolvedor.setLocalidade(rs.getString("localidade"));
+				desenvolvedor.setCVSNome(rs.getString("cvsNome"));
+				desenvolvedor.setListaConhecimento(this.getConhecimentosDoDesenvolvedor(rs.getString("email"), 1));
+				desenvolvedor.setSenha("");
+
+				return desenvolvedor;
+			}else{
+				return null;
+			}
+
+		} catch (SQLException e) {
+			//e.printStackTrace();
+			return null;
+		} finally {
+			try {
+				stm.close();
+				conn.close();
+			} catch (SQLException onConClose) {
+				System.out.println(" Houve erro no fechamento da conexão ");
+				onConClose.printStackTrace();	             
+			}
+		}
+	}
+
+	public Desenvolvedor getDesenvolvedorCVS(String cvsNome) {
+		
+		//Connection conn = MySQLConnectionFactory.getConnection();
+		Connection conn = MySQLConnectionFactory.open();
+		
+		Statement stm = null;
+			
+		try {
+
+			stm = conn.createStatement();
+
+			String SQL = " SELECT email, nome, cvsNome FROM desenvolvedor WHERE "+
+			" cvsNome = '"+cvsNome+"';";
+
+
+			System.out.println(SQL);
+			ResultSet rs = stm.executeQuery(SQL);
+
+			if (rs.next()){
+
+				Desenvolvedor desenvolvedor = new Desenvolvedor();
+
+				desenvolvedor.setEmail(rs.getString("email"));
+				desenvolvedor.setNome(rs.getString("nome"));
+				desenvolvedor.setCVSNome(rs.getString("cvsNome"));
 				desenvolvedor.setListaConhecimento(this.getConhecimentosDoDesenvolvedor(rs.getString("email"), 1));
 				desenvolvedor.setSenha("");
 
@@ -651,7 +698,7 @@ public class ServicoDesenvolvedorImplDAO implements ServicoDesenvolvedor{
 
 				desenvolvedor.setEmail(rs.getString(1));
 				desenvolvedor.setNome(rs.getString(2));
-				desenvolvedor.setLocalidade(rs.getString(3));
+				desenvolvedor.setCVSNome(rs.getString(3));
 				//desenvolvedor.setListaConhecimento(this.getConhecimentosDoDesenvolvedor(rs.getString(1), 1));				
 
 				list.add(desenvolvedor);
@@ -695,7 +742,7 @@ public class ServicoDesenvolvedorImplDAO implements ServicoDesenvolvedor{
 
 				desenvolvedor.setEmail(rs.getString(1));
 				desenvolvedor.setNome(rs.getString(2));
-				desenvolvedor.setLocalidade(rs.getString(3));
+				desenvolvedor.setCVSNome(rs.getString(3));
 				//desenvolvedor.setListaConhecimento(this.getConhecimentosDoDesenvolvedor(rs.getString(1), 1));
 
 				return desenvolvedor;
@@ -730,7 +777,7 @@ public class ServicoDesenvolvedorImplDAO implements ServicoDesenvolvedor{
 			stm = conn.createStatement();
 
 			String SQL = 
-				"SELECT DS.email, DS.nome, DS.localidade, DC.desenvolvedor_email, DC.conhecimento_nome, DC.grau" +
+				"SELECT DS.email, DS.nome, DS.cvsNome, DC.desenvolvedor_email, DC.conhecimento_nome, DC.grau" +
 				" FROM desenvolvedor_has_conhecimento AS DC" +
 				" INNER JOIN desenvolvedor AS DS ON DS.email = DC.desenvolvedor_email" +
 				" WHERE conhecimento_nome = '"+ conhecimento.getNome() +"'";
@@ -743,7 +790,7 @@ public class ServicoDesenvolvedorImplDAO implements ServicoDesenvolvedor{
 
 				desenvolvedor.setEmail(rs.getString("email"));
 				desenvolvedor.setNome(rs.getString("nome"));
-				desenvolvedor.setLocalidade(rs.getString("localidade"));
+				desenvolvedor.setCVSNome(rs.getString("cvsNome"));
 				desenvolvedor.setListaConhecimento(this.getConhecimentosDoDesenvolvedor(rs.getString("email"), 1));
 				desenvolvedor.setSenha("");
 

@@ -148,7 +148,7 @@ public class ValidacaoArquivoImpl {
 				                long mergedRevision, String mergedAuthor, String mergedPath, int lineNumber)
 								throws SVNException {
 							
-							Desenvolvedor desenvolvedor = servicoDesenvolvedor.getDesenvolvedor( author );
+							Desenvolvedor desenvolvedor = servicoDesenvolvedor.getDesenvolvedorCVS(author);
 
 						 	if (desenvolvedores.indexOf(desenvolvedor)==-1)
 						 		desenvolvedores.add(desenvolvedor);

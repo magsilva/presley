@@ -22,10 +22,10 @@ public interface ServicoDesenvolvedor {
 	 * Esse método adiciona um novo desenvolvedor na base de dados.
 	 * @param email Email do novo desenvolvedor.
 	 * @param nome Nome do novo desenvolvedor.
-	 * @param localidade Local onde o desenvolvedor reside.
+	 * @param cvsNome Local onde o desenvolvedor reside.
 	 * @return true se o desenvolvedor foi criado com sucesso.
 	 */
-	public boolean criarDesenvolvedor(String email, String nome, String localidade, String senha);
+	public boolean criarDesenvolvedor(String email, String nome, String cvsNome, String senha);
 	
 	/**
 	 * Esse método remove um desenvolvedor da base de dados. 
@@ -40,10 +40,10 @@ public interface ServicoDesenvolvedor {
 	 * @param email Email do novo desenvolvedor.
 	 * @param novoEmail novo email do desenvolvedor.
 	 * @param nome Nome do novo desenvolvedor.
-	 * @param localidade Local onde o desenvolvedor reside.
+	 * @param cvsNome Local onde o desenvolvedor reside.
 	 * @return true se a atualizacao foi concluida com sucesso.
 	 */
-	public boolean atualizarDesenvolvedor(String email, String novoEmail, String nome, String localidade,
+	public boolean atualizarDesenvolvedor(String email, String novoEmail, String nome, String cvsNome,
 			String senha);
 	
 	/**
@@ -78,6 +78,14 @@ public interface ServicoDesenvolvedor {
 	 */
 	public Desenvolvedor getDesenvolvedor (String email);
 
+	/**
+	 * Este método retorna o desenvolvedor que possui o Identificador de CVS
+	 * passado como parametro.
+	 * @param email Email do desenvolvedor.
+	 * @return <Desenvolvedor> 
+	 */
+	public Desenvolvedor getDesenvolvedorCVS(String cvsNome);
+	
 	/**
 	 * Esse método retorna uma lista de conhecimentos que o desenvolvedor possui
 	 * @param email Email do desenvolvedor

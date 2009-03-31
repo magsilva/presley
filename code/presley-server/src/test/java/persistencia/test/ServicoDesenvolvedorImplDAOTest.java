@@ -1,25 +1,19 @@
 package persistencia.test;
 
-import java.sql.Date;
 import java.util.ArrayList;
-import java.util.Calendar;
 
 import junit.framework.TestCase;
 
 import com.hukarz.presley.beans.Conhecimento;
 import com.hukarz.presley.beans.Desenvolvedor;
-import com.hukarz.presley.beans.TipoAtividade;
 import com.hukarz.presley.server.persistencia.implementacao.ServicoConhecimentoImplDAO;
 import com.hukarz.presley.server.persistencia.implementacao.ServicoDesenvolvedorImplDAO;
 import com.hukarz.presley.server.persistencia.interfaces.ServicoConhecimento;
 import com.hukarz.presley.server.persistencia.interfaces.ServicoDesenvolvedor;
 
 public class ServicoDesenvolvedorImplDAOTest extends TestCase {
-
 	private ServicoConhecimento sc;
 	private ServicoDesenvolvedor sd;
-	
-	
 	
 	protected void setUp() throws Exception {
 		sc = new ServicoConhecimentoImplDAO();
@@ -82,13 +76,13 @@ public class ServicoDesenvolvedorImplDAOTest extends TestCase {
 		Desenvolvedor d = sd.getDesenvolvedor("amilcarsj@gmail.com");
 		
 		assertTrue(d.getEmail().equals("amilcarsj@gmail.com"));
-		assertTrue(d.getLocalidade().equals("João Pessoa"));
+		assertTrue(d.getCVSNome().equals("João Pessoa"));
 		assertTrue(d.getNome().equals("Amilcar Soares"));
 		
 		if(d.getNome().equals("Amilcar Soares Jr."))
 			fail("Nome errado!");
 		
-		if(d.getLocalidade().equals("João Pessoa - PB"))
+		if(d.getCVSNome().equals("João Pessoa - PB"))
 			fail("Localidade errada!");
 	}
 	
@@ -100,9 +94,9 @@ public class ServicoDesenvolvedorImplDAOTest extends TestCase {
 		assertTrue(sd.atualizarDesenvolvedor("asju@gmail.com", "asju@gmail.com",
 				"ASJU", "Matsuyama-Ehime", "123456"));
 				
-		assertTrue(sd.getDesenvolvedor("amilcarpiox@hotmail.com").getLocalidade().equals("João Pessoa"));
+		assertTrue(sd.getDesenvolvedor("amilcarpiox@hotmail.com").getCVSNome().equals("João Pessoa"));
 	
-		if (sd.getDesenvolvedor("asju@gmail.com").getLocalidade().equals("Matsuyama"))
+		if (sd.getDesenvolvedor("asju@gmail.com").getCVSNome().equals("Matsuyama"))
 			fail("A localidade nao foi atualizada!");
 		
 	}

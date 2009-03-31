@@ -57,7 +57,7 @@ public class AdicionaDesenvolvedorWizard extends Wizard implements INewWizard {
     	  
 		String nome = page.getNomeDesenvolvedor();
 		String email = page.getEmailDesenvolvedor();
-		String local = page.getLocalidadeDesenvolvedor();
+		String cvsNome = page.getIdentificacaoCVS();
 		String senha = page.getSenhaDesenvolvedor();
 		ArrayList<Double> graus = page2.pegaGraus();
 		ArrayList<String> conhecimentos = page2.pegaConhecimentos();
@@ -74,7 +74,7 @@ public class AdicionaDesenvolvedorWizard extends Wizard implements INewWizard {
 		Desenvolvedor novoDesenvolvedor = new Desenvolvedor();
 		novoDesenvolvedor.setEmail(email);
 		novoDesenvolvedor.setListaConhecimento(mapConhecimentoGrau);
-		novoDesenvolvedor.setLocalidade(local);
+		novoDesenvolvedor.setCVSNome(cvsNome);
 		novoDesenvolvedor.setNome(nome);
 		novoDesenvolvedor.setSenha(senha);
 		try {

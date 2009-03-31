@@ -20,7 +20,7 @@ public class Desenvolvedor implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private String email;
 	private String nome;
-	private String localidade;
+	private String cvsNome;
 	private HashMap<Conhecimento,Double> listaConhecimento;
 	private String senha;
 	
@@ -36,11 +36,11 @@ public class Desenvolvedor implements Serializable {
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
-	public String getLocalidade() {
-		return localidade;
+	public String getCVSNome() {
+		return cvsNome;
 	}
-	public void setLocalidade(String localidade) {
-		this.localidade = localidade;
+	public void setCVSNome(String cvsNome) {
+		this.cvsNome = cvsNome;
 	}
 	public HashMap<Conhecimento,Double> getListaConhecimento() {
 		return listaConhecimento;

@@ -261,7 +261,7 @@ public class ExecuteClientQuery implements CorePresleyOperations{
 	public boolean adicionaDesenvolvedor(Desenvolvedor desenvolvedor) throws Exception {
 		validacaoDesenvolvedor.criarDesenvolvedor(desenvolvedor.getEmail(), 
 				desenvolvedor.getNome(), 
-				desenvolvedor.getLocalidade(), 
+				desenvolvedor.getCVSNome(), 
 				desenvolvedor.getSenha(),
 				desenvolvedor.getListaConhecimento());
 		return true;
