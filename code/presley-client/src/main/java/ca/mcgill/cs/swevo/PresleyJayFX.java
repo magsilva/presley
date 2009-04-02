@@ -35,6 +35,14 @@ public class PresleyJayFX extends JayFX {
 		// -> Para fazer q só tenha uma classe fachada <-
 		if (instancia == null) {
 			instancia = new PresleyJayFX();
+		} else {
+			try {
+				instancia.finalize();
+				instancia = new PresleyJayFX();
+			} catch (Throwable e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		IProgressMonitor lMonitor = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getViewReferences()[0].getView( true ).getViewSite().getActionBars().getStatusLineManager().getProgressMonitor();
 		try {
@@ -45,7 +53,14 @@ public class PresleyJayFX extends JayFX {
 
 		return instancia;
 	}
-    
+
+	public static Projeto getProjetoSelecionado(){
+		Projeto projeto = new Projeto();
+		projeto.setNome( ResourcesPlugin.getWorkspace().getRoot().getProject().getName() ) ;
+		
+		return projeto;
+	}
+	
     /**
      * Metodo que retorna todas as classes e nomes de arquivos relacionados ao elemento informado 
      * esrita pelo desenvolvedor

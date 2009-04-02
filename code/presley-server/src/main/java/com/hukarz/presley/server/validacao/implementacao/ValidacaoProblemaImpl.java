@@ -117,14 +117,21 @@ public class ValidacaoProblemaImpl {
 		// Cria uma lista com os Desenvolvedores de cada arquivo java		 
 		Map<ArquivoJava, ArrayList<Desenvolvedor>> arquivoDesenvolvedores = new HashMap<ArquivoJava, ArrayList<Desenvolvedor>>();
 		
-		Projeto projeto = servicoProjeto.getProjetoAtivo();
+		ArrayList<Projeto> projetos = servicoProjeto.getProjetosAtivo();
 		
 		// Cadastra as classes envolvidas no problema
 		Map<ClasseJava, ArquivoJava> arquivos = problema.getClassesRelacionadas();
 		for (Iterator<ClasseJava> it = arquivos.keySet().iterator(); it.hasNext();) {  
 			ClasseJava classe = it.next();  
 			ArquivoJava arquivoJava = arquivos.get(classe);  
-			arquivoJava.localizaEndereco( projeto.getEndereco_Servidor_Leitura() );
+			
+			// Busca o endereço do arquivo no servidor entre os endereços dos projetos ativos
+			for (Iterator<Projeto> iterator = projetos.iterator(); iterator.hasNext();) {
+				Projeto projeto =  iterator.next();
+				if (arquivoJava.localizaEndereco( projeto.getEndereco_Servidor_Leitura() ) )
+					break;				
+			}
+			
 			if (!servicoArquivo.arquivoExiste(arquivoJava)){
 				servicoArquivo.criarArquivo(arquivoJava);
 			}

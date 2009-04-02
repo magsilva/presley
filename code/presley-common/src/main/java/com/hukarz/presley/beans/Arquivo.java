@@ -74,7 +74,9 @@ public class Arquivo implements Serializable{
 		this.texto = texto;
 	}
 	
-	public void localizaEndereco(String diretorioProjeto){
+	public boolean localizaEndereco(String diretorioProjeto){
+		boolean achou = false;
+		
 		// diretório que será listado.  
 		File baseFolder = new File(diretorioProjeto);  
 		  
@@ -96,10 +98,13 @@ public class Arquivo implements Serializable{
 		        	else
 		        		enderecoServidor += endereco.charAt(x);
 		        }
-		        		
+		        
+		        achou = true;
 		        break;
 		    }  
 		}		
+		
+		return achou;
 	}
 
 	public void adicionaTermo(String palavra, Integer quantidade){

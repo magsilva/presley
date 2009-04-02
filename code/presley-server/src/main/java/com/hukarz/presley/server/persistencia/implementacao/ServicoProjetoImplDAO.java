@@ -14,8 +14,9 @@ import com.hukarz.presley.server.persistencia.interfaces.ServicoProjeto;
 public class ServicoProjetoImplDAO implements ServicoProjeto {
 
 	@Override
-	public Projeto getProjetoAtivo() {
+	public ArrayList<Projeto> getProjetosAtivo() {
 		Connection conn = MySQLConnectionFactory.open();
+		ArrayList<Projeto> projetos = new ArrayList<Projeto>();
 		
 		Statement stm = null;
 
@@ -28,21 +29,18 @@ public class ServicoProjetoImplDAO implements ServicoProjeto {
 			// System.out.println(SQL);
 			ResultSet rs = stm.executeQuery(SQL);
 
-			if (rs.next()){
-
+			while(rs.next()) {
 				Projeto projeto = new Projeto();
 
 				projeto.setAtivo(true);
 				projeto.setNome(rs.getString("nome"));
 				projeto.setEndereco_Servidor_Gravacao( rs.getString("endereco_Servidor_Gravacao") ) ;
 				projeto.setEndereco_Servidor_Leitura( rs.getString("endereco_Servidor_Leitura") ) ;
-				
-				return projeto;
-
-			}else{
-				return null;
+			
+				projetos.add(projeto);
 			}
 
+			return projetos;
 		} catch (SQLException e) {
 			//e.printStackTrace();
 			return null;
@@ -121,11 +119,7 @@ public class ServicoProjetoImplDAO implements ServicoProjeto {
 
 		try {
 			stm = conn.createStatement();
-			String SQL = "UPDATE projeto SET ativo ='0';";
-			System.out.println(SQL);
-			stm.execute(SQL);
-			
-			SQL = "UPDATE projeto SET ativo =" ;
+			String SQL = "UPDATE projeto SET ativo =" ;
 			if (projeto.isAtivo())
 				SQL += "'1'";
 			else
@@ -154,7 +148,7 @@ public class ServicoProjetoImplDAO implements ServicoProjeto {
 
 		//Connection conn = MySQLConnectionFactory.getConnection();
 		Connection conn = MySQLConnectionFactory.open();
-		
+
 		Statement stm = null;
 
 		try {

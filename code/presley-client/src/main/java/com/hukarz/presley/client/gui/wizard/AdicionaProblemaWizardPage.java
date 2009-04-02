@@ -29,26 +29,28 @@ import ca.mcgill.cs.swevo.jayfx.model.IElement;
 
 import com.hukarz.presley.beans.ArquivoJava;
 import com.hukarz.presley.beans.ClasseJava;
+import com.hukarz.presley.beans.Projeto;
 import com.hukarz.presley.client.gui.view.MensagemAba;
 
 public class AdicionaProblemaWizardPage extends WizardPage {
 
-	private Combo elementosProjeto;
+	private Combo elementosProjeto, projetosAtivos;
 	private Text mensagemText, descricaoText;
 	private int minimumWidth = 200;
 	private int minimumHeight = 100;
-	private Map<String, String> listaElementosProjeto;
+	private Map<String, String> listaElementosProjeto = new HashMap<String, String>();
 	private ArrayList<String> listaElementosSelecionados;
 	private PresleyJayFX aDB;
+	private MensagemAba mensagem;
+	private ArrayList<Projeto> projetos;
 	
 	protected AdicionaProblemaWizardPage(MensagemAba mensagem) {
 		super("wizardPage");
         setTitle("Adiciona Problema Wizard");
         setDescription("Adiciona um novo Problema");
-
-        listaElementosSelecionados = new ArrayList<String>();
+        this.mensagem = mensagem;
         
-        aDB = PresleyJayFX.obterInstancia( mensagem.getProjeto() );
+        listaElementosSelecionados = new ArrayList<String>();
 	}
 	
     private void updateStatus(String message) {
@@ -111,12 +113,55 @@ public class AdicionaProblemaWizardPage extends WizardPage {
         
         layout.numColumns  = 2;
         layout.verticalSpacing = 3;
+
+        Label labelProjetos = new Label(controls, SWT.NULL);
+        labelProjetos.setText("Projetos Ativos:");
         
-        Label labelDescricao = new Label(controls, SWT.NULL);
-        labelDescricao.setText("Descrição:");
-        descricaoText = new Text(controls, SWT.MULTI | SWT.BORDER);
+        projetosAtivos = new Combo(controls, SWT.MULTI | SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
+ 	    GridData gdProjetos = new GridData(GridData.FILL_HORIZONTAL);
+ 	    projetosAtivos.setLayoutData(gdProjetos);
+ 	    
+        //Preenche o combo  
+ 	    projetos = mensagem.getViewComunication().getProjetosAtivo();
+ 	    for (Iterator<Projeto> iterator = projetos.iterator(); iterator.hasNext();) {
+			Projeto projeto = iterator.next();
+			projetosAtivos.add( projeto.getNome() );
+		}
+ 	    
+ 	    projetosAtivos.addSelectionListener(new SelectionListener(){
+
+ 	    	@Override
+ 	    	public void widgetDefaultSelected(SelectionEvent e) {
+ 	    		// TODO Auto-generated method stub
+
+ 	    	}
+
+ 	    	@Override
+ 	    	public void widgetSelected(SelectionEvent e) {
+ 	    		aDB = PresleyJayFX.obterInstancia( projetos.get( projetosAtivos.getSelectionIndex()) );
+
+ 	    		listaElementosProjeto.clear();
+ 	    		elementosProjeto.removeAll();
+ 	    		
+ 	    		// Busca Todos os Elementos no projeto
+ 	    		listaElementosProjeto = aDB.getTodasClassesMetodos();
+
+ 	    		//Preenche o combo
+ 	    		Object[] elementos = listaElementosProjeto.keySet().toArray() ;
+ 	    		Arrays.sort( elementos );
+ 	    		for (int i = 0; i < elementos.length; i++) {
+ 	    			elementosProjeto.add( listaElementosProjeto.get( (String) elementos[i] ) );
+ 	    		}
+ 	    	}
+ 	    }
+ 	    );
+
+
+ 	    Label labelDescricao = new Label(controls, SWT.NULL);
+ 	    labelDescricao.setText("Descrição:");
+ 	    descricaoText = new Text(controls, SWT.MULTI | SWT.BORDER);
  	    GridData gdDescricao = new GridData(GridData.FILL_HORIZONTAL);
-        descricaoText.setLayoutData(gdDescricao);
+ 	    descricaoText.setLayoutData(gdDescricao);
         descricaoText.addModifyListener(
         		new ModifyListener() {
         			public void modifyText(
@@ -145,19 +190,9 @@ public class AdicionaProblemaWizardPage extends WizardPage {
         Label label = new Label(controls, SWT.NULL);
         label.setText("Elementos no Projeto");
 
-        // Busca Todos os Elementos no projeto
-        listaElementosProjeto = aDB.getTodasClassesMetodos();
         elementosProjeto = new Combo(controls, SWT.MULTI | SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
  	    GridData gdElementos = new GridData(GridData.FILL_HORIZONTAL);
         elementosProjeto.setLayoutData(gdElementos);
-        
-        
-        //Preenche o combo  
-        Object[] elementos = listaElementosProjeto.keySet().toArray() ;
-        Arrays.sort( elementos );
-        for (int i = 0; i < elementos.length; i++) {
-            elementosProjeto.add( listaElementosProjeto.get( (String) elementos[i] ) );
-		}
         
         elementosProjeto.addSelectionListener(
         		new SelectionListener(){
@@ -179,7 +214,7 @@ public class AdicionaProblemaWizardPage extends WizardPage {
 					}
         		}
         );
-        
+
         setControl(controls);
 	}
 	

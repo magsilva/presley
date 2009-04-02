@@ -5,6 +5,8 @@ import java.util.Iterator;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseEvent;
@@ -19,6 +21,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
 
 import com.hukarz.presley.beans.Desenvolvedor;
@@ -39,7 +42,6 @@ public class MensagemAba extends ViewPart {
 	private static Desenvolvedor desenvolvedorLogado = null;
 
 	private boolean bLogin;
-	private Projeto projeto;
 
 	private Button cadastroProjeto, login, logout, addUser, removeUser, 
 			incluirProblema, excluirProblema, validarSolucao, encerrarProblema;
@@ -104,8 +106,6 @@ public class MensagemAba extends ViewPart {
 
 	private void initComponents(Composite parent) {
 		this.parentComposite = parent;
-
-		projeto = viewComunication.getProjetoAtivo();
 
 		cadastroProjeto = new Button(parentComposite, SWT.NONE);
 		Image log = new Image(cadastroProjeto.getDisplay(), this.getClass()
@@ -739,10 +739,6 @@ public class MensagemAba extends ViewPart {
 
 	public Mensagem getMensagem() {
 		return (Mensagem) treeProblemasRecebidos.getSelection()[0].getData();
-	}
-
-	public Projeto getProjeto() {
-		return projeto;
 	}
 
 }

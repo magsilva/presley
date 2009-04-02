@@ -457,8 +457,8 @@ public class ExecuteClientQuery implements CorePresleyOperations{
 		return validacaoConhecimento.associaArquivo(conhecimento);
 	}
 
-	public Projeto getProjetoAtivo()  {
-		return validacaoProjeto.getProjetoAtivo();
+	public ArrayList<Projeto> getProjetosAtivo()  {
+		return validacaoProjeto.getProjetosAtivo();
 	}
 
 	public boolean atualizarStatusProjeto(PacketStruct packet) throws ProjetoInexistenteException{

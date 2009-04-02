@@ -1,7 +1,6 @@
 package com.hukarz.presley.client.gui.wizard;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Iterator;
 
 import org.eclipse.jface.viewers.ISelection;
@@ -9,10 +8,10 @@ import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
-import org.eclipse.swt.layout.FillLayout;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -20,14 +19,15 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.TabFolder;
+import org.eclipse.swt.widgets.Button;
 
-import com.hukarz.presley.beans.Conhecimento;
 import com.hukarz.presley.beans.Projeto;
 import com.hukarz.presley.client.gui.view.MensagemAba;
 
 public class AdicionaProjetoWizardPage extends WizardPage {
 	private Combo projetosExistentes;
 	private Text nomeText, enderecoLeituraText, enderecoGravacaoText;
+	private Button projetoAtivo;
 	private MensagemAba mensagem;
 	private TabFolder tabFolder;
 	private ArrayList<Projeto> projetos; 
@@ -64,7 +64,7 @@ public class AdicionaProjetoWizardPage extends WizardPage {
     
     public Projeto ativarProjeto(){
     	Projeto projeto = projetos.get( projetosExistentes.getSelectionIndex() );
-    	projeto.setAtivo(true);
+    	projeto.setAtivo( projetoAtivo.getSelection() );
     	return projeto;
     }
     
@@ -170,11 +170,30 @@ public class AdicionaProjetoWizardPage extends WizardPage {
 		  for (Iterator<Projeto> iterator = projetos.iterator(); iterator.hasNext();) {
 			Projeto projeto = iterator.next();
 			projetosExistentes.add( projeto.getNome() );
-			
-			if ( projeto.isAtivo() )
-				projetosExistentes.select( projetosExistentes.getItemCount() -1) ;
 		  }
 		  
+		  projetosExistentes.addSelectionListener(
+				  new SelectionListener(){
+
+					  @Override
+					  public void widgetDefaultSelected(SelectionEvent e) {
+
+					  }
+
+					  @Override
+					  public void widgetSelected(SelectionEvent e) {
+						  Projeto projeto = projetos.get( projetosExistentes.getSelectionIndex() );
+						  projetoAtivo.setSelection( projeto.isAtivo() ) ;
+					  }
+				  }
+		  );
+
+		  Label lblEspaco = new Label(composite, SWT.NULL);
+		  lblEspaco.setText("                 ");
+
+		  projetoAtivo = new Button(composite, SWT.CHECK);
+		  projetoAtivo.setText("Ativo");
+
 		  return composite ;
 	  }
 }

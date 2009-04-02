@@ -71,7 +71,7 @@ public interface CorePresleyOperations {
 	public static final int GET_LISTA_SOLUCOES_RETORNADAS = 33;
 	public static final int ASSOCIA_ARQUIVO_CONHECIMENTO = 34;
 	
-	public static final int GET_PROJETOATIVO = 35;
+	public static final int GET_PROJETOS_ATIVO = 35;
 	public static final int CRIAR_PROJETO = 36;
 	public static final int REMOVER_PROJETO = 37;
 	public static final int ATUALIZAR_STATUS_PROJETO = 38;
@@ -296,7 +296,7 @@ public interface CorePresleyOperations {
 	 * CÓDIGO DA OPERAÇÃO -> 35
 	 * @return
 	 */
-	public Projeto getProjetoAtivo();
+	public ArrayList<Projeto> getProjetosAtivo();
 	
 	/**
 	 * Este método cadastra as informações sobre o projeto em execução no presley
