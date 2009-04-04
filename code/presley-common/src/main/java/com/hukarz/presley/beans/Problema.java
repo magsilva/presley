@@ -32,6 +32,15 @@ public class Problema implements Serializable {
 	private Map<ClasseJava, ArquivoJava> classesRelacionadas ;
 	private Desenvolvedor desenvolvedorOrigem;
 	private Conhecimento conhecimento;
+	private Projeto projeto;
+
+	public Projeto getProjeto() {
+		return projeto;
+	}
+
+	public void setProjeto(Projeto projeto) {
+		this.projeto = projeto;
+	}
 
 	public Desenvolvedor getDesenvolvedorOrigem() {
 		return desenvolvedorOrigem;

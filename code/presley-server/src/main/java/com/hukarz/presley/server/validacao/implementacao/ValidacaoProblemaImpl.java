@@ -17,6 +17,7 @@ import com.hukarz.presley.beans.Solucao;
 import com.hukarz.presley.excessao.AtividadeInexistenteException;
 import com.hukarz.presley.excessao.DescricaoInvalidaException;
 import com.hukarz.presley.excessao.ProblemaInexistenteException;
+import com.hukarz.presley.excessao.ProjetoInexistenteException;
 import com.hukarz.presley.server.inferencia.Inferencia;
 import com.hukarz.presley.server.persistencia.implementacao.ServicoArquivoImplDAO;
 import com.hukarz.presley.server.persistencia.implementacao.ServicoMensagemImplDAO;
@@ -81,11 +82,14 @@ public class ValidacaoProblemaImpl {
 	 * @param mensagem Mensagem a ser exibida a respeito do tipo do problema.
 	 * @return true se o problema foi cadastrado com sucesso.
 	 * @throws IOException 
+	 * @throws ProjetoInexistenteException 
 	 */
 	public boolean cadastrarProblema(Problema problema) 
-			throws DescricaoInvalidaException, IOException {
+			throws DescricaoInvalidaException, IOException, ProjetoInexistenteException {
 		if (!ValidacaoUtil.validaDescricao( problema.getDescricao() )) throw new DescricaoInvalidaException();
 		
+		if (!servicoProjeto.projetoExiste(problema.getProjeto())) throw new ProjetoInexistenteException();
+
 		// Projeto projeto = ValidacaoUtil.getProjetoAtivo();
 		// Cria uma lista com os Desenvolvedores de cada arquivo java		 
 		Map<ArquivoJava, ArrayList<Desenvolvedor>> arquivoDesenvolvedores = getDesenvolvedoresArquivo(problema);
@@ -117,7 +121,7 @@ public class ValidacaoProblemaImpl {
 		// Cria uma lista com os Desenvolvedores de cada arquivo java		 
 		Map<ArquivoJava, ArrayList<Desenvolvedor>> arquivoDesenvolvedores = new HashMap<ArquivoJava, ArrayList<Desenvolvedor>>();
 		
-		ArrayList<Projeto> projetos = servicoProjeto.getProjetosAtivo();
+		Projeto projeto = problema.getProjeto();
 		
 		// Cadastra as classes envolvidas no problema
 		Map<ClasseJava, ArquivoJava> arquivos = problema.getClassesRelacionadas();
@@ -126,11 +130,7 @@ public class ValidacaoProblemaImpl {
 			ArquivoJava arquivoJava = arquivos.get(classe);  
 			
 			// Busca o endereço do arquivo no servidor entre os endereços dos projetos ativos
-			for (Iterator<Projeto> iterator = projetos.iterator(); iterator.hasNext();) {
-				Projeto projeto =  iterator.next();
-				if (arquivoJava.localizaEndereco( projeto.getEndereco_Servidor_Leitura() ) )
-					break;				
-			}
+			arquivoJava.localizaEndereco( projeto.getEndereco_Servidor_Leitura() ) ;
 			
 			if (!servicoArquivo.arquivoExiste(arquivoJava)){
 				servicoArquivo.criarArquivo(arquivoJava);

@@ -291,6 +291,9 @@ public class ServerBridgeImp implements ServerBridge {
 			} catch (DescricaoInvalidaException e1) {
 				retorno = "ERRO: Problema Existente.";
 				e1.printStackTrace();
+			} catch (ProjetoInexistenteException e) {
+				retorno = "ERRO: Projeto Inexistente.";
+				e.printStackTrace();
 			} catch (IOException e1) {
 				retorno = "ERRO: Arquivo Inexistente.";
 				e1.printStackTrace();

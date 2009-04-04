@@ -220,5 +220,44 @@ public class ServicoProjetoImplDAO implements ServicoProjeto {
 		}
 		return projetos;
 	}
+
+	@Override
+	public Projeto getProjeto(String nome) {
+		//Connection conn = MySQLConnectionFactory.getConnection();
+		Connection conn = MySQLConnectionFactory.open();
+
+		Statement stm = null;
+
+		try {
+
+			stm = conn.createStatement();
+			String SQL = "SELECT * FROM projeto WHERE nome = '"+nome+"';";
+
+			Projeto projeto = new Projeto();
+			
+			System.out.println(SQL);
+			ResultSet rs = stm.executeQuery(SQL);
+
+			if (rs.next()){
+				projeto.setAtivo( rs.getBoolean("ativo") );
+				projeto.setEndereco_Servidor_Gravacao( rs.getString("endereco_Servidor_Gravacao") );
+				projeto.setEndereco_Servidor_Leitura( rs.getString("endereco_Servidor_Leitura") );
+				projeto.setNome( rs.getString("nome") );
+			}
+
+			return projeto;
+		} catch (SQLException e) {
+			//e.printStackTrace();
+			return null;
+		} finally {
+			try {
+				stm.close();
+				conn.close();
+			} catch (SQLException onConClose) {
+				System.out.println(" Houve erro no fechamento da conexão ");
+				onConClose.printStackTrace();	             
+			}
+		}	
+	}
 	
 }

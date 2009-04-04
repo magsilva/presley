@@ -45,6 +45,7 @@ public class AdicionaProblemaWizard extends Wizard implements INewWizard {
     		problema.setClassesRelacionadas( page.getClassesRelacionadas() ) ;
     		problema.setDesenvolvedorOrigem( MensagemAba.getDesenvolvedorLogado() ) ;
     		problema.setResolvido(false);
+    		problema.setProjeto(page.getProjeto());
     		
     		//Adciona problema ao banco
     		mensagem.getViewComunication().adicionaProblema(problema);

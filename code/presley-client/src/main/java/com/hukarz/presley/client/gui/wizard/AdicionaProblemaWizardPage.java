@@ -66,6 +66,10 @@ public class AdicionaProblemaWizardPage extends WizardPage {
         return descricaoText.getText();
     }
     
+    public Projeto getProjeto(){
+    	return projetos.get( projetosAtivos.getSelectionIndex());
+    }
+    
     /**
      * Metodo que retorna todas as classes e nomes de arquivos relacionados a mensagem 
      * esrita pelo desenvolvedor

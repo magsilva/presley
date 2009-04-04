@@ -66,9 +66,11 @@ CREATE TABLE problema (
   dataRelato DATE NULL,
   mensagem TEXT NULL,
   conhecimento_nome VARCHAR(70),
+  projeto_nome VARCHAR(40) NOT NULL,
   PRIMARY KEY(id),
   INDEX problema_FKIndex1(atividade_id),
-  FOREIGN KEY (conhecimento_nome) REFERENCES conhecimento (nome) ON DELETE CASCADE
+  FOREIGN KEY (conhecimento_nome) REFERENCES conhecimento (nome) ON DELETE CASCADE,
+  FOREIGN KEY (projeto_nome) REFERENCES projeto (nome) ON DELETE CASCADE
 );
 
 

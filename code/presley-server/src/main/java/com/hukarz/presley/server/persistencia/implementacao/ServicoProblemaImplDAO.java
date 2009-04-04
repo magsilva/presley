@@ -18,9 +18,13 @@ import com.hukarz.presley.server.persistencia.MySQLConnectionFactory;
 import com.hukarz.presley.server.persistencia.interfaces.ServicoConhecimento;
 import com.hukarz.presley.server.persistencia.interfaces.ServicoDesenvolvedor;
 import com.hukarz.presley.server.persistencia.interfaces.ServicoProblema;
+import com.hukarz.presley.server.persistencia.interfaces.ServicoProjeto;
 
 public class ServicoProblemaImplDAO implements ServicoProblema{
-
+	ServicoProjeto servicoProjeto	= new ServicoProjetoImplDAO();
+	ServicoDesenvolvedor sd 		= new ServicoDesenvolvedorImplDAO();
+	ServicoConhecimento servicoConhecimento = new ServicoConhecimentoImplDAO();
+	
 	public boolean atualizarStatusDoProblema(int id, boolean status) {
 
 		//Connection conn = MySQLConnectionFactory.getConnection();
@@ -73,9 +77,12 @@ public class ServicoProblemaImplDAO implements ServicoProblema{
 		try {
 			stm = conn.createStatement();
 
-			String SQL = " INSERT INTO problema(descricao,dataRelato,mensagem,desenvolvedor_email, resolvido, conhecimento_nome) " +
+			String SQL = " INSERT INTO problema(descricao,dataRelato,mensagem," +
+					"desenvolvedor_email, resolvido, conhecimento_nome, projeto_nome) " +
 			" VALUES ('"+problema.getDescricao()+"','"+problema.getData()+"','"+problema.getMensagem()+"', '"+
-			problema.getDesenvolvedorOrigem().getEmail()+"', 0, '"+ problema.getConhecimento().getNome() +"');";	
+			problema.getDesenvolvedorOrigem().getEmail()+"', 0, '"+ problema.getConhecimento().getNome() +"', '"+ 
+			problema.getProjeto().getNome() +"');";
+			
 			System.out.println(SQL);
 			stm.execute(SQL);
 
@@ -193,9 +200,6 @@ public class ServicoProblemaImplDAO implements ServicoProblema{
 
 		Statement stm = null;
 
-		ServicoDesenvolvedor sd = new ServicoDesenvolvedorImplDAO();
-		ServicoConhecimento servicoConhecimento = new ServicoConhecimentoImplDAO();
-
 		try {
 
 			stm = conn.createStatement();
@@ -216,7 +220,7 @@ public class ServicoProblemaImplDAO implements ServicoProblema{
 				p.setData( rs.getDate("dataRelato") );
 				p.setMensagem( rs.getString("mensagem") );
 				p.setDesenvolvedorOrigem( sd.getDesenvolvedor( rs.getString("desenvolvedor_email") ) ) ;
-
+				p.setProjeto( servicoProjeto.getProjeto( rs.getString("projeto_nome") ) );
 				p.setConhecimento( servicoConhecimento.getConhecimento(rs.getString("conhecimento_nome")) );
 				return p;
 			}else{

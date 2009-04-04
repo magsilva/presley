@@ -327,8 +327,9 @@ public class ExecuteClientQuery implements CorePresleyOperations{
 	 * @throws AtividadeInexistenteException 
 	 * @throws DescricaoInvalidaException 
 	 * @throws IOException 
+	 * @throws ProjetoInexistenteException 
 	 */
-	public boolean adicionaProblema(PacketStruct packet) throws DescricaoInvalidaException, IOException {
+	public boolean adicionaProblema(PacketStruct packet) throws DescricaoInvalidaException, IOException, ProjetoInexistenteException {
 		Problema problema = (Problema) packet.getData();
 
 		if (problema == null) {
@@ -344,7 +345,7 @@ public class ExecuteClientQuery implements CorePresleyOperations{
 		return adicionaProblema(problema);
 	}
 	
-	public boolean adicionaProblema(Problema problema) throws DescricaoInvalidaException, IOException {
+	public boolean adicionaProblema(Problema problema) throws DescricaoInvalidaException, IOException, ProjetoInexistenteException {
 		validacaoProblema.cadastrarProblema(problema);
 
 		return true;

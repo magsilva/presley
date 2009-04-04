@@ -47,4 +47,11 @@ public interface ServicoProjeto {
 	 * @return lista de projetos existentes
 	 */	
 	public ArrayList<Projeto> getProjetos();
+	
+	/**
+	 * Esse método retorna um projeto cadastrado
+	 * @return Projeto
+	 */
+	public Projeto getProjeto(String nome);
+
 }
