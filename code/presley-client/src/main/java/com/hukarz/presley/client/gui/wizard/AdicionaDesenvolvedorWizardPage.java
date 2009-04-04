@@ -136,7 +136,7 @@ public class AdicionaDesenvolvedorWizardPage extends WizardPage {
              });
 
         Label labelExplicativo3 = new Label(controls, SWT.NULL);
-        labelExplicativo3.setText("digite a Identificação do Desenvolvedor no CVS");
+        labelExplicativo3.setText("digite a Identificação no CVS");
         
         Label label3 = new Label(controls, SWT.NULL);
         label3.setText("Senha:");
