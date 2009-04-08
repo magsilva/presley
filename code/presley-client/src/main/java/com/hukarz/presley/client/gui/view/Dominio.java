@@ -96,15 +96,7 @@ public class Dominio extends ViewPart {
 			}
 
 			public void widgetSelected(SelectionEvent e) {
-				listaDocumentosBase.removeAll();
-				if (treeConhecimentos.getSelection()[0].getData() instanceof Conhecimento){
-					Conhecimento conhecimentoSelecionado = (Conhecimento) treeConhecimentos.getSelection()[0].getData();
-					ArrayList<Arquivo> arquivosDoConhecimento = conhecimentoSelecionado.getArquivos();
-					for (Iterator<Arquivo> iterator = arquivosDoConhecimento.iterator(); iterator.hasNext();) {
-						Arquivo arquivo = iterator.next();
-						listaDocumentosBase.add( arquivo.getNome() ) ;
-					}
-				}
+				preencherListaDocumentosBase();
 			}
 		});
 
@@ -128,8 +120,8 @@ public class Dominio extends ViewPart {
 				// exibe o wizard para adicao de novo conhecimento
 				runAdicionaConhecimentoWizardAction();
 				
-		    	com.hukarz.presley.beans.Tree conhecimentosModelo = getViewComunication().getOntologia();
-		    	treeConhecimentos = conhecimentosModelo.constroiArvoreGrafica(parentComposite, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
+		    	com.hukarz.presley.beans.Tree conhecimentosModelo2 = getViewComunication().getOntologia();
+		    	treeConhecimentos = conhecimentosModelo2.constroiArvoreGrafica(parentComposite, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
 
 			}
 
@@ -200,12 +192,11 @@ public class Dominio extends ViewPart {
 				if ((treeConhecimentos.getSelection()[0].getData() instanceof Conhecimento) &&
 					(treeConhecimentos.indexOf(treeConhecimentos.getSelection()[0]) != 0) ){
 
-					Projeto projeto = new Projeto(); 
-						// viewComunication.getProjetoAtivo();
+					Projeto projeto = viewComunication.getProjetosAtivo().get(0);
 					
 					Shell shell = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
 					FileDialog dialog = new FileDialog(shell, SWT.OPEN);
-					dialog.setFilterPath( projeto.getEndereco_Servidor_Leitura() );
+					dialog.setFilterPath( "C://" );
 					final String file = dialog.open();
 
 					File arquivoSelecionado = new File(file);
@@ -223,7 +214,8 @@ public class Dominio extends ViewPart {
 					
 					try {
 						Conhecimento conhecimento = (Conhecimento) treeConhecimentos.getSelection()[0].getData();
-						conhecimento = viewComunication.associaArquivo(conhecimento, arquivo);
+						viewComunication.associaArquivo(conhecimento, arquivo);
+						preencherListaDocumentosBase();
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
@@ -243,6 +235,18 @@ public class Dominio extends ViewPart {
 	
 	public ViewComunication getViewComunication(){
 		return this.viewComunication;
+	}
+
+	private void preencherListaDocumentosBase() {
+		listaDocumentosBase.removeAll();
+		if (treeConhecimentos.getSelection()[0].getData() instanceof Conhecimento){
+			Conhecimento conhecimentoSelecionado = (Conhecimento) treeConhecimentos.getSelection()[0].getData();
+			ArrayList<Arquivo> arquivosDoConhecimento = conhecimentoSelecionado.getArquivos();
+			for (Iterator<Arquivo> iterator = arquivosDoConhecimento.iterator(); iterator.hasNext();) {
+				Arquivo arquivo = iterator.next();
+				listaDocumentosBase.add( arquivo.getNome() ) ;
+			}
+		}
 	}
 	
 	private void runAdicionaConhecimentoWizardAction() {

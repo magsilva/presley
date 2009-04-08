@@ -621,13 +621,17 @@ public class ViewComunication implements CorePresleyOperations{
 	}
 	
 	public Conhecimento associaArquivo(Conhecimento conhecimento, Arquivo arquivo) throws Exception{
-
-		ArrayList<Arquivo> arquivos = new ArrayList<Arquivo>();
-		arquivos.add(arquivo);
-		conhecimento.setArquivos(arquivos);
 		
+		ArrayList<Arquivo> arquivosConhecimento = conhecimento.getArquivos();
+		arquivosConhecimento.add(arquivo);
+		
+		ArrayList<Arquivo> arquivoCadastrar = new ArrayList<Arquivo>();
+		arquivoCadastrar.add(arquivo);
+		
+		conhecimento.setArquivos(arquivoCadastrar);
 		PacketStruct respostaPacket = sendPack(conhecimento, CorePresleyOperations.ASSOCIA_ARQUIVO_CONHECIMENTO);
-
+		conhecimento.setArquivos(arquivosConhecimento);
+		
 		if(respostaPacket.getId() == CorePresleyOperations.ERRO) {
 			throw new Exception((String)  respostaPacket.getData());
 		}
