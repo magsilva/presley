@@ -6,6 +6,7 @@ import java.util.HashMap;
 import com.hukarz.presley.beans.Conhecimento;
 import com.hukarz.presley.beans.Desenvolvedor;
 import com.hukarz.presley.beans.TipoAtividade;
+import com.hukarz.presley.excessao.DesenvolvedorInexistenteException;
 
 
 /**
@@ -83,8 +84,9 @@ public interface ServicoDesenvolvedor {
 	 * passado como parametro.
 	 * @param email Email do desenvolvedor.
 	 * @return <Desenvolvedor> 
+	 * @throws DesenvolvedorInexistenteException 
 	 */
-	public Desenvolvedor getDesenvolvedorCVS(String cvsNome);
+	public Desenvolvedor getDesenvolvedorCVS(String cvsNome) throws DesenvolvedorInexistenteException;
 	
 	/**
 	 * Esse método retorna uma lista de conhecimentos que o desenvolvedor possui

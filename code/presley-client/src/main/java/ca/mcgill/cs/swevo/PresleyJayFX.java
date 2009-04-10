@@ -30,15 +30,16 @@ public class PresleyJayFX extends JayFX {
 	
 	// Sigleton
 	private static PresleyJayFX instancia;
+	private Projeto projeto;
 	
 	public static PresleyJayFX obterInstancia(Projeto projeto) {
 		// -> Para fazer q só tenha uma classe fachada <-
 		if (instancia == null) {
-			instancia = new PresleyJayFX();
+			instancia = new PresleyJayFX(projeto);
 		} else {
 			try {
 				instancia.finalize();
-				instancia = new PresleyJayFX();
+				instancia = new PresleyJayFX(projeto);
 			} catch (Throwable e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -54,10 +55,12 @@ public class PresleyJayFX extends JayFX {
 		return instancia;
 	}
 
-	public static Projeto getProjetoSelecionado(){
-		Projeto projeto = new Projeto();
-		projeto.setNome( ResourcesPlugin.getWorkspace().getRoot().getProject().getName() ) ;
-		
+	public PresleyJayFX(Projeto projeto) {
+		super();
+		this.projeto = projeto;
+	}
+
+	public Projeto getProjetoSelecionado(){
 		return projeto;
 	}
 	
@@ -99,8 +102,8 @@ public class PresleyJayFX extends JayFX {
     			if (isProjectElement(element)){
     				ClasseJava classe   = new ClasseJava( element.getDeclaringClass().getId() ) ;
 
-    				ArquivoJava arquivo = new ArquivoJava( convertToJavaElement(element).getResource().getName() );
-    				
+    				ArquivoJava arquivo = new ArquivoJava( convertToJavaElement(element).getResource().getName(), getProjetoSelecionado());
+    				arquivo.setEnderecoServidor( convertToJavaElement(element).getResource().getLocation().toFile().getAbsolutePath() ) ;
     				retorno.put(classe, arquivo);
     			}
     		} catch (ConversionException e) {

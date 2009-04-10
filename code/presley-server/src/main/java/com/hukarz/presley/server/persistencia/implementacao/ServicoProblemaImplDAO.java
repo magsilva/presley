@@ -339,20 +339,23 @@ public class ServicoProblemaImplDAO implements ServicoProblema{
 		try {
 			stm = conn.createStatement();
 
-			String SQL = " SELECT id FROM problema"+
+			String SQL = " SELECT id, descricao, resolvido, dataRelato, mensagem, desenvolvedor_email, conhecimento_nome" +
+					" FROM problema"+
 			" WHERE descricao = '"+descricao+"' AND dataRelato = '"+dataRelato+"' AND "+
 			" mensagem = '"+mensagem+"' AND desenvolvedor_email = '"+desenvolvedor_email.getEmail()+"';";	
 			System.out.println(SQL);
 			ResultSet rs = stm.executeQuery(SQL);
 
-			p.setId( rs.getInt("id") );
-			p.setDescricao( rs.getString("descricao") );
-			p.setResolvido( rs.getBoolean("resolvido") );
-			p.setData( rs.getDate("dataRelato") );
-			p.setMensagem( rs.getString("mensagem") );
-			p.setDesenvolvedorOrigem( sd.getDesenvolvedor( rs.getString("desenvolvedor_email") ) ) ;
+			if (rs.next()){
+				p.setId( rs.getInt("id") );
+				p.setDescricao( rs.getString("descricao") );
+				p.setResolvido( rs.getBoolean("resolvido") );
+				p.setData( rs.getDate("dataRelato") );
+				p.setMensagem( rs.getString("mensagem") );
+				p.setDesenvolvedorOrigem( sd.getDesenvolvedor( rs.getString("desenvolvedor_email") ) ) ;
+				p.setConhecimento( servicoConhecimento.getConhecimento(rs.getString("conhecimento_nome")) );
+			}
 
-			p.setConhecimento( servicoConhecimento.getConhecimento(rs.getString("conhecimento_nome")) );
 			return p;
 
 		} catch (SQLException e) {

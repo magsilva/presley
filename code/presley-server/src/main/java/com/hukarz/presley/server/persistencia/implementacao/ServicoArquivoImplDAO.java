@@ -139,7 +139,7 @@ public class ServicoArquivoImplDAO implements ServicoArquivo {
 				
 				SQL = "SELECT AP.quantidade, P.palavra " +
 						" FROM arquivo_has_palavras AS AP" +
-						" INNER JOIN palavra AS P ON P.id = AP.arquivo_id " +
+						" INNER JOIN palavra AS P ON P.id = AP.palavra_id " +
 						" WHERE AP.arquivo_id ="+ arquivoRetorno.getId()+";";
 				rs = stm.executeQuery(SQL);
 				

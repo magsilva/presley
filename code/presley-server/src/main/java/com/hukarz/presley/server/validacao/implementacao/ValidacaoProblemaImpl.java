@@ -130,7 +130,7 @@ public class ValidacaoProblemaImpl {
 			ArquivoJava arquivoJava = arquivos.get(classe);  
 			
 			// Busca o endereço do arquivo no servidor entre os endereços dos projetos ativos
-			arquivoJava.localizaEndereco( projeto.getEndereco_Servidor_Leitura() ) ;
+			arquivoJava.localizaEndereco( projeto.getEndereco_Servidor_Gravacao() ) ;
 			
 			if (!servicoArquivo.arquivoExiste(arquivoJava)){
 				servicoArquivo.criarArquivo(arquivoJava);

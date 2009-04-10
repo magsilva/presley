@@ -15,6 +15,7 @@ import org.tmatesoft.svn.core.wc.SVNRevision;
 import com.hukarz.presley.beans.Arquivo;
 import com.hukarz.presley.beans.Desenvolvedor;
 import com.hukarz.presley.excessao.ArquivoInexistenteException;
+import com.hukarz.presley.excessao.DesenvolvedorInexistenteException;
 import com.hukarz.presley.excessao.NomeInvalidoException;
 import com.hukarz.presley.server.persistencia.implementacao.ServicoArquivoImplDAO;
 import com.hukarz.presley.server.persistencia.implementacao.ServicoDesenvolvedorImplDAO;
@@ -148,11 +149,18 @@ public class ValidacaoArquivoImpl {
 				                long mergedRevision, String mergedAuthor, String mergedPath, int lineNumber)
 								throws SVNException {
 							
-							Desenvolvedor desenvolvedor = servicoDesenvolvedor.getDesenvolvedorCVS(author);
+							try {
+								Desenvolvedor desenvolvedor = servicoDesenvolvedor.getDesenvolvedorCVS(author);
 
-						 	if (desenvolvedores.indexOf(desenvolvedor)==-1)
-						 		desenvolvedores.add(desenvolvedor);
-			            	System.out.println("|" + author + "|" );
+							 	if (desenvolvedores.indexOf(desenvolvedor)==-1)
+							 		desenvolvedores.add(desenvolvedor);
+				            	
+							 	//System.out.println("|" + author + "|" );
+							} catch (DesenvolvedorInexistenteException e) {
+								// e.printStackTrace();
+							}
+
+
 						}
 
 						@Override

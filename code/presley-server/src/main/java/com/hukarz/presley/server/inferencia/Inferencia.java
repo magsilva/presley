@@ -59,7 +59,8 @@ public class Inferencia {
 		Map<Desenvolvedor, Integer> desenvolvedorPorArq = new HashMap<Desenvolvedor, Integer>();
 		Map<Desenvolvedor, Double> porcentagemDesenvolvedorArq = new HashMap<Desenvolvedor, Double>();
 		
-		for (Iterator<ArquivoJava> arquivo = arquivoDesenvolvedores.keySet().iterator(); arquivo.hasNext();) {
+		for (Iterator<ArquivoJava> itArquivo = arquivoDesenvolvedores.keySet().iterator(); itArquivo.hasNext();) {
+			ArquivoJava arquivo = itArquivo.next();
 			ArrayList<Desenvolvedor> desenvolvedoresArq = arquivoDesenvolvedores.get(arquivo);
 
 			for (Iterator<Desenvolvedor> it = desenvolvedoresArq.iterator(); it.hasNext();) {

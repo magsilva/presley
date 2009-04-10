@@ -12,6 +12,7 @@ import java.util.Map.Entry;
 import com.hukarz.presley.beans.Conhecimento;
 import com.hukarz.presley.beans.Desenvolvedor;
 import com.hukarz.presley.beans.TipoAtividade;
+import com.hukarz.presley.excessao.DesenvolvedorInexistenteException;
 import com.hukarz.presley.server.persistencia.MySQLConnectionFactory;
 import com.hukarz.presley.server.persistencia.interfaces.ServicoConhecimento;
 import com.hukarz.presley.server.persistencia.interfaces.ServicoDesenvolvedor;
@@ -337,7 +338,7 @@ public class ServicoDesenvolvedorImplDAO implements ServicoDesenvolvedor{
 		}
 	}
 
-	public Desenvolvedor getDesenvolvedorCVS(String cvsNome) {
+	public Desenvolvedor getDesenvolvedorCVS(String cvsNome) throws DesenvolvedorInexistenteException {
 		
 		//Connection conn = MySQLConnectionFactory.getConnection();
 		Connection conn = MySQLConnectionFactory.open();
@@ -367,7 +368,7 @@ public class ServicoDesenvolvedorImplDAO implements ServicoDesenvolvedor{
 
 				return desenvolvedor;
 			}else{
-				return null;
+				throw new DesenvolvedorInexistenteException();
 			}
 
 		} catch (SQLException e) {

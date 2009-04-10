@@ -99,9 +99,9 @@ public class AdicionaProblemaWizardPage extends WizardPage {
 					classe   = new ClasseJava( elemento.getId() ); 
 				else
 					classe   = new ClasseJava(elemento.getDeclaringClass().getId());
-				
-	    		ArquivoJava arquivo = new ArquivoJava(aDB.convertToJavaElement(elemento).getResource().getName());
-	    		
+			
+	    		ArquivoJava arquivo = new ArquivoJava(aDB.convertToJavaElement(elemento).getResource().getName(), aDB.getProjetoSelecionado());
+	    		arquivo.setEnderecoServidor( aDB.convertToJavaElement(elemento).getResource().getLocation().toFile().getAbsolutePath() ) ;
 	    		retorno.put(classe, arquivo);
     		}
     	}

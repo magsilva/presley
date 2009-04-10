@@ -90,15 +90,8 @@ public class Arquivo implements Serializable{
 
 		    if (file.getPath().endsWith( nome )) {  
 //		        enderecoServidor = file.getPath().replaceAll( "\\" , "/"); Dar erro
-	        	enderecoServidor = "";
-	        	String endereco = file.getPath();
-		        for(int x=0; x< endereco.length();x++){
-		        	if (endereco.charAt(x)=='\\' )
-		        		enderecoServidor += "/";
-		        	else
-		        		enderecoServidor += endereco.charAt(x);
-		        }
-		        
+	        	enderecoServidor = file.getPath();
+	        	ajustarBarrasEndereco('\\', '/');
 		        achou = true;
 		        break;
 		    }  
@@ -127,4 +120,15 @@ public class Arquivo implements Serializable{
 		this.qtdPalavrasTotal = qtdPalavrasTotal;
 	}
 	
+	public void ajustarBarrasEndereco(char barraOld, char barraNew) {
+		String endereco = enderecoServidor ;
+		enderecoServidor = "";
+		
+        for(int x=0; x< endereco.length();x++){
+        	if (endereco.charAt(x)==barraOld )
+        		enderecoServidor += barraNew;
+        	else
+        		enderecoServidor += endereco.charAt(x);
+        }
+	}
 }

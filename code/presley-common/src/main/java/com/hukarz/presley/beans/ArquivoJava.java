@@ -3,21 +3,29 @@ package com.hukarz.presley.beans;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.net.URLConnection;
 
 public class ArquivoJava extends Arquivo {
 
 	private static final long serialVersionUID = 1L;
-//	private ArrayList<Desenvolvedor> desenvolvedores = new ArrayList<Desenvolvedor>();
+	private Projeto projeto;
 	
-	public ArquivoJava(String nome) {
+	public ArquivoJava(String nome, Projeto projeto) {
 		super(nome);
+		this.projeto = projeto;
 	}
 
 	@Override
 	public String getTexto() throws IOException {
 		String textoRetorno = "";
 
-		BufferedReader in = new BufferedReader(new FileReader( getEnderecoServidor() ));
+		//BufferedReader in = new BufferedReader(new FileReader( getEnderecoServidor() ));
+	   URL url = new URL(getEnderecoServidor());
+	   URLConnection conn = url.openConnection();
+	   BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+
 		String texto =  null;  
 		boolean comentarioBloco = false ;
 		while ((texto = in.readLine()) != null) {  
@@ -46,17 +54,14 @@ public class ArquivoJava extends Arquivo {
 		return textoRetorno;
 	}
 
-//	public ArrayList<Desenvolvedor> getDesenvolvedores() {
-//		return desenvolvedores;
-//	}
-//
-//	public void setDesenvolvedores(ArrayList<Desenvolvedor> desenvolvedores) {
-//		this.desenvolvedores = desenvolvedores;
-//	}
-//
-//	public void adcionaDesenvolvedor(Desenvolvedor desenvolvedor){
-//	 	if (desenvolvedores.indexOf(desenvolvedor)==-1)
-//	 		desenvolvedores.add(desenvolvedor);
-//	}
+	// -> Rotina para encontrar o endereço do arquivo no servidor SVN
+	public void setEnderecoServidor(String enderecoArquivo) {
+		String enderecoSVN = projeto.getEndereco_Servidor_Leitura() + 
+				enderecoArquivo.substring(enderecoArquivo.indexOf(projeto.getNome()) + projeto.getNome().length() +1, enderecoArquivo.length());
+		
+		super.setEnderecoServidor(enderecoSVN);
+		ajustarBarrasEndereco('\\', '/');
+	}
+
 	
 }

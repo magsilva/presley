@@ -210,6 +210,7 @@ public class ServicoConhecimentoImplDAO implements ServicoConhecimento{
 				while (rs.next()) {
 					Arquivo arquivo = new Arquivo( rs.getString("arquivo_nome") );
 					arquivo.setEnderecoServidor(rs.getString("endereco_servidor"));
+
 					conhecimento.adcionaArquivo( servicoArquivo.getArquivo(arquivo) ) ;
 				}
 					
