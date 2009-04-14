@@ -204,7 +204,7 @@ public class ServicoProblemaImplDAO implements ServicoProblema{
 
 			stm = conn.createStatement();
 
-			String SQL = " SELECT id, desenvolvedor_email, descricao, resolvido, dataRelato, mensagem, conhecimento_nome "+
+			String SQL = " SELECT id, desenvolvedor_email, descricao, resolvido, dataRelato, mensagem, conhecimento_nome, projeto_nome "+
 			" FROM problema WHERE id = "+id+";";
 
 

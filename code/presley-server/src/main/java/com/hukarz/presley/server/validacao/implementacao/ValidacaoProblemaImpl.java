@@ -15,6 +15,7 @@ import com.hukarz.presley.beans.Problema;
 import com.hukarz.presley.beans.Projeto;
 import com.hukarz.presley.beans.Solucao;
 import com.hukarz.presley.excessao.AtividadeInexistenteException;
+import com.hukarz.presley.excessao.ConhecimentoNaoEncontradoException;
 import com.hukarz.presley.excessao.DescricaoInvalidaException;
 import com.hukarz.presley.excessao.ProblemaInexistenteException;
 import com.hukarz.presley.excessao.ProjetoInexistenteException;
@@ -83,9 +84,10 @@ public class ValidacaoProblemaImpl {
 	 * @return true se o problema foi cadastrado com sucesso.
 	 * @throws IOException 
 	 * @throws ProjetoInexistenteException 
+	 * @throws ConhecimentoNaoEncontradoException 
 	 */
 	public boolean cadastrarProblema(Problema problema) 
-			throws DescricaoInvalidaException, IOException, ProjetoInexistenteException {
+			throws DescricaoInvalidaException, IOException, ProjetoInexistenteException, ConhecimentoNaoEncontradoException {
 		if (!ValidacaoUtil.validaDescricao( problema.getDescricao() )) throw new DescricaoInvalidaException();
 		
 		if (!servicoProjeto.projetoExiste(problema.getProjeto())) throw new ProjetoInexistenteException();

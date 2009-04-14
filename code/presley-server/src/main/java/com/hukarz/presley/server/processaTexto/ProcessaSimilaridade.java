@@ -10,6 +10,7 @@ import java.util.Set;
 
 import com.hukarz.presley.beans.Arquivo;
 import com.hukarz.presley.beans.Conhecimento;
+import com.hukarz.presley.excessao.ConhecimentoNaoEncontradoException;
 import com.hukarz.presley.server.persistencia.implementacao.ServicoConhecimentoImplDAO;
 import com.hukarz.presley.server.persistencia.interfaces.ServicoConhecimento;
 
@@ -20,7 +21,7 @@ public class ProcessaSimilaridade {
 	ProcessaDocumento processaDocumento = new ProcessaDocumento();
 	ServicoConhecimento servicoConhecimento = new ServicoConhecimentoImplDAO();  
 	
-	public Conhecimento verificaConhecimentoDoTexto(String texto) throws IOException{
+	public Conhecimento verificaConhecimentoDoTexto(String texto) throws IOException, ConhecimentoNaoEncontradoException{
 
 		ArrayList<Conhecimento> conhecimentos = servicoConhecimento.getListaConhecimento();
 		Arquivo arquivoTexto = processaDocumento.transformaTextoEmArquivo(texto);
@@ -36,6 +37,9 @@ public class ProcessaSimilaridade {
 				grauDeSimilaridadeMaior = grauDeSimilaridade;
 			}
 		}
+		
+		if (conhecimentoMaisSimilar == null)
+			throw new ConhecimentoNaoEncontradoException( );
 		
 		return conhecimentoMaisSimilar; 
 	}

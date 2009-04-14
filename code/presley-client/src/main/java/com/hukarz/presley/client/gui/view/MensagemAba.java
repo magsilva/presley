@@ -476,11 +476,19 @@ public class MensagemAba extends ViewPart {
 			}
 
 			public void widgetSelected(SelectionEvent e) {
-				Mensagem mensagem = getMensagem();
-				Problema problema = mensagem.getProblema();
+				String titulo, descricao;
 
-				LerMensagem.setCarregaMensagem(problema.getDescricao(),
-						problema.getMensagem());
+				if (treeProblemasRecebidos.getSelection()[0].getData() instanceof Problema) {
+					Problema problema = (Problema) treeProblemasRecebidos.getSelection()[0].getData();
+					titulo = problema.getDescricao();
+					descricao = problema.getMensagem();
+				} else {
+					Solucao solucao = (Solucao) treeProblemasRecebidos.getSelection()[0].getData();
+					titulo = "Re: " + solucao.getProblema().getDescricao();
+					descricao = solucao.getMensagem();
+				}
+
+				LerMensagem.setCarregaMensagem(titulo, descricao);				
 			}
 
 		});

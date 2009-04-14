@@ -9,6 +9,7 @@ import com.hukarz.presley.communication.facade.PacketStruct;
 import com.hukarz.presley.communication.server.ServerBridge;
 import com.hukarz.presley.excessao.AtividadeInexistenteException;
 import com.hukarz.presley.excessao.ConhecimentoInexistenteException;
+import com.hukarz.presley.excessao.ConhecimentoNaoEncontradoException;
 import com.hukarz.presley.excessao.DataInvalidaException;
 import com.hukarz.presley.excessao.DescricaoInvalidaException;
 import com.hukarz.presley.excessao.DesenvolvedorExisteException;
@@ -288,6 +289,10 @@ public class ServerBridgeImp implements ServerBridge {
 			try {
 				retorno = executeClientQuery.adicionaProblema(packet);
 				typeRetorno = CorePresleyOperations.ADICIONA_PROBLEMA;
+			} catch (ConhecimentoNaoEncontradoException e){
+				retorno = "ERRO: Conhecimento não encontrado." +
+						" Por favor detalhar melhor o problema.";
+				e.printStackTrace();
 			} catch (DescricaoInvalidaException e1) {
 				retorno = "ERRO: Problema Existente.";
 				e1.printStackTrace();

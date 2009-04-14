@@ -28,6 +28,7 @@ import com.hukarz.presley.beans.Tree;
 import com.hukarz.presley.communication.facade.PacketStruct;
 import com.hukarz.presley.excessao.AtividadeInexistenteException;
 import com.hukarz.presley.excessao.ConhecimentoInexistenteException;
+import com.hukarz.presley.excessao.ConhecimentoNaoEncontradoException;
 import com.hukarz.presley.excessao.DataInvalidaException;
 import com.hukarz.presley.excessao.DescricaoInvalidaException;
 import com.hukarz.presley.excessao.DesenvolvedorInexistenteException;
@@ -328,8 +329,9 @@ public class ExecuteClientQuery implements CorePresleyOperations{
 	 * @throws DescricaoInvalidaException 
 	 * @throws IOException 
 	 * @throws ProjetoInexistenteException 
+	 * @throws ConhecimentoNaoEncontradoException 
 	 */
-	public boolean adicionaProblema(PacketStruct packet) throws DescricaoInvalidaException, IOException, ProjetoInexistenteException {
+	public boolean adicionaProblema(PacketStruct packet) throws DescricaoInvalidaException, IOException, ProjetoInexistenteException, ConhecimentoNaoEncontradoException {
 		Problema problema = (Problema) packet.getData();
 
 		if (problema == null) {
@@ -345,7 +347,7 @@ public class ExecuteClientQuery implements CorePresleyOperations{
 		return adicionaProblema(problema);
 	}
 	
-	public boolean adicionaProblema(Problema problema) throws DescricaoInvalidaException, IOException, ProjetoInexistenteException {
+	public boolean adicionaProblema(Problema problema) throws DescricaoInvalidaException, IOException, ProjetoInexistenteException, ConhecimentoNaoEncontradoException {
 		validacaoProblema.cadastrarProblema(problema);
 
 		return true;

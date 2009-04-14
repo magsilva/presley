@@ -53,7 +53,6 @@ public class ServicoMensagemImplDAO implements ServicoMensagem{
 		Connection conn = MySQLConnectionFactory.open();
 		ArrayList<Mensagem> mensagens = new ArrayList<Mensagem>();
 		Statement stm = null;
-	
 
 		try {
 			stm = conn.createStatement();
