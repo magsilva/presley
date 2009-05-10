@@ -100,7 +100,9 @@ public class ProcessaSimilaridade {
 			somatorioGrauIgualdade += calculaGrauDeIgualdade( frqRelativa1, frqRelativa2) ;
 		}
 
+		
 		return somatorioGrauIgualdade/( texto1.size() + texto2.size() - listTermosComuns.size());
+		//return somatorioGrauIgualdade;
 	}
 
 	private static List<String> termosComuns(Map<String, Integer> texto1, Map<String, Integer> texto2){

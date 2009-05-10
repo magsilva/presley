@@ -1,0 +1,417 @@
+package dados.cvs;
+
+// http://www.javafree.org/artigo/4157/Introducao-ao-componente-JTree.html
+
+import java.awt.*;
+import java.awt.event.*;
+
+import javax.swing.*;
+import javax.swing.tree.*;
+
+import com.hukarz.presley.beans.Desenvolvedor;
+import com.hukarz.presley.beans.Problema;
+import com.hukarz.presley.beans.Projeto;
+import com.hukarz.presley.beans.Solucao;
+import com.hukarz.presley.excessao.ConhecimentoNaoEncontradoException;
+import com.hukarz.presley.excessao.DescricaoInvalidaException;
+import com.hukarz.presley.excessao.DesenvolvedorInexistenteException;
+import com.hukarz.presley.excessao.ProblemaInexistenteException;
+import com.hukarz.presley.excessao.ProjetoInexistenteException;
+import com.hukarz.presley.server.persistencia.MySQLConnectionFactory;
+import com.hukarz.presley.server.persistencia.implementacao.ServicoProblemaImplDAO;
+import com.hukarz.presley.server.persistencia.interfaces.ServicoProblema;
+import com.hukarz.presley.server.validacao.implementacao.ValidacaoProblemaImpl;
+import com.hukarz.presley.server.validacao.implementacao.ValidacaoSolucaoImpl;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
+import java.util.StringTokenizer;
+
+import java.sql.Connection;
+import java.sql.Date;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+
+public class ArvoreEmail extends JFrame implements ActionListener {
+
+	private JTextField  campo;
+	private JButton     botao;
+	private JPanel      painelCima;  
+	private JPanel      painelBaixo;  
+	private JTree       ArvoreEmail;
+	private ValidacaoSolucaoImpl  validacaoSolucao = new ValidacaoSolucaoImpl();
+
+	public ArvoreEmail() {  	        
+		super("Browser");  
+
+		getContentPane().setLayout(new BorderLayout());  
+
+		campo      = new JTextField(); 
+		campo.setText("C:/Java/lucene/Entradas/Comunicacao/java-dev/arq/");
+
+		botao      = new JButton("Procurar");  
+		painelCima = new JPanel(new BorderLayout());  
+		painelBaixo= new JPanel(new GridLayout(1,1));  
+		ArvoreEmail= new JTree();  
+
+		botao.addActionListener(this);  
+		campo.addActionListener(this);  
+
+		painelCima.add(campo, BorderLayout.CENTER);  
+		painelCima.add(botao, BorderLayout.EAST);  
+
+		getContentPane().add(painelCima,  BorderLayout.NORTH);  
+		getContentPane().add(painelBaixo, BorderLayout.CENTER);  
+
+		this.setSize(250,350);  
+		this.setVisible(true);  
+		this.setDefaultCloseOperation(EXIT_ON_CLOSE);  
+	}  
+
+	public void actionPerformed(ActionEvent e) {  	        
+		DefaultMutableTreeNode pai = new DefaultMutableTreeNode(campo.getText());  
+		varreArvoreEmail(campo.getText(), pai);  
+		ArvoreEmail = new JTree(pai);  
+		painelBaixo.removeAll();  
+		painelBaixo.add(new JScrollPane(ArvoreEmail));  
+		getContentPane().validate();  
+	}  
+
+	public void varreArvoreEmail(String base, DefaultMutableTreeNode no) {
+		File diretorio = new File(base);  
+		File[] conteudo = diretorio.listFiles();
+		ArrayList<Email> emails = new ArrayList<Email>(); 
+
+		try {
+			for (int i=0; i < 1 ; i++) {   //conteudo.length
+
+				File file = new File( conteudo[i].getAbsolutePath() );
+				FileReader fileReader = new FileReader(file);
+				BufferedReader reader = new BufferedReader(fileReader);
+
+				String linha = "";
+
+				Email email = new Email();
+
+				boolean encontrouMessageID	= false,
+				encontrouSubject	= false,
+				maisReferencias		= false,
+				encontrouMensagem	= false;
+
+				while( (linha = reader.readLine()) != null ){
+					linha = linha.toLowerCase();
+
+					if ( !email.getReferences().isEmpty() && maisReferencias )
+						maisReferencias = !linha.contains(":"); 
+
+					if (linha.startsWith("from ") && (linha.contains("@")) ){
+						if (encontrouMessageID && encontrouSubject){
+							if (!Email.adcionarEmail(emails, email)) 
+								emails.add(email);
+
+							encontrouMessageID = false;
+							encontrouSubject   = false;
+							encontrouMensagem  = false;
+							maisReferencias	  = false;
+						}
+
+						email = new Email();						   
+					} else if ( !encontrouMessageID && linha.startsWith("message-id: ")){ 
+						encontrouMessageID = true;
+
+						linha = linha.replaceAll("message-id: ", "");
+						linha = retirarCaracteresExtras(linha);
+						email.setMessageID(linha);
+					} else if (linha.startsWith("in-reply-to: ")){ 
+						linha = linha.replaceAll("in-reply-to: ", "");
+						linha = retirarCaracteresExtras(linha);
+						email.setInReplyTo(linha);
+					} else if (linha.startsWith("from: ")){ 
+						linha = linha.replaceAll("from:", "");
+						linha = retirarCaracteresExtras(linha);
+						StringTokenizer st = new StringTokenizer(linha);
+						String emailFrom = "";
+						while (st.hasMoreTokens())
+							emailFrom = st.nextToken();
+
+						if (!emailFrom.equals("jira@apache.org"))
+							email.setFrom(emailFrom);
+						else{
+							email.setFromPorNome( linha.substring(0, linha.indexOf("jira")) );
+						}							   
+
+					} else if (linha.startsWith("date: ")){ 
+						linha = linha.replaceAll("date: ", "");
+						linha = retirarCaracteresExtras(linha);
+						email.setData(linha);
+					} else if (linha.startsWith("references: ") || (maisReferencias) ){ 
+						linha = linha.replaceAll("references: ", "");
+						linha = retirarCaracteresExtras(linha);
+						email.setReferences( email.getReferences() + " " + linha);
+
+						maisReferencias = true;
+					} else if (!encontrouSubject && linha.startsWith("subject: ")){
+						encontrouSubject = true;
+
+						linha = linha.replaceAll("subject: ", "");
+						email.setSubject(linha);
+					} else if (encontrouMessageID && encontrouSubject && linha.isEmpty() ){
+						encontrouMensagem  = true;
+					}
+
+					// Encontra a mensagem e a primeira linha da mensagem anterior
+					if (encontrouMensagem && !linha.startsWith(">") ){
+						email.setMensagem( email.getMensagem() + " " + linha );
+					}
+				}
+
+				if (encontrouMessageID && encontrouSubject){
+					if (!Email.adcionarEmail(emails, email)) 
+						emails.add(email);
+
+					encontrouMessageID = false;
+					encontrouSubject   = false;
+					encontrouMensagem  = false;
+					maisReferencias	  = false;
+				}
+			}
+
+			preencherArvore(emails, no);
+			cadastrarProblemas(emails);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+
+	public void cadastrarProblemas(ArrayList<Email> emails) {
+		Projeto projeto = new Projeto();
+		projeto.setNome("lucene");
+		ValidacaoProblemaImpl validacaoProblema = new ValidacaoProblemaImpl();
+		ServicoProblema servicoProblema = new ServicoProblemaImplDAO();
+		
+		for (Email email : emails) {
+			if (email.getFrom().isEmpty())
+				continue;
+				
+			Desenvolvedor desenvolvedor = new Desenvolvedor();
+			desenvolvedor.setEmail(email.getFrom());
+			
+			Problema problema = new Problema();
+			problema.setDesenvolvedorOrigem(desenvolvedor);
+			problema.setProjeto(projeto);
+			problema.setData( (Date) email.getData() ) ;
+			problema.setDescricao(email.getSubject());
+			problema.setMensagem(email.getMensagem());
+			problema.setResolvido(true);
+			
+			try {
+				validacaoProblema.cadastrarProblema(problema);
+			} catch (DescricaoInvalidaException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			} catch (ProjetoInexistenteException e) {
+				e.printStackTrace();
+			} catch (ConhecimentoNaoEncontradoException e) {
+				e.printStackTrace();
+			}
+			
+			problema = servicoProblema.getProblema(problema.getDescricao(), 
+					problema.getData(), problema.getMensagem(), 
+					problema.getDesenvolvedorOrigem());
+			
+			if (email.getEmailsFilho().size() > 0)
+				cadastrarSolucoes(email.getEmailsFilho(), problema);
+		}
+		
+	}
+
+	private void cadastrarSolucoes(ArrayList<Email> emails, Problema problema ) {
+		for (Email email : emails) {
+			if (email.getFrom().isEmpty())
+				continue;
+			
+			Desenvolvedor desenvolvedor = new Desenvolvedor();
+			desenvolvedor.setEmail(email.getFrom());
+
+			Solucao solucao = new Solucao();
+			solucao.setAjudou(true);
+			solucao.setProblema(problema);
+			solucao.setData( new Date(System.currentTimeMillis()) ) ;
+			solucao.setMensagem(email.getMensagem());
+			solucao.setDesenvolvedor(desenvolvedor);
+
+			try {
+				if (email.getEmailsFilho().size()==0){
+					validacaoSolucao.cadastrarSolucao(solucao);
+				} else {
+					cadastrarSolucoes(email.getEmailsFilho(), problema);
+					validacaoSolucao.cadastrarSolucao(solucao);
+				}
+			} catch (ProblemaInexistenteException e) {
+				e.printStackTrace();
+			} catch (DesenvolvedorInexistenteException e) {
+				e.printStackTrace();
+			}
+			
+		}
+	}
+	
+	public void preencherArvore(ArrayList<Email> emails, DefaultMutableTreeNode no){
+		for (Email email : emails) {
+			DefaultMutableTreeNode assunto = new DefaultMutableTreeNode( email.getMessageID() + " - " + email.getMensagem());
+			if (email.getEmailsFilho().size()==0){
+				no.add( assunto );
+			} else {
+				preencherArvore(email.getEmailsFilho(), assunto);
+				no.add( assunto );
+			}
+		}
+	}
+
+	public void varreEmailDesenvolvedoresFrom(String base, DefaultMutableTreeNode no)  {  	        
+		File diretorio = new File(base);  
+		File[] conteudo = diretorio.listFiles();
+		Map<String, String> emails = new HashMap<String, String>(); 
+
+		try {
+			// Retira dos arquivos os emails dos remententes
+			for (int i=0; i < conteudo.length ; i++) {   
+
+				File file = new File( conteudo[i].getAbsolutePath() );
+				FileReader fileReader = new FileReader(file);
+				BufferedReader reader = new BufferedReader(fileReader);
+
+				Boolean encontrouFrom = true ; 
+				String linha = "";
+
+				while( (linha = reader.readLine()) != null ){
+					if (encontrouFrom)
+						encontrouFrom = !(linha.startsWith("From ") && (linha.contains("@")) );
+
+					if ((!encontrouFrom) && linha.startsWith("From:") ){
+						encontrouFrom = true;
+
+						linha = linha.replaceAll("From:", "");
+
+						String nome = "";
+
+						StringTokenizer st = new StringTokenizer(linha);
+						while (st.hasMoreTokens()){
+							String email = st.nextToken();
+
+							if (email.contains("@") && ( !email.contains("jira@apache.org")) ){
+								email	= retirarCaracteresExtras(email);
+								nome		= retirarCaracteresExtras(nome);
+
+								if (emails.get(nome)==null){
+									emails.put(nome, email) ;
+								} else {
+									String emailNaLista = emails.get(nome);
+									if (!emailNaLista.contains(email)){
+										emailNaLista += " " + email ;
+										emails.put(nome, emailNaLista) ;
+									}
+								}									   
+
+							} else if (email.contains(","))
+								nome = "";
+							else 
+								nome = nome + email + " ";
+						}
+					}
+				}
+			} 
+
+
+			// Mostra na Janela e cadastra no banco
+			Connection conn = MySQLConnectionFactory.open();
+			Statement stm = null;
+
+			try {
+				stm = conn.createStatement();
+
+				Set<String> listaEmail = emails.keySet();
+				for (Iterator<String> iterator = listaEmail.iterator(); iterator.hasNext();) {
+					String nome = iterator.next();
+					String email  = emails.get(nome);
+
+					StringTokenizer st = new StringTokenizer(email);
+
+					while (st.hasMoreTokens()){   
+						String emailPrincipal = st.nextToken();
+						String SQL = "SELECT email FROM desenvolvedor WHERE listaEmail LIKE '%"+ emailPrincipal +"%'"; 
+						ResultSet rs = stm.executeQuery(SQL);
+
+						if (emailPrincipal.length() > 50)
+							continue;
+
+						if (!rs.next()){
+							// Se o nome não estiver vazio (Os grupos estão formados por nome)
+							if (!nome.isEmpty()){
+								SQL = "INSERT INTO desenvolvedor (senha, cvsNome, nome, email, listaEmail) " +
+								" VALUES ('1', '', '"+ nome +"', '"+ emailPrincipal +"', '"+ email +"')";
+
+								stm.execute(SQL);
+								break;
+							} else {
+								SQL = "INSERT INTO desenvolvedor (senha, cvsNome, nome, email, listaEmail) " +
+								" VALUES ('1', '', '"+ nome +"', '"+ emailPrincipal +"', '"+ emailPrincipal +"')";
+
+								stm.execute(SQL);
+							}
+						} 
+
+					}
+
+					DefaultMutableTreeNode arquivo = new DefaultMutableTreeNode( email + " - " + nome );
+					no.add(arquivo);  
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			} finally {
+				try {
+					stm.close();
+					conn.close();
+				} catch (SQLException onConClose) {
+					System.out.println(" Houve erro no fechamento da conexão ");
+					onConClose.printStackTrace();	             
+				}
+			}
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+	}  
+
+	private String retirarCaracteresExtras(String palavra) {
+		palavra = palavra.replace("<", "");
+		palavra = palavra.replace(">", "");
+		palavra = palavra.replace("(", "");
+		palavra = palavra.replace(")", "");
+		palavra = palavra.replace("[", "");
+		palavra = palavra.replace("]", "");
+		palavra = palavra.replace(",", "");
+		palavra = palavra.replace(";", "");
+		palavra = palavra.replace("'", "");
+		palavra = palavra.replace("\"", "");
+
+		return palavra;
+	}
+
+	public static void main(String args[]) {  
+		new ArvoreEmail();
+	}  
+
+}
