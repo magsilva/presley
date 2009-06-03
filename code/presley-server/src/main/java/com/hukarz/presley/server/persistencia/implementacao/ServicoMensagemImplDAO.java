@@ -37,7 +37,7 @@ public class ServicoMensagemImplDAO implements ServicoMensagem{
 		} finally {
 			try {
 				stm.close();
-				conn.close();
+				//conn.close();
 			} catch (SQLException onConClose) {
 				System.out.println(" Houve erro no fechamento da conexão ");
 				onConClose.printStackTrace();	
@@ -85,7 +85,7 @@ public class ServicoMensagemImplDAO implements ServicoMensagem{
 		} finally {
 			try {
 				stm.close();
-				conn.close();
+				//conn.close();
 			} catch (SQLException onConClose) {
 				System.out.println(" Houve erro no fechamento da conexão ");
 				onConClose.printStackTrace();	

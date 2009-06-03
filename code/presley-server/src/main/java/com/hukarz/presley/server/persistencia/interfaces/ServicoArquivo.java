@@ -1,5 +1,7 @@
 package com.hukarz.presley.server.persistencia.interfaces;
 
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Map;
 
 import com.hukarz.presley.beans.Arquivo;
@@ -43,10 +45,33 @@ public interface ServicoArquivo {
 	 */
 	public Arquivo getArquivo(Arquivo arquivo);
 	
+	
+	/**
+	 * Esse método retorna uma lista com todos os arquivos cadastrados no BD
+	 * @return
+	 */
+	public ArrayList<Arquivo> getListaArquivo();
+	
 	/**
 	 * Este método associa palavras a um arquivo previamente cadastrado na base da dados 
 	 * @param arquivo arquivo a ser atualizado.
 	 * @return Arquivo o arquivo atualizado.
 	 */
 	public Arquivo associaPalavrasArquivo(Arquivo arquivo, Map<String, Integer> termosSelecionados);
+	
+	/**
+	 * Esse método retorna a quantidade de Arquivos existentes no Banco de Dados
+	 * @return
+	 * @throws SQLException 
+	 */
+	public int getQuantidadeArquivosCadastrados() ;
+	
+	/**
+	 * Esse método retorna a quantidade de Arquivos que contem o termo passado 
+	 * como parametro
+	 * @param termo
+	 * @return
+	 * @throws SQLException 
+	 */
+	public int getQuantidadeArquivosComTermo(String termo) ;
 }

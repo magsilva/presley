@@ -2,79 +2,49 @@ package com.hukarz.presley.server.processaTexto;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import com.hukarz.presley.beans.Arquivo;
 import com.hukarz.presley.beans.Conhecimento;
 import com.hukarz.presley.excessao.ConhecimentoNaoEncontradoException;
+import com.hukarz.presley.server.persistencia.implementacao.ServicoArquivoImplDAO;
 import com.hukarz.presley.server.persistencia.implementacao.ServicoConhecimentoImplDAO;
+import com.hukarz.presley.server.persistencia.interfaces.ServicoArquivo;
 import com.hukarz.presley.server.persistencia.interfaces.ServicoConhecimento;
-
-
 
 public class ProcessaSimilaridade {
 
 	ProcessaDocumento processaDocumento = new ProcessaDocumento();
-	ServicoConhecimento servicoConhecimento = new ServicoConhecimentoImplDAO();  
+	ServicoConhecimento servicoConhecimento = new ServicoConhecimentoImplDAO();
+	ServicoArquivo servicoArquivo = new ServicoArquivoImplDAO();
+	int qtdeArquivos = 0;
 	
 	public Conhecimento verificaConhecimentoDoTexto(String texto) throws IOException, ConhecimentoNaoEncontradoException{
-
-		ArrayList<Conhecimento> conhecimentos = servicoConhecimento.getListaConhecimento();
+		ArrayList<Arquivo> arquivos = servicoArquivo.getListaArquivo();
+		qtdeArquivos = arquivos.size();		
+		
 		Arquivo arquivoTexto = processaDocumento.transformaTextoEmArquivo(texto);
-		Conhecimento conhecimentoMaisSimilar = null; 
+		Arquivo arquivoMaisSimilar = null; 
 		
 		double grauDeSimilaridadeMaior = 0;
-		for (Iterator<Conhecimento> iterator = conhecimentos.iterator(); iterator.hasNext();) {
-			Conhecimento conhecimento = iterator.next();
-			double grauDeSimilaridade = calculaGrauDeSimilaridade( conhecimento, arquivoTexto) ;
+		for (Arquivo arquivo : arquivos) {
+			
+			double grauDeSimilaridade = calculaGrauDeSimilaridadeEntreTextos(arquivo, arquivoTexto);
 			
 			if (grauDeSimilaridadeMaior < grauDeSimilaridade){
-				conhecimentoMaisSimilar = conhecimento;
+				arquivoMaisSimilar = arquivo;
 				grauDeSimilaridadeMaior = grauDeSimilaridade;
 			}
 		}
 		
-		if (conhecimentoMaisSimilar == null)
+		
+		if (arquivoMaisSimilar == null)
 			throw new ConhecimentoNaoEncontradoException( );
 		
-		return conhecimentoMaisSimilar; 
-	}
-	
-	private double calculaGrauDeSimilaridade(Conhecimento conhecimento, Arquivo arquivoTexto ){
-		Arquivo arquivoGeralConhecimento = unirArquivosDoConhecimento(conhecimento);
-		return calculaGrauDeSimilaridadeEntreTextos(arquivoGeralConhecimento, arquivoTexto);
-	}
-	
-	private Arquivo unirArquivosDoConhecimento(Conhecimento conhecimento){
-		ArrayList<Arquivo> arquivosConhecimento = conhecimento.getArquivos();
-		Arquivo arquivoRetorno = new Arquivo("");
-		
-		Map<String, Integer> termosTotais = new HashMap<String, Integer>() ;
-		for (Iterator<Arquivo> iterator = arquivosConhecimento.iterator(); iterator.hasNext();) {
-			Arquivo arquivo = iterator.next();
-			arquivoRetorno.setQtdPalavrasTotal( arquivoRetorno.getQtdPalavrasTotal() + arquivo.getQtdPalavrasTotal() ) ;
-
-			// faz o somatorio das palavras encontradas no arquivos do conhecimento
-			Map<String, Integer> termosArquivo = arquivo.getTermosSelecionados(); 
-			Set<String> palavras = termosArquivo.keySet();  
-			for (Iterator<String> iterator2 = palavras.iterator(); iterator2.hasNext();) {
-				String palavra = iterator2.next();
-				if ( termosTotais.get(palavra) == null){
-					termosTotais.put(palavra, termosArquivo.get(palavra));
-				} else {
-					termosTotais.put(palavra, termosTotais.get(palavra) + termosArquivo.get(palavra));
-				}
-					
-			}
-		}
-		
-		arquivoRetorno.setTermosSelecionados(termosTotais);
-		
-		return arquivoRetorno ; 
+		System.out.println( arquivoMaisSimilar.getNome() );
+		return servicoConhecimento.getConhecimentoAssociado(arquivoMaisSimilar); 
 	}
 	
 	/*
@@ -93,16 +63,17 @@ public class ProcessaSimilaridade {
 		List<String> listTermosComuns = termosComuns(texto1, texto2);
 		
 		for(String termo : listTermosComuns) {
-			double frqRelativa1 = (double) (Double.parseDouble(texto1.get(termo).toString()) /documento1.getQtdPalavrasTotal());
-			double frqRelativa2 = (double) (Double.parseDouble(texto2.get(termo).toString()) /documento2.getQtdPalavrasTotal());
+			double frqTF1 = (double) (Double.parseDouble(texto1.get(termo).toString()) / documento1.getQtdPalavrasTotal());
+			double frqTF2 = (double) (Double.parseDouble(texto2.get(termo).toString()) / documento2.getQtdPalavrasTotal());
 			
+			double frqTF_IDF = 1;
+			//Math.log( qtdeArquivos / servicoArquivo.getQuantidadeArquivosComTermo(termo) );
 //			System.out.println( termo + " Doc1 " + frqRelativa1 + " Doc2 " + frqRelativa2);
-			somatorioGrauIgualdade += calculaGrauDeIgualdade( frqRelativa1, frqRelativa2) ;
+			somatorioGrauIgualdade += calculaGrauDeIgualdade( frqTF1 * frqTF_IDF, frqTF2 * frqTF_IDF) ;
 		}
-
 		
-		return somatorioGrauIgualdade/( texto1.size() + texto2.size() - listTermosComuns.size());
-		//return somatorioGrauIgualdade;
+		//return somatorioGrauIgualdade/( texto1.size() + texto2.size() - listTermosComuns.size());
+		return somatorioGrauIgualdade;
 	}
 
 	private static List<String> termosComuns(Map<String, Integer> texto1, Map<String, Integer> texto2){

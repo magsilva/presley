@@ -94,7 +94,7 @@ public class PresleyJayFX extends JayFX {
 
     	Set<IElement> lRange = getRange( methodElement, Relation.ACCESSES) ;
     	lRange.addAll( getRange( methodElement, Relation.CALLS ) ) ;
-    	lRange.addAll( getRange( methodElement, Relation.T_CALLS ) );
+//    	lRange.addAll( getRange( methodElement, Relation.T_CALLS ) );
 
     	for (Iterator<IElement> iterator = lRange.iterator(); iterator.hasNext();) {
     		IElement element = iterator.next();

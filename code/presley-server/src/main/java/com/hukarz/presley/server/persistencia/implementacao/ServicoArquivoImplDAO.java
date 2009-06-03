@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
@@ -37,7 +38,7 @@ public class ServicoArquivoImplDAO implements ServicoArquivo {
 		} finally {
 			try {
 				stm.close();
-				conn.close();
+				//conn.close();
 			} catch (SQLException onConClose) {
 				System.out.println(" Houve erro no fechamento da conexão ");
 				onConClose.printStackTrace();	             
@@ -68,7 +69,7 @@ public class ServicoArquivoImplDAO implements ServicoArquivo {
 		} finally {
 			try {
 				stm.close();
-				conn.close();
+				//conn.close();
 			} catch (SQLException onConClose) {
 				System.out.println(" Houve erro no fechamento da conexão ");
 				onConClose.printStackTrace();	             
@@ -100,7 +101,7 @@ public class ServicoArquivoImplDAO implements ServicoArquivo {
 		} finally {
 			try {
 				stm.close();
-				conn.close();
+				//conn.close();
 			} catch (SQLException onConClose) {
 				System.out.println(" Houve erro no fechamento da conexão ");
 				onConClose.printStackTrace();	             
@@ -127,7 +128,7 @@ public class ServicoArquivoImplDAO implements ServicoArquivo {
 				SQL = " SELECT id, arquivo_nome, endereco_servidor, quantidadePalavras FROM arquivo;";
 			}
 
-			System.out.println(SQL);
+			//System.out.println(SQL);
 			ResultSet rs = stm.executeQuery(SQL);
 
 			if (rs.next()){
@@ -158,7 +159,7 @@ public class ServicoArquivoImplDAO implements ServicoArquivo {
 		} finally {
 			try {
 				stm.close();
-				conn.close();	            
+				//conn.close();	            
 			} catch (SQLException onConClose) {
 				System.out.println(" Houve erro no fechamento da conexão ");
 				onConClose.printStackTrace();	             
@@ -192,7 +193,7 @@ public class ServicoArquivoImplDAO implements ServicoArquivo {
 		} finally {
 			try {
 				stm.close();
-				conn.close();
+				//conn.close();
 			} catch (SQLException onConClose) {
 				System.out.println(" Houve erro no fechamento da conexão ");
 				onConClose.printStackTrace();	             
@@ -234,7 +235,7 @@ public class ServicoArquivoImplDAO implements ServicoArquivo {
 		} finally {
 			try {
 				stm.close();
-				conn.close();
+				//conn.close();
 			} catch (SQLException onConClose) {
 				System.out.println(" Houve erro no fechamento da conexão ");
 				onConClose.printStackTrace();	             
@@ -266,8 +267,118 @@ public class ServicoArquivoImplDAO implements ServicoArquivo {
 		
 		id = rs.getInt("id");
 		stm.close();
-		conn.close();
+		//conn.close();
 		
 		return id;
 	}
+
+	@Override
+	public int getQuantidadeArquivosCadastrados() {
+		Connection conn = MySQLConnectionFactory.open();
+		Statement stm = null;
+		int qtde = 0 ;
+		
+		try {
+			stm = conn.createStatement();
+			String SQL = "SELECT COUNT(*) AS qtde FROM arquivo a;";
+			ResultSet rs = stm.executeQuery(SQL);
+			
+			if ( rs.next() ){
+				qtde = rs.getInt("qtde");
+			}
+			
+			stm.close();
+			//conn.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return qtde;
+	}
+
+	@Override
+	public int getQuantidadeArquivosComTermo(String termo) {
+		Connection conn = MySQLConnectionFactory.open();
+		Statement stm = null;
+		int qtde = 0 ;
+		
+		try {
+			stm = conn.createStatement();
+			/*		
+			String SQL = "SELECT COUNT( DISTINCT ca.conhecimento_nome )  qtde  FROM palavra p" +
+					" INNER JOIN arquivo_has_palavras ap ON ap.palavra_id = p.id" +
+					" INNER JOIN conhecimento_has_arquivo ca ON ca.arquivo_id = ap.arquivo_id" +
+					" WHERE p.palavra = '"+ termo +"';";
+			 */				
+			String SQL = "SELECT COUNT(arquivo_id) AS qtde FROM palavra p" +
+					" INNER JOIN arquivo_has_palavras ap ON ap.palavra_id = p.id" +
+					" WHERE palavra = '"+ termo +"'" ; 
+				
+			ResultSet rs = stm.executeQuery(SQL);
+			
+			if ( rs.next() ){
+				qtde = rs.getInt("qtde");
+			}
+			
+			stm.close();
+			//conn.close();
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return qtde;
+	}
+
+	@Override
+	public ArrayList<Arquivo> getListaArquivo() {
+		ArrayList<Arquivo> listaRetorno = new ArrayList<Arquivo>();
+		Connection conn = MySQLConnectionFactory.open();
+		
+		Statement stm = null;
+
+		try {
+			stm = conn.createStatement();
+			String SQL = " SELECT id, arquivo_nome, endereco_servidor, " +
+					" quantidadePalavras FROM arquivo;";
+
+			//System.out.println(SQL);
+			ResultSet rs = stm.executeQuery(SQL);
+
+			while (rs.next()) {
+				Arquivo arquivoRetorno = new Arquivo( rs.getString("arquivo_nome") );
+
+				arquivoRetorno.setId( rs.getInt("id"));
+				arquivoRetorno.setEnderecoServidor(rs.getString("endereco_servidor"));
+				arquivoRetorno.setQtdPalavrasTotal(rs.getInt("quantidadePalavras"));
+				
+				SQL = "SELECT AP.quantidade, P.palavra " +
+						" FROM arquivo_has_palavras AS AP" +
+						" INNER JOIN palavra AS P ON P.id = AP.palavra_id " +
+						" WHERE AP.arquivo_id ="+ arquivoRetorno.getId()+";";
+				Statement stm2 = conn.createStatement();
+				ResultSet rs2 = stm2.executeQuery(SQL);
+				
+				while (rs2.next()){
+					arquivoRetorno.adicionaTermo(rs2.getString("palavra"), rs2.getInt("quantidade"));
+				}
+				stm2.close();
+				
+				listaRetorno.add(arquivoRetorno);
+			}
+
+			return listaRetorno;
+		} catch (SQLException e) {
+			//e.printStackTrace();
+			return null;
+		} finally {
+			try {
+				stm.close();
+				//conn.close();	            
+			} catch (SQLException onConClose) {
+				System.out.println(" Houve erro no fechamento da conexão ");
+				onConClose.printStackTrace();	             
+			}
+		}
+	}
+
 }

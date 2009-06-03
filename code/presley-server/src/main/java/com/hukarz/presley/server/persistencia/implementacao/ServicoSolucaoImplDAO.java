@@ -13,6 +13,7 @@ import com.hukarz.presley.server.persistencia.MySQLConnectionFactory;
 import com.hukarz.presley.server.persistencia.interfaces.ServicoDesenvolvedor;
 import com.hukarz.presley.server.persistencia.interfaces.ServicoProblema;
 import com.hukarz.presley.server.persistencia.interfaces.ServicoSolucao;
+import com.mysql.jdbc.PreparedStatement;
 
 public class ServicoSolucaoImplDAO implements ServicoSolucao{
 
@@ -45,7 +46,7 @@ public class ServicoSolucaoImplDAO implements ServicoSolucao{
 		} finally {
 	         try {
 	        	 stm.close();
-	             conn.close();
+	             //conn.close();
 	           } catch (SQLException onConClose) {
 	             System.out.println(" Houve erro no fechamento da conexão ");
 	             onConClose.printStackTrace();	             
@@ -89,7 +90,7 @@ public class ServicoSolucaoImplDAO implements ServicoSolucao{
 		} finally {
 	         try {
 	        	 stm.close();
-	             conn.close();
+	             //conn.close();
 	           } catch (SQLException onConClose) {
 	             System.out.println(" Houve erro no fechamento da conexão ");
 	             onConClose.printStackTrace();	             
@@ -109,13 +110,17 @@ public class ServicoSolucaoImplDAO implements ServicoSolucao{
 		try {
 		
 			stm = conn.createStatement();
-		
+
 			String SQL = " INSERT INTO solucao( desenvolvedor_email, problema_id, dataProposta, mensagem, resolveu) " +
-					     " VALUES('"+solucao.getDesenvolvedor().getEmail()+"',"+
-						   solucao.getProblema().getId()+",'"+solucao.getData()+"','"+solucao.getMensagem()+"',0);";
+		     " VALUES(?,?,?,?,?);";
 			
-			System.out.println(SQL);
-			stm.execute(SQL);
+			PreparedStatement pstmt = (PreparedStatement) conn.prepareStatement(SQL) ;
+			pstmt.setString(1, solucao.getDesenvolvedor().getEmail());
+			pstmt.setInt(2, solucao.getProblema().getId());
+			pstmt.setDate(3, solucao.getData());
+			pstmt.setString(4, solucao.getMensagem());
+			pstmt.setInt(5, 0);
+			pstmt.executeUpdate();
 			
 			SQL = "SELECT MAX(id) AS id FROM solucao WHERE desenvolvedor_email = '"+solucao.getDesenvolvedor().getEmail()+"'";
 			ResultSet rs = stm.executeQuery(SQL);
@@ -130,7 +135,7 @@ public class ServicoSolucaoImplDAO implements ServicoSolucao{
 		} finally {
 	         try {
 	        	 stm.close();
-	             conn.close();
+	             //conn.close();
 	           } catch (SQLException onConClose) {
 	             System.out.println(" Houve erro no fechamento da conexão ");
 	             onConClose.printStackTrace();	             
@@ -185,7 +190,7 @@ public class ServicoSolucaoImplDAO implements ServicoSolucao{
 		} finally {
 	         try {
 	        	 stm.close();
-	             conn.close();
+	             //conn.close();
 	           } catch (SQLException onConClose) {
 	             System.out.println(" Houve erro no fechamento da conexão ");
 	             onConClose.printStackTrace();	             
@@ -239,7 +244,7 @@ public class ServicoSolucaoImplDAO implements ServicoSolucao{
 		} finally {
 	         try {
 	        	 stm.close();
-	             conn.close();
+	             //conn.close();
 	           } catch (SQLException onConClose) {
 	             System.out.println(" Houve erro no fechamento da conexão ");
 	             onConClose.printStackTrace();	             
@@ -293,7 +298,7 @@ public class ServicoSolucaoImplDAO implements ServicoSolucao{
 		} finally {
 	         try {
 	        	 stm.close();
-	             conn.close();
+	             //conn.close();
 	           } catch (SQLException onConClose) {
 	             System.out.println(" Houve erro no fechamento da conexão ");
 	             onConClose.printStackTrace();	             
@@ -347,7 +352,7 @@ public class ServicoSolucaoImplDAO implements ServicoSolucao{
 		} finally {
 	         try {
 	        	 stm.close();
-	             conn.close();
+	             //conn.close();
 	           } catch (SQLException onConClose) {
 	             System.out.println(" Houve erro no fechamento da conexão ");
 	             onConClose.printStackTrace();	             
@@ -385,7 +390,7 @@ public class ServicoSolucaoImplDAO implements ServicoSolucao{
 		} finally {
 	         try {
 	        	 stm.close();
-	             conn.close();
+	             //conn.close();
 	           } catch (SQLException onConClose) {
 	             System.out.println(" Houve erro no fechamento da conexão ");
 	             onConClose.printStackTrace();	             
@@ -423,7 +428,7 @@ public class ServicoSolucaoImplDAO implements ServicoSolucao{
 		} finally {
 	         try {
 	        	 stm.close();
-	             conn.close();
+	             //conn.close();
 	           } catch (SQLException onConClose) {
 	             System.out.println(" Houve erro no fechamento da conexão ");
 	             onConClose.printStackTrace();	             
@@ -474,7 +479,7 @@ public class ServicoSolucaoImplDAO implements ServicoSolucao{
 		} finally {
 	         try {
 	        	 stm.close();
-	             conn.close();
+	             //conn.close();
 	           } catch (SQLException onConClose) {
 	             System.out.println(" Houve erro no fechamento da conexão ");
 	             onConClose.printStackTrace();	             
@@ -531,7 +536,7 @@ public class ServicoSolucaoImplDAO implements ServicoSolucao{
 		} finally {
 	         try {
 	        	 stm.close();
-	             conn.close();
+	             //conn.close();
 	           } catch (SQLException onConClose) {
 	             System.out.println(" Houve erro no fechamento da conexão ");
 	             onConClose.printStackTrace();	             
@@ -584,7 +589,7 @@ public class ServicoSolucaoImplDAO implements ServicoSolucao{
 		} finally {
 	         try {
 	        	 stm.close();
-	             conn.close();
+	             //conn.close();
 	           } catch (SQLException onConClose) {
 	             System.out.println(" Houve erro no fechamento da conexão ");
 	             onConClose.printStackTrace();	             

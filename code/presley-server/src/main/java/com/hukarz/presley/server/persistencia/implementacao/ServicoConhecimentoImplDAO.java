@@ -5,6 +5,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import com.hukarz.presley.beans.Arquivo;
 import com.hukarz.presley.beans.Conhecimento;
@@ -53,7 +55,7 @@ public class ServicoConhecimentoImplDAO implements ServicoConhecimento{
 		} finally {
 			try {
 				stm.close();
-				conn.close();
+				//conn.close();
 			} catch (SQLException onConClose) {
 				System.out.println(" Houve erro no fechamento da conexão ");
 				onConClose.printStackTrace();	             
@@ -93,7 +95,7 @@ public class ServicoConhecimentoImplDAO implements ServicoConhecimento{
 		} finally {
 			try {
 				stm.close();
-				conn.close();
+				//conn.close();
 			} catch (SQLException onConClose) {
 				System.out.println(" Houve erro no fechamento da conexão ");
 				onConClose.printStackTrace();	             
@@ -127,7 +129,7 @@ public class ServicoConhecimentoImplDAO implements ServicoConhecimento{
 		} finally {
 			try {
 				stm.close();
-				conn.close();
+				//conn.close();
 			} catch (SQLException onConClose) {
 				System.out.println(" Houve erro no fechamento da conexão ");
 				onConClose.printStackTrace();	             
@@ -164,7 +166,7 @@ public class ServicoConhecimentoImplDAO implements ServicoConhecimento{
 		} finally {
 			try {
 				stm.close();
-				conn.close();
+				//conn.close();
 			} catch (SQLException onConClose) {
 				System.out.println(" Houve erro no fechamento da conexão ");
 				onConClose.printStackTrace();	             
@@ -175,7 +177,6 @@ public class ServicoConhecimentoImplDAO implements ServicoConhecimento{
 
 	public Conhecimento getConhecimento(String nome) {
 
-		//Connection conn = MySQLConnectionFactory.getConnection();
 		Connection conn = MySQLConnectionFactory.open();
 		
 		Statement stm = null;
@@ -191,7 +192,7 @@ public class ServicoConhecimentoImplDAO implements ServicoConhecimento{
 				SQL = " SELECT nome, descricao FROM conhecimento;";
 			}
 
-			System.out.println(SQL);
+			// System.out.println(SQL);
 			ResultSet rs = stm.executeQuery(SQL);
 
 			if (rs.next()){
@@ -226,7 +227,7 @@ public class ServicoConhecimentoImplDAO implements ServicoConhecimento{
 		} finally {
 			try {
 				stm.close();
-				conn.close();	            
+				//conn.close();	            
 			} catch (SQLException onConClose) {
 				System.out.println(" Houve erro no fechamento da conexão ");
 				onConClose.printStackTrace();	             
@@ -259,7 +260,7 @@ public class ServicoConhecimentoImplDAO implements ServicoConhecimento{
 		} finally {
 			try {
 				stm.close();
-				conn.close();
+				//conn.close();
 			} catch (SQLException onConClose) {
 				System.out.println(" Houve erro no fechamento da conexão ");
 				onConClose.printStackTrace();	             
@@ -294,7 +295,7 @@ public class ServicoConhecimentoImplDAO implements ServicoConhecimento{
 		} finally {
 			try {
 				stm.close();
-				conn.close();
+				//conn.close();
 			} catch (SQLException onConClose) {
 				System.out.println(" Houve erro no fechamento da conexão ");
 				onConClose.printStackTrace();	             
@@ -339,7 +340,7 @@ public class ServicoConhecimentoImplDAO implements ServicoConhecimento{
 		} finally {
 			try {
 				stm.close();
-				conn.close();	            
+				//conn.close();	            
 			} catch (SQLException onConClose) {
 				System.out.println(" Houve erro no fechamento da conexão ");
 				onConClose.printStackTrace();	             
@@ -384,7 +385,7 @@ public class ServicoConhecimentoImplDAO implements ServicoConhecimento{
 		} finally {
 			try {
 				stm.close();
-				conn.close();	            
+				//conn.close();	            
 			} catch (SQLException onConClose) {
 				System.out.println(" Houve erro no fechamento da conexão ");
 				onConClose.printStackTrace();	             
@@ -431,7 +432,7 @@ public class ServicoConhecimentoImplDAO implements ServicoConhecimento{
 		} finally {
 			try {
 				stm.close();
-				conn.close();	            
+				//conn.close();	            
 			} catch (SQLException onConClose) {
 				System.out.println(" Houve erro no fechamento da conexão ");
 				onConClose.printStackTrace();	             
@@ -462,7 +463,7 @@ public class ServicoConhecimentoImplDAO implements ServicoConhecimento{
 		} finally {
 			try {
 				stm.close();
-				conn.close();
+				//conn.close();
 			} catch (SQLException onConClose) {
 				System.out.println(" Houve erro no fechamento da conexão ");
 				onConClose.printStackTrace();	             
@@ -473,39 +474,72 @@ public class ServicoConhecimentoImplDAO implements ServicoConhecimento{
 	}
 
 	
-	public ArrayList<Desenvolvedor> getContribuintesConhecimento(Conhecimento conhecimento){
+	public Map<Desenvolvedor, Integer> getContribuintesConhecimento(Conhecimento conhecimento, Desenvolvedor desenvolvedor){
 		// O ArrayList tem que permitir repetições
-		ArrayList<Desenvolvedor> retorno = new ArrayList<Desenvolvedor>();
+		Map<Desenvolvedor, Integer> retorno = new HashMap<Desenvolvedor, Integer>();
 		
 		Connection conn = MySQLConnectionFactory.open();
 		
 		Statement stm = null;
 
 		try {
-
 			stm = conn.createStatement();
 			String SQL = ""; 	
 
-			// Retorna os desenvolvedores que já tiveram problemas relacionados a esse conhecimento 
-			SQL = "SELECT desenvolvedor_email FROM problema " +
- 					" WHERE resolvido = 1 and conhecimento_nome = '"+ conhecimento.getNome() +"'";
-
+			// Retorna a soma das contribuições feitas ao desenvolvedor pesquisado que tem relação 
+			// com o conhecimento encontrado 
+			SQL = "SELECT desenvolvedor_email, SUM(qtdeProblema+qtdeSolucao) qtde FROM ("+
+					"  SELECT s.desenvolvedor_email, COUNT(s.desenvolvedor_email) as qtdeSolucao, 0 as qtdeProblema"+
+					"  FROM problema p"+
+					"  INNER JOIN solucao s ON s.problema_id = p.id"+
+					"  WHERE p.resolvido = 1 and p.desenvolvedor_email = '"+ desenvolvedor.getEmail() +"' AND p.conhecimento_nome = '"+ conhecimento.getNome() +"'" +
+					"  GROUP BY s.desenvolvedor_email"+
+					"        UNION ALL"+
+					"  SELECT p.desenvolvedor_email, 0 as qtdeSolucao, COUNT(p.desenvolvedor_email) as qtdeProblema"+
+					"  FROM solucao s"+
+					"  INNER JOIN problema p ON p.id = s.problema_id AND p.conhecimento_nome = '"+ conhecimento.getNome() +"'" +
+					"  WHERE s.resolveu = 1 and s.desenvolvedor_email = '"+ desenvolvedor.getEmail() +"'" +
+					"  GROUP BY p.desenvolvedor_email"+
+					"  ) AS T"+
+					" GROUP BY desenvolvedor_email";
+					
 			ResultSet rs = stm.executeQuery(SQL);
 
 			while (rs.next()){
-				Desenvolvedor desenvolvedor = servicoDesenvolvedor.getDesenvolvedor( rs.getString("desenvolvedor_email") ) ;
-				retorno.add(desenvolvedor);
+				Desenvolvedor desenvolvedorRetorno = servicoDesenvolvedor.getDesenvolvedor( rs.getString("desenvolvedor_email") ) ;
+				retorno.put(desenvolvedorRetorno, rs.getInt("qtde"));
+			}
+			
+			/* Caso o desenvolvedor seja novato e não teve contato com outras pessoas
+			 *  busca pelos desenvolvedores com contribuições aos problemas neste conhecimeto
+			 */
+			if (retorno.isEmpty()){
+				SQL = "SELECT desenvolvedor_email, SUM(qtdeProblema+qtdeSolucao) qtde FROM (" +
+						"  SELECT desenvolvedor_email, 0 as qtdeSolucao, count(desenvolvedor_email) as qtdeProblema" +
+						"  FROM problema" +
+						"  WHERE resolvido = 1 and conhecimento_nome = '"+ conhecimento.getNome() +"'" +
+						"  GROUP BY desenvolvedor_email" +
+						"        UNION ALL" +
+						"  SELECT s.desenvolvedor_email, count(s.desenvolvedor_email) as qtdeSolucao, 0 as qtdeProblema" +
+						"  FROM problema p" +
+						"  INNER JOIN solucao s ON s.problema_id = p.id AND s.resolveu = 1" +
+						"  WHERE p.conhecimento_nome = '"+ conhecimento.getNome() +"'" +
+						"  GROUP BY s.desenvolvedor_email" +
+						" ) AS T" +
+						" GROUP BY desenvolvedor_email";
+
+				ResultSet rs2 = stm.executeQuery(SQL);
+
+				while (rs2.next()){
+					Desenvolvedor desenvolvedorRetorno = servicoDesenvolvedor.getDesenvolvedor( rs2.getString("desenvolvedor_email") ) ;
+					retorno.put(desenvolvedorRetorno, rs2.getInt("qtde"));
+				}
+			}
+			
+			if (!retorno.isEmpty()){
+				retorno.remove(desenvolvedor);
 			}
 
-			// Retorna os desenvolvedores com contribuições aos problemas neste conhecimeto
-			SQL = "SELECT s.desenvolvedor_email FROM problema p " +
-					" INNER JOIN solucao s ON s.problema_id = p.id AND s.resolveu = 1 " +
-					" WHERE p.conhecimento_nome = '"+ conhecimento.getNome() +"' " ;
-
-			while (rs.next()){
-				Desenvolvedor desenvolvedor = servicoDesenvolvedor.getDesenvolvedor( rs.getString("desenvolvedor_email") ) ;
-				retorno.add(desenvolvedor);
-			}
 		} catch (SQLException e) {
 			//e.printStackTrace();
 			return null;
@@ -515,14 +549,49 @@ public class ServicoConhecimentoImplDAO implements ServicoConhecimento{
 		} finally {
 			try {
 				stm.close();
-				conn.close();	            
+				//conn.close();	            
 			} catch (SQLException onConClose) {
 				System.out.println(" Houve erro no fechamento da conexão ");
 				onConClose.printStackTrace();	             
 			}
 		}
 
-		return new ArrayList<Desenvolvedor>();
+		return retorno;
 	}
+
+	@Override
+	public Conhecimento getConhecimentoAssociado(Arquivo arquivo) {
+		Connection conn = MySQLConnectionFactory.open();
+		
+		Statement stm = null;
+
+		try {
+
+			stm = conn.createStatement();
+			String SQL = " SELECT conhecimento_nome FROM conhecimento_has_arquivo " +
+						" WHERE arquivo_id = "+ arquivo.getId() +";";
+
+			ResultSet rs = stm.executeQuery(SQL);
+
+			if (rs.next()){
+				return getConhecimento( rs.getString("conhecimento_nome") );
+			}else{
+				return null;
+			}
+
+		} catch (SQLException e) {
+			//e.printStackTrace();
+			return null;
+		} finally {
+			try {
+				stm.close();
+				//conn.close();	            
+			} catch (SQLException onConClose) {
+				System.out.println(" Houve erro no fechamento da conexão ");
+				onConClose.printStackTrace();	             
+			}
+		}		
+	}
+
 
 }

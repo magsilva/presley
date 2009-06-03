@@ -54,7 +54,7 @@ public class ServicoDesenvolvedorImplDAO implements ServicoDesenvolvedor{
 		} finally {
 			try {
 				stm.close();
-				conn.close();
+				//conn.close();
 			} catch (SQLException onConClose) {
 				System.out.println(" Houve erro no fechamento da conexão ");
 				onConClose.printStackTrace();	             
@@ -89,7 +89,7 @@ public class ServicoDesenvolvedorImplDAO implements ServicoDesenvolvedor{
 		} finally {
 			try {
 				stm.close();
-				conn.close();
+				//conn.close();
 			} catch (SQLException onConClose) {
 				System.out.println(" Houve erro no fechamento da conexão ");
 				onConClose.printStackTrace();	             
@@ -125,7 +125,7 @@ public class ServicoDesenvolvedorImplDAO implements ServicoDesenvolvedor{
 		} finally {
 			try {
 				stm.close();
-				conn.close();
+				//conn.close();
 			} catch (SQLException onConClose) {
 				System.out.println(" Houve erro no fechamento da conexão ");
 				onConClose.printStackTrace();	             
@@ -150,7 +150,7 @@ public class ServicoDesenvolvedorImplDAO implements ServicoDesenvolvedor{
 			" email = '"+email+"';";
 
 
-			System.out.println(SQL);
+			//System.out.println(SQL);
 			ResultSet rs = stm.executeQuery(SQL);
 
 			if (rs.next()){
@@ -165,7 +165,7 @@ public class ServicoDesenvolvedorImplDAO implements ServicoDesenvolvedor{
 		} finally {
 			try {
 				stm.close();
-				conn.close();
+				//conn.close();
 			} catch (SQLException onConClose) {
 				System.out.println(" Houve erro no fechamento da conexão ");
 				onConClose.printStackTrace();	             
@@ -203,7 +203,7 @@ public class ServicoDesenvolvedorImplDAO implements ServicoDesenvolvedor{
 		} finally {
 			try {
 				stm.close();
-				conn.close();
+				//conn.close();
 			} catch (SQLException onConClose) {
 				System.out.println(" Houve erro no fechamento da conexão ");
 				onConClose.printStackTrace();	             
@@ -228,7 +228,7 @@ public class ServicoDesenvolvedorImplDAO implements ServicoDesenvolvedor{
 			" AND conhecimento_nome = '"+nomeConhecimento+"';";
 
 
-			System.out.println(SQL);
+			//System.out.println(SQL);
 			ResultSet rs = stm.executeQuery(SQL);
 
 			if (rs.next()){
@@ -243,7 +243,7 @@ public class ServicoDesenvolvedorImplDAO implements ServicoDesenvolvedor{
 		} finally {
 			try {
 				stm.close();
-				conn.close();
+				//conn.close();
 			} catch (SQLException onConClose) {
 				System.out.println(" Houve erro no fechamento da conexão ");
 				onConClose.printStackTrace();	             
@@ -282,7 +282,7 @@ public class ServicoDesenvolvedorImplDAO implements ServicoDesenvolvedor{
 		} finally {
 			try {
 				stm.close();
-				conn.close();
+				//conn.close();
 			} catch (SQLException onConClose) {
 				System.out.println(" Houve erro no fechamento da conexão ");
 				onConClose.printStackTrace();	             
@@ -306,7 +306,7 @@ public class ServicoDesenvolvedorImplDAO implements ServicoDesenvolvedor{
 			" email = '"+email+"';";
 
 
-			System.out.println(SQL);
+			//System.out.println(SQL);
 			ResultSet rs = stm.executeQuery(SQL);
 
 			if (rs.next()){
@@ -330,7 +330,7 @@ public class ServicoDesenvolvedorImplDAO implements ServicoDesenvolvedor{
 		} finally {
 			try {
 				stm.close();
-				conn.close();
+				//conn.close();
 			} catch (SQLException onConClose) {
 				System.out.println(" Houve erro no fechamento da conexão ");
 				onConClose.printStackTrace();	             
@@ -353,7 +353,7 @@ public class ServicoDesenvolvedorImplDAO implements ServicoDesenvolvedor{
 			" cvsNome = '"+cvsNome+"';";
 
 
-			System.out.println(SQL);
+			//System.out.println(SQL);
 			ResultSet rs = stm.executeQuery(SQL);
 
 			if (rs.next()){
@@ -377,7 +377,7 @@ public class ServicoDesenvolvedorImplDAO implements ServicoDesenvolvedor{
 		} finally {
 			try {
 				stm.close();
-				conn.close();
+				//conn.close();
 			} catch (SQLException onConClose) {
 				System.out.println(" Houve erro no fechamento da conexão ");
 				onConClose.printStackTrace();	             
@@ -412,7 +412,7 @@ public class ServicoDesenvolvedorImplDAO implements ServicoDesenvolvedor{
 		} finally {
 			try {
 				stm.close();
-				conn.close();
+				//conn.close();
 			} catch (SQLException onConClose) {
 				System.out.println(" Houve erro no fechamento da conexão ");
 				onConClose.printStackTrace();	             
@@ -442,7 +442,7 @@ public class ServicoDesenvolvedorImplDAO implements ServicoDesenvolvedor{
 		} finally {
 			try {
 				stm.close();
-				conn.close();
+				//conn.close();
 			} catch (SQLException onConClose) {
 				System.out.println(" Houve erro no fechamento da conexão ");
 				onConClose.printStackTrace();	             
@@ -472,7 +472,7 @@ public class ServicoDesenvolvedorImplDAO implements ServicoDesenvolvedor{
 		} finally {
 			try {
 				stm.close();
-				conn.close();
+				//conn.close();
 			} catch (SQLException onConClose) {
 				System.out.println(" Houve erro no fechamento da conexão ");
 				onConClose.printStackTrace();	             
@@ -502,7 +502,7 @@ public class ServicoDesenvolvedorImplDAO implements ServicoDesenvolvedor{
 		} finally {
 			try {
 				stm.close();
-				conn.close();
+				//conn.close();
 			} catch (SQLException onConClose) {
 				System.out.println(" Houve erro no fechamento da conexão ");
 				onConClose.printStackTrace();	             
@@ -528,7 +528,7 @@ public class ServicoDesenvolvedorImplDAO implements ServicoDesenvolvedor{
 			" desenvolvedor_email = '"+email+"' ORDER BY conhecimento_nome;";
 
 
-			System.out.println(SQL);
+			//System.out.println(SQL);
 			ResultSet rs = stm.executeQuery(SQL);
 
 
@@ -554,7 +554,7 @@ public class ServicoDesenvolvedorImplDAO implements ServicoDesenvolvedor{
 		} finally {
 			try {
 				stm.close();
-				conn.close();
+				//conn.close();
 			} catch (SQLException onConClose) {
 				System.out.println(" Houve erro no fechamento da conexão ");
 				onConClose.printStackTrace();	             
@@ -584,7 +584,7 @@ public class ServicoDesenvolvedorImplDAO implements ServicoDesenvolvedor{
 			" desenvolvedor_email = '"+email+"' ORDER BY conhecimento_nome;";
 
 
-			System.out.println(SQL);
+			//System.out.println(SQL);
 			ResultSet rs = stm.executeQuery(SQL);
 
 
@@ -610,7 +610,7 @@ public class ServicoDesenvolvedorImplDAO implements ServicoDesenvolvedor{
 		} finally {
 			try {
 				stm.close();
-				conn.close();
+				//conn.close();
 			} catch (SQLException onConClose) {
 				System.out.println(" Houve erro no fechamento da conexão ");
 				onConClose.printStackTrace();	             
@@ -668,7 +668,7 @@ public class ServicoDesenvolvedorImplDAO implements ServicoDesenvolvedor{
 		} finally {
 			try {
 				stm.close();
-				conn.close();
+				//conn.close();
 			} catch (SQLException onConClose) {
 				System.out.println(" Houve erro no fechamento da conexão ");
 				onConClose.printStackTrace();	             
@@ -734,7 +734,7 @@ public class ServicoDesenvolvedorImplDAO implements ServicoDesenvolvedor{
 			" email = '"+email+"' AND senha = '"+senha+"';";
 
 
-			System.out.println(SQL);
+			//System.out.println(SQL);
 			ResultSet rs = stm.executeQuery(SQL);
 
 			if (rs.next()){
@@ -757,7 +757,7 @@ public class ServicoDesenvolvedorImplDAO implements ServicoDesenvolvedor{
 		} finally {
 			try {
 				stm.close();
-				conn.close();
+				//conn.close();
 			} catch (SQLException onConClose) {
 				System.out.println(" Houve erro no fechamento da conexão ");
 				onConClose.printStackTrace();	             
@@ -804,7 +804,7 @@ public class ServicoDesenvolvedorImplDAO implements ServicoDesenvolvedor{
 		} finally {
 			try {
 				stm.close();
-				conn.close();
+				//conn.close();
 			} catch (SQLException onConClose) {
 				System.out.println(" Houve erro no fechamento da conexão ");
 				onConClose.printStackTrace();	             

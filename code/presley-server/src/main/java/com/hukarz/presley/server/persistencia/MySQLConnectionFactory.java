@@ -16,21 +16,23 @@ public class MySQLConnectionFactory {
 	}
 	
 	public static Connection open() {
-		Connection novaConexao = null;
-		try {
-			
-            Class.forName("com.mysql.jdbc.Driver");
-            novaConexao = DriverManager.getConnection(
-            		"jdbc:mysql://localhost/presley", user, pwd);
-            
-            System.out.println("\n-------------- Nova Conexao Criada!-----------\n");
-            
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (SQLException e) {
-			e.printStackTrace();
+		
+		if (connection == null){
+			try {
+				
+	            Class.forName("com.mysql.jdbc.Driver");
+	            connection = DriverManager.getConnection(
+	            		"jdbc:mysql://localhost/presley", user, pwd);
+	            
+	            System.out.println("\n-------------- Nova Conexao Criada!-----------\n");
+	            
+	        } catch (ClassNotFoundException e) {
+	            e.printStackTrace();
+	        } catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
         
-        return novaConexao;
+        return connection;
 	}
 }

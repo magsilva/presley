@@ -23,7 +23,7 @@ public interface ServicoProblema {
 	 * @param Problema a ser cadastrado.
 	 * @return true se o problema foi cadastrado com sucesso.
 	 */
-	public boolean cadastrarProblema(Problema problema);
+	public Problema cadastrarProblema(Problema problema);
 	
 	/**
 	 * Esse método atualiza o status do problema, ou seja, se ele foi resolvido

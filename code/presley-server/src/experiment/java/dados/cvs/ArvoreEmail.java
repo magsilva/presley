@@ -18,8 +18,6 @@ import com.hukarz.presley.excessao.DesenvolvedorInexistenteException;
 import com.hukarz.presley.excessao.ProblemaInexistenteException;
 import com.hukarz.presley.excessao.ProjetoInexistenteException;
 import com.hukarz.presley.server.persistencia.MySQLConnectionFactory;
-import com.hukarz.presley.server.persistencia.implementacao.ServicoProblemaImplDAO;
-import com.hukarz.presley.server.persistencia.interfaces.ServicoProblema;
 import com.hukarz.presley.server.validacao.implementacao.ValidacaoProblemaImpl;
 import com.hukarz.presley.server.validacao.implementacao.ValidacaoSolucaoImpl;
 
@@ -35,7 +33,6 @@ import java.util.Set;
 import java.util.StringTokenizer;
 
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -87,17 +84,22 @@ public class ArvoreEmail extends JFrame implements ActionListener {
 	}  
 
 	public void varreArvoreEmail(String base, DefaultMutableTreeNode no) {
+		Connection conn = MySQLConnectionFactory.open();
+		
 		File diretorio = new File(base);  
 		File[] conteudo = diretorio.listFiles();
 		ArrayList<Email> emails = new ArrayList<Email>(); 
 
 		try {
-			for (int i=0; i < 1 ; i++) {   //conteudo.length
+			// (28	88)					Arquivos de 01/2004 até 12/2008
+			// (89  conteudo.length)	Arquivos de 01/2009 até o ultimo
+			for (int i=88; i < conteudo.length; i++) {    
 
 				File file = new File( conteudo[i].getAbsolutePath() );
 				FileReader fileReader = new FileReader(file);
 				BufferedReader reader = new BufferedReader(fileReader);
 
+				System.out.println( file );
 				String linha = "";
 
 				Email email = new Email();
@@ -105,11 +107,20 @@ public class ArvoreEmail extends JFrame implements ActionListener {
 				boolean encontrouMessageID	= false,
 				encontrouSubject	= false,
 				maisReferencias		= false,
-				encontrouMensagem	= false;
+				encontrouMensagem	= false,
+				encontrouData		= false,
+				proximaLinhaSubject = false;
 
 				while( (linha = reader.readLine()) != null ){
+					
+					if ( linha.trim().equals("---------------------------------------------------------------------") ||
+							linha.trim().equals("To unsubscribe, e-mail: java-dev-unsubscribe@lucene.apache.org") ||
+							linha.trim().equals("For additional commands, e-mail: java-dev-help@lucene.apache.org"))
+						continue;
+										
 					linha = linha.toLowerCase();
-
+					linha = linha.replace('\t', ' ');
+					
 					if ( !email.getReferences().isEmpty() && maisReferencias )
 						maisReferencias = !linha.contains(":"); 
 
@@ -117,15 +128,18 @@ public class ArvoreEmail extends JFrame implements ActionListener {
 						if (encontrouMessageID && encontrouSubject){
 							if (!Email.adcionarEmail(emails, email)) 
 								emails.add(email);
-
-							encontrouMessageID = false;
-							encontrouSubject   = false;
-							encontrouMensagem  = false;
-							maisReferencias	  = false;
 						}
 
+						encontrouMessageID	= false;
+						encontrouSubject	= false;
+						encontrouMensagem	= false;
+						maisReferencias		= false;
+						encontrouData		= false;
+						proximaLinhaSubject	= false;
+						
 						email = new Email();						   
-					} else if ( !encontrouMessageID && linha.startsWith("message-id: ")){ 
+					} else if ( (!encontrouMessageID && linha.startsWith("message-id: ")) ||
+								(encontrouMessageID && email.getMessageID().isEmpty() ) ){ 
 						encontrouMessageID = true;
 
 						linha = linha.replaceAll("message-id: ", "");
@@ -144,30 +158,37 @@ public class ArvoreEmail extends JFrame implements ActionListener {
 							emailFrom = st.nextToken();
 
 						if (!emailFrom.equals("jira@apache.org"))
-							email.setFrom(emailFrom);
+							email.setFrom(emailFrom, conn);
 						else{
-							email.setFromPorNome( linha.substring(0, linha.indexOf("jira")) );
+							email.setFromPorNome( linha.substring(0, linha.indexOf("jira")), conn );
 						}							   
 
-					} else if (linha.startsWith("date: ")){ 
+					} else if (linha.startsWith("date: ") && !encontrouData){ 
 						linha = linha.replaceAll("date: ", "");
 						linha = retirarCaracteresExtras(linha);
 						email.setData(linha);
+						encontrouData = true;
 					} else if (linha.startsWith("references: ") || (maisReferencias) ){ 
 						linha = linha.replaceAll("references: ", "");
 						linha = retirarCaracteresExtras(linha);
 						email.setReferences( email.getReferences() + " " + linha);
 
 						maisReferencias = true;
-					} else if (!encontrouSubject && linha.startsWith("subject: ")){
+					} else if ((!encontrouSubject && linha.startsWith("subject: ")) ||
+								(proximaLinhaSubject && linha.startsWith(" "))){
 						encontrouSubject = true;
-
+						proximaLinhaSubject = true;
+						
 						linha = linha.replaceAll("subject: ", "");
-						email.setSubject(linha);
+						email.setSubject( email.getSubject() + linha);
 					} else if (encontrouMessageID && encontrouSubject && linha.isEmpty() ){
 						encontrouMensagem  = true;
 					}
 
+					if (encontrouSubject && proximaLinhaSubject && 
+							!email.getSubject().isEmpty() && linha.contains(":") )
+						proximaLinhaSubject = false;
+					
 					// Encontra a mensagem e a primeira linha da mensagem anterior
 					if (encontrouMensagem && !linha.startsWith(">") ){
 						email.setMensagem( email.getMensagem() + " " + linha );
@@ -178,15 +199,16 @@ public class ArvoreEmail extends JFrame implements ActionListener {
 					if (!Email.adcionarEmail(emails, email)) 
 						emails.add(email);
 
-					encontrouMessageID = false;
-					encontrouSubject   = false;
-					encontrouMensagem  = false;
-					maisReferencias	  = false;
+					encontrouMessageID	= false;
+					encontrouSubject	= false;
+					encontrouMensagem	= false;
+					maisReferencias		= false;
+					proximaLinhaSubject = false;
 				}
 			}
 
+			//cadastrarProblemas(emails);
 			preencherArvore(emails, no);
-			cadastrarProblemas(emails);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -197,25 +219,26 @@ public class ArvoreEmail extends JFrame implements ActionListener {
 		Projeto projeto = new Projeto();
 		projeto.setNome("lucene");
 		ValidacaoProblemaImpl validacaoProblema = new ValidacaoProblemaImpl();
-		ServicoProblema servicoProblema = new ServicoProblemaImplDAO();
 		
 		for (Email email : emails) {
 			if (email.getFrom().isEmpty())
 				continue;
-				
+			
+			System.out.println( email.getMessageID() );
+			
 			Desenvolvedor desenvolvedor = new Desenvolvedor();
 			desenvolvedor.setEmail(email.getFrom());
 			
 			Problema problema = new Problema();
 			problema.setDesenvolvedorOrigem(desenvolvedor);
 			problema.setProjeto(projeto);
-			problema.setData( (Date) email.getData() ) ;
+			problema.setData( email.getData() ) ;
 			problema.setDescricao(email.getSubject());
 			problema.setMensagem(email.getMensagem());
 			problema.setResolvido(true);
 			
 			try {
-				validacaoProblema.cadastrarProblema(problema);
+				problema = validacaoProblema.cadastrarProblema(problema);
 			} catch (DescricaoInvalidaException e) {
 				e.printStackTrace();
 			} catch (IOException e) {
@@ -226,12 +249,9 @@ public class ArvoreEmail extends JFrame implements ActionListener {
 				e.printStackTrace();
 			}
 			
-			problema = servicoProblema.getProblema(problema.getDescricao(), 
-					problema.getData(), problema.getMensagem(), 
-					problema.getDesenvolvedorOrigem());
-			
 			if (email.getEmailsFilho().size() > 0)
 				cadastrarSolucoes(email.getEmailsFilho(), problema);
+			
 		}
 		
 	}
@@ -247,7 +267,7 @@ public class ArvoreEmail extends JFrame implements ActionListener {
 			Solucao solucao = new Solucao();
 			solucao.setAjudou(true);
 			solucao.setProblema(problema);
-			solucao.setData( new Date(System.currentTimeMillis()) ) ;
+			solucao.setData( email.getData() ) ;
 			solucao.setMensagem(email.getMensagem());
 			solucao.setDesenvolvedor(desenvolvedor);
 
@@ -269,7 +289,7 @@ public class ArvoreEmail extends JFrame implements ActionListener {
 	
 	public void preencherArvore(ArrayList<Email> emails, DefaultMutableTreeNode no){
 		for (Email email : emails) {
-			DefaultMutableTreeNode assunto = new DefaultMutableTreeNode( email.getMessageID() + " - " + email.getMensagem());
+			DefaultMutableTreeNode assunto = new DefaultMutableTreeNode( email.getMessageID() + " - " + email.getFrom());
 			if (email.getEmailsFilho().size()==0){
 				no.add( assunto );
 			} else {
@@ -344,8 +364,13 @@ public class ArvoreEmail extends JFrame implements ActionListener {
 				Set<String> listaEmail = emails.keySet();
 				for (Iterator<String> iterator = listaEmail.iterator(); iterator.hasNext();) {
 					String nome = iterator.next();
+					if (nome.length() > 99 )
+						nome = nome.substring(0, 99);
 					String email  = emails.get(nome);
 
+					if (email == null)
+						continue;
+							
 					StringTokenizer st = new StringTokenizer(email);
 
 					while (st.hasMoreTokens()){   

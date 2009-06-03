@@ -47,7 +47,7 @@ public class ServicoProjetoImplDAO implements ServicoProjeto {
 		} finally {
 			try {
 				stm.close();
-				conn.close();
+				//conn.close();
 			} catch (SQLException onConClose) {
 				System.out.println(" Houve erro no fechamento da conexo ");
 				onConClose.printStackTrace();	             
@@ -77,7 +77,7 @@ public class ServicoProjetoImplDAO implements ServicoProjeto {
 		} finally {
 			try {
 				stm.close();
-				conn.close();
+				//conn.close();
 			} catch (SQLException onConClose) {
 				System.out.println(" Houve erro no fechamento da conexão ");
 				onConClose.printStackTrace();	             
@@ -102,7 +102,7 @@ public class ServicoProjetoImplDAO implements ServicoProjeto {
 		} finally {
 			try {
 				stm.close();
-				conn.close();
+				//conn.close();
 			} catch (SQLException onConClose) {
 				System.out.println(" Houve erro no fechamento da conexão ");
 				onConClose.printStackTrace();	             
@@ -134,7 +134,7 @@ public class ServicoProjetoImplDAO implements ServicoProjeto {
 		} finally {
 			try {
 				stm.close();
-				conn.close();
+				//conn.close();
 			} catch (SQLException onConClose) {
 				System.out.println(" Houve erro no fechamento da conexão ");
 				onConClose.printStackTrace();	             
@@ -171,7 +171,7 @@ public class ServicoProjetoImplDAO implements ServicoProjeto {
 		} finally {
 			try {
 				stm.close();
-				conn.close();
+				//conn.close();
 			} catch (SQLException onConClose) {
 				System.out.println(" Houve erro no fechamento da conexão ");
 				onConClose.printStackTrace();	             
@@ -211,7 +211,7 @@ public class ServicoProjetoImplDAO implements ServicoProjeto {
 		} finally {
 			try {
 				stm.close();
-				conn.close();
+				//conn.close();
 			} catch (SQLException onConClose) {
 				System.out.println(" Houve erro no fechamento da conexão ");
 				onConClose.printStackTrace();	
@@ -252,7 +252,7 @@ public class ServicoProjetoImplDAO implements ServicoProjeto {
 		} finally {
 			try {
 				stm.close();
-				conn.close();
+				//conn.close();
 			} catch (SQLException onConClose) {
 				System.out.println(" Houve erro no fechamento da conexão ");
 				onConClose.printStackTrace();	             

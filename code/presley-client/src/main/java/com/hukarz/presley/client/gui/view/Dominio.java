@@ -23,6 +23,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Tree;
+import org.eclipse.swt.widgets.TreeItem;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
 
@@ -121,7 +122,14 @@ public class Dominio extends ViewPart {
 				runAdicionaConhecimentoWizardAction();
 				
 		    	com.hukarz.presley.beans.Tree conhecimentosModelo2 = getViewComunication().getOntologia();
-		    	treeConhecimentos = conhecimentosModelo2.constroiArvoreGrafica(parentComposite, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
+		    	treeConhecimentos.removeAll();
+		    	TreeItem[] itemCadatrado = conhecimentosModelo2.constroiArvoreGrafica(parentComposite, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL).getItems();
+				TreeItem[] item = new TreeItem[itemCadatrado.length];
+				for (int i = 0; i < item.length; i++) {
+					item[i] = new TreeItem(treeConhecimentos, SWT.NONE);
+					item[i].setText(itemCadatrado[i].getText());
+					item[i].setData(itemCadatrado[i].getData());
+				}
 
 			}
 

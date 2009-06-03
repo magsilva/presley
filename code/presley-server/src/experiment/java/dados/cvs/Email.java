@@ -9,7 +9,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
+import java.sql.Date;
 import java.util.StringTokenizer;
 
 import com.hukarz.presley.server.persistencia.MySQLConnectionFactory;
@@ -85,8 +85,19 @@ public class Email {
 		return from;
 	}
 
-	public void setFrom(String from) {
-		this.from = from;
+	public void setFrom(String from, Connection conn) {
+		
+		String SQL = "SELECT email FROM desenvolvedor WHERE listaEmail LIKE '%" + from + "%'";
+
+		Statement stm = null;
+		try {
+			stm = conn.createStatement();
+			ResultSet rs = stm.executeQuery(SQL);
+			if (rs.next())
+				this.from = rs.getString("email");	
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}		
 	}
 
 	public Date getData() {
@@ -94,6 +105,8 @@ public class Email {
 	}
 
 	public void setData(String linhaData) {
+		//System.out.println(linhaData);
+		
 		StringTokenizer st = new StringTokenizer(linhaData);
 		ArrayList<String> meses = new ArrayList<String>( );
 		meses.add("jan");
@@ -141,11 +154,10 @@ public class Email {
 		}
 	}
 
-	public void setFromPorNome(String nome) {
+	public void setFromPorNome(String nome, Connection conn) {
 
 		String SQL = "SELECT email FROM desenvolvedor WHERE nome ='" + nome.trim() + "'";
 
-		Connection conn = MySQLConnectionFactory.open();
 		Statement stm = null;
 		try {
 			stm = conn.createStatement();
@@ -158,23 +170,53 @@ public class Email {
 
 	}
 	
+	private static String retornarAssuntoResposta( String assuntoResposta ) {
+		assuntoResposta = assuntoResposta.trim();
+		if (assuntoResposta.startsWith("re") && assuntoResposta.indexOf(":") > -1 )
+			assuntoResposta = assuntoResposta.substring( assuntoResposta.indexOf(":") +1 ).trim() ;
+		
+		return assuntoResposta;		
+	}
+	
 	public static boolean adcionarEmail(ArrayList<Email> emails, Email emailIncluir){
 		boolean retorno = false;
-		
+		String assuntoRespostaIncluir 	= "";
+		String assuntoRespostaEmail 	= "";
 		for (Email email : emails) {
+			
+			assuntoRespostaIncluir	= retornarAssuntoResposta( emailIncluir.getSubject() ) ;
+			assuntoRespostaEmail	= retornarAssuntoResposta( email.getSubject() ) ;
+			
 			// -> No caso normal quando a resposta vem depois do 1º e-mail
 			if ( emailIncluir.getInReplyTo().equals( email.messageID ) ||
 					emailIncluir.getReferences().contains( email.messageID ) ||
-					email.getSubject().equals(emailIncluir.getSubject().replaceFirst("re: ", ""))) {
+					email.getSubject().equals( assuntoRespostaIncluir )) {
 				email.emailsFilho.add(emailIncluir);
 				retorno = true;
 				break;
 			// Casos onde o e-mail inicial está vindo depois da resposta	
 			} else if ( email.getInReplyTo().equals( emailIncluir.messageID ) ||
 					email.getReferences().contains( emailIncluir.messageID ) ||
-					emailIncluir.getSubject().equals(email.getSubject().replaceFirst("re: ", ""))) {
+					emailIncluir.getSubject().equals( assuntoRespostaEmail )) {
 				emailIncluir.emailsFilho.add(email);
 				emails.remove( emails.indexOf(email) );
+				
+				// -> Inicio da gabiarra
+				ArrayList<Email> emailsExcluir = new ArrayList<Email>(); 
+				for (Email email2 : emails) {
+					assuntoRespostaEmail	= retornarAssuntoResposta( email2.getSubject() ) ;
+					if ( email2.getInReplyTo().equals( emailIncluir.messageID ) ||
+							email2.getReferences().contains( emailIncluir.messageID ) ||
+							emailIncluir.getSubject().equals( assuntoRespostaEmail )) {
+						emailIncluir.emailsFilho.add(email2);
+						emailsExcluir.add( email2 );
+					}	
+				}
+				
+				for (Email email2 : emailsExcluir)
+					emails.remove( emails.indexOf(email2) );
+				// -> Fim
+				
 				emails.add(emailIncluir);
 				
 				retorno = true;

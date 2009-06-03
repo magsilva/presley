@@ -1,6 +1,9 @@
 package com.hukarz.presley.server.persistencia.interfaces;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import com.hukarz.presley.beans.Arquivo;
 import com.hukarz.presley.beans.Conhecimento;
@@ -108,7 +111,13 @@ public interface ServicoConhecimento {
 	 * @param conhecimento
 	 * @return
 	 */
-	public ArrayList<Desenvolvedor> getContribuintesConhecimento(Conhecimento conhecimento); 
+	public Map<Desenvolvedor, Integer> getContribuintesConhecimento(Conhecimento conhecimento, Desenvolvedor desenvolvedor); 
 	
+	/**
+	 * Esse metodo retorna o conhecimento associado ao arquivo passado como parametro
+	 * @param arquivo
+	 * @return
+	 */
+	public Conhecimento getConhecimentoAssociado(Arquivo arquivo);
 }
 
