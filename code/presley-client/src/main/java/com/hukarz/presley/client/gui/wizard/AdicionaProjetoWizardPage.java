@@ -57,7 +57,7 @@ public class AdicionaProjetoWizardPage extends WizardPage {
     	projeto.setAtivo(true);
     	projeto.setNome( nomeText.getText() );
     	projeto.setEndereco_Servidor_Gravacao( enderecoGravacaoText.getText() );
-    	projeto.setEndereco_Servidor_Leitura( enderecoLeituraText.getText() );
+    	projeto.setEndereco_Log( enderecoLeituraText.getText() );
     	
     	return projeto;
     }

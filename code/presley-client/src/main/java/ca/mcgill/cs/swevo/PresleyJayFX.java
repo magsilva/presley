@@ -45,6 +45,8 @@ public class PresleyJayFX extends JayFX {
 				e.printStackTrace();
 			}
 		}
+		
+						
 		IProgressMonitor lMonitor = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getViewReferences()[0].getView( true ).getViewSite().getActionBars().getStatusLineManager().getProgressMonitor();
 		try {
 			instancia.initialize( ResourcesPlugin.getWorkspace().getRoot().getProject( projeto.getNome() ), lMonitor, true );
@@ -76,7 +78,6 @@ public class PresleyJayFX extends JayFX {
     	if ( element.getCategory() == ICategories.METHOD ){
 			retorno.putAll( getRelacionamentosMetodo( (MethodElement) element ) );
     	} else if ( element.getCategory() == ICategories.CLASS ){
-//			Set<IElement> lRange = aDB.getRange( element, Relation.DECLARES );
 			Set<IElement> lRange = getRange( element, Relation.DECLARES );
 			
 			for (Iterator<IElement> elementoClasse = lRange.iterator(); elementoClasse.hasNext();) {
@@ -94,7 +95,6 @@ public class PresleyJayFX extends JayFX {
 
     	Set<IElement> lRange = getRange( methodElement, Relation.ACCESSES) ;
     	lRange.addAll( getRange( methodElement, Relation.CALLS ) ) ;
-//    	lRange.addAll( getRange( methodElement, Relation.T_CALLS ) );
 
     	for (Iterator<IElement> iterator = lRange.iterator(); iterator.hasNext();) {
     		IElement element = iterator.next();
@@ -103,7 +103,7 @@ public class PresleyJayFX extends JayFX {
     				ClasseJava classe   = new ClasseJava( element.getDeclaringClass().getId() ) ;
 
     				ArquivoJava arquivo = new ArquivoJava( convertToJavaElement(element).getResource().getName(), getProjetoSelecionado());
-    				arquivo.setEnderecoServidor( convertToJavaElement(element).getResource().getLocation().toFile().getAbsolutePath() ) ;
+    				arquivo.setEnderecoServidor( convertToJavaElement(element).getPath().toString() ) ;
     				retorno.put(classe, arquivo);
     			}
     		} catch (ConversionException e) {

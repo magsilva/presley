@@ -2,11 +2,10 @@ package com.hukarz.presley.client.gui.view;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseEvent;
@@ -21,8 +20,10 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
-import org.eclipse.ui.PlatformUI;
+
 import org.eclipse.ui.part.ViewPart;
+
+import ca.mcgill.cs.swevo.PresleyJayFX;
 
 import com.hukarz.presley.beans.Desenvolvedor;
 import com.hukarz.presley.beans.Mensagem;
@@ -83,28 +84,36 @@ public class MensagemAba extends ViewPart {
 	private ArrayList<Mensagem> mensagensExibidas;
 	private Timer timer;
 
+	private Projeto projetoAtivo;
+	private PresleyJayFX aDB;
+	private Map<String, String> listaElementosProjeto;
+	
+	
 	public MensagemAba() {
 		this.viewComunication = new ViewComunication(ipServidor);
 		bLogin = false;
-
 	}
 
 	@Override
 	public void createPartControl(Composite parent) {
 		parent.setLayout(null);
-		initComponents(parent);
+		initComponents(parent);		
 	}
 
-	@Override
-	public void setFocus() {
-		// TODO Auto-generated method stub
+	public PresleyJayFX getDadosProjetoAtivo(){
+		return aDB;
 	}
-
+	
+	public Map<String, String> getElementosProjeto(){
+		return listaElementosProjeto;
+	}
+	
 	public ViewComunication getViewComunication() {
 		return this.viewComunication;
 	}
 
 	private void initComponents(Composite parent) {
+		
 		this.parentComposite = parent;
 
 		cadastroProjeto = new Button(parentComposite, SWT.NONE);
@@ -179,11 +188,17 @@ public class MensagemAba extends ViewPart {
 		login.setEnabled(true);
 		login.addMouseListener(new MouseListener() {
 			public void mouseDoubleClick(MouseEvent e) {
-				// TODO Auto-generated method stub
-
 			}
 
 			public void mouseDown(MouseEvent e) {
+				if (aDB == null){
+					projetoAtivo = viewComunication.getProjetosAtivo().get(0); 
+					// Objeto para o JayFX
+					aDB = PresleyJayFX.obterInstancia( projetoAtivo );
+			 		// Busca Todos os Elementos no projeto
+			 		listaElementosProjeto = aDB.getTodasClassesMetodos();
+				}	
+				
 				// Exibe o wizard de login
 				runLoginWizardAction();
 				if (desenvolvedorLogado != null) {
@@ -573,7 +588,7 @@ public class MensagemAba extends ViewPart {
 				return updateAction;
 			}
 
-		}, 0, 300 * 1000); // 1000 Representa 1 segundo
+		}, 0, 500 * 1000); // 1000 Representa 1 segundo
 
 	}
 
@@ -747,6 +762,12 @@ public class MensagemAba extends ViewPart {
 
 	public Mensagem getMensagem() {
 		return (Mensagem) treeProblemasRecebidos.getSelection()[0].getData();
+	}
+
+	@Override
+	public void setFocus() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
