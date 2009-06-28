@@ -107,7 +107,7 @@ public class ServicoProblemaImplDAO implements ServicoProblema{
 
 				SQL = "INSERT INTO problema_has_classe(problema_id, arquivo_id, classe) " + 
 				" VALUES ( " + problema.getId()+",'"+arquivoJava.getId()+"','"+ classe.getNomeClasse() + "');" ;
-				System.out.println(SQL);
+				//System.out.println(SQL);
 				stm.execute(SQL);
 			} 
 
@@ -142,7 +142,7 @@ public class ServicoProblemaImplDAO implements ServicoProblema{
 			if (this.problemaExiste(problema.getId())){
 				
 				String SQL = "DELETE FROM problema_has_classe WHERE problema_id = " + problema.getId() + ";" ;
-				System.out.println(SQL);
+				//System.out.println(SQL);
 				stm.execute(SQL);
 				
 				SQL = " DELETE FROM problema WHERE id = "+problema.getId()+";";
@@ -314,7 +314,7 @@ public class ServicoProblemaImplDAO implements ServicoProblema{
 			
 			String SQL = " SELECT conhecimento_nome FROM problema_has_conhecimento where problema_nome = '"+nomeProblema+"';";
 
-			System.out.println(SQL);
+			//System.out.println(SQL);
 			ResultSet rs = stm.executeQuery(SQL);
 
 			while (rs.next()){
@@ -354,7 +354,7 @@ public class ServicoProblemaImplDAO implements ServicoProblema{
 					" FROM problema"+
 			" WHERE descricao = '"+descricao+"' AND dataRelato = '"+dataRelato+"' AND "+
 			" mensagem = '"+mensagem+"' AND desenvolvedor_email = '"+desenvolvedor_email.getEmail()+"';";	
-			System.out.println(SQL);
+			//System.out.println(SQL);
 			ResultSet rs = stm.executeQuery(SQL);
 
 			if (rs.next()){

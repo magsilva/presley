@@ -1,19 +1,20 @@
 package com.hukarz.presley.server.validacao.implementacao;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
-import org.tmatesoft.svn.core.SVNException;
-import org.tmatesoft.svn.core.SVNURL;
-import org.tmatesoft.svn.core.internal.io.dav.DAVRepositoryFactory;
-import org.tmatesoft.svn.core.wc.ISVNAnnotateHandler;
-import org.tmatesoft.svn.core.wc.SVNClientManager;
-import org.tmatesoft.svn.core.wc.SVNLogClient;
-import org.tmatesoft.svn.core.wc.SVNRevision;
+import com.ximpleware.*;
 
 import com.hukarz.presley.beans.Arquivo;
+import com.hukarz.presley.beans.ArquivoJava;
+import com.hukarz.presley.beans.ClasseJava;
 import com.hukarz.presley.beans.Desenvolvedor;
+import com.hukarz.presley.beans.Problema;
 import com.hukarz.presley.excessao.ArquivoInexistenteException;
 import com.hukarz.presley.excessao.DesenvolvedorInexistenteException;
 import com.hukarz.presley.excessao.NomeInvalidoException;
@@ -79,7 +80,6 @@ public class ValidacaoArquivoImpl {
 	 * @return <Conhecimento>
 	 */
 	public Arquivo getArquivo(Arquivo arquivo) throws ArquivoInexistenteException {
-		
 		Arquivo arquivoRetorno = servicoArquivo.getArquivo(arquivo);
 		if (arquivoRetorno == null) throw new ArquivoInexistenteException();
 		
@@ -92,91 +92,90 @@ public class ValidacaoArquivoImpl {
 	 * @return true se o conhecimento foi removido com sucesso
 	 */
 	public boolean removerArquivo(Arquivo arquivo) throws ArquivoInexistenteException {
-		
 		if (!servicoArquivo.arquivoExiste(arquivo)) throw new ArquivoInexistenteException();
-		
-/*
-		// Desassociar desenvolvedores:
-		ArrayList<Desenvolvedor> desenvolvedores = servicoDesenvolvedor.getTodosDesenvolvedores();
-		if (desenvolvedores != null) {
-			Iterator<Desenvolvedor> it4 = desenvolvedores.iterator();
-			
-			while (it4.hasNext()) {
-				Desenvolvedor desenvolvedor = it4.next();
-				if (servicoDesenvolvedor.conhecimentoDoDesenvolvedorExiste(desenvolvedor.getEmail(), nome)) {
-					servicoDesenvolvedor.removerConhecimentoDoDesenvolvedor(desenvolvedor.getEmail(), nome);
-				}
-			}
-		}
-*/		
+				
 		return servicoArquivo.removerArquivo(arquivo);
 	}
 
-	public ArrayList<Desenvolvedor> getDesenvolvedoresArquivo(Arquivo arquivo){
-		final ArrayList<Desenvolvedor> desenvolvedores = new ArrayList<Desenvolvedor>();
-		
-        try {
-            //1. first initialize the DAV protocol
-            DAVRepositoryFactory.setup();
-        	
-            //we will annotate a publicly available file
-            // SVNURL fileURL = SVNURL.parseURIEncoded("https://svn.svnkit.com/repos/svnkit/trunk/changelog.txt");
-            // svn blame http://project-presley.googlecode.com/svn/trunk/presely-server/src/core/interfaces/CorePresleyOperations.java
-            
-            SVNURL fileURL = SVNURL.parseURIEncoded( arquivo.getEnderecoServidor() );
-            
-            //SVNLogClient is the class with which you can perform annotations
-            SVNLogClient logClient = SVNClientManager.newInstance().getLogClient();
-            boolean ignoreMimeType = false;
-            boolean includeMergedRevisions = false;
+	/**
+	 * Cria uma lista com os Desenvolvedores de cada arquivo java	
+	 * @param problema
+	 * @return
+	 */	
+	public Map<ArquivoJava, ArrayList<Desenvolvedor>> getDesenvolvedoresArquivos(Problema problema){
+		// Cria uma lista com os Desenvolvedores de cada arquivo java		 
+		Map<ArquivoJava, ArrayList<Desenvolvedor>> arquivoDesenvolvedores = new HashMap<ArquivoJava, ArrayList<Desenvolvedor>>();
 
-            logClient.doAnnotate(fileURL, SVNRevision.UNDEFINED, SVNRevision.create(1), SVNRevision.HEAD,
-                    ignoreMimeType /*not ignoring mime type*/, includeMergedRevisions /*not including merged revisions */,
-                    new ISVNAnnotateHandler(){
+		cadastrarArquivosProblema(problema);
 
-						@Override
-						public void handleEOF() {
+		Collection<ArquivoJava> listaArquivo = problema.getClassesRelacionadas().values();
 
-						}
+		try {
+			// open a file and read the content into a byte array
+			File f = new File(problema.getProjeto().getEndereco_Log());
 
-						@Override
-						public void handleLine(Date date, long revision, String author, String line) throws SVNException {
-				            handleLine(date, revision, author, line, null, -1, null, null, 0);
-						}
+			FileInputStream fis =  new FileInputStream(f);
+			byte[] b = new byte[(int) f.length()];
+			fis.read(b);
 
-						@Override
-						public void handleLine(Date date, long revision, String author, String line, Date mergedDate, 
-				                long mergedRevision, String mergedAuthor, String mergedPath, int lineNumber)
-								throws SVNException {
-							
-							try {
-								Desenvolvedor desenvolvedor = servicoDesenvolvedor.getDesenvolvedorCVS(author);
+			VTDGen vg = new VTDGen();
+			vg.setDoc(b);
+			vg.parse(true);  // set namespace awareness to true
+			VTDNav vn = vg.getNav();
 
-							 	if (desenvolvedores.indexOf(desenvolvedor)==-1)
-							 		desenvolvedores.add(desenvolvedor);
-				            	
-							 	//System.out.println("|" + author + "|" );
-							} catch (DesenvolvedorInexistenteException e) {
-								// e.printStackTrace();
-							}
+			AutoPilot ap0 = new AutoPilot();
+			AutoPilot ap1 = new AutoPilot();
 
+			for (Arquivo arquivo : listaArquivo) {
+				ArrayList<Desenvolvedor> desenvolvedores = new ArrayList<Desenvolvedor>();
+				
+				// Selecione os autores que tem registro de log com o arquivo solicitado
+				ap0.selectXPath("/log/logentry [paths/path='"+ arquivo.getEnderecoLog() +"']");
+				ap1.selectXPath("author");
 
-						}
+				ap0.bind(vn);
+				ap1.bind(vn);
+				while(ap0.evalXPath()!=-1){
+					String author = ap1.evalXPathToString();
+					Desenvolvedor desenvolvedor = servicoDesenvolvedor.getDesenvolvedorCVS(author);
 
-						@Override
-						public boolean handleRevision(Date date, long revision, String author, File contents) throws SVNException {
-							/* We do not want our file to be annotated for each revision of the range, but only for the last 
-							 * revision of it, so we return false  
-							 */
-							return false;
-						}}, null);
-            
-            System.out.println( "Passou logClient.doAnnotate " );
-        } catch (SVNException svne) {
-            System.out.println(svne.getMessage());
-        }
-		
-		return desenvolvedores;
-		
+					if (desenvolvedores.indexOf(desenvolvedor)==-1)
+						desenvolvedores.add(desenvolvedor);
+				}
+
+				ap0.resetXPath();
+				
+				arquivoDesenvolvedores.put((ArquivoJava) arquivo, desenvolvedores);
+			}
+		} catch (ParseException e) {
+			System.out.println(" XML file parsing error \n"+e);
+		} catch (NavException e) {
+			System.out.println(" Exception during navigation "+e);
+		} catch (XPathParseException e) {
+
+		} catch (XPathEvalException e) {
+
+		} catch (java.io.IOException e)	{
+			System.out.println(" IO exception condition"+e);
+		} catch (DesenvolvedorInexistenteException e) {
+			// e.printStackTrace();
+		}
+
+		return arquivoDesenvolvedores;
+	}
+	
+	private void cadastrarArquivosProblema(Problema problema) {
+		// Cadastra as classes envolvidas no problema
+		Map<ClasseJava, ArquivoJava> arquivos = problema.getClassesRelacionadas();
+		for (Iterator<ClasseJava> it = arquivos.keySet().iterator(); it.hasNext();) {  
+			ClasseJava classe = it.next();  
+			ArquivoJava arquivoJava = arquivos.get(classe);  
+			
+			if (!servicoArquivo.arquivoExiste(arquivoJava)){
+				servicoArquivo.criarArquivo(arquivoJava);
+			}
+			arquivoJava.setId( servicoArquivo.getArquivo(arquivoJava).getId() );
+		}
+				
 	}
 }

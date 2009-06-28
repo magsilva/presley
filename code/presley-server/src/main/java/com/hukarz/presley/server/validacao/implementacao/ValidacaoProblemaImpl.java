@@ -1,18 +1,13 @@
 package com.hukarz.presley.server.validacao.implementacao;
 
-
-
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
 import com.hukarz.presley.beans.ArquivoJava;
-import com.hukarz.presley.beans.ClasseJava;
 import com.hukarz.presley.beans.Desenvolvedor;
 import com.hukarz.presley.beans.Problema;
-import com.hukarz.presley.beans.Projeto;
 import com.hukarz.presley.beans.Solucao;
 import com.hukarz.presley.excessao.ConhecimentoNaoEncontradoException;
 import com.hukarz.presley.excessao.DescricaoInvalidaException;
@@ -90,27 +85,29 @@ public class ValidacaoProblemaImpl {
 
 		if (!ValidacaoUtil.validaDescricao( problema.getDescricao() )) throw new DescricaoInvalidaException();
 
-		if (!servicoProjeto.projetoExiste(problema.getProjeto())) throw new ProjetoInexistenteException();
+		if (!servicoProjeto.projetoExiste( problema.getProjeto() )) throw new ProjetoInexistenteException();
 
 		System.out.println("Ok --- Validação");
+		
 		// Cria uma lista com os Desenvolvedores de cada arquivo java		 
-		Map<ArquivoJava, ArrayList<Desenvolvedor>> arquivoDesenvolvedores = getDesenvolvedoresArquivo(problema);
+		Map<ArquivoJava, ArrayList<Desenvolvedor>> arquivoDesenvolvedores = validacaoArquivo.getDesenvolvedoresArquivos(problema);
 		
 		System.out.println("Ok --- lista com os Desenvolvedores de cada arquivo"); 
 
 		// Identifica o conhecimeto do problema a se cadastrar
 		ProcessaSimilaridade processaSimilaridade = new ProcessaSimilaridade();
-		
+	
 		String comentariosCodigo = "";
-		for (Iterator<ArquivoJava> it = arquivoDesenvolvedores.keySet().iterator(); it.hasNext();) {  
+		
+		for (Iterator<ArquivoJava> it = problema.getClassesRelacionadas().values().iterator(); it.hasNext();) {  
 			ArquivoJava arquivoJava = it.next();  
 			try {
 				comentariosCodigo += " " +arquivoJava.getTexto();
 			} catch (IOException e) {
 				//e.printStackTrace();
-			}
-			
+			}			
 		}
+				
 		problema.setConhecimento( processaSimilaridade.verificaConhecimentoDoTexto( problema.getDescricao() + "  " + 
 				problema.getMensagem() + " " + comentariosCodigo ) ) ;
 
@@ -125,58 +122,16 @@ public class ValidacaoProblemaImpl {
 		servicoMensagem.adicionarMensagem(desenvolvedores, problema);
 		
 		System.out.println("Ok --- Mensagem Adcionada");
-	
+
 		return problema;
-
 	}
 
-	/**
-	 * Cria uma lista com os Desenvolvedores de cada arquivo java	
-	 * @param problema
-	 * @return
-	 */
-	public Map<ArquivoJava, ArrayList<Desenvolvedor>> getDesenvolvedoresArquivo(Problema problema){
-		// Cria uma lista com os Desenvolvedores de cada arquivo java		 
-		Map<ArquivoJava, ArrayList<Desenvolvedor>> arquivoDesenvolvedores = new HashMap<ArquivoJava, ArrayList<Desenvolvedor>>();
-		
-		Projeto projeto = problema.getProjeto();
-		
-		// Cadastra as classes envolvidas no problema
-		Map<ClasseJava, ArquivoJava> arquivos = problema.getClassesRelacionadas();
-		for (Iterator<ClasseJava> it = arquivos.keySet().iterator(); it.hasNext();) {  
-			ClasseJava classe = it.next();  
-			ArquivoJava arquivoJava = arquivos.get(classe);  
-			
-			// Busca o endereço do arquivo no servidor entre os endereços dos projetos ativos
-			arquivoJava.localizaEndereco( projeto.getEndereco_Servidor_Gravacao() ) ;
-			
-			if (!servicoArquivo.arquivoExiste(arquivoJava)){
-				servicoArquivo.criarArquivo(arquivoJava);
-			}
-			arquivoJava.setId( servicoArquivo.getArquivo(arquivoJava).getId() );
-
-			arquivoDesenvolvedores.put(arquivoJava, validacaoArquivo.getDesenvolvedoresArquivo(arquivoJava));
-			/*
-			try {
-				System.out.println( "Conteudo do Arquivo Java " + arquivoJava.getNome() + "  ||  " + arquivoJava.getTexto() );
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			*/
-		}
-		
-		//problema.setClassesRelacionadas(arquivos);
-		
-		return arquivoDesenvolvedores;
-	}
-	
 	/**
 	 * Esse método retorna o objeto problema que possui tal id.
 	 * @param id Identificador do problema.
 	 * @return <Problema>
 	 */	
 	public Problema getProblema(int id) throws ProblemaInexistenteException {
-		
 		if (!servicoProblema.problemaExiste(id)) throw new ProblemaInexistenteException();
 
 		return servicoProblema.getProblema(id);
@@ -218,8 +173,7 @@ public class ValidacaoProblemaImpl {
 		return problemas;
 	}
 	
-	public ArrayList<String> getConhecimentosAssociados(String nomeDoProblema) {
-		
+	public ArrayList<String> getConhecimentosAssociados(String nomeDoProblema) {		
 		ArrayList<String> problemas = servicoProblema.getConhecimentosAssociados(nomeDoProblema);
 		return problemas;
 	}

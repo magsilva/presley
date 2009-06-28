@@ -37,7 +37,7 @@ public class ServicoSolucaoImplDAO implements ServicoSolucao{
 			 SQL = " UPDATE solucao SET resolveu = 0"+
 				   " WHERE id = "+id+";";
 			}
-			System.out.println(SQL);
+			//System.out.println(SQL);
 			stm.execute(SQL);
 			
 		} catch (SQLException e) {
@@ -81,7 +81,7 @@ public class ServicoSolucaoImplDAO implements ServicoSolucao{
 			
 			SQL += " WHERE id = "+solucao.getId()+";" ;
 			
-			System.out.println(SQL);
+			//System.out.println(SQL);
 			stm.execute(SQL);
 			
 		} catch (SQLException e) {
@@ -166,7 +166,7 @@ public class ServicoSolucaoImplDAO implements ServicoSolucao{
 						 " AND resolveu = 1 ORDER BY id;";
 				
 			
-			System.out.println(SQL);
+			//System.out.println(SQL);
 			ResultSet rs = stm.executeQuery(SQL);
 			
 			while (rs.next()){
@@ -220,7 +220,7 @@ public class ServicoSolucaoImplDAO implements ServicoSolucao{
 				" WHERE desenvolvedor_email = '"+desenvolvedor.getEmail()+"' AND "+
 				" retornoSolucao <> '' ORDER BY id;";
 							
-			System.out.println(SQL);
+			//System.out.println(SQL);
 			ResultSet rs = stm.executeQuery(SQL);
 			
 			while (rs.next()){
@@ -274,7 +274,7 @@ public class ServicoSolucaoImplDAO implements ServicoSolucao{
 						 " desenvolvedor_email = '"+emailDesenvolvedor+"' ORDER BY id;";
 				
 			
-			System.out.println(SQL);
+			//System.out.println(SQL);
 			ResultSet rs = stm.executeQuery(SQL);
 			
 			while (rs.next()){
@@ -328,7 +328,7 @@ public class ServicoSolucaoImplDAO implements ServicoSolucao{
 						 " AND resolveu = 0 ORDER BY id;";
 				
 			
-			System.out.println(SQL);
+			//System.out.println(SQL);
 			ResultSet rs = stm.executeQuery(SQL);
 			
 			while (rs.next()){
@@ -413,7 +413,7 @@ public class ServicoSolucaoImplDAO implements ServicoSolucao{
 						 " id = "+id+";";
 				
 			
-			System.out.println(SQL);
+			//System.out.println(SQL);
 			ResultSet rs = stm.executeQuery(SQL);
 			
 			if (rs.next()){
@@ -454,7 +454,7 @@ public class ServicoSolucaoImplDAO implements ServicoSolucao{
 						 " id = "+id+";";
 				
 			
-			System.out.println(SQL);
+			//System.out.println(SQL);
 			ResultSet rs = stm.executeQuery(SQL);
 			
 			if (rs.next()){
@@ -509,7 +509,7 @@ public class ServicoSolucaoImplDAO implements ServicoSolucao{
 				" HAVING id = MIN(id);";
 				
 			
-			System.out.println(SQL);
+			//System.out.println(SQL);
 			ResultSet rs = stm.executeQuery(SQL);
 			
 			while (rs.next()){
@@ -565,7 +565,7 @@ public class ServicoSolucaoImplDAO implements ServicoSolucao{
 				" FROM solucao WHERE id = "+ idSolucaoPai +";";
 				
 			
-			System.out.println(SQL);
+			//System.out.println(SQL);
 			ResultSet rs = stm.executeQuery(SQL);
 			
 			while (rs.next()){

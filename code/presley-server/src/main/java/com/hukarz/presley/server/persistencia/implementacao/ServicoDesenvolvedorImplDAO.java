@@ -45,7 +45,7 @@ public class ServicoDesenvolvedorImplDAO implements ServicoDesenvolvedor{
 				+emailDesenvolvedor+"','" +nomeConhecimento+"','" +grau+"','" +qntResposta+
 				"');";
 
-			System.out.println(SQL);
+			//System.out.println(SQL);
 			stm.execute(SQL);
 
 		} catch (SQLException e) {
@@ -80,7 +80,7 @@ public class ServicoDesenvolvedorImplDAO implements ServicoDesenvolvedor{
 			" nome = '"+nome+"', cvsNome = '"+cvsNome+"', senha = '"+senha+
 			"' WHERE email = '"+email+"';";
 
-			System.out.println(SQL);
+			//System.out.println(SQL);
 			stm.execute(SQL);
 
 		} catch (SQLException e) {
@@ -116,7 +116,7 @@ public class ServicoDesenvolvedorImplDAO implements ServicoDesenvolvedor{
 			" VALUES('"+email+"','"+
 			nome+"','"+cvsNome+"','"+senha+"');";
 
-			System.out.println(SQL);
+			//System.out.println(SQL);
 			stm.execute(SQL);
 
 		} catch (SQLException e) {
@@ -191,7 +191,7 @@ public class ServicoDesenvolvedorImplDAO implements ServicoDesenvolvedor{
 				" WHERE desenvolvedor_email = '"+emailDesenvolvedor+"'"+
 				" AND conhecimento_nome = '"+nomeConhecimento+"';";
 
-				System.out.println(SQL);
+				//System.out.println(SQL);
 				stm.execute(SQL);
 				return true;
 			}
@@ -269,7 +269,7 @@ public class ServicoDesenvolvedorImplDAO implements ServicoDesenvolvedor{
 				String SQL = " DELETE FROM desenvolvedor WHERE " +
 				" email = '"+email+"';";
 
-				System.out.println(SQL);
+				//System.out.println(SQL);
 				stm.execute(SQL);
 				return true;
 
@@ -398,11 +398,11 @@ public class ServicoDesenvolvedorImplDAO implements ServicoDesenvolvedor{
 						 "desenvolvedor_has_conhecimento where " +
 						 "desenvolvedor_email = '" + email + "' and conhecimento_nome = '" + conhecimento+"';";
 			
-			System.out.println("getQTDADE!!: "+sql);
+			//System.out.println("getQTDADE!!: "+sql);
 			ResultSet rs = stm.executeQuery(sql);
-			System.out.println("PASSOU DO EXECUTEQUERY");
+			//System.out.println("PASSOU DO EXECUTEQUERY");
 			int teste = rs.getInt(1);
-			System.out.println(teste);
+			//System.out.println(teste);
 			return teste;
 				
 		} catch(SQLException e){
@@ -638,7 +638,7 @@ public class ServicoDesenvolvedorImplDAO implements ServicoDesenvolvedor{
 			" desenvolvedor_email = '"+email+"' ORDER BY id;";
 
 
-			System.out.println(SQL);
+			//System.out.println(SQL);
 			ResultSet rs = stm.executeQuery(SQL);
 
 
@@ -690,7 +690,7 @@ public class ServicoDesenvolvedorImplDAO implements ServicoDesenvolvedor{
 
 			String SQL = " SELECT * FROM desenvolvedor;";
 
-			System.out.println(SQL);
+			//System.out.println(SQL);
 			ResultSet rs = stm.executeQuery(SQL);
 
 			while (rs.next()){
@@ -783,7 +783,7 @@ public class ServicoDesenvolvedorImplDAO implements ServicoDesenvolvedor{
 				" INNER JOIN desenvolvedor AS DS ON DS.email = DC.desenvolvedor_email" +
 				" WHERE conhecimento_nome = '"+ conhecimento.getNome() +"'";
 				
-			System.out.println(SQL);
+			//System.out.println(SQL);
 			ResultSet rs = stm.executeQuery(SQL);
 
 			while (rs.next()){

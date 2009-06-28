@@ -28,7 +28,7 @@ public class ServicoArquivoImplDAO implements ServicoArquivo {
 			" WHERE arquivo_nome = '"+arquivo.getNome()+"' and "+
 			" endereco_servidor = '"+arquivo.getEnderecoServidor()+"';";
 
-			System.out.println(SQL);
+			//System.out.println(SQL);
 			ResultSet rs = stm.executeQuery(SQL);
 
 			return rs.next();
@@ -57,10 +57,10 @@ public class ServicoArquivoImplDAO implements ServicoArquivo {
 			stm = conn.createStatement();
 
 			String SQL = " UPDATE arquivo SET arquivo_nome = '"+arquivoNovo.getNome()+"',"+
-			" endereco_servidor = '"+arquivoNovo.getEnderecoServidor()+"' "+
+			" endereco_servidor = '"+arquivoNovo.getEnderecoServidor()+"', endereco_log = '"+arquivoNovo.getEnderecoLog() +"'"+
 			" WHERE id = "+arquivoAnterior.getId()+";";
 
-			System.out.println(SQL);
+			//System.out.println(SQL);
 			stm.execute(SQL);
 
 		} catch (SQLException e) {
@@ -89,10 +89,10 @@ public class ServicoArquivoImplDAO implements ServicoArquivo {
 			
 			stm = conn.createStatement();
 			
-			String SQL = " INSERT INTO arquivo (arquivo_nome, endereco_servidor, quantidadePalavras)" +
-			" VALUES('"+arquivo.getNome()+"','"+arquivo.getEnderecoServidor()+"', "+arquivo.getQtdPalavrasTotal()+");";
+			String SQL = " INSERT INTO arquivo (arquivo_nome, endereco_servidor, quantidadePalavras, endereco_log)" +
+			" VALUES('"+arquivo.getNome()+"','"+arquivo.getEnderecoServidor()+"', "+arquivo.getQtdPalavrasTotal()+", '"+arquivo.getEnderecoLog()+"');";
 
-			System.out.println(SQL);
+			//System.out.println(SQL);
 			stm.execute(SQL);
 
 		} catch (SQLException e) {
@@ -122,10 +122,10 @@ public class ServicoArquivoImplDAO implements ServicoArquivo {
 			stm = conn.createStatement();
 			String SQL = ""; 	
 			if (arquivo != null) {
-				SQL = " SELECT id, arquivo_nome, endereco_servidor, quantidadePalavras FROM arquivo "+
+				SQL = " SELECT id, arquivo_nome, endereco_servidor, quantidadePalavras, endereco_log FROM arquivo "+
 				" WHERE arquivo_nome = '"+ arquivo.getNome() +"' AND endereco_servidor = '"+ arquivo.getEnderecoServidor() +"' ;";
 			} else {
-				SQL = " SELECT id, arquivo_nome, endereco_servidor, quantidadePalavras FROM arquivo;";
+				SQL = " SELECT id, arquivo_nome, endereco_servidor, quantidadePalavras, endereco_log FROM arquivo;";
 			}
 
 			//System.out.println(SQL);
@@ -137,6 +137,7 @@ public class ServicoArquivoImplDAO implements ServicoArquivo {
 				arquivoRetorno.setId( rs.getInt("id"));
 				arquivoRetorno.setEnderecoServidor(rs.getString("endereco_servidor"));
 				arquivoRetorno.setQtdPalavrasTotal(rs.getInt("quantidadePalavras"));
+				arquivoRetorno.setEnderecoLog(rs.getString("endereco_log"));
 				
 				SQL = "SELECT AP.quantidade, P.palavra " +
 						" FROM arquivo_has_palavras AS AP" +
@@ -181,7 +182,7 @@ public class ServicoArquivoImplDAO implements ServicoArquivo {
 			if (this.arquivoExiste(arquivo)){
 				String SQL = " DELETE FROM arquivo WHERE id = "+arquivo.getId()+";";
 
-				System.out.println(SQL);
+				//System.out.println(SQL);
 				stm.execute(SQL);
 				return true;
 			}else{
@@ -304,12 +305,7 @@ public class ServicoArquivoImplDAO implements ServicoArquivo {
 		
 		try {
 			stm = conn.createStatement();
-			/*		
-			String SQL = "SELECT COUNT( DISTINCT ca.conhecimento_nome )  qtde  FROM palavra p" +
-					" INNER JOIN arquivo_has_palavras ap ON ap.palavra_id = p.id" +
-					" INNER JOIN conhecimento_has_arquivo ca ON ca.arquivo_id = ap.arquivo_id" +
-					" WHERE p.palavra = '"+ termo +"';";
-			 */				
+			
 			String SQL = "SELECT COUNT(arquivo_id) AS qtde FROM palavra p" +
 					" INNER JOIN arquivo_has_palavras ap ON ap.palavra_id = p.id" +
 					" WHERE palavra = '"+ termo +"'" ; 
@@ -339,7 +335,7 @@ public class ServicoArquivoImplDAO implements ServicoArquivo {
 		try {
 			stm = conn.createStatement();
 			String SQL = " SELECT id, arquivo_nome, endereco_servidor, " +
-					" quantidadePalavras FROM arquivo;";
+					" quantidadePalavras, endereco_log FROM arquivo;";
 
 			//System.out.println(SQL);
 			ResultSet rs = stm.executeQuery(SQL);
@@ -350,6 +346,7 @@ public class ServicoArquivoImplDAO implements ServicoArquivo {
 				arquivoRetorno.setId( rs.getInt("id"));
 				arquivoRetorno.setEnderecoServidor(rs.getString("endereco_servidor"));
 				arquivoRetorno.setQtdPalavrasTotal(rs.getInt("quantidadePalavras"));
+				arquivoRetorno.setEnderecoLog( rs.getString("endereco_log") );
 				
 				SQL = "SELECT AP.quantidade, P.palavra " +
 						" FROM arquivo_has_palavras AS AP" +

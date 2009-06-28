@@ -40,7 +40,7 @@ public class Inferencia {
 
 	public static ArrayList<Desenvolvedor> getDesenvolvedores(Map<ArquivoJava, ArrayList<Desenvolvedor>> arquivoDesenvolvedores, 
 			Conhecimento conhecimento, Desenvolvedor desenvolvedor) {
-		Map<Desenvolvedor, Integer> participacaoDesenvolvedorArq = new HashMap<Desenvolvedor, Integer>(); //getParticipacaoDesenvolvedores(arquivoDesenvolvedores);
+		Map<Desenvolvedor, Integer> participacaoDesenvolvedorArq = getParticipacaoDesenvolvedores(arquivoDesenvolvedores);
 		Map<Desenvolvedor, Integer> participacaoDesenvolvedorConhecimento = getParticipacaoDesenvolvedores(conhecimento, desenvolvedor);
 		
 		Map<Desenvolvedor, Integer> participacaoDesenvolvedor = somarParticipacaoDosDesenvolvedores(participacaoDesenvolvedorArq, participacaoDesenvolvedorConhecimento);
@@ -249,6 +249,11 @@ public class Inferencia {
 			}
 		}
 		
+		System.out.println( "------------------------------------------------------------------------");
+		for (Desenvolvedor desenvolvedor : listaDesenvolvedores) {
+			System.out.println( "e-mail " + desenvolvedor.getEmail() + " -- " + participacaoDesenvolvedor.get(desenvolvedor) );
+		}
+		System.out.println( "------------------------------------------------------------------------");
 		
 		return listaDesenvolvedores;
 	}

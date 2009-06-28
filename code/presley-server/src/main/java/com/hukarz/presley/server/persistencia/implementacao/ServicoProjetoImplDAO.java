@@ -24,7 +24,8 @@ public class ServicoProjetoImplDAO implements ServicoProjeto {
 
 			stm = conn.createStatement();
 
-			String SQL = " SELECT nome, ativo, endereco_Servidor_Leitura, endereco_Servidor_Gravacao FROM projeto WHERE ativo = 1";
+			String SQL = " SELECT nome, ativo, endereco_Log, endereco_Servidor_Gravacao, diretorio_Subversion, endereco_Servidor_Projeto " +
+					" FROM projeto WHERE ativo = 1";
 
 			// System.out.println(SQL);
 			ResultSet rs = stm.executeQuery(SQL);
@@ -35,7 +36,9 @@ public class ServicoProjetoImplDAO implements ServicoProjeto {
 				projeto.setAtivo(true);
 				projeto.setNome(rs.getString("nome"));
 				projeto.setEndereco_Servidor_Gravacao( rs.getString("endereco_Servidor_Gravacao") ) ;
-				projeto.setEndereco_Servidor_Leitura( rs.getString("endereco_Servidor_Leitura") ) ;
+				projeto.setEndereco_Log( rs.getString("endereco_Log") ) ;
+				projeto.setDiretorio_Subversion( rs.getString("diretorio_Subversion") ) ;
+				projeto.setEndereco_Servidor_Projeto( rs.getString("endereco_Servidor_Projeto") );
 			
 				projetos.add(projeto);
 			}
@@ -66,8 +69,10 @@ public class ServicoProjetoImplDAO implements ServicoProjeto {
 			String SQL = "UPDATE projeto SET ativo ='0';";
 			stm.execute(SQL);
 
-			SQL = " INSERT INTO projeto (nome, ativo, endereco_Servidor_Leitura, endereco_Servidor_Gravacao) " +
-					" VALUES ('"+ projeto.getNome() +"','1','"+ projeto.getEndereco_Servidor_Leitura() +"','"+ projeto.getEndereco_Servidor_Gravacao() +"');";
+			SQL = " INSERT INTO projeto (nome, ativo, diretorio_Subversion, " +
+					" endereco_Servidor_Gravacao, endereco_Log) " +
+					" VALUES ('"+ projeto.getNome() +"','1','"+ projeto.getDiretorio_Subversion() +"','"+ 
+					projeto.getEndereco_Servidor_Gravacao() +"','"+ projeto.getEndereco_Log() +"','"+ projeto.getEndereco_Servidor_Projeto() +"');";
 
 			//System.out.println(SQL);
 			stm.execute(SQL);
@@ -126,7 +131,7 @@ public class ServicoProjetoImplDAO implements ServicoProjeto {
 				SQL += "'0'";
 				
 			SQL += " WHERE nome = '"+ projeto.getNome() +"';";
-			System.out.println(SQL);
+			//System.out.println(SQL);
 			stm.execute(SQL);
 		} catch (SQLException e) {
 			//e.printStackTrace();
@@ -156,7 +161,7 @@ public class ServicoProjetoImplDAO implements ServicoProjeto {
 			stm = conn.createStatement();
 			String SQL = "SELECT * FROM projeto WHERE nome = '"+projeto.getNome()+"';";
 
-			System.out.println(SQL);
+			//System.out.println(SQL);
 			ResultSet rs = stm.executeQuery(SQL);
 
 			if (rs.next()){
@@ -189,19 +194,20 @@ public class ServicoProjetoImplDAO implements ServicoProjeto {
 		try {
 			stm = conn.createStatement();
 
-			String sql = "SELECT nome, ativo, endereco_Servidor_Leitura, endereco_Servidor_Gravacao" +
+			String sql = "SELECT nome, ativo, diretorio_Subversion, endereco_Servidor_Gravacao, endereco_Log, endereco_Servidor_Projeto" +
 					" FROM projeto ORDER BY nome";
 			ResultSet rs = stm.executeQuery(sql);
-			System.out.println(sql);
+			//System.out.println(sql);
 						
 			while(rs.next()) {
 				Projeto projeto = new Projeto();
 				
 				projeto.setNome( rs.getString("nome") );
 				projeto.setEndereco_Servidor_Gravacao( rs.getString("endereco_Servidor_Gravacao") ) ;
-				projeto.setEndereco_Servidor_Leitura( rs.getString("endereco_Servidor_Leitura") );
+				projeto.setDiretorio_Subversion( rs.getString("diretorio_Subversion") );
+				projeto.setEndereco_Log( rs.getString("endereco_Log") );
 				projeto.setAtivo( rs.getBoolean("ativo") );
-				
+				projeto.setEndereco_Servidor_Projeto( rs.getString("endereco_Servidor_Projeto") ) ;				
 				projetos.add(projeto);
 			}
 			
@@ -231,18 +237,20 @@ public class ServicoProjetoImplDAO implements ServicoProjeto {
 		try {
 
 			stm = conn.createStatement();
-			String SQL = "SELECT * FROM projeto WHERE nome = '"+nome+"';";
+			String SQL = "SELECT nome, ativo, endereco_Log, endereco_Servidor_Gravacao, diretorio_Subversion FROM projeto WHERE nome = '"+nome+"';";
 
 			Projeto projeto = new Projeto();
 			
-			System.out.println(SQL);
+			//System.out.println(SQL);
 			ResultSet rs = stm.executeQuery(SQL);
 
 			if (rs.next()){
 				projeto.setAtivo( rs.getBoolean("ativo") );
-				projeto.setEndereco_Servidor_Gravacao( rs.getString("endereco_Servidor_Gravacao") );
-				projeto.setEndereco_Servidor_Leitura( rs.getString("endereco_Servidor_Leitura") );
-				projeto.setNome( rs.getString("nome") );
+				
+				projeto.setNome(rs.getString("nome"));
+				projeto.setEndereco_Servidor_Gravacao( rs.getString("endereco_Servidor_Gravacao") ) ;
+				projeto.setEndereco_Log( rs.getString("endereco_Log") ) ;
+				projeto.setDiretorio_Subversion( rs.getString("diretorio_Subversion") ) ;
 			}
 
 			return projeto;

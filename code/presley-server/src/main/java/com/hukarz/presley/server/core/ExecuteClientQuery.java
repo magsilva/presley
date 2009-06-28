@@ -164,10 +164,10 @@ public class ExecuteClientQuery implements CorePresleyOperations{
 	}	
 
 	public ArrayList<Desenvolvedor> buscaDesenvolvedores(Problema problema) throws DesenvolvedorInexistenteException {
-		ArrayList<Desenvolvedor> listaDesenvolvedores = Inferencia.getDesenvolvedores(validacaoProblema.getDesenvolvedoresArquivo(problema), 
-				problema.getConhecimento(), problema.getDesenvolvedorOrigem());
+//		ArrayList<Desenvolvedor> listaDesenvolvedores = Inferencia.getDesenvolvedores(validacaoProblema.getDesenvolvedoresArquivo(problema), 
+//				problema.getConhecimento(), problema.getDesenvolvedorOrigem());
 
-		return listaDesenvolvedores;
+		return new ArrayList<Desenvolvedor>();
 	}
 
 

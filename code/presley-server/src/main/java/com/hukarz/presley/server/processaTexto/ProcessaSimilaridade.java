@@ -43,7 +43,7 @@ public class ProcessaSimilaridade {
 		if (arquivoMaisSimilar == null)
 			throw new ConhecimentoNaoEncontradoException( );
 		
-		System.out.println( arquivoMaisSimilar.getNome() );
+		//System.out.println( arquivoMaisSimilar.getNome() );
 		return servicoConhecimento.getConhecimentoAssociado(arquivoMaisSimilar); 
 	}
 	

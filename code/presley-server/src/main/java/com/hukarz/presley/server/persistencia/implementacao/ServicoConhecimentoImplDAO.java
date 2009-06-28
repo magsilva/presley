@@ -46,7 +46,7 @@ public class ServicoConhecimentoImplDAO implements ServicoConhecimento{
 			" descricao = '"+descricao+"' "+
 			" WHERE nome = '"+nome+"';";
 
-			System.out.println(SQL);
+			//System.out.println(SQL);
 			stm.execute(SQL);
 
 		} catch (SQLException e) {
@@ -80,7 +80,7 @@ public class ServicoConhecimentoImplDAO implements ServicoConhecimento{
 			" nome = '"+nome+"';";
 
 
-			System.out.println(SQL);
+			//System.out.println(SQL);
 			ResultSet rs = stm.executeQuery(SQL);
 
 			if (rs.next()){
@@ -120,7 +120,7 @@ public class ServicoConhecimentoImplDAO implements ServicoConhecimento{
 			" VALUES('"+nome+"','"+
 			descricao+"');";
 
-			System.out.println(SQL);
+			//System.out.println(SQL);
 			stm.execute(SQL);
 
 		} catch (SQLException e) {
@@ -154,7 +154,7 @@ public class ServicoConhecimentoImplDAO implements ServicoConhecimento{
 				String SQL = " DELETE FROM conhecimento WHERE " +
 				" nome = '"+nome+"';";
 
-				System.out.println(SQL);
+				//System.out.println(SQL);
 				stm.execute(SQL);
 				return true;
 			}else{
@@ -251,7 +251,7 @@ public class ServicoConhecimentoImplDAO implements ServicoConhecimento{
 			" VALUES('"+nomeConhecimentoPai+"','"+
 			nomeConhecimentoFilho+"');";
 
-			System.out.println(SQL);
+			//System.out.println(SQL);
 			stm.execute(SQL);
 
 		} catch (SQLException e) {
@@ -286,7 +286,7 @@ public class ServicoConhecimentoImplDAO implements ServicoConhecimento{
 			nomeConhecimentoPai+"' AND conhecimento_filho_nome = '"+
 			nomeConhecimentoFilho+"';";
 
-			System.out.println(SQL);
+			//System.out.println(SQL);
 			stm.execute(SQL);
 
 		} catch (SQLException e) {
@@ -323,7 +323,7 @@ public class ServicoConhecimentoImplDAO implements ServicoConhecimento{
 			SQL = " SELECT * FROM conhecimento_pai_filho WHERE "+
 			" conhecimento_pai_nome = '"+nomeConhecimentoPai+"';";
 
-			System.out.println(SQL);
+			//System.out.println(SQL);
 			ResultSet rs = stm.executeQuery(SQL);
 
 			while (rs.next()){
@@ -368,7 +368,7 @@ public class ServicoConhecimentoImplDAO implements ServicoConhecimento{
 			SQL = " SELECT * FROM conhecimento_pai_filho WHERE "+
 			" conhecimento_filho_nome = '"+nomeConhecimentoFilho+"';";
 
-			System.out.println(SQL);
+			//System.out.println(SQL);
 			ResultSet rs = stm.executeQuery(SQL);
 
 			while (rs.next()){
@@ -410,7 +410,7 @@ public class ServicoConhecimentoImplDAO implements ServicoConhecimento{
 
 			SQL = " SELECT nome, descricao FROM conhecimento;";
 
-			System.out.println(SQL);
+			//System.out.println(SQL);
 			ResultSet rs = stm.executeQuery(SQL);
 
 			while (rs.next()){
@@ -418,7 +418,7 @@ public class ServicoConhecimentoImplDAO implements ServicoConhecimento{
 				String nomeConhecimentoPai = rs.getString("nome");
 				Conhecimento conhecimento = getConhecimento(nomeConhecimentoPai);
 				
-				System.out.println("Adicionando novo conhecimento a lista");
+				//System.out.println("Adicionando novo conhecimento a lista");
 				
 				list.add(conhecimento);
 			}

@@ -27,7 +27,7 @@ public class ServicoMensagemImplDAO implements ServicoMensagem{
 			for (int i = 0; i < desenvolvedoresDestino.size(); i++) {
 				String SQL = " INSERT INTO mensagem(desenvolvedor_destino_email, problema_id) VALUES ('"
 					+desenvolvedoresDestino.get(i).getEmail()+"','"+problema.getId()+"');";
-				System.out.println(SQL);
+				//System.out.println(SQL);
 				stm.execute(SQL);
 			}
 
@@ -61,7 +61,7 @@ public class ServicoMensagemImplDAO implements ServicoMensagem{
 			" INNER JOIN problema PRO ON PRO.id = MEN.problema_id AND PRO.resolvido = 0"+
 			" WHERE MEN.desenvolvedor_destino_email = '"+emailDesenvolvedorDestino+"'";
 			ResultSet rs = stm.executeQuery(sql);
-			System.out.println(sql);
+			//System.out.println(sql);
 						
 			while(rs.next()) {
 				Mensagem msg = new Mensagem();
