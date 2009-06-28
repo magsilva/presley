@@ -1,11 +1,9 @@
 package com.hukarz.presley.beans;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.URL;
-import java.net.URLConnection;
 
 public class ArquivoJava extends Arquivo {
 
@@ -21,14 +19,13 @@ public class ArquivoJava extends Arquivo {
 	public String getTexto() throws IOException {
 		String textoRetorno = "";
 
-		//BufferedReader in = new BufferedReader(new FileReader( getEnderecoServidor() ));
-	   URL url = new URL(getEnderecoServidor());
-	   URLConnection conn = url.openConnection();
-	   BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+		File file = new File(getEnderecoServidor());
+		FileReader fileReader = new FileReader(file);
+		BufferedReader reader = new BufferedReader(fileReader);
 
 		String texto =  null;  
 		boolean comentarioBloco = false ;
-		while ((texto = in.readLine()) != null) {  
+		while ((texto = reader.readLine()) != null) {  
 
 			for(int x=0; x < texto.length();x++){
 				if (x <= texto.length()-2 && texto.charAt(x)=='/' && texto.charAt(x+1)=='/') {
@@ -54,14 +51,17 @@ public class ArquivoJava extends Arquivo {
 		return textoRetorno;
 	}
 
-	// -> Rotina para encontrar o endereço do arquivo no servidor SVN
 	public void setEnderecoServidor(String enderecoArquivo) {
-		String enderecoSVN = projeto.getEndereco_Servidor_Leitura() + 
-				enderecoArquivo.substring(enderecoArquivo.indexOf(projeto.getNome()) + projeto.getNome().length() +1, enderecoArquivo.length());
+		super.setEnderecoServidor(projeto.getEndereco_Servidor_Projeto() + 
+				enderecoArquivo.replaceFirst("/"+projeto.getNome() + "/", ""));
 		
-		super.setEnderecoServidor(enderecoSVN);
-		ajustarBarrasEndereco('\\', '/');
+		setEnderecoLog(enderecoArquivo);
 	}
 
-	
+	// -> Rotina para encontrar o endereço do arquivo no servidor SVN
+	public void setEnderecoLog(String enderecoLog) {
+		super.setEnderecoLog( projeto.getDiretorio_Subversion() +
+				enderecoLog.replaceFirst("/"+projeto.getNome() , "") )  ;
+	}
+
 }

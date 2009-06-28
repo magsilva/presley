@@ -17,6 +17,7 @@ public class Arquivo implements Serializable{
 	private String nome, enderecoServidor, texto ;
 	private int qtdPalavrasTotal;
 	private Map<String, Integer> termosSelecionados = new HashMap<String, Integer>();
+	private String enderecoLog;
 	
 	public Arquivo(String nome) {
 		this.nome = nome;
@@ -38,7 +39,7 @@ public class Arquivo implements Serializable{
 	public void setNome(String nome, boolean localizaEndereco, Projeto projeto) {
 		this.nome = nome;
 		if (localizaEndereco)
-			localizaEndereco( projeto.getEndereco_Servidor_Leitura() );
+			localizaEndereco( projeto.getDiretorio_Subversion() );
 	}
 
 	public String getEnderecoServidor() {
@@ -131,4 +132,13 @@ public class Arquivo implements Serializable{
         		enderecoServidor += endereco.charAt(x);
         }
 	}
+
+	public String getEnderecoLog() {
+		return enderecoLog;
+	}
+
+	public void setEnderecoLog(String enderecoLog) {
+		this.enderecoLog = enderecoLog;
+	}	
+	
 }

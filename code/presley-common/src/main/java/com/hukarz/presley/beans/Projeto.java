@@ -7,8 +7,10 @@ public class Projeto implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private String nome;
 	private boolean ativo;
-	private String endereco_Servidor_Leitura;
+	private String diretorio_Subversion;
 	private String endereco_Servidor_Gravacao;
+	private String endereco_Log;
+	private String endereco_Servidor_Projeto;
 	
 	public String getNome() {
 		return nome;
@@ -22,8 +24,8 @@ public class Projeto implements Serializable {
 	public void setAtivo(boolean ativo) {
 		this.ativo = ativo;
 	}
-	public String getEndereco_Servidor_Leitura() {
-		return ajustar_Endereco( endereco_Servidor_Leitura );
+	public String getDiretorio_Subversion() {
+		return ajustar_Endereco( diretorio_Subversion );
 	}
 	
 	private String ajustar_Endereco( String enderecoAtual ){
@@ -38,8 +40,8 @@ public class Projeto implements Serializable {
 		return endereco;
 	}
 	
-	public void setEndereco_Servidor_Leitura(String endereco_Servidor_Leitura) {
-		this.endereco_Servidor_Leitura = endereco_Servidor_Leitura;
+	public void setDiretorio_Subversion(String diretorio_Subversion) {
+		this.diretorio_Subversion = diretorio_Subversion;
 	}
 	public String getEndereco_Servidor_Gravacao() {
 		return ajustar_Endereco( endereco_Servidor_Gravacao );
@@ -48,5 +50,18 @@ public class Projeto implements Serializable {
 		this.endereco_Servidor_Gravacao = endereco_Servidor_Gravacao;
 	}
 	
+	public String getEndereco_Log() {
+		return endereco_Log;
+	}
+	public void setEndereco_Log(String endereco_Log) {
+		this.endereco_Log = endereco_Log;
+	}
+	
+	public String getEndereco_Servidor_Projeto() {
+		return endereco_Servidor_Projeto;
+	}
+	public void setEndereco_Servidor_Projeto(String endereco_Servidor_Projeto) {
+		this.endereco_Servidor_Projeto = endereco_Servidor_Projeto;
+	}
 	
 }
