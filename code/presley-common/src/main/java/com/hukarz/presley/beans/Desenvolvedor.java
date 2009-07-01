@@ -23,6 +23,7 @@ public class Desenvolvedor implements Serializable {
 	private String cvsNome;
 	private HashMap<Conhecimento,Double> listaConhecimento;
 	private String senha;
+	private String listaEmail;
 	
 	public String getEmail() {
 		return email;
@@ -63,6 +64,12 @@ public class Desenvolvedor implements Serializable {
 	@Override
 	public int hashCode(){
 		return this.email.hashCode();
+	}
+	public void setListaEmail(String listaEmail) {
+		this.listaEmail = listaEmail;
+	}
+	public String getListaEmail() {
+		return listaEmail;
 	}
 	
 }
