@@ -21,8 +21,6 @@ import org.eclipse.ui.IPageLayout;
 import org.eclipse.ui.IPerspectiveFactory;
 import org.eclipse.ui.console.IConsoleConstants;
 
-import ca.mcgill.cs.swevo.PresleyJayFX;
-
 
 /**
  *  This class is meant to serve as an example for how various contributions 

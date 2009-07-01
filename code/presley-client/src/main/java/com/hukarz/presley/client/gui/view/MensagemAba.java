@@ -20,7 +20,6 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
-
 import org.eclipse.ui.part.ViewPart;
 
 import ca.mcgill.cs.swevo.PresleyJayFX;

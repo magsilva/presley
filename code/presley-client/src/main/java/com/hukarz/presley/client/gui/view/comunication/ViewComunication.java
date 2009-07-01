@@ -10,7 +10,6 @@ import org.apache.log4j.Logger;
 import com.hukarz.presley.beans.Arquivo;
 import com.hukarz.presley.beans.BuscaDesenvolvedores;
 import com.hukarz.presley.beans.Conhecimento;
-import com.hukarz.presley.beans.ConhecimentoAtividade;
 import com.hukarz.presley.beans.DadosAutenticacao;
 import com.hukarz.presley.beans.Desenvolvedor;
 import com.hukarz.presley.beans.Mensagem;
@@ -23,11 +22,9 @@ import com.hukarz.presley.beans.TipoAtividade;
 import com.hukarz.presley.beans.Tree;
 import com.hukarz.presley.communication.facade.PacketStruct;
 import com.hukarz.presley.communication.facade.PrincipalSUBJECT;
-import com.hukarz.presley.excessao.AtividadeInexistenteException;
 import com.hukarz.presley.excessao.ConhecimentoInexistenteException;
 import com.hukarz.presley.excessao.DesenvolvedorInexistenteException;
 import com.hukarz.presley.excessao.NomeInvalidoException;
-import com.hukarz.presley.excessao.ProblemaInexistenteException;
 import com.hukarz.presley.excessao.ProjetoInexistenteException;
 
 /**

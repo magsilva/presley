@@ -12,10 +12,6 @@ import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.Signature;
 import org.eclipse.ui.PlatformUI;
 
-import com.hukarz.presley.beans.ArquivoJava;
-import com.hukarz.presley.beans.ClasseJava;
-import com.hukarz.presley.beans.Projeto;
-
 import ca.mcgill.cs.swevo.jayfx.ConversionException;
 import ca.mcgill.cs.swevo.jayfx.JayFX;
 import ca.mcgill.cs.swevo.jayfx.JayFXException;
@@ -23,6 +19,10 @@ import ca.mcgill.cs.swevo.jayfx.model.ICategories;
 import ca.mcgill.cs.swevo.jayfx.model.IElement;
 import ca.mcgill.cs.swevo.jayfx.model.MethodElement;
 import ca.mcgill.cs.swevo.jayfx.model.Relation;
+
+import com.hukarz.presley.beans.ArquivoJava;
+import com.hukarz.presley.beans.ClasseJava;
+import com.hukarz.presley.beans.Projeto;
 
 public class PresleyJayFX extends JayFX {
 	
