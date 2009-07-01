@@ -1,8 +1,12 @@
 package com.hukarz.presley.server.inferencia;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
+import java.util.StringTokenizer;
 
 import com.hukarz.presley.beans.ArquivoJava;
 import com.hukarz.presley.beans.Conhecimento;
@@ -11,7 +15,6 @@ import com.hukarz.presley.server.persistencia.implementacao.ServicoConhecimentoI
 import com.hukarz.presley.server.persistencia.implementacao.ServicoDesenvolvedorImplDAO;
 import com.hukarz.presley.server.persistencia.interfaces.ServicoConhecimento;
 import com.hukarz.presley.server.persistencia.interfaces.ServicoDesenvolvedor;
-import com.hukarz.presley.server.validacao.implementacao.ValidacaoInferenciaImpl;
 
 
 /*
@@ -218,6 +221,8 @@ public class Inferencia {
 		ArrayList<Desenvolvedor> listaDesenvolvedores = new ArrayList<Desenvolvedor>();
 		Desenvolvedor desenvolvedorMenor = new Desenvolvedor();
 		
+
+		
 		for (Iterator<Desenvolvedor> it = participacaoDesenvolvedor.keySet().iterator(); it.hasNext();) {
 			Desenvolvedor desenvolvedor = it.next();
 			double porcentagem = participacaoDesenvolvedor.get(desenvolvedor) ;
@@ -251,7 +256,16 @@ public class Inferencia {
 		
 		System.out.println( "------------------------------------------------------------------------");
 		for (Desenvolvedor desenvolvedor : listaDesenvolvedores) {
-			System.out.println( "e-mail " + desenvolvedor.getEmail() + " -- " + participacaoDesenvolvedor.get(desenvolvedor) );
+			
+			StringTokenizer stEmails = new StringTokenizer(desenvolvedor.getListaEmail());
+			Set<String> emails = new HashSet<String>();
+			
+			emails.add(desenvolvedor.getEmail());
+			while (stEmails.hasMoreTokens()) {
+				emails.add(stEmails.nextToken());
+			}
+			
+			System.out.println( desenvolvedor.getNome() + " " + emails.toString() + " " + participacaoDesenvolvedor.get(desenvolvedor) );
 		}
 		System.out.println( "------------------------------------------------------------------------");
 		
