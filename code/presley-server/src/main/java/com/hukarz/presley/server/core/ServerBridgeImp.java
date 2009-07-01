@@ -10,7 +10,6 @@ import com.hukarz.presley.communication.server.ServerBridge;
 import com.hukarz.presley.excessao.AtividadeInexistenteException;
 import com.hukarz.presley.excessao.ConhecimentoInexistenteException;
 import com.hukarz.presley.excessao.ConhecimentoNaoEncontradoException;
-import com.hukarz.presley.excessao.DataInvalidaException;
 import com.hukarz.presley.excessao.DescricaoInvalidaException;
 import com.hukarz.presley.excessao.DesenvolvedorExisteException;
 import com.hukarz.presley.excessao.DesenvolvedorInexistenteException;

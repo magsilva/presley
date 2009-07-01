@@ -6,7 +6,6 @@ import java.util.Calendar;
 
 import junit.framework.TestCase;
 
-import com.hukarz.presley.beans.Problema;
 import com.hukarz.presley.beans.TipoAtividade;
 import com.hukarz.presley.server.persistencia.implementacao.ServicoDesenvolvedorImplDAO;
 import com.hukarz.presley.server.persistencia.implementacao.ServicoProblemaImplDAO;

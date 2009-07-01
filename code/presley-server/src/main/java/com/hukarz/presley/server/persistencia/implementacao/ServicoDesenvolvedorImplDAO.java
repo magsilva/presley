@@ -302,7 +302,7 @@ public class ServicoDesenvolvedorImplDAO implements ServicoDesenvolvedor{
 
 			stm = conn.createStatement();
 
-			String SQL = " SELECT email, nome, cvsNome FROM desenvolvedor WHERE "+
+			String SQL = " SELECT email, nome, cvsNome, listaEmail FROM desenvolvedor WHERE "+
 			" email = '"+email+"';";
 
 
@@ -316,6 +316,7 @@ public class ServicoDesenvolvedorImplDAO implements ServicoDesenvolvedor{
 				desenvolvedor.setEmail(rs.getString("email"));
 				desenvolvedor.setNome(rs.getString("nome"));
 				desenvolvedor.setCVSNome(rs.getString("cvsNome"));
+				desenvolvedor.setListaEmail(rs.getString("listaEmail"));
 				desenvolvedor.setListaConhecimento(this.getConhecimentosDoDesenvolvedor(rs.getString("email"), 1));
 				desenvolvedor.setSenha("");
 
@@ -349,7 +350,7 @@ public class ServicoDesenvolvedorImplDAO implements ServicoDesenvolvedor{
 
 			stm = conn.createStatement();
 
-			String SQL = " SELECT email, nome, cvsNome FROM desenvolvedor WHERE "+
+			String SQL = " SELECT email, nome, cvsNome, listaEmail FROM desenvolvedor WHERE "+
 			" cvsNome = '"+cvsNome+"';";
 
 
@@ -363,6 +364,7 @@ public class ServicoDesenvolvedorImplDAO implements ServicoDesenvolvedor{
 				desenvolvedor.setEmail(rs.getString("email"));
 				desenvolvedor.setNome(rs.getString("nome"));
 				desenvolvedor.setCVSNome(rs.getString("cvsNome"));
+				desenvolvedor.setListaEmail(rs.getString("listaEmail"));
 				desenvolvedor.setListaConhecimento(this.getConhecimentosDoDesenvolvedor(rs.getString("email"), 1));
 				desenvolvedor.setSenha("");
 

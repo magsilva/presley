@@ -1,6 +1,7 @@
 package dados.cvs;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -8,11 +9,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.sql.Date;
 import java.util.StringTokenizer;
-
-import com.hukarz.presley.server.persistencia.MySQLConnectionFactory;
 
 public class Email {
 	private String messageID;

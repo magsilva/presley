@@ -2,8 +2,6 @@ package com.hukarz.presley.server.persistencia.interfaces;
 
 import java.util.ArrayList;
 
-import com.hukarz.presley.beans.Arquivo;
-import com.hukarz.presley.beans.Mensagem;
 import com.hukarz.presley.beans.Projeto;
 
 public interface ServicoProjeto {

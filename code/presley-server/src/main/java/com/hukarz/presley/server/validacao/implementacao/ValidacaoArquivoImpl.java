@@ -8,8 +8,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import com.ximpleware.*;
-
 import com.hukarz.presley.beans.Arquivo;
 import com.hukarz.presley.beans.ArquivoJava;
 import com.hukarz.presley.beans.ClasseJava;
@@ -22,6 +20,13 @@ import com.hukarz.presley.server.persistencia.implementacao.ServicoArquivoImplDA
 import com.hukarz.presley.server.persistencia.implementacao.ServicoDesenvolvedorImplDAO;
 import com.hukarz.presley.server.persistencia.interfaces.ServicoArquivo;
 import com.hukarz.presley.server.persistencia.interfaces.ServicoDesenvolvedor;
+import com.ximpleware.AutoPilot;
+import com.ximpleware.NavException;
+import com.ximpleware.ParseException;
+import com.ximpleware.VTDGen;
+import com.ximpleware.VTDNav;
+import com.ximpleware.XPathEvalException;
+import com.ximpleware.XPathParseException;
 
 
 public class ValidacaoArquivoImpl {

@@ -1,14 +1,10 @@
 package persistencia.test;
 
-import java.sql.Date;
 import java.util.ArrayList;
-import java.util.Calendar;
 
 import junit.framework.TestCase;
 
-import com.hukarz.presley.beans.Problema;
 import com.hukarz.presley.beans.Solucao;
-import com.hukarz.presley.beans.TipoAtividade;
 import com.hukarz.presley.server.persistencia.implementacao.ServicoDesenvolvedorImplDAO;
 import com.hukarz.presley.server.persistencia.implementacao.ServicoProblemaImplDAO;
 import com.hukarz.presley.server.persistencia.implementacao.ServicoSolucaoImplDAO;

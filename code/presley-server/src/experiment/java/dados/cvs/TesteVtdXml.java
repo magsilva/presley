@@ -1,8 +1,15 @@
 package dados.cvs;
 
-import com.ximpleware.*;
-import java.util.*;
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+
+import com.ximpleware.AutoPilot;
+import com.ximpleware.NavException;
+import com.ximpleware.ParseException;
+import com.ximpleware.VTDGen;
+import com.ximpleware.VTDNav;
+import com.ximpleware.XPathEvalException;
+import com.ximpleware.XPathParseException;
 
 public class TesteVtdXml {
 

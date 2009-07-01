@@ -4,9 +4,9 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Vector;
 
-import com.hukarz.presley.server.ontologia.Ontologia;
-
 import junit.framework.TestCase;
+
+import com.hukarz.presley.server.ontologia.Ontologia;
 
 public class TestOntologia extends TestCase {
 

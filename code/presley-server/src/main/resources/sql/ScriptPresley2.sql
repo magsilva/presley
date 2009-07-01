@@ -1,4 +1,4 @@
-create database presley;
+CREATE DATABASE IF NOT EXISTS presley;
 
 use presley;
 

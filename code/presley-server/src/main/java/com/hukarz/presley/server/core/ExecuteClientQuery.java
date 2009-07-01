@@ -10,11 +10,8 @@ package com.hukarz.presley.server.core;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Iterator;
 
-import com.hukarz.presley.beans.BuscaDesenvolvedores;
 import com.hukarz.presley.beans.Conhecimento;
-import com.hukarz.presley.beans.ConhecimentoAtividade;
 import com.hukarz.presley.beans.DadosAutenticacao;
 import com.hukarz.presley.beans.Desenvolvedor;
 import com.hukarz.presley.beans.Mensagem;
@@ -29,7 +26,6 @@ import com.hukarz.presley.communication.facade.PacketStruct;
 import com.hukarz.presley.excessao.AtividadeInexistenteException;
 import com.hukarz.presley.excessao.ConhecimentoInexistenteException;
 import com.hukarz.presley.excessao.ConhecimentoNaoEncontradoException;
-import com.hukarz.presley.excessao.DataInvalidaException;
 import com.hukarz.presley.excessao.DescricaoInvalidaException;
 import com.hukarz.presley.excessao.DesenvolvedorInexistenteException;
 import com.hukarz.presley.excessao.EmailInvalidoException;
@@ -40,7 +36,6 @@ import com.hukarz.presley.excessao.ProjetoInexistenteException;
 import com.hukarz.presley.excessao.SenhaInvalidaException;
 import com.hukarz.presley.excessao.SolucaoIniexistenteException;
 import com.hukarz.presley.server.core.interfaces.CorePresleyOperations;
-import com.hukarz.presley.server.inferencia.Inferencia;
 import com.hukarz.presley.server.ontologia.Ontologia;
 import com.hukarz.presley.server.validacao.implementacao.ValidacaoConhecimentoImpl;
 import com.hukarz.presley.server.validacao.implementacao.ValidacaoDesenvolvedorImpl;
@@ -48,7 +43,6 @@ import com.hukarz.presley.server.validacao.implementacao.ValidacaoMensagemImpl;
 import com.hukarz.presley.server.validacao.implementacao.ValidacaoProblemaImpl;
 import com.hukarz.presley.server.validacao.implementacao.ValidacaoProjetoImpl;
 import com.hukarz.presley.server.validacao.implementacao.ValidacaoSolucaoImpl;
-import com.hukarz.presley.server.validacao.implementacao.ValidacaoUtil;
 
 
 /**

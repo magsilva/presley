@@ -2,10 +2,6 @@ package com.hukarz.presley.server.validacao.implementacao;
 
 import java.sql.Date;
 
-import com.hukarz.presley.beans.Projeto;
-import com.hukarz.presley.server.persistencia.implementacao.ServicoProjetoImplDAO;
-import com.hukarz.presley.server.persistencia.interfaces.ServicoProjeto;
-
 
 public class ValidacaoUtil {
 	
