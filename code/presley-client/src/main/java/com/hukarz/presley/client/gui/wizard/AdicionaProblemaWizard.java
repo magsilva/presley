@@ -1,5 +1,9 @@
 package com.hukarz.presley.client.gui.wizard;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FilenameFilter;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.Date;
 
@@ -37,18 +41,23 @@ public class AdicionaProblemaWizard extends Wizard implements INewWizard {
 	@Override
 	public boolean performFinish() {
     	try{
-    		Problema problema = new Problema();
-    		problema.setDescricao("");
-    		problema.setMensagem( page.getMensagem() );
-    		problema.setDescricao( page.getDescricao() );
-    		problema.setData(new Date(System.currentTimeMillis()));
-    		problema.setClassesRelacionadas( page.getClassesRelacionadas() ) ;
-    		problema.setDesenvolvedorOrigem( MensagemAba.getDesenvolvedorLogado() ) ;
-    		problema.setResolvido(false);
-    		problema.setProjeto( mensagem.getViewComunication().getProjetosAtivo().get(0) );
-    		
-    		//Adciona problema ao banco
-    		mensagem.getViewComunication().adicionaProblema(problema);
+    		if (!page.executarExperimento()){
+        		Problema problema = new Problema();
+        		problema.setDescricao("");
+        		problema.setMensagem( page.getMensagem() );
+        		problema.setDescricao( page.getDescricao() );
+        		problema.setData(new Date(System.currentTimeMillis()));
+        		problema.setClassesRelacionadas( 
+        				page.getClassesRelacionadas(page.getDescricao() + " " + page.getMensagem(), " ") ) ;
+        		problema.setDesenvolvedorOrigem( MensagemAba.getDesenvolvedorLogado() ) ;
+        		problema.setResolvido(false);
+        		problema.setProjeto( mensagem.getViewComunication().getProjetosAtivo().get(0) );
+        		
+        		//Adciona problema ao banco
+        		mensagem.getViewComunication().adicionaProblema(problema);
+    		} else {
+    			executarExperimento();
+    		}
     		
     	}catch (Exception e) {
     		MessageDialog.openError(this.getShell(), "ERRO", e.getMessage());
@@ -73,6 +82,52 @@ public class AdicionaProblemaWizard extends Wizard implements INewWizard {
 		   return true;
 	}
 
+	private void executarExperimento(){
+		File diretorioCD = new File( page.getDiretorioArquivos() );
+		
+		File[] listagemDiretorio = diretorioCD.listFiles(new FilenameFilter() {  
+			public boolean accept(File d, String name) {  
+				return name.toLowerCase().endsWith(".pergunta");  
+			}  
+		}); 		
+		
+		try {
+			for (int i = 0; i < listagemDiretorio.length; i++) {
+				File file = new File( listagemDiretorio[i].getAbsolutePath() );
+				FileReader fileReader = new FileReader(file);
+				BufferedReader reader = new BufferedReader(fileReader);
+
+        		Problema problema = new Problema();
+        		problema.setResolvido(false);
+        		problema.setData(new Date(System.currentTimeMillis()));
+        		problema.setProjeto( mensagem.getViewComunication().getProjetosAtivo().get(0) );
+        		
+        		// Desenvolvedor que enviou o problema
+				String linha = reader.readLine();
+        		problema.setDesenvolvedorOrigem( mensagem.getViewComunication().login(linha, "1") ) ;
+
+        		// Descrição do problema
+        		linha = reader.readLine();
+        		problema.setDescricao( linha );
+        		
+        		// Corpo da Mensagem
+        		String CorpoMensagem = "";
+				while( (CorpoMensagem = reader.readLine()) != null ){
+	        		problema.setMensagem( problema.getMensagem() + " " + CorpoMensagem );
+				}
+
+        		problema.setClassesRelacionadas( 
+        				page.getClassesRelacionadas(problema.getDescricao() + " " + problema.getMensagem(), " ") ) ;
+        		
+        		//Adciona problema ao banco
+        		mensagem.getViewComunication().adicionaProblema(problema);
+			}
+		} catch (Exception e) {
+
+		}
+
+	}
+	
     private void performOperation(IProgressMonitor monitor) {
     	
     }

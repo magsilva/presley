@@ -133,6 +133,7 @@ public class PresleyJayFX extends JayFX {
 				continue;
 			
 			// Assinatura do metodo
+			/*
 			if ( element.getCategory() == ICategories.METHOD ){
 				try {
 					IMethod metodo = (IMethod) convertToJavaElement(element);
@@ -152,12 +153,13 @@ public class PresleyJayFX extends JayFX {
 					else
 						elemento += ")"; 
 				} catch (ConversionException e) {
-//					System.out.println(element.getId() + " ConversionException");
+
 				} catch (JavaModelException e) {
-//					System.out.println(element.getId() + " JavaModelException");
+
 				}
 			// Classe	
-			} else if ( element.getCategory() == ICategories.CLASS )
+			} else*/ 
+			if ( element.getCategory() == ICategories.CLASS )
 				elemento = element.getShortName();
 //				elemento = element.getPackageName() +"."+ element.getShortName();
 

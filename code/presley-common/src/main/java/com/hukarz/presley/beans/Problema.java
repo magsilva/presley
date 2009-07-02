@@ -34,6 +34,11 @@ public class Problema implements Serializable {
 	private Conhecimento conhecimento;
 	private Projeto projeto;
 
+	public Problema() {
+		classesRelacionadas = new HashMap<ClasseJava, ArquivoJava>();
+		mensagem = "";
+	}
+	
 	public Projeto getProjeto() {
 		return projeto;
 	}
@@ -50,10 +55,6 @@ public class Problema implements Serializable {
 		this.desenvolvedorOrigem = desenvolvedorOrigem;
 	}
 
-	public Problema() {
-		classesRelacionadas = new HashMap<ClasseJava, ArquivoJava>();
-	}
-	
 	public Map<ClasseJava, ArquivoJava> getClassesRelacionadas() {
 		return classesRelacionadas;
 	}

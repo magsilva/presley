@@ -1,20 +1,28 @@
 package com.hukarz.presley.server.inferencia;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FilenameFilter;
+import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.Set;
 import java.util.StringTokenizer;
 
 import com.hukarz.presley.beans.ArquivoJava;
 import com.hukarz.presley.beans.Conhecimento;
 import com.hukarz.presley.beans.Desenvolvedor;
+import com.hukarz.presley.beans.Projeto;
 import com.hukarz.presley.server.persistencia.implementacao.ServicoConhecimentoImplDAO;
 import com.hukarz.presley.server.persistencia.implementacao.ServicoDesenvolvedorImplDAO;
+import com.hukarz.presley.server.persistencia.implementacao.ServicoProblemaImplDAO;
+import com.hukarz.presley.server.persistencia.implementacao.ServicoProjetoImplDAO;
 import com.hukarz.presley.server.persistencia.interfaces.ServicoConhecimento;
 import com.hukarz.presley.server.persistencia.interfaces.ServicoDesenvolvedor;
+import com.hukarz.presley.server.persistencia.interfaces.ServicoProblema;
+import com.hukarz.presley.server.persistencia.interfaces.ServicoProjeto;
 
 
 /*
@@ -220,9 +228,7 @@ public class Inferencia {
 	private static ArrayList<Desenvolvedor> retornarMelhoresDesenvolvedores(Map<Desenvolvedor, Integer> participacaoDesenvolvedor, int qtde ){
 		ArrayList<Desenvolvedor> listaDesenvolvedores = new ArrayList<Desenvolvedor>();
 		Desenvolvedor desenvolvedorMenor = new Desenvolvedor();
-		
 
-		
 		for (Iterator<Desenvolvedor> it = participacaoDesenvolvedor.keySet().iterator(); it.hasNext();) {
 			Desenvolvedor desenvolvedor = it.next();
 			double porcentagem = participacaoDesenvolvedor.get(desenvolvedor) ;
@@ -254,21 +260,43 @@ public class Inferencia {
 			}
 		}
 		
-		System.out.println( "------------------------------------------------------------------------");
-		for (Desenvolvedor desenvolvedor : listaDesenvolvedores) {
-			
-			StringTokenizer stEmails = new StringTokenizer(desenvolvedor.getListaEmail());
-			Set<String> emails = new HashSet<String>();
-			
-			emails.add(desenvolvedor.getEmail());
-			while (stEmails.hasMoreTokens()) {
-				emails.add(stEmails.nextToken());
-			}
-			
-			System.out.println( desenvolvedor.getNome() + " " + emails.toString() + " " + participacaoDesenvolvedor.get(desenvolvedor) );
-		}
-		System.out.println( "------------------------------------------------------------------------");
 		
+		gerarLog(listaDesenvolvedores, participacaoDesenvolvedor);
+				
 		return listaDesenvolvedores;
+	}
+	
+	private static void gerarLog(ArrayList<Desenvolvedor> listaDesenvolvedores, 
+			Map<Desenvolvedor, Integer> participacaoDesenvolvedor){
+		ServicoProjeto servicoProjeto = new ServicoProjetoImplDAO();
+		Projeto projeto = servicoProjeto.getProjetosAtivo().get(0);
+		
+		File diretorioCD = new File( projeto.getEndereco_Servidor_Gravacao() );
+		
+		File[] listagemDiretorio = diretorioCD.listFiles(new FilenameFilter() {  
+			public boolean accept(File d, String name) {  
+				return name.toLowerCase().endsWith(".recomendacoes");  
+			}  
+		}); 
+
+		try {  			
+			String nomeArquivo = "000" + Integer.toString(listagemDiretorio.length + 1);
+			nomeArquivo = nomeArquivo.substring(nomeArquivo.length()-4);
+			PrintWriter saida = new PrintWriter(new 
+					FileOutputStream(projeto.getEndereco_Servidor_Gravacao() + nomeArquivo + ".recomendacoes"));
+			
+			for (Desenvolvedor desenvolvedor : listaDesenvolvedores) {
+				
+		    	StringTokenizer st = new StringTokenizer( desenvolvedor.getListaEmail() );
+				while (st.hasMoreTokens()){
+					String email = st.nextToken();
+					saida.println( email );
+				}
+
+			}
+			saida.close();
+		} catch (FileNotFoundException e) {  
+			e.printStackTrace();  
+		}  
 	}
 }

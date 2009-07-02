@@ -1,11 +1,12 @@
 package com.hukarz.presley.client.gui.wizard;
 
-
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.StringTokenizer;
 
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
@@ -17,8 +18,12 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.DirectoryDialog;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.swt.widgets.Button;
+import org.eclipse.ui.PlatformUI;
 
 import ca.mcgill.cs.swevo.PresleyJayFX;
 import ca.mcgill.cs.swevo.jayfx.ConversionException;
@@ -41,6 +46,9 @@ public class AdicionaProblemaWizardPage extends WizardPage {
 	private ArrayList<String> listaElementosSelecionados;
 	private PresleyJayFX aDB;
 	private MensagemAba mensagemAba;
+	private Button incluirArquivoExperimento;
+	private Label diretorioEscolhido;
+	private String diretorio;
 	
 	protected AdicionaProblemaWizardPage(MensagemAba mensagem) {
 		super("wizardPage");
@@ -64,6 +72,13 @@ public class AdicionaProblemaWizardPage extends WizardPage {
         return descricaoText.getText();
     }
     
+    public boolean executarExperimento(){
+    	return incluirArquivoExperimento.getSelection();
+    }
+    
+    public String getDiretorioArquivos(){
+    	return diretorio;
+    }
     /**
      * Metodo que retorna todas as classes e nomes de arquivos relacionados a mensagem 
      * esrita pelo desenvolvedor
@@ -71,36 +86,37 @@ public class AdicionaProblemaWizardPage extends WizardPage {
      * @throws ConversionException 
      * @throws ConversionException 
      */
-    public Map<ClasseJava, ArquivoJava> getClassesRelacionadas() throws ConversionException {
-    	String mensagem = mensagemText.getText();
+    public Map<ClasseJava, ArquivoJava> getClassesRelacionadas( String texto, String separadorPalavras ) throws ConversionException {
     	Map<ClasseJava, ArquivoJava> retorno = new HashMap<ClasseJava, ArquivoJava>();
-
-    	for (Iterator<String> iterator = listaElementosSelecionados.iterator(); iterator.hasNext();) {
-    		String elementoSelecionado = iterator.next();
-
-    		if ( mensagem.indexOf(listaElementosProjeto.get(elementoSelecionado)) != -1 ){
-    			IElement elemento ; 
-    			if ( elementoSelecionado.endsWith(")") ){
-    				elemento = FlyweightElementFactory.getElement( ICategories.METHOD, elementoSelecionado );
-    			} else {
-    				elemento = FlyweightElementFactory.getElement( ICategories.CLASS, elementoSelecionado );
-    			}
-    			
-				retorno.putAll( aDB.getElementoRelacionamento(elemento) );
-				
-				ClasseJava classe;   
-				if ( elemento instanceof ClassElement)
-					classe   = new ClasseJava( elemento.getId() ); 
-				else
-					classe   = new ClasseJava(elemento.getDeclaringClass().getId());
+    	
+    	StringTokenizer st = new StringTokenizer(texto, separadorPalavras);
+    	
+		while (st.hasMoreTokens()){   
+			String palavra = st.nextToken();
 			
-	    		ArquivoJava arquivo = new ArquivoJava(aDB.convertToJavaElement(elemento).getResource().getName(), aDB.getProjetoSelecionado());
-	  	    		
-	    		arquivo.setEnderecoServidor( aDB.convertToJavaElement(elemento).getPath().toString() ) ;
-	    		retorno.put(classe, arquivo);
-    		}
-    	}
-
+			if (palavra.contains(".") && !palavra.equals("."))
+				palavra = palavra.substring(0, palavra.indexOf(".") );
+			
+			if (listaElementosProjeto.values().contains(palavra)){
+				for (String nomeClasse : listaElementosProjeto.keySet()) {
+					if (listaElementosProjeto.get(nomeClasse).equals(palavra)){
+						IElement elemento ;
+						elemento = FlyweightElementFactory.getElement( ICategories.CLASS, nomeClasse );
+						retorno.putAll( aDB.getElementoRelacionamento(elemento) );
+								
+						ClasseJava classe;   
+						classe = new ClasseJava( elemento.getId() ); 
+					
+			    		ArquivoJava arquivo = new ArquivoJava(aDB.convertToJavaElement(elemento).getResource().getName(), aDB.getProjetoSelecionado());
+			  	    		
+			    		arquivo.setEnderecoServidor( aDB.convertToJavaElement(elemento).getPath().toString() ) ;
+			    		retorno.put(classe, arquivo);
+			    		break;
+					}						
+				}
+			}
+		}
+    	
     	return retorno;    	
     }
     
@@ -181,7 +197,41 @@ public class AdicionaProblemaWizardPage extends WizardPage {
  			elementosProjeto.add( listaElementosProjeto.get( (String) elementos[i] ) );
  		}
         
-        setControl(controls);
+ 		
+ 		incluirArquivoExperimento = new Button(controls, SWT.CHECK);
+ 		incluirArquivoExperimento.setText("Executar Experimento ?");
+ 	    GridData gdExecutarExperimento = new GridData(GridData.CENTER);
+ 	    incluirArquivoExperimento.setLayoutData(gdExecutarExperimento);
+ 	    
+        diretorioEscolhido = new Label(controls, SWT.NULL);
+        diretorioEscolhido.setText("");
+ 	    
+ 	    incluirArquivoExperimento.addSelectionListener(
+ 	    		new SelectionListener(){
+
+ 	    			@Override
+ 	    			public void widgetDefaultSelected(SelectionEvent e) {
+ 	    				
+ 	    			}
+
+ 	    			@Override
+ 	    			public void widgetSelected(SelectionEvent e) {
+ 	    				if (incluirArquivoExperimento.getSelection()){
+ 	 						Shell shell = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
+ 	 						
+ 	 						DirectoryDialog dialog = new DirectoryDialog(shell, SWT.OPEN);
+ 	 						dialog.setFilterPath( "C://" );
+ 	 						diretorio = dialog.open();
+
+ 	 						diretorioEscolhido.setText("Executar no Diretório " + diretorio);
+ 	    				} else 
+ 	    					diretorioEscolhido.setText(" ");
+ 	    			}
+
+ 	    		}
+ 	    );
+
+ 	    setControl(controls);
 
 	}
 	

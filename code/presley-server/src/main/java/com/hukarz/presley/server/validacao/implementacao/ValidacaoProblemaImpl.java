@@ -116,10 +116,10 @@ public class ValidacaoProblemaImpl {
 		ArrayList<Desenvolvedor> desenvolvedores = Inferencia.getDesenvolvedores(arquivoDesenvolvedores, 
 				problema.getConhecimento(), problema.getDesenvolvedorOrigem());
 	
-		problema = servicoProblema.cadastrarProblema(problema) ;
+//		problema = servicoProblema.cadastrarProblema(problema) ;
 
 		System.out.println("Ok --- Cadastro do Problema");
-		servicoMensagem.adicionarMensagem(desenvolvedores, problema);
+//		servicoMensagem.adicionarMensagem(desenvolvedores, problema);
 		
 		System.out.println("Ok --- Mensagem Adcionada");
 
