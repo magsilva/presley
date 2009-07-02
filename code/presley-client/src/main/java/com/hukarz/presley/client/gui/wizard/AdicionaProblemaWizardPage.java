@@ -94,10 +94,9 @@ public class AdicionaProblemaWizardPage extends WizardPage {
 		while (st.hasMoreTokens()){   
 			String palavra = st.nextToken();
 			
-			if (palavra.contains(".") && !palavra.equals("."))
-				palavra = palavra.substring(0, palavra.indexOf(".") );
-			
-			if (listaElementosProjeto.values().contains(palavra)){
+			if (palavra.contains("."))
+				getClassesRelacionadas(palavra,".");
+			else if (listaElementosProjeto.values().contains(palavra)){
 				for (String nomeClasse : listaElementosProjeto.keySet()) {
 					if (listaElementosProjeto.get(nomeClasse).equals(palavra)){
 						IElement elemento ;

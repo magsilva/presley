@@ -282,19 +282,24 @@ public class Inferencia {
 		try {  			
 			String nomeArquivo = "000" + Integer.toString(listagemDiretorio.length + 1);
 			nomeArquivo = nomeArquivo.substring(nomeArquivo.length()-4);
-			PrintWriter saida = new PrintWriter(new 
+			PrintWriter saidaRecomendacao = new PrintWriter(new 
 					FileOutputStream(projeto.getEndereco_Servidor_Gravacao() + nomeArquivo + ".recomendacoes"));
 			
+			PrintWriter saidaPontuacao = new PrintWriter(new 
+					FileOutputStream(projeto.getEndereco_Servidor_Gravacao() + nomeArquivo + ".extra"));
 			for (Desenvolvedor desenvolvedor : listaDesenvolvedores) {
 				
 		    	StringTokenizer st = new StringTokenizer( desenvolvedor.getListaEmail() );
 				while (st.hasMoreTokens()){
 					String email = st.nextToken();
-					saida.println( email );
+					saidaRecomendacao.println( email );
 				}
 
+				saidaPontuacao.println( desenvolvedor.getEmail() + " - " + participacaoDesenvolvedor.get(desenvolvedor));
 			}
-			saida.close();
+			
+			saidaRecomendacao.close();
+			saidaPontuacao.close();
 		} catch (FileNotFoundException e) {  
 			e.printStackTrace();  
 		}  
