@@ -40,48 +40,53 @@ public class AdicionaProblemaWizard extends Wizard implements INewWizard {
 
 	@Override
 	public boolean performFinish() {
-    	try{
-    		if (!page.executarExperimento()){
-        		Problema problema = new Problema();
-        		problema.setDescricao("");
-        		problema.setMensagem( page.getMensagem() );
-        		problema.setDescricao( page.getDescricao() );
-        		problema.setData(new Date(System.currentTimeMillis()));
-        		problema.setClassesRelacionadas( 
-        				page.getClassesRelacionadas(page.getDescricao() + " " + page.getMensagem(), " ") ) ;
-        		problema.setDesenvolvedorOrigem( MensagemAba.getDesenvolvedorLogado() ) ;
-        		problema.setResolvido(false);
-        		problema.setProjeto( mensagem.getViewComunication().getProjetosAtivo().get(0) );
-        		
-        		//Adciona problema ao banco
-        		mensagem.getViewComunication().adicionaProblema(problema);
-    		} else {
-    			executarExperimento();
-    		}
-    		
-    	}catch (Exception e) {
-    		MessageDialog.openError(this.getShell(), "ERRO", e.getMessage());
-    		logger.error(e.getMessage());
-    		e.printStackTrace();
+		if (page.executarExperimentoWDDS()){
+			executarExperimento();
+		} else {
+			cadastrarProblema();
 		}
-    	
+
+
 		try {
-		      getContainer().run(true, true, new IRunnableWithProgress() {
-		         public void run(IProgressMonitor monitor)
-		            throws InvocationTargetException, InterruptedException
-		         {
-		            performOperation(monitor);
-		         }
-		      });
-		   }catch (InvocationTargetException e) {
-			      return false;
-		   }catch (InterruptedException e) {
-		      // User canceled, so stop but don't close wizard.
-		      return false;
-		   }
-		   return true;
+			getContainer().run(true, true, new IRunnableWithProgress() {
+				public void run(IProgressMonitor monitor)
+				throws InvocationTargetException, InterruptedException
+				{
+					performOperation(monitor);
+				}
+			});
+		}catch (InvocationTargetException e) {
+			return false;
+		}catch (InterruptedException e) {
+			return false;
+		}
+		
+		return true;
 	}
 
+	private void cadastrarProblema() {
+		try{
+			Problema problema = new Problema();
+			problema.setDescricao("");
+			problema.setMensagem( page.getMensagem() );
+			problema.setDescricao( page.getDescricao() );
+			problema.setData(new Date(System.currentTimeMillis()));
+			problema.setClassesRelacionadas( 
+					page.getClassesRelacionadas(page.getDescricao() + " " + page.getMensagem(), " ") ) ;
+			problema.setDesenvolvedorOrigem( MensagemAba.getDesenvolvedorLogado() ) ;
+			problema.setResolvido(false);
+			problema.setProjeto( mensagem.getViewComunication().getProjetosAtivo().get(0) );
+
+			//Adciona problema ao banco
+			mensagem.getViewComunication().adicionaProblema(problema);
+
+		}catch (Exception e) {
+			MessageDialog.openError(this.getShell(), "ERRO", e.getMessage());
+			logger.error(e.getMessage());
+			e.printStackTrace();
+		}
+	}
+	
 	private void executarExperimento(){
 		File diretorioCD = new File( page.getDiretorioArquivos() );
 		

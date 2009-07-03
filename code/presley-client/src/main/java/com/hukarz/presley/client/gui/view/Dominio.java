@@ -1,13 +1,20 @@
 package com.hukarz.presley.client.gui.view;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.sql.Date;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
+import java.util.StringTokenizer;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseEvent;
@@ -18,6 +25,7 @@ import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.DirectoryDialog;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.List;
@@ -27,8 +35,17 @@ import org.eclipse.swt.widgets.TreeItem;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
 
+import ca.mcgill.cs.swevo.PresleyJayFX;
+import ca.mcgill.cs.swevo.jayfx.ConversionException;
+import ca.mcgill.cs.swevo.jayfx.model.FlyweightElementFactory;
+import ca.mcgill.cs.swevo.jayfx.model.ICategories;
+import ca.mcgill.cs.swevo.jayfx.model.IElement;
+
 import com.hukarz.presley.beans.Arquivo;
+import com.hukarz.presley.beans.ArquivoJava;
+import com.hukarz.presley.beans.ClasseJava;
 import com.hukarz.presley.beans.Conhecimento;
+import com.hukarz.presley.beans.Problema;
 import com.hukarz.presley.beans.Projeto;
 import com.hukarz.presley.client.gui.view.comunication.ViewComunication;
 
@@ -63,6 +80,8 @@ public class Dominio extends ViewPart {
 	
 	private Label documentosBase;
 	private List listaDocumentosBase; 
+	private Map<String, String> listaElementosProjeto;
+	PresleyJayFX aDB;
 	
 	public Dominio() {
 		this.viewComunication = new ViewComunication(ipServidor);
@@ -145,14 +164,27 @@ public class Dominio extends ViewPart {
 		alterarTopico.setLocation(posHorBotaoNivel2, posVerBotaoNivel1);
 		alterarTopico.setSize(larguraBotao, alturaBotao);
 		alterarTopico.setImage(trocaMsg);
-		alterarTopico.setToolTipText("Alterar Descrição do Tópico");
+		alterarTopico.setToolTipText("Executar Experimento");
 		alterarTopico.setVisible(true);
 		alterarTopico.setEnabled(true);
 		alterarTopico.addMouseListener(new MouseListener(){
 
 			public void mouseDoubleClick(MouseEvent e) {
-				// TODO Auto-generated method stub
-				
+				Projeto projetoAtivo;
+
+				projetoAtivo = viewComunication.getProjetosAtivo().get(0); 
+				// Objeto para o JayFX
+				aDB = PresleyJayFX.obterInstancia( projetoAtivo );
+				// Busca Todos os Elementos no projeto
+				listaElementosProjeto = aDB.getTodasClassesMetodos();
+
+				Shell shell = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
+
+				DirectoryDialog dialog = new DirectoryDialog(shell, SWT.OPEN);
+				dialog.setFilterPath( "C://" );
+				String diretorio = dialog.open();
+		 		
+				executarExperimento(diretorio, projetoAtivo);		 		
 			}
 
 			public void mouseDown(MouseEvent e) {
@@ -277,4 +309,93 @@ public class Dominio extends ViewPart {
 	    in.close();
 	    out.close();
 	}	
+	
+	
+	private void executarExperimento(String diretorioArquivos, Projeto projetoAtivo){
+		File diretorioCD = new File( diretorioArquivos );
+		
+		File[] listagemDiretorio = diretorioCD.listFiles(new FilenameFilter() {  
+			public boolean accept(File d, String name) {  
+				return name.toLowerCase().endsWith(".pergunta");  
+			}  
+		}); 		
+		
+		try {
+			for (int i = 0; i < listagemDiretorio.length; i++) {
+				File file = new File( listagemDiretorio[i].getAbsolutePath() );
+				FileReader fileReader = new FileReader(file);
+				BufferedReader reader = new BufferedReader(fileReader);
+
+        		Problema problema = new Problema();
+        		problema.setResolvido(false);
+        		problema.setData(new Date(System.currentTimeMillis()));
+        		problema.setProjeto( projetoAtivo );
+        		
+        		// Desenvolvedor que enviou o problema
+				String linha = reader.readLine();
+        		problema.setDesenvolvedorOrigem( viewComunication.login(linha, "1") ) ;
+
+        		// Descrição do problema
+        		linha = reader.readLine();
+        		problema.setDescricao( linha );
+        		
+        		// Corpo da Mensagem
+        		String CorpoMensagem = "";
+				while( (CorpoMensagem = reader.readLine()) != null ){
+	        		problema.setMensagem( problema.getMensagem() + " " + CorpoMensagem );
+				}
+
+        		problema.setClassesRelacionadas( 
+        				getClassesRelacionadas(problema.getDescricao() + " " + problema.getMensagem(), " ") ) ;
+        		
+        		//Adciona problema ao banco
+        		viewComunication.adicionaProblema(problema);
+			}
+		} catch (Exception e) {
+
+		}
+
+	}
+
+	
+    /**
+     * Metodo que retorna todas as classes e nomes de arquivos relacionados a mensagem 
+     * esrita pelo desenvolvedor
+     * @return <classe ou metodo,arquivo>
+     * @throws ConversionException 
+     * @throws ConversionException 
+     */
+    public Map<ClasseJava, ArquivoJava> getClassesRelacionadas( String texto, String separadorPalavras ) throws ConversionException {
+    	Map<ClasseJava, ArquivoJava> retorno = new HashMap<ClasseJava, ArquivoJava>();
+    	
+    	StringTokenizer st = new StringTokenizer(texto, separadorPalavras);
+    	
+		while (st.hasMoreTokens()){   
+			String palavra = st.nextToken();
+			
+			if (palavra.contains("."))
+				getClassesRelacionadas(palavra,".");
+			else if (listaElementosProjeto.values().contains(palavra)){
+				for (String nomeClasse : listaElementosProjeto.keySet()) {
+					if (listaElementosProjeto.get(nomeClasse).equals(palavra)){
+						IElement elemento ;
+						elemento = FlyweightElementFactory.getElement( ICategories.CLASS, nomeClasse );
+						retorno.putAll( aDB.getElementoRelacionamento(elemento) );
+								
+						ClasseJava classe;   
+						classe = new ClasseJava( elemento.getId() ); 
+					
+			    		ArquivoJava arquivo = new ArquivoJava(aDB.convertToJavaElement(elemento).getResource().getName(), aDB.getProjetoSelecionado());
+			  	    		
+			    		arquivo.setEnderecoServidor( aDB.convertToJavaElement(elemento).getPath().toString() ) ;
+			    		retorno.put(classe, arquivo);
+			    		break;
+					}						
+				}
+			}
+		}
+    	
+    	return retorno;    	
+    }
+	
 }

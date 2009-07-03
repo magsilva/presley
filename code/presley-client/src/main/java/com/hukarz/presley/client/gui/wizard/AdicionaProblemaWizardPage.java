@@ -19,6 +19,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.DirectoryDialog;
+import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
@@ -46,11 +47,11 @@ public class AdicionaProblemaWizardPage extends WizardPage {
 	private ArrayList<String> listaElementosSelecionados;
 	private PresleyJayFX aDB;
 	private MensagemAba mensagemAba;
-	private Button incluirArquivoExperimento;
-	private Label diretorioEscolhido;
+	private Button incluirExperimentoWDDS;
+	private Button diretorioExperimentoWDDS;
 	private String diretorio;
 	
-	protected AdicionaProblemaWizardPage(MensagemAba mensagem) {
+	public AdicionaProblemaWizardPage(MensagemAba mensagem) {
 		super("wizardPage");
         setTitle("Adiciona Problema Wizard");
         setDescription("Adiciona um novo Problema");
@@ -72,10 +73,10 @@ public class AdicionaProblemaWizardPage extends WizardPage {
         return descricaoText.getText();
     }
     
-    public boolean executarExperimento(){
-    	return incluirArquivoExperimento.getSelection();
+    public boolean executarExperimentoWDDS(){
+    	return incluirExperimentoWDDS.getSelection();
     }
-    
+
     public String getDiretorioArquivos(){
     	return diretorio;
     }
@@ -197,15 +198,18 @@ public class AdicionaProblemaWizardPage extends WizardPage {
  		}
         
  		
- 		incluirArquivoExperimento = new Button(controls, SWT.CHECK);
- 		incluirArquivoExperimento.setText("Executar Experimento ?");
+ 		incluirExperimentoWDDS = new Button(controls, SWT.CHECK);
+ 		incluirExperimentoWDDS.setText("Executar Experimento WDDS ?");
  	    GridData gdExecutarExperimento = new GridData(GridData.CENTER);
- 	    incluirArquivoExperimento.setLayoutData(gdExecutarExperimento);
+ 	    incluirExperimentoWDDS.setLayoutData(gdExecutarExperimento);
  	    
-        diretorioEscolhido = new Label(controls, SWT.NULL);
-        diretorioEscolhido.setText("");
+        diretorioExperimentoWDDS = new Button(controls, SWT.TOGGLE );
+        diretorioExperimentoWDDS.setText("");
+ 	    GridData gdDiretorioEscolhido = new GridData(GridData.FILL_HORIZONTAL);
+ 	    diretorioExperimentoWDDS.setLayoutData(gdDiretorioEscolhido);
+ 	    diretorioExperimentoWDDS.setEnabled(false);
  	    
- 	    incluirArquivoExperimento.addSelectionListener(
+ 	    incluirExperimentoWDDS.addSelectionListener(
  	    		new SelectionListener(){
 
  	    			@Override
@@ -215,21 +219,21 @@ public class AdicionaProblemaWizardPage extends WizardPage {
 
  	    			@Override
  	    			public void widgetSelected(SelectionEvent e) {
- 	    				if (incluirArquivoExperimento.getSelection()){
+ 	    				if (incluirExperimentoWDDS.getSelection()){
  	 						Shell shell = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
  	 						
  	 						DirectoryDialog dialog = new DirectoryDialog(shell, SWT.OPEN);
  	 						dialog.setFilterPath( "C://" );
  	 						diretorio = dialog.open();
 
- 	 						diretorioEscolhido.setText("Executar no Diretório " + diretorio);
+ 	 						diretorioExperimentoWDDS.setText("Diretório: " + diretorio);
  	    				} else 
- 	    					diretorioEscolhido.setText(" ");
+ 	    					diretorioExperimentoWDDS.setText(" ");
  	    			}
 
  	    		}
  	    );
-
+ 	    
  	    setControl(controls);
 
 	}

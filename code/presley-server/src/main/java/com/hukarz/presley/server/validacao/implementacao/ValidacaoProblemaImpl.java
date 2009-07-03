@@ -112,13 +112,15 @@ public class ValidacaoProblemaImpl {
 				problema.getMensagem() + " " + comentariosCodigo ) ) ;
 
 		System.out.println("Ok --- conhecimeto do problema");
-		// Retorna os desenvolvedores que receberão o problema
-		ArrayList<Desenvolvedor> desenvolvedores = Inferencia.getDesenvolvedores(arquivoDesenvolvedores, 
-				problema.getConhecimento(), problema.getDesenvolvedorOrigem());
 	
 		problema = servicoProblema.cadastrarProblema(problema) ;
 
 		System.out.println("Ok --- Cadastro do Problema");
+		
+		// Retorna os desenvolvedores que receberão o problema
+		ArrayList<Desenvolvedor> desenvolvedores = Inferencia.getDesenvolvedores(arquivoDesenvolvedores, 
+				problema);
+		
 		servicoMensagem.adicionarMensagem(desenvolvedores, problema);
 		
 		System.out.println("Ok --- Mensagem Adcionada");

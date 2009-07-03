@@ -58,7 +58,7 @@ public class ArvoreEmail extends JFrame implements ActionListener {
 		getContentPane().setLayout(new BorderLayout());  
 
 		campo      = new JTextField(); 
-		campo.setText("C:/Java/lucene/Entradas/Comunicacao/java-dev/arq/");
+		campo.setText("C:/Java/lucene/Experimento_1.0/Entradas/Comunicacao/java-dev/arq/");
 
 		botao      = new JButton("Procurar");  
 		painelCima = new JPanel(new BorderLayout());  
@@ -98,7 +98,7 @@ public class ArvoreEmail extends JFrame implements ActionListener {
 		try {
 			// (28	88)					Arquivos de 01/2004 até 12/2008
 			// (89  conteudo.length)	Arquivos de 01/2009 até o ultimo
-			for (int i=88; i < conteudo.length; i++) {    
+			for (int i=90; i < conteudo.length; i++) {    
 
 				File file = new File( conteudo[i].getAbsolutePath() );
 				FileReader fileReader = new FileReader(file);
@@ -294,7 +294,7 @@ public class ArvoreEmail extends JFrame implements ActionListener {
 	
 	public void preencherArvore(ArrayList<Email> emails, DefaultMutableTreeNode no){
 		for (Email email : emails) {
-			DefaultMutableTreeNode assunto = new DefaultMutableTreeNode( email.getMessageID() + " - " + email.getFrom());
+			DefaultMutableTreeNode assunto = new DefaultMutableTreeNode( email.getSubject() + " - " + email.getFrom());
 			if (email.getEmailsFilho().size()==0){
 				no.add( assunto );
 			} else {

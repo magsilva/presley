@@ -1,10 +1,14 @@
 package com.hukarz.presley.server.inferencia;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.FilenameFilter;
+import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -14,7 +18,11 @@ import java.util.StringTokenizer;
 import com.hukarz.presley.beans.ArquivoJava;
 import com.hukarz.presley.beans.Conhecimento;
 import com.hukarz.presley.beans.Desenvolvedor;
+import com.hukarz.presley.beans.Problema;
 import com.hukarz.presley.beans.Projeto;
+import com.hukarz.presley.beans.Solucao;
+import com.hukarz.presley.excessao.DesenvolvedorInexistenteException;
+import com.hukarz.presley.excessao.ProblemaInexistenteException;
 import com.hukarz.presley.server.persistencia.implementacao.ServicoConhecimentoImplDAO;
 import com.hukarz.presley.server.persistencia.implementacao.ServicoDesenvolvedorImplDAO;
 import com.hukarz.presley.server.persistencia.implementacao.ServicoProblemaImplDAO;
@@ -23,6 +31,7 @@ import com.hukarz.presley.server.persistencia.interfaces.ServicoConhecimento;
 import com.hukarz.presley.server.persistencia.interfaces.ServicoDesenvolvedor;
 import com.hukarz.presley.server.persistencia.interfaces.ServicoProblema;
 import com.hukarz.presley.server.persistencia.interfaces.ServicoProjeto;
+import com.hukarz.presley.server.validacao.implementacao.ValidacaoSolucaoImpl;
 
 
 /*
@@ -49,14 +58,15 @@ public class Inferencia {
 	//		
 	//	}
 
-	public static ArrayList<Desenvolvedor> getDesenvolvedores(Map<ArquivoJava, ArrayList<Desenvolvedor>> arquivoDesenvolvedores, 
-			Conhecimento conhecimento, Desenvolvedor desenvolvedor) {
+	public static ArrayList<Desenvolvedor> getDesenvolvedores(Map<ArquivoJava, ArrayList<Desenvolvedor>> arquivoDesenvolvedores,
+			Problema problema) {
+
 		Map<Desenvolvedor, Integer> participacaoDesenvolvedorArq = getParticipacaoDesenvolvedores(arquivoDesenvolvedores);
-		Map<Desenvolvedor, Integer> participacaoDesenvolvedorConhecimento = getParticipacaoDesenvolvedores(conhecimento, desenvolvedor);
+		Map<Desenvolvedor, Integer> participacaoDesenvolvedorConhecimento = getParticipacaoDesenvolvedores(problema.getConhecimento(), problema.getDesenvolvedorOrigem());
 		
 		Map<Desenvolvedor, Integer> participacaoDesenvolvedor = somarParticipacaoDosDesenvolvedores(participacaoDesenvolvedorArq, participacaoDesenvolvedorConhecimento);
 
-		return retornarMelhoresDesenvolvedores(participacaoDesenvolvedor, 5);
+		return retornarMelhoresDesenvolvedores(problema, participacaoDesenvolvedor, 5);
 	}
 	
 	/*	1º Passo 
@@ -225,7 +235,7 @@ public class Inferencia {
 	/*	4º Passo 
 	(Seleciona os melhores desenvolvedores como retorno)
 	 */
-	private static ArrayList<Desenvolvedor> retornarMelhoresDesenvolvedores(Map<Desenvolvedor, Integer> participacaoDesenvolvedor, int qtde ){
+	private static ArrayList<Desenvolvedor> retornarMelhoresDesenvolvedores(Problema problema, Map<Desenvolvedor, Integer> participacaoDesenvolvedor, int qtde ){
 		ArrayList<Desenvolvedor> listaDesenvolvedores = new ArrayList<Desenvolvedor>();
 		Desenvolvedor desenvolvedorMenor = new Desenvolvedor();
 
@@ -260,9 +270,9 @@ public class Inferencia {
 			}
 		}
 		
-		
 		gerarLog(listaDesenvolvedores, participacaoDesenvolvedor);
-				
+		criarSolucoesValidas(listaDesenvolvedores, problema);
+		
 		return listaDesenvolvedores;
 	}
 	
@@ -303,5 +313,60 @@ public class Inferencia {
 		} catch (FileNotFoundException e) {  
 			e.printStackTrace();  
 		}  
+	}
+	
+	private static void criarSolucoesValidas(ArrayList<Desenvolvedor> listaDesenvolvedores, Problema problema){
+		try {
+			ValidacaoSolucaoImpl  validacaoSolucao = new ValidacaoSolucaoImpl();
+
+			ServicoProjeto servicoProjeto = new ServicoProjetoImplDAO();
+			Projeto projeto = servicoProjeto.getProjetosAtivo().get(0);
+
+			File diretorioCD = new File( projeto.getEndereco_Servidor_Gravacao() );
+
+			File[] listagemDiretorio = diretorioCD.listFiles(new FilenameFilter() {  
+				public boolean accept(File d, String name) {  
+					return name.toLowerCase().endsWith(".recomendacoes");  
+				}  
+			}); 
+
+			String nomeArquivoEmail = "000" + Integer.toString(listagemDiretorio.length)+ ".emails";
+			nomeArquivoEmail = nomeArquivoEmail.substring(nomeArquivoEmail.length()-4);
+
+			File file = new File( projeto.getEndereco_Servidor_Gravacao() + nomeArquivoEmail );
+			FileReader fileReader = new FileReader(file);
+			BufferedReader reader = new BufferedReader(fileReader);
+			
+			String conteudoEmail = reader.toString();
+			
+			for (Desenvolvedor desenvolvedor : listaDesenvolvedores) {
+
+				StringTokenizer st = new StringTokenizer( desenvolvedor.getListaEmail() );
+				while (st.hasMoreTokens()){
+					String email = st.nextToken();
+					if (conteudoEmail.contains(email)){
+
+						Solucao solucao = new Solucao();
+						solucao.setAjudou(true);
+						solucao.setProblema(problema);
+						solucao.setData( new Date(System.currentTimeMillis()) ) ;
+						solucao.setMensagem("");
+						solucao.setDesenvolvedor(desenvolvedor);
+
+						validacaoSolucao.cadastrarSolucao(solucao);
+						break;
+					}
+				} 
+			}
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (ProblemaInexistenteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (DesenvolvedorInexistenteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}	
 	}
 }
