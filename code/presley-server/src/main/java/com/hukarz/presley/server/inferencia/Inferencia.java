@@ -330,10 +330,10 @@ public class Inferencia {
 				}  
 			}); 
 
-			String nomeArquivoEmail = "000" + Integer.toString(listagemDiretorio.length)+ ".emails";
+			String nomeArquivoEmail = "000" + Integer.toString(listagemDiretorio.length);
 			nomeArquivoEmail = nomeArquivoEmail.substring(nomeArquivoEmail.length()-4);
 
-			File file = new File( projeto.getEndereco_Servidor_Gravacao() + nomeArquivoEmail );
+			File file = new File( projeto.getEndereco_Servidor_Gravacao() + nomeArquivoEmail+ ".emails" );
 			FileReader fileReader = new FileReader(file);
 			BufferedReader reader = new BufferedReader(fileReader);
 			
