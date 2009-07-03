@@ -505,11 +505,11 @@ public class ViewComunication implements CorePresleyOperations{
 	 * Retorna o Projeto utilizado no Presley.
 	 * @return 
 	 */
-	public ArrayList<Projeto> getProjetosAtivo(){
+	public Projeto getProjetoAtivo(){
 		PacketStruct respostaPacket = sendPack(null, GET_PROJETOS_ATIVO);
-		ArrayList<Projeto> projetos = (ArrayList<Projeto>)respostaPacket.getData();
+		Projeto projeto = (Projeto)respostaPacket.getData();
     	
-		return projetos;
+		return projeto;
 	}
 
 	public boolean atualizarStatusProjeto(Projeto projeto)

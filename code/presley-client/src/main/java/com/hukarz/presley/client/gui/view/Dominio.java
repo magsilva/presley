@@ -178,7 +178,7 @@ public class Dominio extends ViewPart {
 				
 				this.logger.debug("clique duplo");
 
-				projetoAtivo = viewComunication.getProjetosAtivo().get(0); 
+				projetoAtivo = viewComunication.getProjetoAtivo(); 
 				// Objeto para o JayFX
 				try {
 					aDB = new PresleyJayFX( projetoAtivo );
@@ -243,7 +243,7 @@ public class Dominio extends ViewPart {
 				if ((treeConhecimentos.getSelection()[0].getData() instanceof Conhecimento) &&
 					(treeConhecimentos.indexOf(treeConhecimentos.getSelection()[0]) != 0) ){
 
-					Projeto projeto = viewComunication.getProjetosAtivo().get(0);
+					Projeto projeto = viewComunication.getProjetoAtivo();
 					
 					Shell shell = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
 					FileDialog dialog = new FileDialog(shell, SWT.OPEN);

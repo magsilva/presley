@@ -226,12 +226,13 @@ public interface CorePresleyOperations {
 	public ArrayList<Solucao> listarSolucoesRetornadasDoDesenvolvedor(
 			Desenvolvedor desenvolvedor) throws Exception;
 	
+
 	/**
 	 * Este método retorna as informações necessarias sobre o projeto em execução no presley
 	 * CÓDIGO DA OPERAÇÃO -> 35
 	 * @return
 	 */
-	public ArrayList<Projeto> getProjetosAtivo();
+	public Projeto getProjetoAtivo();
 	
 	/**
 	 * Este método cadastra as informações sobre o projeto em execução no presley
@@ -240,12 +241,14 @@ public interface CorePresleyOperations {
 	 */
 	public boolean criarProjeto(Projeto projeto) throws NomeInvalidoException;
 	
+	
 	/**
 	 * Este método exclui um projeto em execução no presley
 	 * CÓDIGO DA OPERAÇÃO -> 37
 	 * @return
 	 */
-	public boolean removerProjeto(Projeto projeto) throws ProjetoInexistenteException;	
+	public boolean removerProjeto(Projeto projeto) throws ProjetoInexistenteException;
+	
 
 	/**
 	 * Este método atualiza o status do projeto no presley (Ativado/Desativado)

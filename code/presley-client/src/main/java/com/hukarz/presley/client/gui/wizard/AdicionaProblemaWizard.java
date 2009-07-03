@@ -75,7 +75,7 @@ public class AdicionaProblemaWizard extends Wizard implements INewWizard {
 					page.getClassesRelacionadas(page.getDescricao() + " " + page.getMensagem(), " ") ) ;
 			problema.setDesenvolvedorOrigem( MensagemAba.getDesenvolvedorLogado() ) ;
 			problema.setResolvido(false);
-			problema.setProjeto( mensagem.getViewComunication().getProjetosAtivo().get(0) );
+			problema.setProjeto( mensagem.getViewComunication().getProjetoAtivo());
 
 			//Adciona problema ao banco
 			mensagem.getViewComunication().adicionaProblema(problema);
@@ -105,7 +105,7 @@ public class AdicionaProblemaWizard extends Wizard implements INewWizard {
         		Problema problema = new Problema();
         		problema.setResolvido(false);
         		problema.setData(new Date(System.currentTimeMillis()));
-        		problema.setProjeto( mensagem.getViewComunication().getProjetosAtivo().get(0) );
+        		problema.setProjeto( mensagem.getViewComunication().getProjetoAtivo() );
         		
         		// Desenvolvedor que enviou o problema
 				String linha = reader.readLine();

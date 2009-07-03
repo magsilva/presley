@@ -232,7 +232,7 @@ public interface CorePresleyOperations {
 	 * CÓDIGO DA OPERAÇÃO -> 35
 	 * @return
 	 */
-	public ArrayList<Projeto> getProjetosAtivo();
+	public Projeto getProjetoAtivo();
 	
 	/**
 	 * Este método cadastra as informações sobre o projeto em execução no presley

@@ -270,7 +270,7 @@ public class Inferencia {
 	private void gerarLog(ArrayList<Desenvolvedor> listaDesenvolvedores, 
 			Map<Desenvolvedor, Integer> participacaoDesenvolvedor){
 		ServicoProjeto servicoProjeto = new ServicoProjetoImplDAO();
-		Projeto projeto = servicoProjeto.getProjetosAtivo().get(0);
+		Projeto projeto = servicoProjeto.getProjetoAtivo();
 		
 		File diretorioCD = new File( projeto.getEndereco_Servidor_Gravacao() );
 		
@@ -311,7 +311,7 @@ public class Inferencia {
 			ValidacaoSolucaoImpl  validacaoSolucao = new ValidacaoSolucaoImpl();
 
 			ServicoProjeto servicoProjeto = new ServicoProjetoImplDAO();
-			Projeto projeto = servicoProjeto.getProjetosAtivo().get(0);
+			Projeto projeto = servicoProjeto.getProjetoAtivo();
 
 			File diretorioCD = new File( projeto.getEndereco_Servidor_Gravacao() );
 

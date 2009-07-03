@@ -10,9 +10,7 @@ import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.core.JavaModelException;
-import org.eclipse.jdt.core.Signature;
 import org.eclipse.ui.PlatformUI;
 
 import ca.mcgill.cs.swevo.jayfx.ConversionException;
@@ -37,12 +35,12 @@ public class PresleyJayFX extends JayFX {
 	public PresleyJayFX (Projeto projeto) throws JayFXException {
 		super();
 		this.projeto = projeto;
-	
+
 		IProgressMonitor progressMonitor = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getViewReferences()[0].getView( true ).getViewSite().getActionBars().getStatusLineManager().getProgressMonitor();
 		IWorkspace workspace = ResourcesPlugin.getWorkspace();
 		IWorkspaceRoot workspaceRoot = workspace.getRoot();
 		IProject project = workspaceRoot.getProject(projeto.getNome());
-		initialize(project, null, true);
+		initialize(project, progressMonitor, true);
 	}
 
 	public Projeto getProjetoSelecionado(){

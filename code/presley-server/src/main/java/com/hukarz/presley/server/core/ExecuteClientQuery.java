@@ -336,7 +336,7 @@ public class ExecuteClientQuery implements CorePresleyOperations{
 		return atualizarSolucao(solucao);
 	}
 	public boolean atualizarSolucao(Solucao solucao) throws ProblemaInexistenteException, DesenvolvedorInexistenteException  {
-		return validacaoSolucao.atualizarStatusDoProblema(solucao);
+		return validacaoSolucao.atualizarStatusDaSolucao(solucao);
 	}
 	
 
@@ -378,8 +378,8 @@ public class ExecuteClientQuery implements CorePresleyOperations{
 		return validacaoConhecimento.associaArquivo(conhecimento);
 	}
 
-	public ArrayList<Projeto> getProjetosAtivo()  {
-		return validacaoProjeto.getProjetosAtivo();
+	public Projeto getProjetoAtivo()  {
+		return validacaoProjeto.getProjetoAtivo();
 	}
 
 	public boolean atualizarStatusProjeto(PacketStruct packet) throws ProjetoInexistenteException{

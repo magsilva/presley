@@ -24,7 +24,7 @@ public interface ServicoProjeto {
 	 * Esse método retorna o projeto ativo do sistema
 	 * @return Projeto
 	 */
-	public ArrayList<Projeto> getProjetosAtivo();
+	public Projeto getProjetoAtivo();
 	
 	/**
 	 * Este método ativa/desativa um projeto previamente cadastrado. 

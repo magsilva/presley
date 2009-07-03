@@ -16,8 +16,8 @@ public class ValidacaoProjetoImpl {
 		servicoProjeto = new ServicoProjetoImplDAO() ;
 	}
 
-	public ArrayList<Projeto> getProjetosAtivo() {
-		return servicoProjeto.getProjetosAtivo() ;
+	public Projeto getProjetoAtivo() {
+		return servicoProjeto.getProjetoAtivo() ;
 	}
 	
 	public boolean criarProjeto(Projeto projeto) throws NomeInvalidoException {

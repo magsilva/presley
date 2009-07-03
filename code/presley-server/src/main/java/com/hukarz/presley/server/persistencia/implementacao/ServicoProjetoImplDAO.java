@@ -14,9 +14,9 @@ import com.hukarz.presley.server.persistencia.interfaces.ServicoProjeto;
 public class ServicoProjetoImplDAO implements ServicoProjeto {
 
 	@Override
-	public ArrayList<Projeto> getProjetosAtivo() {
+	public Projeto getProjetoAtivo() {
 		Connection conn = MySQLConnectionFactory.open();
-		ArrayList<Projeto> projetos = new ArrayList<Projeto>();
+		Projeto projeto = new Projeto();
 		
 		Statement stm = null;
 
@@ -30,20 +30,16 @@ public class ServicoProjetoImplDAO implements ServicoProjeto {
 			// System.out.println(SQL);
 			ResultSet rs = stm.executeQuery(SQL);
 
-			while(rs.next()) {
-				Projeto projeto = new Projeto();
-
+			if (rs.next()) {
 				projeto.setAtivo(true);
 				projeto.setNome(rs.getString("nome"));
 				projeto.setEndereco_Servidor_Gravacao( rs.getString("endereco_Servidor_Gravacao") ) ;
 				projeto.setEndereco_Log( rs.getString("endereco_Log") ) ;
 				projeto.setDiretorio_Subversion( rs.getString("diretorio_Subversion") ) ;
-				projeto.setEndereco_Servidor_Projeto( rs.getString("endereco_Servidor_Projeto") );
-			
-				projetos.add(projeto);
+				projeto.setEndereco_Servidor_Projeto( rs.getString("endereco_Servidor_Projeto") );			
 			}
 
-			return projetos;
+			return projeto;
 		} catch (SQLException e) {
 			//e.printStackTrace();
 			return null;

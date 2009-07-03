@@ -336,7 +336,7 @@ public class ServerBridgeImp implements ServerBridge {
 			break;				
 			// Packet tipo 35: GET_PROJETOATIVO
 		case CorePresleyOperations.GET_PROJETOS_ATIVO:
-			retorno = executeClientQuery.getProjetosAtivo();
+			retorno = executeClientQuery.getProjetoAtivo();
 			typeRetorno = CorePresleyOperations.GET_PROJETOS_ATIVO;
 
 			pktRetorno = new PacketStruct(retorno, typeRetorno);

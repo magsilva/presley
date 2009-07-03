@@ -92,7 +92,7 @@ public class ValidacaoSolucaoImpl {
 	 * @return true se a solucao foi cadastrada na base de dados.
 	 * @throws ProblemaInexistenteException, DesenvolvedorInexistenteException 
 	 */
-	public boolean atualizarStatusDoProblema(Solucao solucao) throws ProblemaInexistenteException, DesenvolvedorInexistenteException {
+	public boolean atualizarStatusDaSolucao(Solucao solucao) throws ProblemaInexistenteException, DesenvolvedorInexistenteException {
 		
 		if (!servicoProblema.problemaExiste( solucao.getProblema().getId() )) 
 			throw new ProblemaInexistenteException();
@@ -197,8 +197,7 @@ public class ValidacaoSolucaoImpl {
 	 * @throws DescricaoInvalidaException 
 	 */
 	public ArrayList<Solucao> listarSolucoesDoProblema(
-			Problema problema) throws ProblemaInexistenteException {
-		
+			Problema problema) throws ProblemaInexistenteException {		
 		if (!servicoProblema.problemaExiste( problema.getId() )) throw new ProblemaInexistenteException();
 
 		return servicoSolucao.getSolucoesDoProblema(problema);

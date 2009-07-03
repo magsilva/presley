@@ -192,12 +192,11 @@ public class MensagemAba extends ViewPart {
 
 			public void mouseDown(MouseEvent e) {
 				if (aDB == null){
-					projetoAtivo = viewComunication.getProjetosAtivo().get(0); 
+					projetoAtivo = viewComunication.getProjetoAtivo(); 
 					// Objeto para o JayFX
 					try {
 						aDB = new PresleyJayFX( projetoAtivo );
 					} catch (JayFXException e1) {
-						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
 			 		// Busca Todos os Elementos no projeto
