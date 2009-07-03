@@ -4,12 +4,15 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+import org.apache.log4j.Logger;
+
 
 public class MySQLConnectionFactory {
 
 	private static String user = "root";
 	private static String pwd = "";
 	private static Connection connection = null;
+	private static Logger logger = Logger.getLogger(MySQLConnectionFactory.class);
 	
 	private MySQLConnectionFactory(){
 		
@@ -24,7 +27,7 @@ public class MySQLConnectionFactory {
 	            connection = DriverManager.getConnection(
 	            		"jdbc:mysql://localhost/presley", user, pwd);
 	            
-	            System.out.println("\n-------------- Nova Conexao Criada!-----------\n");
+	            logger.info("\n-------------- Nova Conexao Criada!-----------\n");
 	            
 	        } catch (ClassNotFoundException e) {
 	            e.printStackTrace();

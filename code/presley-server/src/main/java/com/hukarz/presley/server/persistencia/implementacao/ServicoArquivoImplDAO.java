@@ -9,12 +9,16 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.log4j.Logger;
+
 import com.hukarz.presley.beans.Arquivo;
 import com.hukarz.presley.server.persistencia.MySQLConnectionFactory;
 import com.hukarz.presley.server.persistencia.interfaces.ServicoArquivo;
 
 public class ServicoArquivoImplDAO implements ServicoArquivo {
 
+	private Logger logger = Logger.getLogger(this.getClass());
+	
 	@Override
 	public boolean arquivoExiste(Arquivo arquivo) {
 		Connection conn = MySQLConnectionFactory.open();
@@ -28,7 +32,6 @@ public class ServicoArquivoImplDAO implements ServicoArquivo {
 			" WHERE arquivo_nome = '"+arquivo.getNome()+"' and "+
 			" endereco_servidor = '"+arquivo.getEnderecoServidor()+"';";
 
-			//System.out.println(SQL);
 			ResultSet rs = stm.executeQuery(SQL);
 
 			return rs.next();
@@ -40,6 +43,8 @@ public class ServicoArquivoImplDAO implements ServicoArquivo {
 				stm.close();
 				//conn.close();
 			} catch (SQLException onConClose) {
+				
+				
 				System.out.println(" Houve erro no fechamento da conexão ");
 				onConClose.printStackTrace();	             
 			}
@@ -92,7 +97,6 @@ public class ServicoArquivoImplDAO implements ServicoArquivo {
 			String SQL = " INSERT INTO arquivo (arquivo_nome, endereco_servidor, quantidadePalavras, endereco_log)" +
 			" VALUES('"+arquivo.getNome()+"','"+arquivo.getEnderecoServidor()+"', "+arquivo.getQtdPalavrasTotal()+", '"+arquivo.getEnderecoLog()+"');";
 
-			//System.out.println(SQL);
 			stm.execute(SQL);
 
 		} catch (SQLException e) {
@@ -103,7 +107,7 @@ public class ServicoArquivoImplDAO implements ServicoArquivo {
 				stm.close();
 				//conn.close();
 			} catch (SQLException onConClose) {
-				System.out.println(" Houve erro no fechamento da conexão ");
+				this.logger.debug(" Houve erro no fechamento da conexão ");
 				onConClose.printStackTrace();	             
 			}
 		}
@@ -128,7 +132,6 @@ public class ServicoArquivoImplDAO implements ServicoArquivo {
 				SQL = " SELECT id, arquivo_nome, endereco_servidor, quantidadePalavras, endereco_log FROM arquivo;";
 			}
 
-			//System.out.println(SQL);
 			ResultSet rs = stm.executeQuery(SQL);
 
 			if (rs.next()){
@@ -162,7 +165,7 @@ public class ServicoArquivoImplDAO implements ServicoArquivo {
 				stm.close();
 				//conn.close();	            
 			} catch (SQLException onConClose) {
-				System.out.println(" Houve erro no fechamento da conexão ");
+				this.logger.trace(" Houve erro no fechamento da conexão ");
 				onConClose.printStackTrace();	             
 			}
 		}
@@ -182,7 +185,6 @@ public class ServicoArquivoImplDAO implements ServicoArquivo {
 			if (this.arquivoExiste(arquivo)){
 				String SQL = " DELETE FROM arquivo WHERE id = "+arquivo.getId()+";";
 
-				//System.out.println(SQL);
 				stm.execute(SQL);
 				return true;
 			}else{
@@ -196,7 +198,7 @@ public class ServicoArquivoImplDAO implements ServicoArquivo {
 				stm.close();
 				//conn.close();
 			} catch (SQLException onConClose) {
-				System.out.println(" Houve erro no fechamento da conexão ");
+				this.logger.trace(" Houve erro no fechamento da conexão ");
 				onConClose.printStackTrace();	             
 			}
 		}
@@ -217,7 +219,6 @@ public class ServicoArquivoImplDAO implements ServicoArquivo {
 			String SQL = " DELETE FROM arquivo_has_palavras " +
 						 " WHERE arquivo_id = "+arquivo.getId()+";";
 
-			// System.out.println(SQL);
 			stm.execute(SQL);
 
 			Set<String> palavras = termosSelecionados.keySet();
@@ -238,7 +239,7 @@ public class ServicoArquivoImplDAO implements ServicoArquivo {
 				stm.close();
 				//conn.close();
 			} catch (SQLException onConClose) {
-				System.out.println(" Houve erro no fechamento da conexão ");
+				this.logger.trace(" Houve erro no fechamento da conexão ");
 				onConClose.printStackTrace();	             
 			}
 		}
@@ -337,7 +338,6 @@ public class ServicoArquivoImplDAO implements ServicoArquivo {
 			String SQL = " SELECT id, arquivo_nome, endereco_servidor, " +
 					" quantidadePalavras, endereco_log FROM arquivo;";
 
-			//System.out.println(SQL);
 			ResultSet rs = stm.executeQuery(SQL);
 
 			while (rs.next()) {
@@ -372,7 +372,7 @@ public class ServicoArquivoImplDAO implements ServicoArquivo {
 				stm.close();
 				//conn.close();	            
 			} catch (SQLException onConClose) {
-				System.out.println(" Houve erro no fechamento da conexão ");
+				this.logger.trace(" Houve erro no fechamento da conexão ");
 				onConClose.printStackTrace();	             
 			}
 		}

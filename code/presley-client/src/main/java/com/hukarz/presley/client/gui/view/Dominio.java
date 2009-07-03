@@ -16,6 +16,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.StringTokenizer;
 
+import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
@@ -37,6 +38,7 @@ import org.eclipse.ui.part.ViewPart;
 
 import ca.mcgill.cs.swevo.PresleyJayFX;
 import ca.mcgill.cs.swevo.jayfx.ConversionException;
+import ca.mcgill.cs.swevo.jayfx.JayFXException;
 import ca.mcgill.cs.swevo.jayfx.model.FlyweightElementFactory;
 import ca.mcgill.cs.swevo.jayfx.model.ICategories;
 import ca.mcgill.cs.swevo.jayfx.model.IElement;
@@ -169,12 +171,21 @@ public class Dominio extends ViewPart {
 		alterarTopico.setEnabled(true);
 		alterarTopico.addMouseListener(new MouseListener(){
 
+			private Logger logger = Logger.getLogger(this.getClass());
+
 			public void mouseDoubleClick(MouseEvent e) {
 				Projeto projetoAtivo;
+				
+				this.logger.debug("clique duplo");
 
 				projetoAtivo = viewComunication.getProjetosAtivo().get(0); 
 				// Objeto para o JayFX
-				aDB = PresleyJayFX.obterInstancia( projetoAtivo );
+				try {
+					aDB = new PresleyJayFX( projetoAtivo );
+				} catch (JayFXException e1) {
+					//e1.printStackTrace();
+					System.exit(1);
+				}
 				// Busca Todos os Elementos no projeto
 				listaElementosProjeto = aDB.getTodasClassesMetodos();
 

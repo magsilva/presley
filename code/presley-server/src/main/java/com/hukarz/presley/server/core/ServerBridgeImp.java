@@ -2,6 +2,7 @@ package com.hukarz.presley.server.core;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.logging.Logger;
 
 import com.hukarz.presley.beans.DadosAutenticacao;
 import com.hukarz.presley.beans.Desenvolvedor;
@@ -32,10 +33,10 @@ import com.hukarz.presley.server.core.interfaces.CorePresleyOperations;
  */
 public class ServerBridgeImp implements ServerBridge {
 
-
+	private Logger logger = Logger.getLogger(this.getClass().getName());
 
 	public ServerBridgeImp() {
-		System.out.println("instanciando ServerBridgeImp");
+		this.logger.info("instanciando ServerBridgeImp");
 	}
 
 	/**
@@ -69,7 +70,6 @@ public class ServerBridgeImp implements ServerBridge {
 
 			// Packet tipo 5: LOG_IN
 		case CorePresleyOperations.LOG_IN:
-			System.out.println((DadosAutenticacao)packet.getData());
 			try {
 				retorno = executeClientQuery.login(packet);
 				typeRetorno = CorePresleyOperations.LOG_IN;
@@ -99,7 +99,6 @@ public class ServerBridgeImp implements ServerBridge {
 			// Packet tipo 10: ASSOCAR_PROBLEMA_ATIVIDADE
 		case CorePresleyOperations.ASSOCIAR_PROBLEMA_ATIVIDADE:
 			
-			System.out.println(">>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
 			try {
 				retorno = executeClientQuery.associaProblemaAtividade(packet);
 				typeRetorno = CorePresleyOperations.ASSOCIAR_PROBLEMA_ATIVIDADE;
@@ -127,11 +126,9 @@ public class ServerBridgeImp implements ServerBridge {
 
 			// Packet tipo 12: BUSCA_DESENVOLVEDORES
 		case CorePresleyOperations.BUSCA_DESENVOLVEDORES:
-			System.out.println("busca desenvolvedores ");
 			try {
 				retorno = executeClientQuery.buscaDesenvolvedores(packet);
 				ArrayList<com.hukarz.presley.beans.Desenvolvedor> des = (ArrayList<Desenvolvedor>)retorno;
-				System.out.println("Email do desenvolvedor retornado: "+des.get(0).getEmail());
 				typeRetorno = CorePresleyOperations.BUSCA_DESENVOLVEDORES;
 			} catch (DesenvolvedorInexistenteException e2) {
 				retorno = "ERRO: Desenvolvedor inexistente.";

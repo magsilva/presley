@@ -23,6 +23,7 @@ import org.eclipse.swt.widgets.TreeItem;
 import org.eclipse.ui.part.ViewPart;
 
 import ca.mcgill.cs.swevo.PresleyJayFX;
+import ca.mcgill.cs.swevo.jayfx.JayFXException;
 
 import com.hukarz.presley.beans.Desenvolvedor;
 import com.hukarz.presley.beans.Mensagem;
@@ -193,7 +194,12 @@ public class MensagemAba extends ViewPart {
 				if (aDB == null){
 					projetoAtivo = viewComunication.getProjetosAtivo().get(0); 
 					// Objeto para o JayFX
-					aDB = PresleyJayFX.obterInstancia( projetoAtivo );
+					try {
+						aDB = new PresleyJayFX( projetoAtivo );
+					} catch (JayFXException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
 			 		// Busca Todos os Elementos no projeto
 			 		listaElementosProjeto = aDB.getTodasClassesMetodos();
 				}	
@@ -576,7 +582,6 @@ public class MensagemAba extends ViewPart {
 
 						public void run() {
 							if (bLogin) {
-								// System.out.println("Time OK!");
 								treeProblemasEnviados.removeAll();
 								preenchelistaProblemasEnviados();
 								preenchelistaProblemasRecebidos();

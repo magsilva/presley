@@ -43,7 +43,6 @@ public class ProcessaSimilaridade {
 		if (arquivoMaisSimilar == null)
 			throw new ConhecimentoNaoEncontradoException( );
 		
-		//System.out.println( arquivoMaisSimilar.getNome() );
 		return servicoConhecimento.getConhecimentoAssociado(arquivoMaisSimilar); 
 	}
 	
@@ -68,7 +67,6 @@ public class ProcessaSimilaridade {
 			
 			double frqTF_IDF = 1;
 			//Math.log( qtdeArquivos / servicoArquivo.getQuantidadeArquivosComTermo(termo) );
-//			System.out.println( termo + " Doc1 " + frqRelativa1 + " Doc2 " + frqRelativa2);
 			somatorioGrauIgualdade += calculaGrauDeIgualdade( frqTF1 * frqTF_IDF, frqTF2 * frqTF_IDF) ;
 		}
 		

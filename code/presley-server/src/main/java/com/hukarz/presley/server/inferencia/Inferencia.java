@@ -53,7 +53,6 @@ public class Inferencia {
 	//		ArrayList<Desenvolvedor> lDesenv = getDesenvolvedores(new String[]{"java", "conector"}, 50);
 	//		
 	//		for(Desenvolvedor d : lDesenv){
-	//			System.out.println(d);
 	//		}
 	//		
 	//	}

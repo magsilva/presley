@@ -121,18 +121,13 @@ public class ExecuteClientQuery implements CorePresleyOperations{
 		ArrayList<Conhecimento> listaConhecimentos = problemaAtividade.getListaConhecimentos();
 		
 		if (listaConhecimentos == null) {
-			System.out.println("NULL ><<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
 			return false;
 		}
 		
 		if(listaConhecimentos.isEmpty()) {
-			System.out.println("empty>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
 			return false;
 		}
 		
-		for(Conhecimento c  : listaConhecimentos)
-		System.out.println("chamada1 >>>>>>>>>>>>>>>>>>>>>> " + c.getNome());
-
 		return associaProblemaAtividade(problema, atividade, listaConhecimentos);
 	}
 	public boolean associaProblemaAtividade(Problema problema,
@@ -233,7 +228,6 @@ public class ExecuteClientQuery implements CorePresleyOperations{
 		Problema problema = qualDes.getProblema();
 		Desenvolvedor desenvolvedor = qualDes.getDesenvolvedor();
 		boolean foiUtil = qualDes.isFoiUtil();
-		System.out.println("ExecuteClientQuery: "+ problema.getDescricao());
 		return qualificaDesenvolvedor(desenvolvedor, problema, foiUtil);
 	}
 	public boolean qualificaDesenvolvedor(Desenvolvedor desenvolvedor,
@@ -330,12 +324,10 @@ public class ExecuteClientQuery implements CorePresleyOperations{
 		Problema problema = (Problema) packet.getData();
 
 		if (problema == null) {
-			System.out.println("NULL ><<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
 			return false;
 		}
 		
 		if(problema.getDesenvolvedorOrigem() == null) {
-			System.out.println("NULL DESENVOLVEDOR>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
 			return false;
 		}
 		

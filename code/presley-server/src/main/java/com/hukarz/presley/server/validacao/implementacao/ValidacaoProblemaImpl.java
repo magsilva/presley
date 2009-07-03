@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
+
 import com.hukarz.presley.beans.ArquivoJava;
 import com.hukarz.presley.beans.Desenvolvedor;
 import com.hukarz.presley.beans.Problema;
@@ -44,6 +46,7 @@ public class ValidacaoProblemaImpl {
 	ServicoProjeto  servicoProjeto;
 	
 	ValidacaoArquivoImpl validacaoArquivo ;
+	private Logger logger = Logger.getLogger(this.getClass());
 	
 	public ValidacaoProblemaImpl() {
 		servicoProblema = new ServicoProblemaImplDAO();
@@ -87,12 +90,12 @@ public class ValidacaoProblemaImpl {
 
 		if (!servicoProjeto.projetoExiste( problema.getProjeto() )) throw new ProjetoInexistenteException();
 
-		System.out.println("Ok --- Validação");
+		this.logger.debug("Validação");
 		
 		// Cria uma lista com os Desenvolvedores de cada arquivo java		 
 		Map<ArquivoJava, ArrayList<Desenvolvedor>> arquivoDesenvolvedores = validacaoArquivo.getDesenvolvedoresArquivos(problema);
 		
-		System.out.println("Ok --- lista com os Desenvolvedores de cada arquivo"); 
+		this.logger.debug("Lista com os Desenvolvedores de cada arquivo"); 
 
 		// Identifica o conhecimeto do problema a se cadastrar
 		ProcessaSimilaridade processaSimilaridade = new ProcessaSimilaridade();
@@ -111,11 +114,11 @@ public class ValidacaoProblemaImpl {
 		problema.setConhecimento( processaSimilaridade.verificaConhecimentoDoTexto( problema.getDescricao() + "  " + 
 				problema.getMensagem() + " " + comentariosCodigo ) ) ;
 
-		System.out.println("Ok --- conhecimeto do problema");
+		this.logger.debug("Conhecimeto do problema");
 	
 		problema = servicoProblema.cadastrarProblema(problema) ;
 
-		System.out.println("Ok --- Cadastro do Problema");
+		this.logger.debug("Cadastro do Problema");
 		
 		// Retorna os desenvolvedores que receberão o problema
 		ArrayList<Desenvolvedor> desenvolvedores = Inferencia.getDesenvolvedores(arquivoDesenvolvedores, 
@@ -123,7 +126,7 @@ public class ValidacaoProblemaImpl {
 		
 		servicoMensagem.adicionarMensagem(desenvolvedores, problema);
 		
-		System.out.println("Ok --- Mensagem Adcionada");
+		this.logger.debug("Mensagem Adcionada");
 
 		return problema;
 	}

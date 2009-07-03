@@ -5,6 +5,9 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IWorkspace;
+import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jdt.core.IMethod;
@@ -29,37 +32,17 @@ public class PresleyJayFX extends JayFX {
 //    private ProgramDatabase aDB = new ProgramDatabase();
 	
 	// Sigleton
-	private static PresleyJayFX instancia;
 	private Projeto projeto;
 	
-	public static PresleyJayFX obterInstancia(Projeto projeto) {
-		// -> Para fazer q só tenha uma classe fachada <-
-		if (instancia == null) {
-			instancia = new PresleyJayFX(projeto);
-		} else {
-			try {
-				instancia.finalize();
-				instancia = new PresleyJayFX(projeto);
-			} catch (Throwable e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-		
-						
-		IProgressMonitor lMonitor = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getViewReferences()[0].getView( true ).getViewSite().getActionBars().getStatusLineManager().getProgressMonitor();
-		try {
-			instancia.initialize( ResourcesPlugin.getWorkspace().getRoot().getProject( projeto.getNome() ), lMonitor, true );
-		} catch (JayFXException e1) {
-			e1.printStackTrace();
-		}
-
-		return instancia;
-	}
-
-	public PresleyJayFX(Projeto projeto) {
+	public PresleyJayFX (Projeto projeto) throws JayFXException {
 		super();
 		this.projeto = projeto;
+	
+		IProgressMonitor progressMonitor = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getViewReferences()[0].getView( true ).getViewSite().getActionBars().getStatusLineManager().getProgressMonitor();
+		IWorkspace workspace = ResourcesPlugin.getWorkspace();
+		IWorkspaceRoot workspaceRoot = workspace.getRoot();
+		IProject project = workspaceRoot.getProject(projeto.getNome());
+		initialize(project, null, true);
 	}
 
 	public Projeto getProjetoSelecionado(){

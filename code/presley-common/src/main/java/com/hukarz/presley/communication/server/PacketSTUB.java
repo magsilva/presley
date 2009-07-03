@@ -24,7 +24,6 @@ public class PacketSTUB extends UnicastRemoteObject implements StubInterface {
 	}
 	
 	public PacketStruct sendReceivePacketStruct(PacketStruct pack) throws RemoteException {	
-		System.out.println(pack.getData());
 		return bridge.sendToServer(pack);
 	}
 

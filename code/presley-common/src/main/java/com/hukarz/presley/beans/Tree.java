@@ -219,10 +219,8 @@ public class Tree implements Serializable{
 //		
 //		for (Item item2 : localizados) {
 //			item2.adicionaFilho("SmallTalk");
-//			System.out.println("Localizado: "+item2.getConhecimento()+", Pai: "+item2.getPai().getConhecimento());
 //		}
 //		if (localizados==null) {
-//			System.out.println("Nao Localizado. ");			
 //		}
 		
 

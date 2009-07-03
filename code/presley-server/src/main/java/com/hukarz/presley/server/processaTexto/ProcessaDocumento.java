@@ -51,7 +51,6 @@ public class ProcessaDocumento {
 			boolean bValida  = false;
 			char caracter = ' ' ;
 
-			// System.out.println( palavra );
 					
 			palavra = retirarCaracterExtra(palavra) ;
 			// Se for uma palavra
@@ -94,7 +93,6 @@ public class ProcessaDocumento {
 			
 			if (bValida){
 				retorno += palavra + ' ' ;
-//				System.out.println( palavra );
 			}
 				
 			

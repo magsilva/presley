@@ -308,15 +308,11 @@ public class Ontologia {
 
         	if(foiUtil){
         		String email = desenvolvedor.getEmail();
-        		System.out.println(">>>>>>>>>>>>>>>>>>>>>>Email do desenvolvedor: "+email);
-        		System.out.println("Tamanho dos conhecimentos: "+conhecimentos.size());
 
         		for(String conhecimentoAtividade : conhecimentos){
 
         			int quantidade = validacaoDesenvolvedor.getQntResposta(email, conhecimentoAtividade) + 1;
-//        			System.out.println("Desenvolvedor: "+email+" no conhecimento "+conhecimentoAtividade+" tinha valor: "+ validacaoDesenvolvedor.getQntResposta(email, conhecimentoAtividade)+ " e agora vai pra: "+quantidade);
         			boolean resposta = validacaoDesenvolvedor.updateQntResposta(email, conhecimentoAtividade, quantidade);
-//        			System.out.println(resposta);
         			if(!resposta)
         				return false;
 
@@ -365,11 +361,9 @@ public class Ontologia {
         	Tree arvore = new Tree( conhecimentoRaiz );
 
         	ArrayList<Conhecimento> filhosDoRaiz = new ArrayList<Conhecimento>();
-//        	System.out.println("Numero de Filhos do raiz = " + filhosDoRaiz.size()); //teste
         	validacaoConhecimento = new ValidacaoConhecimentoImpl();
 
         	ArrayList<Conhecimento> conhecimentos = validacaoConhecimento.getListaConhecimento();
-//        	System.out.println("Numero de conhrcimentos no banco = " + conhecimentos.size());
         	Iterator<Conhecimento> it = conhecimentos.iterator();
 
         	// Buscando os conhecimentos que nao possuem pais (ou seja, os filhos do raiz).

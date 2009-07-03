@@ -8,6 +8,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
+
 import com.hukarz.presley.beans.Arquivo;
 import com.hukarz.presley.beans.ArquivoJava;
 import com.hukarz.presley.beans.ClasseJava;
@@ -32,6 +34,7 @@ import com.ximpleware.XPathParseException;
 public class ValidacaoArquivoImpl {
 	ServicoArquivo servicoArquivo;
 	ServicoDesenvolvedor servicoDesenvolvedor;
+	private Logger logger = Logger.getLogger(this.getClass());
 
 	public ValidacaoArquivoImpl() {
 		servicoArquivo = new ServicoArquivoImplDAO();
@@ -153,15 +156,15 @@ public class ValidacaoArquivoImpl {
 				arquivoDesenvolvedores.put((ArquivoJava) arquivo, desenvolvedores);
 			}
 		} catch (ParseException e) {
-			System.out.println(" XML file parsing error \n"+e);
+			this.logger.trace(" XML file parsing error \n"+e);
 		} catch (NavException e) {
-			System.out.println(" Exception during navigation "+e);
+			this.logger.trace(" Exception during navigation "+e);
 		} catch (XPathParseException e) {
 
 		} catch (XPathEvalException e) {
 
 		} catch (java.io.IOException e)	{
-			System.out.println(" IO exception condition"+e);
+			this.logger.trace(" IO exception condition"+e);
 		} catch (DesenvolvedorInexistenteException e) {
 			// e.printStackTrace();
 		}
