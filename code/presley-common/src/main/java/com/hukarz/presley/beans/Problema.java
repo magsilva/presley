@@ -26,7 +26,6 @@ public class Problema implements Serializable {
 	private String descricao;
 	private boolean resolvido;
 	private ArrayList<Solucao> solucoes;
-	private TipoAtividade tipoAtividade;
 	private Date data;
 	private String mensagem;
 	private Map<ClasseJava, ArquivoJava> classesRelacionadas ;
@@ -88,12 +87,7 @@ public class Problema implements Serializable {
 	public void setSolucoes(ArrayList<Solucao> solucoes) {
 		this.solucoes = solucoes;
 	}
-	public TipoAtividade getAtividade() {
-		return tipoAtividade;
-	}
-	public void setAtividade(TipoAtividade tipoAtividade) {
-		this.tipoAtividade = tipoAtividade;
-	}
+
 	public Date getData() {
 		return data;
 	}

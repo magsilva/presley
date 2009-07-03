@@ -10,7 +10,6 @@ import com.hukarz.presley.beans.Conhecimento;
 import com.hukarz.presley.beans.DadosAutenticacao;
 import com.hukarz.presley.beans.Desenvolvedor;
 import com.hukarz.presley.beans.Solucao;
-import com.hukarz.presley.beans.TipoAtividade;
 import com.hukarz.presley.excessao.ConhecimentoInexistenteException;
 import com.hukarz.presley.excessao.DescricaoInvalidaException;
 import com.hukarz.presley.excessao.DesenvolvedorExisteException;
@@ -146,18 +145,6 @@ public class ValidacaoDesenvolvedorImpl {
 		return servicoDesenvolvedor.desenvolvedorExiste(email);
 	}
 	
-	/**
-	 * Esse mtodo retorna uma lista de atividades atribuidas a um desenvolvedor
-	 * @param email Email do desenvolvedor
-	 * @return ArrayList<TipoAtividade>
-	 * @throws DescricaoInvalidaException 
-	 */
-	public ArrayList<TipoAtividade> getAtividadesDoDesenvolvedor(String email) throws DescricaoInvalidaException {
-		
-		if (!servicoDesenvolvedor.desenvolvedorExiste(email)) throw new DescricaoInvalidaException();
-		
-		return servicoDesenvolvedor.getAtividadesDoDesenvolvedor(email);
-	}
 	
 	/**
 	 * Esse mtodo retorna uma lista de conhecimentos que o desenvolvedor possui

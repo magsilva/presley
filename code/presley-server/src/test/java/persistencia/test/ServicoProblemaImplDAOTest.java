@@ -6,7 +6,7 @@ import java.util.Calendar;
 
 import junit.framework.TestCase;
 
-import com.hukarz.presley.beans.TipoAtividade;
+
 import com.hukarz.presley.server.persistencia.implementacao.ServicoDesenvolvedorImplDAO;
 import com.hukarz.presley.server.persistencia.implementacao.ServicoProblemaImplDAO;
 import com.hukarz.presley.server.persistencia.interfaces.ServicoDesenvolvedor;
@@ -50,7 +50,7 @@ public class ServicoProblemaImplDAOTest extends TestCase {
 		Date dataDoRelato = new Date(cal.getTimeInMillis());
 		
 		
-		ArrayList<TipoAtividade> list = sd.getAtividadesDoDesenvolvedor("amilcarsj@gmail.com");
+//		ArrayList<TipoAtividade> list = sd.getAtividadesDoDesenvolvedor("amilcarsj@gmail.com");
 /*
  * 		
 		sp.cadastrarProblema(list.get(0).getId(), "Erro de transacao", dataDoRelato, "Stack trace do problema ...");

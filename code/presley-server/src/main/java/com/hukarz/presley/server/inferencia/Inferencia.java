@@ -49,15 +49,7 @@ import com.hukarz.presley.server.validacao.implementacao.ValidacaoSolucaoImpl;
  */
 public class Inferencia {
 
-	//	public static void main(String args[]){
-	//		ArrayList<Desenvolvedor> lDesenv = getDesenvolvedores(new String[]{"java", "conector"}, 50);
-	//		
-	//		for(Desenvolvedor d : lDesenv){
-	//		}
-	//		
-	//	}
-
-	public static ArrayList<Desenvolvedor> getDesenvolvedores(Map<ArquivoJava, ArrayList<Desenvolvedor>> arquivoDesenvolvedores,
+	public ArrayList<Desenvolvedor> getDesenvolvedores(Map<ArquivoJava, ArrayList<Desenvolvedor>> arquivoDesenvolvedores,
 			Problema problema) {
 
 		Map<Desenvolvedor, Integer> participacaoDesenvolvedorArq = getParticipacaoDesenvolvedores(arquivoDesenvolvedores);
@@ -71,7 +63,7 @@ public class Inferencia {
 	/*	1º Passo 
 	(Analisar a participação de cada Desenvolvedor nos Arquivos)
 	 */
-	private static Map<Desenvolvedor, Integer> getParticipacaoDesenvolvedores(Map<ArquivoJava, ArrayList<Desenvolvedor>> arquivoDesenvolvedores){
+	private Map<Desenvolvedor, Integer> getParticipacaoDesenvolvedores(Map<ArquivoJava, ArrayList<Desenvolvedor>> arquivoDesenvolvedores){
 		Map<Desenvolvedor, Integer> desenvolvedorPorArq = new HashMap<Desenvolvedor, Integer>();
 		
 		for (Iterator<ArquivoJava> itArquivo = arquivoDesenvolvedores.keySet().iterator(); itArquivo.hasNext();) {
@@ -94,7 +86,7 @@ public class Inferencia {
 	(Analisar a participação de cada Desenvolvedor nas resolucao de problemas
 	referentes ao conhecimento passado)
 	 */
-	private static Map<Desenvolvedor, Integer> getParticipacaoDesenvolvedores(Conhecimento conhecimento, Desenvolvedor desenvolvedor){
+	private Map<Desenvolvedor, Integer> getParticipacaoDesenvolvedores(Conhecimento conhecimento, Desenvolvedor desenvolvedor){
 		ServicoConhecimento servicoConhecimento = new ServicoConhecimentoImplDAO();
 		ServicoDesenvolvedor servicoDesenvolvedor = new ServicoDesenvolvedorImplDAO();
 		
@@ -122,7 +114,7 @@ public class Inferencia {
 	/*	3º Passo 
 	(Soma os vetores de participação dos Desenvolvedor nos Arquivos e nas mensagens)
 	 */
-	private static Map<Desenvolvedor, Integer> somarParticipacaoDosDesenvolvedores(Map<Desenvolvedor, Integer> participacaoDesenvolvedorArq, 
+	private Map<Desenvolvedor, Integer> somarParticipacaoDosDesenvolvedores(Map<Desenvolvedor, Integer> participacaoDesenvolvedorArq, 
 			Map<Desenvolvedor, Integer> participacaoDesenvolvedorConhecimento ){
 		Map<Desenvolvedor, Integer> pontuacaoParticipacao = new HashMap<Desenvolvedor, Integer>();
 		
@@ -160,7 +152,7 @@ public class Inferencia {
 	}
 	
 	// Metodo para classificar os desenvolvedores por participação
-	private static Map<Desenvolvedor, Integer> classificacarDesenvolvedores( Map<Desenvolvedor, Integer> participacaoDesenvolvedor,
+	private Map<Desenvolvedor, Integer> classificacarDesenvolvedores( Map<Desenvolvedor, Integer> participacaoDesenvolvedor,
 			Integer pontuacaoMax) {
 		Desenvolvedor[] classificacaoDesenvolvedores = new Desenvolvedor[ participacaoDesenvolvedor.size() ];
 		
@@ -210,7 +202,7 @@ public class Inferencia {
 		return pontuarClassificacao(classificacaoDesenvolvedores, participacaoDesenvolvedor, pontuacaoMax);
 	}
 	
-	private static Map<Desenvolvedor, Integer> pontuarClassificacao(Desenvolvedor[] desenvolvedores, 
+	private Map<Desenvolvedor, Integer> pontuarClassificacao(Desenvolvedor[] desenvolvedores, 
 			Map<Desenvolvedor, Integer> participacaoDesenvolvedor, Integer pontuacaoMax) {
 
 		Map<Desenvolvedor, Integer> pontuacaoParticipacao = new HashMap<Desenvolvedor, Integer>();
@@ -234,7 +226,7 @@ public class Inferencia {
 	/*	4º Passo 
 	(Seleciona os melhores desenvolvedores como retorno)
 	 */
-	private static ArrayList<Desenvolvedor> retornarMelhoresDesenvolvedores(Problema problema, Map<Desenvolvedor, Integer> participacaoDesenvolvedor, int qtde ){
+	private ArrayList<Desenvolvedor> retornarMelhoresDesenvolvedores(Problema problema, Map<Desenvolvedor, Integer> participacaoDesenvolvedor, int qtde ){
 		ArrayList<Desenvolvedor> listaDesenvolvedores = new ArrayList<Desenvolvedor>();
 		Desenvolvedor desenvolvedorMenor = new Desenvolvedor();
 
@@ -275,7 +267,7 @@ public class Inferencia {
 		return listaDesenvolvedores;
 	}
 	
-	private static void gerarLog(ArrayList<Desenvolvedor> listaDesenvolvedores, 
+	private void gerarLog(ArrayList<Desenvolvedor> listaDesenvolvedores, 
 			Map<Desenvolvedor, Integer> participacaoDesenvolvedor){
 		ServicoProjeto servicoProjeto = new ServicoProjetoImplDAO();
 		Projeto projeto = servicoProjeto.getProjetosAtivo().get(0);
@@ -314,7 +306,7 @@ public class Inferencia {
 		}  
 	}
 	
-	private static void criarSolucoesValidas(ArrayList<Desenvolvedor> listaDesenvolvedores, Problema problema){
+	private void criarSolucoesValidas(ArrayList<Desenvolvedor> listaDesenvolvedores, Problema problema){
 		try {
 			ValidacaoSolucaoImpl  validacaoSolucao = new ValidacaoSolucaoImpl();
 
@@ -361,10 +353,8 @@ public class Inferencia {
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (ProblemaInexistenteException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (DesenvolvedorInexistenteException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}	
 	}

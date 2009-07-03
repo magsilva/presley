@@ -121,7 +121,8 @@ public class ValidacaoProblemaImpl {
 		this.logger.debug("Cadastro do Problema");
 		
 		// Retorna os desenvolvedores que receberão o problema
-		ArrayList<Desenvolvedor> desenvolvedores = Inferencia.getDesenvolvedores(arquivoDesenvolvedores, 
+		Inferencia inferencia = new Inferencia();
+		ArrayList<Desenvolvedor> desenvolvedores = inferencia.getDesenvolvedores(arquivoDesenvolvedores, 
 				problema);
 		
 		servicoMensagem.adicionarMensagem(desenvolvedores, problema);

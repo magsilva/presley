@@ -11,7 +11,6 @@ import java.util.Map.Entry;
 
 import com.hukarz.presley.beans.Conhecimento;
 import com.hukarz.presley.beans.Desenvolvedor;
-import com.hukarz.presley.beans.TipoAtividade;
 import com.hukarz.presley.excessao.DesenvolvedorInexistenteException;
 import com.hukarz.presley.server.persistencia.MySQLConnectionFactory;
 import com.hukarz.presley.server.persistencia.interfaces.ServicoConhecimento;
@@ -620,62 +619,6 @@ public class ServicoDesenvolvedorImplDAO implements ServicoDesenvolvedor{
 		}
 		
 		return map;
-	}
-
-	// Modificado por Francisco - 16/09 -- 18:53
-	public ArrayList<TipoAtividade> getAtividadesDoDesenvolvedor(String email) {
-
-		//Connection conn = MySQLConnectionFactory.getConnection();
-		Connection conn = MySQLConnectionFactory.open();
-		
-		Statement stm = null;
-		
-		ArrayList<TipoAtividade> list = new ArrayList<TipoAtividade>();
-
-		try {
-
-			stm = conn.createStatement();
-
-			String SQL = " SELECT * FROM atividade WHERE "+
-			" desenvolvedor_email = '"+email+"' ORDER BY id;";
-
-
-			//System.out.println(SQL);
-			ResultSet rs = stm.executeQuery(SQL);
-
-
-			while (rs.next()){
-				TipoAtividade tipoAtividade = new TipoAtividade();
-
-				tipoAtividade.setId(rs.getInt(1));
-				tipoAtividade.setDesenvolvedor(this.getDesenvolvedor(rs.getString(2)));
-				tipoAtividade.setSupervisor(this.getDesenvolvedor(rs.getString(3)));
-				tipoAtividade.setIdPai(rs.getInt(4));
-				tipoAtividade.setDescricao(rs.getString(5));
-				tipoAtividade.setDataInicio(rs.getDate(6));
-				tipoAtividade.setDataFinal(rs.getDate(7));
-				tipoAtividade.setConcluida(rs.getBoolean(8));
-				//tipoAtividade.setListaDeConhecimentosEnvolvidos(this.getConhecimentosDoDesenvolvedor(rs.getString(2)));
-
-
-				list.add(tipoAtividade);
-
-			}
-			return list;
-
-
-		} catch (SQLException e) {
-			//e.printStackTrace();
-			return null;
-		} finally {
-			try {
-				stm.close();
-				//conn.close();
-			} catch (SQLException onConClose) {
-				System.out.println(" Houve erro no fechamento da conexão ");
-				onConClose.printStackTrace();	             
-			}
-		}
 	}
 
 	public ArrayList<Desenvolvedor> getTodosDesenvolvedores() {

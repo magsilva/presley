@@ -8,7 +8,6 @@ import com.hukarz.presley.beans.DadosAutenticacao;
 import com.hukarz.presley.beans.Desenvolvedor;
 import com.hukarz.presley.communication.facade.PacketStruct;
 import com.hukarz.presley.communication.server.ServerBridge;
-import com.hukarz.presley.excessao.AtividadeInexistenteException;
 import com.hukarz.presley.excessao.ConhecimentoInexistenteException;
 import com.hukarz.presley.excessao.ConhecimentoNaoEncontradoException;
 import com.hukarz.presley.excessao.DescricaoInvalidaException;
@@ -93,64 +92,6 @@ public class ServerBridgeImp implements ServerBridge {
 		case CorePresleyOperations.LOG_OUT:
 			typeRetorno = CorePresleyOperations.LOG_OUT;
 			retorno = executeClientQuery.logout(packet);
-			pktRetorno = new PacketStruct(retorno, typeRetorno);
-			break;				
-
-			// Packet tipo 10: ASSOCAR_PROBLEMA_ATIVIDADE
-		case CorePresleyOperations.ASSOCIAR_PROBLEMA_ATIVIDADE:
-			
-			try {
-				retorno = executeClientQuery.associaProblemaAtividade(packet);
-				typeRetorno = CorePresleyOperations.ASSOCIAR_PROBLEMA_ATIVIDADE;
-			} catch (DescricaoInvalidaException e) {
-				retorno = "ERRO: Descrição inválida.";
-				e.printStackTrace();
-			} catch (AtividadeInexistenteException e) {
-				retorno = "ERRO: Atividade inexistente.";
-				e.printStackTrace();
-			}
-			pktRetorno = new PacketStruct(retorno, typeRetorno);
-			break;				
-
-			// Packet tipo 11: DESSASOCIAR_PROBLEMA_ATIVIDADE
-		case CorePresleyOperations.DESSASOCIAR_PROBLEMA_ATIVIDADE:
-			try {
-				retorno = executeClientQuery.desassociaProblemaAtividade(packet);
-				typeRetorno = CorePresleyOperations.DESSASOCIAR_PROBLEMA_ATIVIDADE;
-			} catch (ProblemaInexistenteException e1) {
-				retorno = "ERRO: Problema inexistente.";
-				e1.printStackTrace();
-			}
-			pktRetorno = new PacketStruct(retorno, typeRetorno);
-			break;				
-
-			// Packet tipo 12: BUSCA_DESENVOLVEDORES
-		case CorePresleyOperations.BUSCA_DESENVOLVEDORES:
-			try {
-				retorno = executeClientQuery.buscaDesenvolvedores(packet);
-				ArrayList<com.hukarz.presley.beans.Desenvolvedor> des = (ArrayList<Desenvolvedor>)retorno;
-				typeRetorno = CorePresleyOperations.BUSCA_DESENVOLVEDORES;
-			} catch (DesenvolvedorInexistenteException e2) {
-				retorno = "ERRO: Desenvolvedor inexistente.";
-				e2.printStackTrace();
-			}
-
-			pktRetorno = new PacketStruct(retorno, typeRetorno);
-			break;				
-
-			// Packet tipo 13: QUALIFICA_DESENVOLVEDOR
-		case CorePresleyOperations.QUALIFICA_DESENVOLVEDOR:
-			try {
-				retorno = executeClientQuery.qualificaDesenvolvedor(packet);
-				typeRetorno = CorePresleyOperations.QUALIFICA_DESENVOLVEDOR;
-			} catch (ConhecimentoInexistenteException e2) {
-				retorno = "ERRO: Conhecimento inexistente.";
-				e2.printStackTrace();
-			} catch (DesenvolvedorInexistenteException e2) {
-				retorno = "ERRO: Desenvolvedor inexistente.";
-				e2.printStackTrace();
-			}
-
 			pktRetorno = new PacketStruct(retorno, typeRetorno);
 			break;				
 

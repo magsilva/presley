@@ -5,7 +5,6 @@ import java.util.HashMap;
 
 import com.hukarz.presley.beans.Conhecimento;
 import com.hukarz.presley.beans.Desenvolvedor;
-import com.hukarz.presley.beans.TipoAtividade;
 import com.hukarz.presley.excessao.DesenvolvedorInexistenteException;
 
 
@@ -102,13 +101,6 @@ public interface ServicoDesenvolvedor {
 	 */
 	public HashMap<Conhecimento, Double> getConhecimentosDoDesenvolvedor(String email, int x);
 	
-	/**
-	 * Esse método retorna uma lista de atividades atribuidas a um desenvolvedor
-	 * @param email Email do desenvolvedor
-	 * @return ArrayList<TipoAtividade>
-	 */
-	public ArrayList<TipoAtividade> getAtividadesDoDesenvolvedor(String email);
-
 	/**
 	 * Esse método verifica se existe relacao entre um conhecimento e um desenvolvedor/
 	 * @param emailDesenvolvedor Email do desenvolvedor que possui tal conhecimento.

@@ -16,14 +16,10 @@ import com.hukarz.presley.beans.DadosAutenticacao;
 import com.hukarz.presley.beans.Desenvolvedor;
 import com.hukarz.presley.beans.Mensagem;
 import com.hukarz.presley.beans.Problema;
-import com.hukarz.presley.beans.ProblemaAtividade;
 import com.hukarz.presley.beans.Projeto;
-import com.hukarz.presley.beans.QualificacaoDesenvolvedor;
 import com.hukarz.presley.beans.Solucao;
-import com.hukarz.presley.beans.TipoAtividade;
 import com.hukarz.presley.beans.Tree;
 import com.hukarz.presley.communication.facade.PacketStruct;
-import com.hukarz.presley.excessao.AtividadeInexistenteException;
 import com.hukarz.presley.excessao.ConhecimentoInexistenteException;
 import com.hukarz.presley.excessao.ConhecimentoNaoEncontradoException;
 import com.hukarz.presley.excessao.DescricaoInvalidaException;
@@ -106,51 +102,6 @@ public class ExecuteClientQuery implements CorePresleyOperations{
 
 	}
 
-	/**
-	 * 
-	 * @param packet
-	 * @return
-	 * @throws AtividadeInexistenteException 
-	 * @throws DescricaoInvalidaException 
-	 */
-	public boolean associaProblemaAtividade(PacketStruct packet) throws DescricaoInvalidaException, AtividadeInexistenteException {
-		ProblemaAtividade problemaAtividade = (ProblemaAtividade) packet.getData();
-
-		Problema problema = problemaAtividade.getProblema();
-		TipoAtividade atividade =  problemaAtividade.getAtividade();
-		ArrayList<Conhecimento> listaConhecimentos = problemaAtividade.getListaConhecimentos();
-		
-		if (listaConhecimentos == null) {
-			return false;
-		}
-		
-		if(listaConhecimentos.isEmpty()) {
-			return false;
-		}
-		
-		return associaProblemaAtividade(problema, atividade, listaConhecimentos);
-	}
-	public boolean associaProblemaAtividade(Problema problema,
-			TipoAtividade atividade, 
-			ArrayList<Conhecimento> listaConhecimentos) throws DescricaoInvalidaException, AtividadeInexistenteException {
-/*
-		validacaoProblema.cadastrarProblema(atividade.getId(), problema.getDescricao(), 
-				problema.getData(), problema.getMensagem(), listaConhecimentos);
-
-*/		return true;
-	}
-
-	/**
-	 * 
-	 * @param packet
-	 * @return
-	 * @throws DesenvolvedorInexistenteException 
-	 */
-	public ArrayList<Desenvolvedor> buscaDesenvolvedores(PacketStruct packet) throws DesenvolvedorInexistenteException {
-		Problema problema = (Problema) packet.getData();
-
-		return buscaDesenvolvedores(problema);
-	}	
 
 	public ArrayList<Desenvolvedor> buscaDesenvolvedores(Problema problema) throws DesenvolvedorInexistenteException {
 //		ArrayList<Desenvolvedor> listaDesenvolvedores = Inferencia.getDesenvolvedores(validacaoProblema.getDesenvolvedoresArquivo(problema), 
@@ -160,19 +111,6 @@ public class ExecuteClientQuery implements CorePresleyOperations{
 	}
 
 
-	public boolean desassociaProblemaAtividade(PacketStruct packet) throws ProblemaInexistenteException {
-		if(packet.getData() == null) {
-			return false;
-		}
-		Problema problema = (Problema)packet.getData();
-		return desassociaProblemaAtividade(problema);
-	}
-
-	public boolean desassociaProblemaAtividade(Problema problema) throws ProblemaInexistenteException {
-		return validacaoProblema.removerProblema(problema);
-	}
-	
-	
 	public boolean removerProblema(PacketStruct packet) throws ProblemaInexistenteException {
 		if(packet.getData() == null) {
 			return false;
@@ -223,13 +161,6 @@ public class ExecuteClientQuery implements CorePresleyOperations{
 		return true;
 	}
 
-	public boolean qualificaDesenvolvedor(PacketStruct packet) throws ConhecimentoInexistenteException, DesenvolvedorInexistenteException {
-		QualificacaoDesenvolvedor qualDes = (QualificacaoDesenvolvedor) packet.getData();
-		Problema problema = qualDes.getProblema();
-		Desenvolvedor desenvolvedor = qualDes.getDesenvolvedor();
-		boolean foiUtil = qualDes.isFoiUtil();
-		return qualificaDesenvolvedor(desenvolvedor, problema, foiUtil);
-	}
 	public boolean qualificaDesenvolvedor(Desenvolvedor desenvolvedor,
 			Problema problema, boolean qualificacao) throws ConhecimentoInexistenteException, DesenvolvedorInexistenteException {
 		//ArrayList<String> conhecimentos = problema.getConhecimentos();

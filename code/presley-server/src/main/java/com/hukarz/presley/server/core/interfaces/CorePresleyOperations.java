@@ -9,10 +9,8 @@ import com.hukarz.presley.beans.Desenvolvedor;
 import com.hukarz.presley.beans.Problema;
 import com.hukarz.presley.beans.Projeto;
 import com.hukarz.presley.beans.Solucao;
-import com.hukarz.presley.beans.TipoAtividade;
 import com.hukarz.presley.beans.Tree;
 import com.hukarz.presley.communication.facade.PacketStruct;
-import com.hukarz.presley.excessao.AtividadeInexistenteException;
 import com.hukarz.presley.excessao.ConhecimentoInexistenteException;
 import com.hukarz.presley.excessao.DescricaoInvalidaException;
 import com.hukarz.presley.excessao.DesenvolvedorInexistenteException;
@@ -49,10 +47,10 @@ public interface CorePresleyOperations {
 //	public static final int ENCERRAR_ATIVIDADE = 7;
 //	public static final int ASSOCIAR_CONHECIMENTO_ATIVIDADE = 8;
 //	public static final int DESSASOCIAR_CONHECIMENTO_ATIVIDADE = 9;
-	public static final int ASSOCIAR_PROBLEMA_ATIVIDADE = 10;
-	public static final int DESSASOCIAR_PROBLEMA_ATIVIDADE = 11;
+//	public static final int ASSOCIAR_PROBLEMA_ATIVIDADE = 10;
+//	public static final int DESSASOCIAR_PROBLEMA_ATIVIDADE = 11;
 	public static final int BUSCA_DESENVOLVEDORES = 12;
-	public static final int QUALIFICA_DESENVOLVEDOR = 13;
+//	public static final int QUALIFICA_DESENVOLVEDOR = 13;
 	public static final int ENVIAR_MENSAGEM = 14;
 	public static final int GET_LISTA_DESENVOLVEDORES = 15;
 	public static final int GET_LISTA_CONHECIMENTO = 16;
@@ -114,50 +112,6 @@ public interface CorePresleyOperations {
 	public boolean logout(Desenvolvedor desenvolvedor);
 
 	/**
-	 * Este método associa um problema a uma atividade
-	 * CÓDIGO DA OPERAÇÃO -> 10
-	 * @param Problema problema
-	 * @param TipoAtividade atividade
-	 * @return true se a associação foi realizada com sucesso.
-	 * @throws AtividadeInexistenteException 
-	 * @throws DescricaoInvalidaException 
-	 */
-	public boolean associaProblemaAtividade(Problema problema, 
-			TipoAtividade atividade,
-			ArrayList<Conhecimento> listaConhecimento) throws DescricaoInvalidaException, AtividadeInexistenteException;
-
-	/**
-	 * Este método desassocia um problema a uma atividade
-	 * CÓDIGO DA OPERAÇÃO -> 11
-	 * @param Problema problema
-	 * @return true se a desassociação foi realizada com sucesso.
-	 * @throws ProblemaInexistenteException 
-	 */
-	public boolean desassociaProblemaAtividade(Problema problema) throws ProblemaInexistenteException;
-
-	/**
-	 * Este método retorna uma lista de desenvolvedores para resolver um problema
-	 * CÓDIGO DA OPERAÇÃO -> 12
-	 * @param ArrayList<String> lista de conhecimentos associados ao problema
-	 * @param int grauDeConfiaca varia de 1 -> 100
-	 * @return ArrayList<Desenvolvedor> desenvolvedores aptos a resolver o problema
-	 * @throws DesenvolvedorInexistenteException 
-	 */
-	public ArrayList<Desenvolvedor> buscaDesenvolvedores(Problema problema) throws DesenvolvedorInexistenteException;
-
-	/**
-	 * Este método qualifica o desenvolvedor de acordo com as respostas dele aos problemas
-	 * CÓDIGO DA OPERAÇÃO -> 13
-	 * @param Desenvolvedor desenvolvedor
-	 * @param Problema problema
-	 * @param boolean qualificação
-	 * @return true se a desassociação foi realizada com sucesso.
-	 * @throws DesenvolvedorInexistenteException 
-	 * @throws ConhecimentoInexistenteException 
-	 */
-	public boolean qualificaDesenvolvedor(Desenvolvedor desenvolvedor, Problema problema, boolean qualificacao) throws ConhecimentoInexistenteException, DesenvolvedorInexistenteException;
-
-	/**
 	 * Este método envia uma mensagem para os desenvolvedores selecionados
 	 * CÓDIGO DA OPERAÇÃO -> 14
 	 * @param ArrayList<Desenvolvedor> desenvolvedor
@@ -200,13 +154,6 @@ public interface CorePresleyOperations {
 	 * @throws ConhecimentoInexistenteException 
 	 */
 	public Tree getOntologia() throws ConhecimentoInexistenteException;	
-	
-	/**
-	 * Este método uma lista com todos os problemas cadastrados
-	 * CÓDIGO DA OPERAÇÃO -> 19
-	 * @return ArrayList<Problema> lista de problemas.
-	 */
-	public ArrayList<Problema> getListaProblemas(PacketStruct packet);
 	
 	public boolean removerConhecimento(Conhecimento conhecimento) throws ConhecimentoInexistenteException;
 	
@@ -279,17 +226,6 @@ public interface CorePresleyOperations {
 	public ArrayList<Solucao> listarSolucoesRetornadasDoDesenvolvedor(
 			Desenvolvedor desenvolvedor) throws Exception;
 	
-	/**
-	 * Este método associa um arquivo a um conhecimento e cria a lista de palavras-chave
-	 *  do arquivo
-	 * CÓDIGO DA OPERAÇÃO -> 34
-	 * @param conhecimento
-	 * @return Retorna o conhecimento atualizado
-	 * @throws ConhecimentoInexistenteException
-	 * @throws IOException
-	 */
-	public Conhecimento associaArquivo(Conhecimento conhecimento) throws ConhecimentoInexistenteException, IOException;
-
 
 	/**
 	 * Este método retorna as informações necessarias sobre o projeto em execução no presley
