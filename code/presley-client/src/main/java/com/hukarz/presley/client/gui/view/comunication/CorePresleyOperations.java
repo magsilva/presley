@@ -1,6 +1,5 @@
 package com.hukarz.presley.client.gui.view.comunication;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 import com.hukarz.presley.beans.Conhecimento;
@@ -55,7 +54,7 @@ public interface CorePresleyOperations {
 	public static final int GET_LISTA_DESENVOLVEDORES = 15;
 	public static final int GET_LISTA_CONHECIMENTO = 16;
 	public static final int ADICIONA_DESENVOLVEDOR = 17;
-	public static final int GET_ONTOLOGIA = 18;
+	public static final int GET_ARVORECONHECIMENTOS = 18;
 	public static final int GET_LISTA_PROBLEMAS = 19;
 //	public static final int BUSCA_CONHECIMENTOS_RELACIONADOS = 20;
 	public static final int REMOVER_CONHECIMENTO = 21;
@@ -150,10 +149,10 @@ public interface CorePresleyOperations {
 	/**
 	 * Este método solicita a arvore de ontologia
 	 * CÓDIGO DA OPERAÇÃO -> 18
-	 * @return Tree Arvore de ontologia do sistema.
+	 * @return Tree Arvore de conhecimentos do sistema.
 	 * @throws ConhecimentoInexistenteException 
 	 */
-	public Tree getOntologia() throws ConhecimentoInexistenteException;	
+	public Tree getArvoreGraficaDeConhecimentos() throws ConhecimentoInexistenteException;	
 	
 	public boolean removerConhecimento(Conhecimento conhecimento) throws ConhecimentoInexistenteException;
 	

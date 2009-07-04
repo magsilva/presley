@@ -7,6 +7,8 @@ import java.util.Iterator;
 import com.hukarz.presley.beans.Arquivo;
 import com.hukarz.presley.beans.Conhecimento;
 import com.hukarz.presley.beans.Desenvolvedor;
+import com.hukarz.presley.beans.Item;
+import com.hukarz.presley.beans.Tree;
 import com.hukarz.presley.excessao.ConhecimentoInexistenteException;
 import com.hukarz.presley.excessao.DescricaoInvalidaException;
 import com.hukarz.presley.excessao.NomeInvalidoException;
@@ -262,5 +264,75 @@ public class ValidacaoConhecimentoImpl {
 		
 		return conhecimento; 
 	}
-	
+
+    /**
+     * Este metodo retorna um objeto do tipo Tree que representa a arvore de
+     * conhecumentos.
+     *
+     * @return Retorna a arvode de conhecimentos da ontologia.
+     * @throws ConhecimentoInexistenteException
+     */
+    public Tree getArvoreDeConhecimentos() throws ConhecimentoInexistenteException {
+    	Conhecimento conhecimentoRaiz =  new Conhecimento();
+    	conhecimentoRaiz.setNome("Raiz") ;
+    	Tree arvore = new Tree( conhecimentoRaiz );
+
+    	ArrayList<Conhecimento> filhosDoRaiz = new ArrayList<Conhecimento>();
+
+    	ArrayList<Conhecimento> conhecimentos = getListaConhecimento();
+    	Iterator<Conhecimento> it = conhecimentos.iterator();
+
+    	// Buscando os conhecimentos que nao possuem pais (ou seja, os filhos do raiz).
+    	while (it.hasNext()) {
+    		Conhecimento conhecimento = it.next();
+    		ArrayList<Conhecimento> paisDoConhecimento = null;
+
+    		paisDoConhecimento = getPais(conhecimento.getNome());
+
+    		if (paisDoConhecimento.size() == 0) {
+    			filhosDoRaiz.add(conhecimento);
+    		}
+    	}
+
+    	// Adicionando os filhos do raiz.
+    	Iterator<Conhecimento> it2 = filhosDoRaiz.iterator();
+    	while (it2.hasNext()) {
+    		Conhecimento conhecimento = it2.next();
+    		arvore.adicionaFilho(conhecimento);
+    	}
+
+    	// Obtendo as sub-árvores para montar a arvore completa.
+    	Iterator<Conhecimento> it3 = filhosDoRaiz.iterator();
+    	while (it3.hasNext()) {
+    		Conhecimento filhoDoRaiz = it3.next();
+    		Item item = arvore.getFilho(filhoDoRaiz);
+    		montaSubArvore(item);
+    	}
+
+    	return arvore;
+    }
+
+    /**
+     * Metodo recursivo que monta a subarvore de um determinado item da arvode
+     * de conhecimentos.
+     *
+     * @param item Item para o qual sera montada a sub-arvore
+     * @throws ConhecimentoInexistenteException
+     */
+    private void montaSubArvore(Item itemPai) throws ConhecimentoInexistenteException {
+    	String nomeItemPai = itemPai.getConhecimento().getNome();
+    	Conhecimento conhecimento = getConhecimento(nomeItemPai);
+
+    	ArrayList<Conhecimento> filhos = getFilhos(conhecimento.getNome());
+    	if (filhos.size() != 0) {
+    		Iterator<Conhecimento> it1 = filhos.iterator();
+
+    		while (it1.hasNext()) {
+    			Conhecimento filho = it1.next();
+    			itemPai.adicionaFilho(filho);
+    			Item itemFilho = itemPai.getFilho(filho);
+    			montaSubArvore(itemFilho);
+    		}
+    	}
+    }
 }

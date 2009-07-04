@@ -3,9 +3,6 @@ package com.hukarz.presley.beans;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.TreeItem;
-
 /**
  * Representa uma estruta de dados do tipo árvore e serve para representar a estrutura da ontologia.
  * 
@@ -103,49 +100,6 @@ public class Tree implements Serializable{
 		return false;
 	}
 	
-	/**
-	 * Constroi uma árvore gráfica do tipo org.eclipse.swt.widgets.Tree a partir da atual estrura da árvore  
-	 * @param parent é o Composite o qual essa arvore será filha 
-	 * @param style é o estilo da árvore gráfica
-	 * @return org.eclipse.swt.widgets.Tree é a arvore gráfica usada na view utilizada nese plugin do eclipse
-	 */
-	public org.eclipse.swt.widgets.Tree constroiArvoreGrafica(Composite parent, int style){
-		org.eclipse.swt.widgets.Tree treeGrafico = new org.eclipse.swt.widgets.Tree(parent,style);
-		org.eclipse.swt.widgets.TreeItem treeItemGrafico = new TreeItem(treeGrafico,style);
-		treeItemGrafico.setText( raiz.getConhecimento().getNome() );
-		ArrayList<Item> filhosModelo = this.getRaiz().getFilhos();
-		if (filhosModelo!=null) 
-			for (Item filho : filhosModelo) {
-				constroiArvoreGraficaHelper(treeItemGrafico, filho);	
-			}
-				
-		return treeGrafico;
-	}
-	
-	/**
-	 * Método auxiliar do método anterior que constrói a arvore. Este percore a arvore de forma recursiva em pre-ordem.
-	 * @param arvoreGrafica é a árvore gráfica que será construía
-	 * @param arvoreModelo é o modelo de árvore a partir do qual ser´construída a árvore gráfica
-	 */
-	private void constroiArvoreGraficaHelper(org.eclipse.swt.widgets.TreeItem arvoreGrafica, Item arvoreModelo){
-		if (arvoreModelo==null) {
-			return;
-		}
-		
-		//PROCESSAMENTO
-		org.eclipse.swt.widgets.TreeItem novoItemGrafico = new TreeItem(arvoreGrafica, arvoreGrafica.getStyle());
-		novoItemGrafico.setData( arvoreModelo.getConhecimento() );
-		novoItemGrafico.setText(arvoreModelo.getConhecimento().getNome());
-		
-		ArrayList<Item> filhos = arvoreModelo.getFilhos(); 
-		if (filhos==null) {
-			constroiArvoreGraficaHelper(novoItemGrafico, null);//Percore da Esquerda para Direita
-		}else{
-			for (Item item : filhos) {
-				constroiArvoreGraficaHelper(novoItemGrafico, item);//Percore da Esquerda para Direita	
-			}	
-		}
-	}
 	
 	/**
 	 * Localiza um ou mais filhos com o nome indicado. Percorre-se toda a arvore de forma recursiva em pré-ordem
@@ -196,34 +150,6 @@ public class Tree implements Serializable{
 			localizaFilhoHelper(null, localizados, conhecimento);
 		}
 	}
-	/**
-	 * @param args
-	 */
-	
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		Conhecimento conhecimento = new Conhecimento();
-		conhecimento.setNome("CONHECIMENTO");
-		Tree tree = new Tree( conhecimento );
-		
-//		tree.adicionaFilho("Banco de Dados");
-//		tree.getFilho("Banco de Dados").adicionaFilho("MySQL");
-//		tree.getFilho("Banco de Dados").adicionaFilho("PostgresSQL");
-//		tree.adicionaFilho("LP");
-//		tree.getFilho("LP").adicionaFilho("JAVA");
-//		tree.getFilho("LP").adicionaFilho("C++");
-//		
-//		Item item = tree.getFilho("LP");
-//				
-//		ArrayList<Item> localizados = tree.localizaFilho("C++");
-//		
-//		for (Item item2 : localizados) {
-//			item2.adicionaFilho("SmallTalk");
-//		}
-//		if (localizados==null) {
-//		}
-		
 
-	}
 
 }

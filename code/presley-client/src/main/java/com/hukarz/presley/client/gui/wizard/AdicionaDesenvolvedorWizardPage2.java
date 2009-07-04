@@ -22,9 +22,7 @@ import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 
 import com.hukarz.presley.beans.Conhecimento;
-import com.hukarz.presley.beans.Item;
 import com.hukarz.presley.client.gui.view.MensagemAba;
-
 
 public class AdicionaDesenvolvedorWizardPage2 extends WizardPage {
 
@@ -33,12 +31,8 @@ public class AdicionaDesenvolvedorWizardPage2 extends WizardPage {
 	private MensagemAba mensagemAba;
 	private Hashtable<String,TreeItem> conhecimentosSelecionados;
 	private ArrayList<Conhecimento> conhecimentos;
-	private com.hukarz.presley.beans.Tree ontologia;
-	private ArrayList<Item> itens;
 	private Combo grauConhecimento;
 	private Button addConhecimentoButton;
-	private AdicionaDesenvolvedorWizardPage page;
-	private AdicionaDesenvolvedorWizardPage2 page2;
 	private ArrayList<String> itensConhecimentos;
 	private ArrayList<Double> listaGraus;
 	
@@ -49,7 +43,6 @@ public class AdicionaDesenvolvedorWizardPage2 extends WizardPage {
         setTitle("Adiciona Desenvolvedor Wizard");
         setDescription("Adiciona Desenvolvedor");
         conhecimentosSelecionados = new Hashtable<String,TreeItem>();
-        ontologia = mensagemAba.getViewComunication().getOntologia();
         itensConhecimentos = new ArrayList<String>();
         listaGraus = new ArrayList<Double>();
     }
@@ -148,36 +141,22 @@ public class AdicionaDesenvolvedorWizardPage2 extends WizardPage {
         
         try{
         	
-        	final com.hukarz.presley.beans.Tree conhecimentosModelo = mensagemAba.getViewComunication().getOntologia();
-        	arvoreConhecimento = conhecimentosModelo.constroiArvoreGrafica(controls, SWT.BORDER );
+        	arvoreConhecimento = mensagemAba.getViewComunication().getArvoreGraficaDeConhecimentos(controls, SWT.BORDER );
+
         	arvoreConhecimento.addListener(SWT.Selection, new Listener() {
 			
 				public void handleEvent(Event e) {
 					TreeItem atual = (TreeItem)e.item;
 					boolean temFilhos = true;
-					String recebeNome = null;
 					
-					// TODO Auto-generated method stub
 					//Verifica se é o raiz, se for, não inclui este na lista
-					if (!atual.getText().equals(conhecimentosModelo.getRaiz().getConhecimento())) {
-														
-						itens = mensagemAba.getViewComunication().getOntologia().localizaFilho( (Conhecimento) atual.getData());
+					if (!atual.getText().equals(arvoreConhecimento.getItem(0).getText())) {
+										
+						temFilhos = !(atual.getItems().length != 0);
+
+						grauConhecimento.setEnabled(temFilhos);
+						addConhecimentoButton.setEnabled(temFilhos);
 						
-						for(int i = 0; i < itens.size(); i++){
-							
-							temFilhos = itens.get(i).temFilhos();
-						
-							
-						}
-						
-						if (temFilhos) {
-							grauConhecimento.setEnabled(false);
-							addConhecimentoButton.setEnabled(false);
-						} 
-						else {
-							grauConhecimento.setEnabled(true);
-							addConhecimentoButton.setEnabled(true);
-						}
 					}
 			
 				}

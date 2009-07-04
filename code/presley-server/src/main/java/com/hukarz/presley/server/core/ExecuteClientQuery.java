@@ -32,7 +32,6 @@ import com.hukarz.presley.excessao.ProjetoInexistenteException;
 import com.hukarz.presley.excessao.SenhaInvalidaException;
 import com.hukarz.presley.excessao.SolucaoIniexistenteException;
 import com.hukarz.presley.server.core.interfaces.CorePresleyOperations;
-import com.hukarz.presley.server.ontologia.Ontologia;
 import com.hukarz.presley.server.validacao.implementacao.ValidacaoConhecimentoImpl;
 import com.hukarz.presley.server.validacao.implementacao.ValidacaoDesenvolvedorImpl;
 import com.hukarz.presley.server.validacao.implementacao.ValidacaoMensagemImpl;
@@ -161,14 +160,6 @@ public class ExecuteClientQuery implements CorePresleyOperations{
 		return true;
 	}
 
-	public boolean qualificaDesenvolvedor(Desenvolvedor desenvolvedor,
-			Problema problema, boolean qualificacao) throws ConhecimentoInexistenteException, DesenvolvedorInexistenteException {
-		//ArrayList<String> conhecimentos = problema.getConhecimentos();
-		ArrayList<String> conhecimentos = validacaoProblema.getConhecimentosAssociados(problema.getDescricao());
-		// TODO: Should throw this exception?
-		return Ontologia.incrementaRespostasDesenvolvedor(desenvolvedor, qualificacao, conhecimentos);
-	}
-
 	public ArrayList<Conhecimento> getListaConhecimentos() {
 		ArrayList<Conhecimento> retorno = null;
 		retorno = validacaoConhecimento.getListaConhecimento();
@@ -188,11 +179,8 @@ public class ExecuteClientQuery implements CorePresleyOperations{
 		return true;
 	}
 
-	public Tree getOntologia() throws ConhecimentoInexistenteException {
-		//Ontologia ontologia = new Ontologia(null, null);
-
-		// TODO: Should throw this exception?
-		return Ontologia.getArvoreDeConhecimentos();
+	public Tree getArvoreConhecimentos() throws ConhecimentoInexistenteException {
+		return validacaoConhecimento.getArvoreDeConhecimentos();
 	}
 
 	public ArrayList<Problema> getListaProblemas(PacketStruct packet) {

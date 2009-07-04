@@ -125,10 +125,10 @@ public class ServerBridgeImp implements ServerBridge {
 			break;
 
 			// Packet tipo 17: GET_ONTOLOGIA
-		case CorePresleyOperations.GET_ONTOLOGIA:
+		case CorePresleyOperations.GET_ARVORECONHECIMENTOS:
 			try {
-				retorno = executeClientQuery.getOntologia();
-				typeRetorno = CorePresleyOperations.GET_ONTOLOGIA;
+				retorno = executeClientQuery.getArvoreConhecimentos();
+				typeRetorno = CorePresleyOperations.GET_ARVORECONHECIMENTOS;
 			} catch (ConhecimentoInexistenteException e1) {
 				retorno = "ERRO: Conhecimento inexistente.";
 				e1.printStackTrace();

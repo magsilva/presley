@@ -50,6 +50,7 @@ import com.hukarz.presley.beans.Conhecimento;
 import com.hukarz.presley.beans.Problema;
 import com.hukarz.presley.beans.Projeto;
 import com.hukarz.presley.client.gui.view.comunication.ViewComunication;
+import com.hukarz.presley.excessao.ConhecimentoInexistenteException;
 
 
 public class Dominio extends ViewPart {
@@ -105,8 +106,11 @@ public class Dominio extends ViewPart {
 	{
 		this.parentComposite = parent;
 		
-    	com.hukarz.presley.beans.Tree conhecimentosModelo = getViewComunication().getOntologia();
-    	treeConhecimentos = conhecimentosModelo.constroiArvoreGrafica(parentComposite, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
+    	try {
+			treeConhecimentos = getViewComunication().getArvoreGraficaDeConhecimentos(parentComposite, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
+		} catch (ConhecimentoInexistenteException e2) {
+			e2.printStackTrace();
+		}
 		treeConhecimentos.setLocation(0, posVerPainelTopicosDominio);
 		treeConhecimentos.setSize(larguraJanela, alturaPainelTopicosDominio);
 		treeConhecimentos.setVisible(true);
@@ -142,14 +146,18 @@ public class Dominio extends ViewPart {
 				// exibe o wizard para adicao de novo conhecimento
 				runAdicionaConhecimentoWizardAction();
 				
-		    	com.hukarz.presley.beans.Tree conhecimentosModelo2 = getViewComunication().getOntologia();
 		    	treeConhecimentos.removeAll();
-		    	TreeItem[] itemCadatrado = conhecimentosModelo2.constroiArvoreGrafica(parentComposite, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL).getItems();
-				TreeItem[] item = new TreeItem[itemCadatrado.length];
-				for (int i = 0; i < item.length; i++) {
-					item[i] = new TreeItem(treeConhecimentos, SWT.NONE);
-					item[i].setText(itemCadatrado[i].getText());
-					item[i].setData(itemCadatrado[i].getData());
+				try {
+			    	TreeItem[] itemCadatrado;
+					itemCadatrado = getViewComunication().getArvoreGraficaDeConhecimentos(parentComposite, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL).getItems();
+					TreeItem[] item = new TreeItem[itemCadatrado.length];
+					for (int i = 0; i < item.length; i++) {
+						item[i] = new TreeItem(treeConhecimentos, SWT.NONE);
+						item[i].setText(itemCadatrado[i].getText());
+						item[i].setData(itemCadatrado[i].getData());
+					}
+				} catch (ConhecimentoInexistenteException e1) {
+					e1.printStackTrace();
 				}
 
 			}

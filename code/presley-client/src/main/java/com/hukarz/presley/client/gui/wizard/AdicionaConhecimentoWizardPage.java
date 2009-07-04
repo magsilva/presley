@@ -38,9 +38,7 @@ public class AdicionaConhecimentoWizardPage extends WizardPage {
 	private Button addConhecimentoButton;
 	private Tree arvoreConhecimento;
 	private ArrayList<TreeItem> conhecimentosSelecionados;
-	private com.hukarz.presley.beans.Tree ontologia;
 	private ArrayList<String> nomesNosAdicionado;
-	private String paiConhecimento;
 	private Map<Conhecimento, Conhecimento> conhecimentoFilhoPai;
 
     public AdicionaConhecimentoWizardPage(ISelection selection, Dominio dominio) {
@@ -49,7 +47,6 @@ public class AdicionaConhecimentoWizardPage extends WizardPage {
         setDescription("Adiciona uma novo Conhecimento.");
         this.dominio = dominio;
         conhecimentosSelecionados = new ArrayList<TreeItem>();
-        ontologia = dominio.getViewComunication().getOntologia();
         nomesNosAdicionado = new ArrayList<String>();
         
         conhecimentoFilhoPai = new HashMap<Conhecimento, Conhecimento>();
@@ -155,9 +152,7 @@ public class AdicionaConhecimentoWizardPage extends WizardPage {
         });
         
         try{
-        	
-        	com.hukarz.presley.beans.Tree conhecimentosModelo = dominio.getViewComunication().getOntologia();
-        	arvoreConhecimento = conhecimentosModelo.constroiArvoreGrafica(controls, SWT.BORDER | SWT.CHECK);
+        	arvoreConhecimento = dominio.getViewComunication().getArvoreGraficaDeConhecimentos(controls, SWT.BORDER | SWT.CHECK);
         	arvoreConhecimento.addListener(SWT.Selection, new Listener() {
 			
 				public void handleEvent(Event e) {
