@@ -86,8 +86,6 @@ public class MensagemAba extends ViewPart {
 
 	private Projeto projetoAtivo;
 	private PresleyJayFX aDB;
-	private Map<String, String> listaElementosProjeto;
-	
 	
 	public MensagemAba() {
 		this.viewComunication = new ViewComunication(ipServidor);
@@ -102,10 +100,6 @@ public class MensagemAba extends ViewPart {
 
 	public PresleyJayFX getDadosProjetoAtivo(){
 		return aDB;
-	}
-	
-	public Map<String, String> getElementosProjeto(){
-		return listaElementosProjeto;
 	}
 	
 	public ViewComunication getViewComunication() {
@@ -198,9 +192,7 @@ public class MensagemAba extends ViewPart {
 						aDB = new PresleyJayFX( projetoAtivo );
 					} catch (JayFXException e1) {
 						e1.printStackTrace();
-					}
-			 		// Busca Todos os Elementos no projeto
-			 		listaElementosProjeto = aDB.getTodasClassesMetodos();
+					}	
 				}	
 				
 				// Exibe o wizard de login
@@ -212,7 +204,6 @@ public class MensagemAba extends ViewPart {
 			}
 
 			public void mouseUp(MouseEvent e) {
-				// TODO Auto-generated method stub
 
 			}
 

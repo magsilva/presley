@@ -1,37 +1,18 @@
 package com.hukarz.presley.server.inferencia;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.FilenameFilter;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.sql.Date;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.StringTokenizer;
 
 import com.hukarz.presley.beans.ArquivoJava;
 import com.hukarz.presley.beans.Conhecimento;
 import com.hukarz.presley.beans.Desenvolvedor;
 import com.hukarz.presley.beans.Problema;
-import com.hukarz.presley.beans.Projeto;
-import com.hukarz.presley.beans.Solucao;
-import com.hukarz.presley.excessao.DesenvolvedorInexistenteException;
-import com.hukarz.presley.excessao.ProblemaInexistenteException;
 import com.hukarz.presley.server.persistencia.implementacao.ServicoConhecimentoImplDAO;
 import com.hukarz.presley.server.persistencia.implementacao.ServicoDesenvolvedorImplDAO;
-import com.hukarz.presley.server.persistencia.implementacao.ServicoProblemaImplDAO;
-import com.hukarz.presley.server.persistencia.implementacao.ServicoProjetoImplDAO;
 import com.hukarz.presley.server.persistencia.interfaces.ServicoConhecimento;
 import com.hukarz.presley.server.persistencia.interfaces.ServicoDesenvolvedor;
-import com.hukarz.presley.server.persistencia.interfaces.ServicoProblema;
-import com.hukarz.presley.server.persistencia.interfaces.ServicoProjeto;
-import com.hukarz.presley.server.validacao.implementacao.ValidacaoSolucaoImpl;
 
 
 /*
@@ -261,101 +242,11 @@ public class Inferencia {
 			}
 		}
 		
-		gerarLog(listaDesenvolvedores, participacaoDesenvolvedor);
-		criarSolucoesValidas(listaDesenvolvedores, problema);
+		RegistroExperimento registroExperimento = new 
+			RegistroExperimento(listaDesenvolvedores, participacaoDesenvolvedor, problema);
+		registroExperimento.gerarLog();
 		
 		return listaDesenvolvedores;
 	}
 	
-	private void gerarLog(ArrayList<Desenvolvedor> listaDesenvolvedores, 
-			Map<Desenvolvedor, Integer> participacaoDesenvolvedor){
-		ServicoProjeto servicoProjeto = new ServicoProjetoImplDAO();
-		Projeto projeto = servicoProjeto.getProjetoAtivo();
-		
-		File diretorioCD = new File( projeto.getEndereco_Servidor_Gravacao() );
-		
-		File[] listagemDiretorio = diretorioCD.listFiles(new FilenameFilter() {  
-			public boolean accept(File d, String name) {  
-				return name.toLowerCase().endsWith(".recomendacoes");  
-			}  
-		}); 
-
-		try {  			
-			String nomeArquivo = "000" + Integer.toString(listagemDiretorio.length + 1);
-			nomeArquivo = nomeArquivo.substring(nomeArquivo.length()-4);
-			PrintWriter saidaRecomendacao = new PrintWriter(new 
-					FileOutputStream(projeto.getEndereco_Servidor_Gravacao() + nomeArquivo + ".recomendacoes"));
-			
-			PrintWriter saidaPontuacao = new PrintWriter(new 
-					FileOutputStream(projeto.getEndereco_Servidor_Gravacao() + nomeArquivo + ".extra"));
-			for (Desenvolvedor desenvolvedor : listaDesenvolvedores) {
-				
-		    	StringTokenizer st = new StringTokenizer( desenvolvedor.getListaEmail() );
-				while (st.hasMoreTokens()){
-					String email = st.nextToken();
-					saidaRecomendacao.println( email );
-				}
-
-				saidaPontuacao.println( desenvolvedor.getEmail() + " - " + participacaoDesenvolvedor.get(desenvolvedor));
-			}
-			
-			saidaRecomendacao.close();
-			saidaPontuacao.close();
-		} catch (FileNotFoundException e) {  
-			e.printStackTrace();  
-		}  
-	}
-	
-	private void criarSolucoesValidas(ArrayList<Desenvolvedor> listaDesenvolvedores, Problema problema){
-		try {
-			ValidacaoSolucaoImpl  validacaoSolucao = new ValidacaoSolucaoImpl();
-
-			ServicoProjeto servicoProjeto = new ServicoProjetoImplDAO();
-			Projeto projeto = servicoProjeto.getProjetoAtivo();
-
-			File diretorioCD = new File( projeto.getEndereco_Servidor_Gravacao() );
-
-			File[] listagemDiretorio = diretorioCD.listFiles(new FilenameFilter() {  
-				public boolean accept(File d, String name) {  
-					return name.toLowerCase().endsWith(".recomendacoes");  
-				}  
-			}); 
-
-			String nomeArquivoEmail = "000" + Integer.toString(listagemDiretorio.length);
-			nomeArquivoEmail = nomeArquivoEmail.substring(nomeArquivoEmail.length()-4);
-
-			File file = new File( projeto.getEndereco_Servidor_Gravacao() + nomeArquivoEmail+ ".emails" );
-			FileReader fileReader = new FileReader(file);
-			BufferedReader reader = new BufferedReader(fileReader);
-			
-			String conteudoEmail = reader.toString();
-			
-			for (Desenvolvedor desenvolvedor : listaDesenvolvedores) {
-
-				StringTokenizer st = new StringTokenizer( desenvolvedor.getListaEmail() );
-				while (st.hasMoreTokens()){
-					String email = st.nextToken();
-					if (conteudoEmail.contains(email)){
-
-						Solucao solucao = new Solucao();
-						solucao.setAjudou(true);
-						solucao.setProblema(problema);
-						solucao.setData( new Date(System.currentTimeMillis()) ) ;
-						solucao.setMensagem("");
-						solucao.setDesenvolvedor(desenvolvedor);
-
-						validacaoSolucao.cadastrarSolucao(solucao);
-						break;
-					}
-				} 
-			}
-
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (ProblemaInexistenteException e) {
-			e.printStackTrace();
-		} catch (DesenvolvedorInexistenteException e) {
-			e.printStackTrace();
-		}	
-	}
 }

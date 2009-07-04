@@ -28,14 +28,14 @@ public class AdicionaProblemaWizard extends Wizard implements INewWizard {
 	
 	private AdicionaProblemaWizardPage page;
     private ISelection selection;
-    private MensagemAba mensagem;
+    private MensagemAba mensagemAba;
 
 	public AdicionaProblemaWizard(MensagemAba m) {
         super();
         setNeedsProgressMonitor(true);
         ImageDescriptor image = AbstractUIPlugin.imageDescriptorFromPlugin("Add", "/src/main/resources/icons/presley.gif");
         setDefaultPageImageDescriptor(image);
-        mensagem = m;
+        mensagemAba = m;
 	}
 
 	@Override
@@ -72,13 +72,13 @@ public class AdicionaProblemaWizard extends Wizard implements INewWizard {
 			problema.setDescricao( page.getDescricao() );
 			problema.setData(new Date(System.currentTimeMillis()));
 			problema.setClassesRelacionadas( 
-					page.getClassesRelacionadas(page.getDescricao() + " " + page.getMensagem(), " ") ) ;
+					mensagemAba.getDadosProjetoAtivo().getClassesRelacionadas(page.getDescricao() + " " + page.getMensagem(), " ") ) ;
 			problema.setDesenvolvedorOrigem( MensagemAba.getDesenvolvedorLogado() ) ;
 			problema.setResolvido(false);
-			problema.setProjeto( mensagem.getViewComunication().getProjetoAtivo());
+			problema.setProjeto( mensagemAba.getViewComunication().getProjetoAtivo());
 
 			//Adciona problema ao banco
-			mensagem.getViewComunication().adicionaProblema(problema);
+			mensagemAba.getViewComunication().adicionaProblema(problema);
 
 		}catch (Exception e) {
 			MessageDialog.openError(this.getShell(), "ERRO", e.getMessage());
@@ -105,11 +105,11 @@ public class AdicionaProblemaWizard extends Wizard implements INewWizard {
         		Problema problema = new Problema();
         		problema.setResolvido(false);
         		problema.setData(new Date(System.currentTimeMillis()));
-        		problema.setProjeto( mensagem.getViewComunication().getProjetoAtivo() );
+        		problema.setProjeto( mensagemAba.getViewComunication().getProjetoAtivo() );
         		
         		// Desenvolvedor que enviou o problema
 				String linha = reader.readLine();
-        		problema.setDesenvolvedorOrigem( mensagem.getViewComunication().login(linha, "1") ) ;
+        		problema.setDesenvolvedorOrigem( mensagemAba.getViewComunication().login(linha, "1") ) ;
 
         		// Descrição do problema
         		linha = reader.readLine();
@@ -122,10 +122,10 @@ public class AdicionaProblemaWizard extends Wizard implements INewWizard {
 				}
 
         		problema.setClassesRelacionadas( 
-        				page.getClassesRelacionadas(problema.getDescricao() + " " + problema.getMensagem(), " ") ) ;
+        				mensagemAba.getDadosProjetoAtivo().getClassesRelacionadas(problema.getDescricao() + " " + problema.getMensagem(), " ") ) ;
         		
         		//Adciona problema ao banco
-        		mensagem.getViewComunication().adicionaProblema(problema);
+        		mensagemAba.getViewComunication().adicionaProblema(problema);
 			}
 		} catch (Exception e) {
 
@@ -142,7 +142,7 @@ public class AdicionaProblemaWizard extends Wizard implements INewWizard {
 	}
 
 	public void addPages() {
-        page = new AdicionaProblemaWizardPage(mensagem);
+        page = new AdicionaProblemaWizardPage(mensagemAba);
         addPage(page);
     }
 	

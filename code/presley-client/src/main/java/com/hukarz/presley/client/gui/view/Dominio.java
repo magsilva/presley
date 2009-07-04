@@ -59,7 +59,7 @@ public class Dominio extends ViewPart {
 	private ViewComunication viewComunication;
 	private String ipServidor = "127.0.0.1";
 	
-	private Button incluirTopico, alterarTopico, incluirDocumentoBase;
+	private Button incluirTopico, executarExperimento, incluirDocumentoBase;
 	
 	private final int larguraBotao = 20;
 	private final int alturaBotao = 20;
@@ -83,8 +83,7 @@ public class Dominio extends ViewPart {
 	
 	private Label documentosBase;
 	private List listaDocumentosBase; 
-	private Map<String, String> listaElementosProjeto;
-	PresleyJayFX aDB;
+	private PresleyJayFX aDB;
 	
 	public Dominio() {
 		this.viewComunication = new ViewComunication(ipServidor);
@@ -169,15 +168,15 @@ public class Dominio extends ViewPart {
 			
 		});
 		
-		alterarTopico = new Button(parentComposite, SWT.NONE);
-		Image trocaMsg = new Image(alterarTopico.getDisplay(),this.getClass().getResourceAsStream("/src/main/resources/icons/trocaMsg.gif"));
-		alterarTopico.setLocation(posHorBotaoNivel2, posVerBotaoNivel1);
-		alterarTopico.setSize(larguraBotao, alturaBotao);
-		alterarTopico.setImage(trocaMsg);
-		alterarTopico.setToolTipText("Executar Experimento");
-		alterarTopico.setVisible(true);
-		alterarTopico.setEnabled(true);
-		alterarTopico.addMouseListener(new MouseListener(){
+		executarExperimento = new Button(parentComposite, SWT.NONE);
+		Image trocaMsg = new Image(executarExperimento.getDisplay(),this.getClass().getResourceAsStream("/src/main/resources/icons/trocaMsg.gif"));
+		executarExperimento.setLocation(posHorBotaoNivel2, posVerBotaoNivel1);
+		executarExperimento.setSize(larguraBotao, alturaBotao);
+		executarExperimento.setImage(trocaMsg);
+		executarExperimento.setToolTipText("Executar Experimento");
+		executarExperimento.setVisible(true);
+		executarExperimento.setEnabled(true);
+		executarExperimento.addMouseListener(new MouseListener(){
 
 			private Logger logger = Logger.getLogger(this.getClass());
 
@@ -194,9 +193,6 @@ public class Dominio extends ViewPart {
 					//e1.printStackTrace();
 					System.exit(1);
 				}
-				// Busca Todos os Elementos no projeto
-				listaElementosProjeto = aDB.getTodasClassesMetodos();
-
 				Shell shell = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
 
 				DirectoryDialog dialog = new DirectoryDialog(shell, SWT.OPEN);
@@ -365,7 +361,7 @@ public class Dominio extends ViewPart {
 				}
 
         		problema.setClassesRelacionadas( 
-        				getClassesRelacionadas(problema.getDescricao() + " " + problema.getMensagem(), " ") ) ;
+        			 aDB.getClassesRelacionadas(problema.getDescricao() + " " + problema.getMensagem(), " ") ) ;
         		
         		//Adciona problema ao banco
         		viewComunication.adicionaProblema(problema);
@@ -377,44 +373,5 @@ public class Dominio extends ViewPart {
 	}
 
 	
-    /**
-     * Metodo que retorna todas as classes e nomes de arquivos relacionados a mensagem 
-     * esrita pelo desenvolvedor
-     * @return <classe ou metodo,arquivo>
-     * @throws ConversionException 
-     * @throws ConversionException 
-     */
-    public Map<ClasseJava, ArquivoJava> getClassesRelacionadas( String texto, String separadorPalavras ) throws ConversionException {
-    	Map<ClasseJava, ArquivoJava> retorno = new HashMap<ClasseJava, ArquivoJava>();
-    	
-    	StringTokenizer st = new StringTokenizer(texto, separadorPalavras);
-    	
-		while (st.hasMoreTokens()){   
-			String palavra = st.nextToken();
-			
-			if (palavra.contains("."))
-				getClassesRelacionadas(palavra,".");
-			else if (listaElementosProjeto.values().contains(palavra)){
-				for (String nomeClasse : listaElementosProjeto.keySet()) {
-					if (listaElementosProjeto.get(nomeClasse).equals(palavra)){
-						IElement elemento ;
-						elemento = FlyweightElementFactory.getElement( ICategories.CLASS, nomeClasse );
-						retorno.putAll( aDB.getElementoRelacionamento(elemento) );
-								
-						ClasseJava classe;   
-						classe = new ClasseJava( elemento.getId() ); 
-					
-			    		ArquivoJava arquivo = new ArquivoJava(aDB.convertToJavaElement(elemento).getResource().getName(), aDB.getProjetoSelecionado());
-			  	    		
-			    		arquivo.setEnderecoServidor( aDB.convertToJavaElement(elemento).getPath().toString() ) ;
-			    		retorno.put(classe, arquivo);
-			    		break;
-					}						
-				}
-			}
-		}
-    	
-    	return retorno;    	
-    }
 	
 }

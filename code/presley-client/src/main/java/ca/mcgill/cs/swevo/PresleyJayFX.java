@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
+import java.util.StringTokenizer;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IWorkspace;
@@ -16,6 +17,7 @@ import org.eclipse.ui.PlatformUI;
 import ca.mcgill.cs.swevo.jayfx.ConversionException;
 import ca.mcgill.cs.swevo.jayfx.JayFX;
 import ca.mcgill.cs.swevo.jayfx.JayFXException;
+import ca.mcgill.cs.swevo.jayfx.model.FlyweightElementFactory;
 import ca.mcgill.cs.swevo.jayfx.model.ICategories;
 import ca.mcgill.cs.swevo.jayfx.model.IElement;
 import ca.mcgill.cs.swevo.jayfx.model.MethodElement;
@@ -31,6 +33,7 @@ public class PresleyJayFX extends JayFX {
 	
 	// Sigleton
 	private Projeto projeto;
+	private Map<String, String> listaElementosProjeto = new HashMap<String, String>();
 	
 	public PresleyJayFX (Projeto projeto) throws JayFXException {
 		super();
@@ -41,6 +44,9 @@ public class PresleyJayFX extends JayFX {
 		IWorkspaceRoot workspaceRoot = workspace.getRoot();
 		IProject project = workspaceRoot.getProject(projeto.getNome());
 		initialize(project, progressMonitor, true);
+		
+ 		// Busca Todos os Elementos no projeto
+		listaElementosProjeto = getTodasClassesMetodos();
 	}
 
 	public Projeto getProjetoSelecionado(){
@@ -151,4 +157,49 @@ public class PresleyJayFX extends JayFX {
     	return listaElementos;
     }
     
+    
+    /**
+     * Metodo que retorna todas as classes e nomes de arquivos relacionados a mensagem 
+     * esrita pelo desenvolvedor
+     * @return <classe ou metodo,arquivo>
+     * @throws ConversionException 
+     * @throws ConversionException 
+     */
+    public Map<ClasseJava, ArquivoJava> getClassesRelacionadas( String texto, String separadorPalavras ) throws ConversionException {
+    	Map<ClasseJava, ArquivoJava> retorno = new HashMap<ClasseJava, ArquivoJava>();
+    	
+    	StringTokenizer st = new StringTokenizer(texto, separadorPalavras);
+    	
+		while (st.hasMoreTokens()){   
+			String palavra = st.nextToken();
+			
+			if (palavra.contains("."))
+				getClassesRelacionadas(palavra,".");
+			else if (listaElementosProjeto.values().contains(palavra)){
+				for (String nomeClasse : listaElementosProjeto.keySet()) {
+					if (listaElementosProjeto.get(nomeClasse).equals(palavra)){
+						IElement elemento ;
+						elemento = FlyweightElementFactory.getElement( ICategories.CLASS, nomeClasse );
+						retorno.putAll( getElementoRelacionamento(elemento) );
+								
+						ClasseJava classe;   
+						classe = new ClasseJava( elemento.getId() ); 
+					
+			    		ArquivoJava arquivo = new ArquivoJava(convertToJavaElement(elemento).getResource().getName(), getProjetoSelecionado());
+			  	    		
+			    		arquivo.setEnderecoServidor( convertToJavaElement(elemento).getPath().toString() ) ;
+			    		retorno.put(classe, arquivo);
+			    		break;
+					}						
+				}
+			}
+		}
+    	
+    	return retorno;    	
+    }
+
+	public Map<String, String> getListaElementosProjeto() {
+		return listaElementosProjeto;
+	}
+        
 }

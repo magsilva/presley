@@ -45,7 +45,6 @@ public class AdicionaProblemaWizardPage extends WizardPage {
 	private int minimumHeight = 100;
 	private Map<String, String> listaElementosProjeto = new HashMap<String, String>();
 	private ArrayList<String> listaElementosSelecionados;
-	private PresleyJayFX aDB;
 	private MensagemAba mensagemAba;
 	private Button incluirExperimentoWDDS;
 	private Button diretorioExperimentoWDDS;
@@ -80,46 +79,6 @@ public class AdicionaProblemaWizardPage extends WizardPage {
     public String getDiretorioArquivos(){
     	return diretorio;
     }
-    /**
-     * Metodo que retorna todas as classes e nomes de arquivos relacionados a mensagem 
-     * esrita pelo desenvolvedor
-     * @return <classe ou metodo,arquivo>
-     * @throws ConversionException 
-     * @throws ConversionException 
-     */
-    public Map<ClasseJava, ArquivoJava> getClassesRelacionadas( String texto, String separadorPalavras ) throws ConversionException {
-    	Map<ClasseJava, ArquivoJava> retorno = new HashMap<ClasseJava, ArquivoJava>();
-    	
-    	StringTokenizer st = new StringTokenizer(texto, separadorPalavras);
-    	
-		while (st.hasMoreTokens()){   
-			String palavra = st.nextToken();
-			
-			if (palavra.contains("."))
-				getClassesRelacionadas(palavra,".");
-			else if (listaElementosProjeto.values().contains(palavra)){
-				for (String nomeClasse : listaElementosProjeto.keySet()) {
-					if (listaElementosProjeto.get(nomeClasse).equals(palavra)){
-						IElement elemento ;
-						elemento = FlyweightElementFactory.getElement( ICategories.CLASS, nomeClasse );
-						retorno.putAll( aDB.getElementoRelacionamento(elemento) );
-								
-						ClasseJava classe;   
-						classe = new ClasseJava( elemento.getId() ); 
-					
-			    		ArquivoJava arquivo = new ArquivoJava(aDB.convertToJavaElement(elemento).getResource().getName(), aDB.getProjetoSelecionado());
-			  	    		
-			    		arquivo.setEnderecoServidor( aDB.convertToJavaElement(elemento).getPath().toString() ) ;
-			    		retorno.put(classe, arquivo);
-			    		break;
-					}						
-				}
-			}
-		}
-    	
-    	return retorno;    	
-    }
-    
     
 	public void createControl(Composite parent) {
         Composite controls = new Composite(parent, SWT.NULL);
@@ -187,8 +146,7 @@ public class AdicionaProblemaWizardPage extends WizardPage {
         		}
         );
 
- 		aDB = mensagemAba.getDadosProjetoAtivo();
- 		listaElementosProjeto = mensagemAba.getElementosProjeto();
+ 		listaElementosProjeto = mensagemAba.getDadosProjetoAtivo().getListaElementosProjeto();
 
  		//Preenche o combo
  		Object[] elementos = listaElementosProjeto.keySet().toArray() ;
