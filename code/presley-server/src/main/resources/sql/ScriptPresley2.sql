@@ -144,3 +144,15 @@ CREATE TABLE  desenvolvedor_has_conhecimento (
   CONSTRAINT desenvolvedor_has_conhecimento_ibfk_1 FOREIGN KEY (desenvolvedor_email) REFERENCES desenvolvedor (email) ON DELETE CASCADE,
   CONSTRAINT desenvolvedor_has_conhecimento_ibfk_2 FOREIGN KEY (conhecimento_nome) REFERENCES conhecimento (nome) ON DELETE CASCADE
 );
+
+CREATE TABLE  log_controle_versao (
+  idLog int(10) unsigned NOT NULL auto_increment,
+  desenvolvedor_email varchar(50) NOT NULL,
+  arquivo_id int(10) unsigned NOT NULL,
+  data_hora datetime NOT NULL,
+  PRIMARY KEY  (idLog),
+  KEY FK_log_controle_versao_2 (desenvolvedor_email),
+  KEY FK_log_controle_versao_1 (arquivo_id),
+  CONSTRAINT FK_log_controle_versao_1 FOREIGN KEY (arquivo_id) REFERENCES arquivo (id) ON DELETE CASCADE,
+  CONSTRAINT FK_log_controle_versao_2 FOREIGN KEY (desenvolvedor_email) REFERENCES desenvolvedor (email) ON DELETE CASCADE
+);

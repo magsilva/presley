@@ -20,8 +20,10 @@ import com.hukarz.presley.excessao.DesenvolvedorInexistenteException;
 import com.hukarz.presley.excessao.NomeInvalidoException;
 import com.hukarz.presley.server.persistencia.implementacao.ServicoArquivoImplDAO;
 import com.hukarz.presley.server.persistencia.implementacao.ServicoDesenvolvedorImplDAO;
+import com.hukarz.presley.server.persistencia.implementacao.ServicoLogControleVersaoImplDAO;
 import com.hukarz.presley.server.persistencia.interfaces.ServicoArquivo;
 import com.hukarz.presley.server.persistencia.interfaces.ServicoDesenvolvedor;
+import com.hukarz.presley.server.persistencia.interfaces.ServicoLogControleVersao;
 import com.ximpleware.AutoPilot;
 import com.ximpleware.NavException;
 import com.ximpleware.ParseException;
@@ -113,60 +115,16 @@ public class ValidacaoArquivoImpl {
 	public Map<ArquivoJava, ArrayList<Desenvolvedor>> getDesenvolvedoresArquivos(Problema problema){
 		// Cria uma lista com os Desenvolvedores de cada arquivo java		 
 		Map<ArquivoJava, ArrayList<Desenvolvedor>> arquivoDesenvolvedores = new HashMap<ArquivoJava, ArrayList<Desenvolvedor>>();
-
+		ServicoLogControleVersao servicoLogControleVersao = new ServicoLogControleVersaoImplDAO();
+		
 		cadastrarArquivosProblema(problema);
 
 		Collection<ArquivoJava> listaArquivo = problema.getClassesRelacionadas().values();
 
-		try {
-			// open a file and read the content into a byte array
-			File f = new File(problema.getProjeto().getEndereco_Log());
-
-			FileInputStream fis =  new FileInputStream(f);
-			byte[] b = new byte[(int) f.length()];
-			fis.read(b);
-
-			VTDGen vg = new VTDGen();
-			vg.setDoc(b);
-			vg.parse(true);  // set namespace awareness to true
-			VTDNav vn = vg.getNav();
-
-			AutoPilot ap0 = new AutoPilot();
-			AutoPilot ap1 = new AutoPilot();
-
-			for (Arquivo arquivo : listaArquivo) {
-				ArrayList<Desenvolvedor> desenvolvedores = new ArrayList<Desenvolvedor>();
-				
-				// Selecione os autores que tem registro de log com o arquivo solicitado
-				ap0.selectXPath("/log/logentry [paths/path='"+ arquivo.getEnderecoLog() +"']");
-				ap1.selectXPath("author");
-
-				ap0.bind(vn);
-				ap1.bind(vn);
-				while(ap0.evalXPath()!=-1){
-					String author = ap1.evalXPathToString();
-					Desenvolvedor desenvolvedor = servicoDesenvolvedor.getDesenvolvedorCVS(author);
-
-					if (desenvolvedores.indexOf(desenvolvedor)==-1)
-						desenvolvedores.add(desenvolvedor);
-				}
-
-				ap0.resetXPath();
-				
-				arquivoDesenvolvedores.put((ArquivoJava) arquivo, desenvolvedores);
-			}
-		} catch (ParseException e) {
-			this.logger.trace(" XML file parsing error \n"+e);
-		} catch (NavException e) {
-			this.logger.trace(" Exception during navigation "+e);
-		} catch (XPathParseException e) {
-
-		} catch (XPathEvalException e) {
-
-		} catch (java.io.IOException e)	{
-			this.logger.trace(" IO exception condition"+e);
-		} catch (DesenvolvedorInexistenteException e) {
-			// e.printStackTrace();
+		for (ArquivoJava arquivo : listaArquivo) {
+			ArrayList<Desenvolvedor> desenvolvedores = servicoLogControleVersao.getDesenvolvedoresArquivo(arquivo, problema.getData()); 
+			
+			arquivoDesenvolvedores.put((ArquivoJava) arquivo, desenvolvedores);
 		}
 
 		return arquivoDesenvolvedores;

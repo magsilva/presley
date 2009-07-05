@@ -26,7 +26,7 @@ import com.hukarz.presley.client.gui.view.MensagemAba;
 
 public class AdicionaProjetoWizardPage extends WizardPage {
 	private Combo projetosExistentes;
-	private Text nomeText, enderecoLeituraText, enderecoGravacaoText;
+	private Text nomeText, enderecoArquivoLog, enderecoGravacao, enderecoServidorProjeto;
 	private Button projetoAtivo;
 	private MensagemAba mensagem;
 	private TabFolder tabFolder;
@@ -56,9 +56,9 @@ public class AdicionaProjetoWizardPage extends WizardPage {
     	Projeto projeto = new Projeto();
     	projeto.setAtivo(true);
     	projeto.setNome( nomeText.getText() );
-    	projeto.setEndereco_Servidor_Gravacao( enderecoGravacaoText.getText() );
-    	projeto.setEndereco_Log( enderecoLeituraText.getText() );
-    	
+    	projeto.setEndereco_Servidor_Gravacao( enderecoGravacao.getText() );
+    	projeto.setEndereco_Log( enderecoArquivoLog.getText() );
+    	projeto.setEndereco_Servidor_Projeto( enderecoServidorProjeto.getText() );
     	return projeto;
     }
     
@@ -122,11 +122,11 @@ public class AdicionaProjetoWizardPage extends WizardPage {
 
         
 	    Label lblLeitura = new Label(composite, SWT.NULL);
-	    lblLeitura.setText("Endereço do Projeto: ");
+	    lblLeitura.setText("Endereço do Arquivo de Log: ");
         
-        enderecoLeituraText = new Text( composite, SWT.BORDER | SWT.SINGLE);
-        enderecoLeituraText.setLayoutData(gd);
-        enderecoLeituraText.addModifyListener( new ModifyListener() {
+        enderecoArquivoLog = new Text( composite, SWT.BORDER | SWT.SINGLE);
+        enderecoArquivoLog.setLayoutData(gd);
+        enderecoArquivoLog.addModifyListener( new ModifyListener() {
                 public void modifyText(
                         ModifyEvent e) {
                     dialogChanged();
@@ -137,15 +137,27 @@ public class AdicionaProjetoWizardPage extends WizardPage {
 	    Label lblGravacao = new Label(composite, SWT.NULL);
 	    lblGravacao.setText("Endereço para Gravação: ");
         
-        enderecoGravacaoText = new Text( composite, SWT.BORDER | SWT.SINGLE);
-        enderecoGravacaoText.setLayoutData(gd);
-        enderecoGravacaoText.addModifyListener( new ModifyListener() {
+        enderecoGravacao = new Text( composite, SWT.BORDER | SWT.SINGLE);
+        enderecoGravacao.setLayoutData(gd);
+        enderecoGravacao.addModifyListener( new ModifyListener() {
                 public void modifyText(
                         ModifyEvent e) {
                     dialogChanged();
                 }
              });
 
+	    Label lblEnderecoProjeto = new Label(composite, SWT.NULL);
+	    lblEnderecoProjeto.setText("Endereço do Projeto no Servidor: ");
+        
+        enderecoServidorProjeto = new Text( composite, SWT.BORDER | SWT.SINGLE);
+        enderecoServidorProjeto.setLayoutData(gd);
+        enderecoServidorProjeto.addModifyListener( new ModifyListener() {
+                public void modifyText(
+                        ModifyEvent e) {
+                    dialogChanged();
+                }
+             });
+        
 	    return composite;
 	  }
 	  

@@ -4,6 +4,7 @@ import java.util.logging.Logger;
 
 import com.hukarz.presley.communication.facade.PrincipalSUBJECT;
 import com.hukarz.presley.communication.server.ServerBridge;
+import com.hukarz.presley.server.validacao.implementacao.ValidacaoLogControleVersaoImpl;
 
 
 /**
@@ -16,7 +17,8 @@ import com.hukarz.presley.communication.server.ServerBridge;
 public class StartPresleyServer {
 	
 	private Logger logger = Logger.getLogger(this.getClass().getName());
-
+	private ValidacaoLogControleVersaoImpl validacaoLogControleVersao = new ValidacaoLogControleVersaoImpl();
+	
 	public StartPresleyServer() {
 		
 		this.logger.info("Iniciando Servidor Presley...\n");
@@ -29,6 +31,8 @@ public class StartPresleyServer {
 			this.logger.info("Criando Instancia do Servidor...");
 			PrincipalSUBJECT.getInstance("server", null, 1099);
 			this.logger.info("Instancia Criada com Sucesso!");
+			
+			validacaoLogControleVersao.registrarLogDoArquivo();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
