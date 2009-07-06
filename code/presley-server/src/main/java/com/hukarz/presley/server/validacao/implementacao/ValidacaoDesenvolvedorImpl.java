@@ -309,5 +309,9 @@ public class ValidacaoDesenvolvedorImpl {
 		
 		return desenvolvedor;
 	}
+	
+	public Desenvolvedor getDesenvolvedorPorNome(String nome) throws DesenvolvedorInexistenteException {
+		return servicoDesenvolvedor.getDesenvolvedorPorNome(nome);
+	}
 
 }

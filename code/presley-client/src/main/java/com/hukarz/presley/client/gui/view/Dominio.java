@@ -9,12 +9,9 @@ import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Map;
-import java.util.StringTokenizer;
 
 import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
@@ -37,15 +34,9 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
 
 import ca.mcgill.cs.swevo.PresleyJayFX;
-import ca.mcgill.cs.swevo.jayfx.ConversionException;
 import ca.mcgill.cs.swevo.jayfx.JayFXException;
-import ca.mcgill.cs.swevo.jayfx.model.FlyweightElementFactory;
-import ca.mcgill.cs.swevo.jayfx.model.ICategories;
-import ca.mcgill.cs.swevo.jayfx.model.IElement;
 
 import com.hukarz.presley.beans.Arquivo;
-import com.hukarz.presley.beans.ArquivoJava;
-import com.hukarz.presley.beans.ClasseJava;
 import com.hukarz.presley.beans.Conhecimento;
 import com.hukarz.presley.beans.Problema;
 import com.hukarz.presley.beans.Projeto;
@@ -188,7 +179,8 @@ public class Dominio extends ViewPart {
 				projetoAtivo = viewComunication.getProjetoAtivo(); 
 				// Objeto para o JayFX
 				try {
-					aDB = new PresleyJayFX( projetoAtivo );
+					if (aDB == null)
+						aDB = new PresleyJayFX( projetoAtivo );
 				} catch (JayFXException e1) {
 					//e1.printStackTrace();
 					System.exit(1);
@@ -343,13 +335,23 @@ public class Dominio extends ViewPart {
 
         		Problema problema = new Problema();
         		problema.setResolvido(false);
-        		problema.setData(new Date(System.currentTimeMillis()));
         		problema.setProjeto( projetoAtivo );
         		
         		// Desenvolvedor que enviou o problema
 				String linha = reader.readLine();
-        		problema.setDesenvolvedorOrigem( viewComunication.login(linha, "1") ) ;
-
+				if (!linha.contains("jira@apache.org"))
+					problema.setDesenvolvedorOrigem( viewComunication.login(linha, "1") ) ;
+				else {
+					linha = linha.replace("jira@apache.org", "");
+					linha = linha.replace("\"", "").trim();
+					problema.setDesenvolvedorOrigem( viewComunication.getDesenvolvedorPorNome(linha) ) ;
+				}	
+				
+        		// Data do envio
+        		linha = reader.readLine();
+        		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");  
+        		problema.setData( new java.sql.Date( sdf.parse(linha).getTime() ));
+        		
         		// Descrição do problema
         		linha = reader.readLine();
         		problema.setDescricao( linha );
@@ -371,7 +373,6 @@ public class Dominio extends ViewPart {
 		}
 
 	}
-
 	
 	
 }

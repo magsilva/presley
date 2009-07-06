@@ -162,4 +162,13 @@ public interface ServicoDesenvolvedor {
 	 * @return
 	 */
 	public ArrayList<Desenvolvedor> getDesenvolvedoresPorConhecimento(Conhecimento conhecimento);
+	
+	/**
+	 * Este método retorna o desenvolvedor que possui o nome
+	 * passado como parametro.
+	 * @param nome Nome do desenvolvedor.
+	 * @return <Desenvolvedor> 
+	 * @throws DesenvolvedorInexistenteException 
+	 */
+	public Desenvolvedor getDesenvolvedorPorNome(String nome) throws DesenvolvedorInexistenteException ;
 }

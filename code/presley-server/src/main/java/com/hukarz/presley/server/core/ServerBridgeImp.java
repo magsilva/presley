@@ -380,6 +380,17 @@ public class ServerBridgeImp implements ServerBridge {
 			typeRetorno = CorePresleyOperations.GET_PROJETOS;
 			pktRetorno = new PacketStruct(retorno, typeRetorno);
 			break;				
+			// Packet tipo 40: GET_DESENVOLVEDOR_POR_NOME
+		case CorePresleyOperations.GET_DESENVOLVEDOR_POR_NOME:
+			try {
+					retorno     = executeClientQuery.getDesenvolvedorPorNome(packet);
+				} catch (DesenvolvedorInexistenteException e) {
+					retorno = "ERRO: Desenvolvedor Inexistente.";
+					e.printStackTrace();
+				}
+			typeRetorno = CorePresleyOperations.GET_DESENVOLVEDOR_POR_NOME;
+			pktRetorno = new PacketStruct(retorno, typeRetorno);
+			break;				
 		}
 		
 		return pktRetorno;

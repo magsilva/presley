@@ -399,5 +399,16 @@ public class ExecuteClientQuery implements CorePresleyOperations{
 	public ArrayList<Projeto> getListaProjetos(PacketStruct packet) {
 		return validacaoProjeto.getProjetos();
 	}
+
+
+	public Desenvolvedor getDesenvolvedorPorNome(PacketStruct packet) throws DesenvolvedorInexistenteException {
+		String nome = (String) packet.getData();
+		return getDesenvolvedorPorNome( nome );
+	}
+	@Override
+	public Desenvolvedor getDesenvolvedorPorNome(String nome)
+			throws DesenvolvedorInexistenteException {
+		return validacaoDesenvolvedor.getDesenvolvedorPorNome(nome);
+	}
 	
 }

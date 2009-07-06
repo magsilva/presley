@@ -78,6 +78,8 @@ public interface CorePresleyOperations {
 	public static final int ATUALIZAR_STATUS_PROJETO = 38;
 	public static final int GET_PROJETOS = 39;
 
+
+	public static final int GET_DESENVOLVEDOR_POR_NOME = 40;
 	/**
 	 * Este método solicita a arvore de ontologia
 	 * CÓDIGO DA OPERAÇÃO -> 04
@@ -152,7 +154,7 @@ public interface CorePresleyOperations {
 	 * @return Tree Arvore de conhecimentos do sistema.
 	 * @throws ConhecimentoInexistenteException 
 	 */
-	public Tree getArvoreGraficaDeConhecimentos() throws ConhecimentoInexistenteException;	
+	public Tree getArvoreConhecimentos() throws ConhecimentoInexistenteException;	
 	
 	public boolean removerConhecimento(Conhecimento conhecimento) throws ConhecimentoInexistenteException;
 	
@@ -263,4 +265,10 @@ public interface CorePresleyOperations {
 	 */
 	public ArrayList<Projeto> getListaProjetos(PacketStruct packet);
 
+	/**
+	 * Este método retorna o desenvolvedor com o nome passado como paramentro
+	 * CÓDIGO DA OPERAÇÃO -> 40
+	 * @return Desenvolvedor.
+	 */
+	public Desenvolvedor getDesenvolvedorPorNome(String nome) throws DesenvolvedorInexistenteException ;
 }

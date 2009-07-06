@@ -1,12 +1,9 @@
 package com.hukarz.presley.client.gui.wizard;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
-import java.util.StringTokenizer;
 
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
@@ -19,22 +16,12 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.DirectoryDialog;
-import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.ui.PlatformUI;
 
-import ca.mcgill.cs.swevo.PresleyJayFX;
-import ca.mcgill.cs.swevo.jayfx.ConversionException;
-import ca.mcgill.cs.swevo.jayfx.model.ClassElement;
-import ca.mcgill.cs.swevo.jayfx.model.FlyweightElementFactory;
-import ca.mcgill.cs.swevo.jayfx.model.ICategories;
-import ca.mcgill.cs.swevo.jayfx.model.IElement;
-
-import com.hukarz.presley.beans.ArquivoJava;
-import com.hukarz.presley.beans.ClasseJava;
 import com.hukarz.presley.client.gui.view.MensagemAba;
 
 public class AdicionaProblemaWizardPage extends WizardPage {

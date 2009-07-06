@@ -134,7 +134,6 @@ public class ViewComunication implements CorePresleyOperations{
 		}
 	}
 	
-	@Override
 	public Tree getArvoreGraficaDeConhecimentos()
 			throws ConhecimentoInexistenteException {
 		PacketStruct respostaPacket = sendPack(null, GET_ARVORECONHECIMENTOS);
@@ -595,6 +594,21 @@ public class ViewComunication implements CorePresleyOperations{
 		}
 
 		return (Boolean)respostaPacket.getData();
+	}
+
+	@Override
+	public Tree getArvoreConhecimentos()
+			throws ConhecimentoInexistenteException {
+		return null;
+	}
+
+	@Override
+	public Desenvolvedor getDesenvolvedorPorNome(String nome)
+			throws DesenvolvedorInexistenteException {
+		PacketStruct respostaPacket = sendPack(nome, GET_DESENVOLVEDOR_POR_NOME);
+		Desenvolvedor desenvolvedor = (Desenvolvedor)respostaPacket.getData();
+    	
+		return desenvolvedor;
 	}
 
 	
