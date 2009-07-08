@@ -32,10 +32,12 @@ public class Problema implements Serializable {
 	private Desenvolvedor desenvolvedorOrigem;
 	private Conhecimento conhecimento;
 	private Projeto projeto;
+	private int numeroArquivoExperimento;
 
 	public Problema() {
 		classesRelacionadas = new HashMap<ClasseJava, ArquivoJava>();
 		mensagem = "";
+		this.numeroArquivoExperimento = 0;
 	}
 	
 	public Projeto getProjeto() {
@@ -103,6 +105,14 @@ public class Problema implements Serializable {
 
 	public Conhecimento getConhecimento() {
 		return conhecimento;
+	}
+
+	public int getNumeroArquivoExperimento() {
+		return numeroArquivoExperimento;
+	}
+
+	public void setNumeroArquivoExperimento(int numeroArquivoExperimento) {
+		this.numeroArquivoExperimento = numeroArquivoExperimento;
 	}
 
 	public void setConhecimento(Conhecimento conhecimento) {

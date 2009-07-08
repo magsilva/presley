@@ -188,7 +188,7 @@ public class PresleyJayFX extends JayFX {
 			if (this.listaElementosProjeto.get(palavra) != null) {
                 String nomeClasse = listaElementosProjeto.get(palavra);		
 				IElement elemento ;
-				elemento = FlyweightElementFactory.getElement( ICategories.CLASS, palavra );
+				elemento = FlyweightElementFactory.getElement( ICategories.CLASS, nomeClasse );
 				retorno.putAll( getElementoRelacionamento(elemento) );
 
 				ClasseJava classe;   

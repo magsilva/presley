@@ -79,8 +79,8 @@ public class ServicoProblemaImplDAO implements ServicoProblema{
 			stm = conn.createStatement();
 
 			String SQL = " INSERT INTO problema(descricao,dataRelato,mensagem," +
-			"desenvolvedor_email, resolvido, conhecimento_nome, projeto_nome) " +
-			" VALUES ( ?, ?, ?, ?, ?, ?, ?);";
+			"desenvolvedor_email, resolvido, conhecimento_nome, projeto_nome, numero_arquivo_experimento) " +
+			" VALUES ( ?, ?, ?, ?, ?, ?, ?, ?);";
 			
 			PreparedStatement pstmt = (PreparedStatement) conn.prepareStatement(SQL) ;  
 			pstmt.setString(1,	problema.getDescricao());
@@ -90,6 +90,7 @@ public class ServicoProblemaImplDAO implements ServicoProblema{
 			pstmt.setInt(5,		0);
 			pstmt.setString(6,	problema.getConhecimento().getNome());
 			pstmt.setString(7,	problema.getProjeto().getNome());
+			pstmt.setInt(8, problema.getNumeroArquivoExperimento());
 			
 			pstmt.executeUpdate();
 			
@@ -215,25 +216,28 @@ public class ServicoProblemaImplDAO implements ServicoProblema{
 
 			stm = conn.createStatement();
 
-			String SQL = " SELECT id, desenvolvedor_email, descricao, resolvido, dataRelato, mensagem, conhecimento_nome, projeto_nome "+
-			" FROM problema WHERE id = "+id+";";
+			String SQL = " SELECT id, desenvolvedor_email, descricao, resolvido, dataRelato, " +
+					"mensagem, conhecimento_nome, projeto_nome, numero_arquivo_experimento " +
+					" FROM problema WHERE id = "+id+";";
 
 
 			ResultSet rs = stm.executeQuery(SQL);
 
 			if (rs.next()){
 
-				Problema p = new Problema();
+				Problema problema = new Problema();
 
-				p.setId( rs.getInt("id") );
-				p.setDescricao( rs.getString("descricao") );
-				p.setResolvido( rs.getBoolean("resolvido") );
-				p.setData( rs.getDate("dataRelato") );
-				p.setMensagem( rs.getString("mensagem") );
-				p.setDesenvolvedorOrigem( sd.getDesenvolvedor( rs.getString("desenvolvedor_email") ) ) ;
-				p.setProjeto( servicoProjeto.getProjeto( rs.getString("projeto_nome") ) );
-				p.setConhecimento( servicoConhecimento.getConhecimento(rs.getString("conhecimento_nome")) );
-				return p;
+				problema.setId( rs.getInt("id") );
+				problema.setDescricao( rs.getString("descricao") );
+				problema.setResolvido( rs.getBoolean("resolvido") );
+				problema.setData( rs.getDate("dataRelato") );
+				problema.setMensagem( rs.getString("mensagem") );
+				problema.setNumeroArquivoExperimento(rs.getInt("numero_arquivo_experimento"));
+				problema.setDesenvolvedorOrigem( sd.getDesenvolvedor( rs.getString("desenvolvedor_email") ) ) ;
+				problema.setProjeto( servicoProjeto.getProjeto( rs.getString("projeto_nome") ) );
+				problema.setConhecimento( servicoConhecimento.getConhecimento(rs.getString("conhecimento_nome")) );
+				
+				return problema;
 			}else{
 				return null;
 			}

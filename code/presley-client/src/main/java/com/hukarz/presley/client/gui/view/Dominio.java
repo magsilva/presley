@@ -337,7 +337,16 @@ public class Dominio extends ViewPart {
 				FileReader fileReader = new FileReader(file);
 				BufferedReader reader = new BufferedReader(fileReader);
 
+				int posicaoDoPonto = file.getName().indexOf('.');       		        		
+        		int numeroArquivoExperimento = Integer.parseInt(file.getName().substring(0, posicaoDoPonto));				
+				
         		Problema problema = new Problema();
+        		
+        		
+        		
+        		problema.setNumeroArquivoExperimento(numeroArquivoExperimento);
+        		
+        		
         		problema.setResolvido(false);
         		problema.setProjeto( projetoAtivo );
         		

@@ -722,10 +722,9 @@ public class ServicoDesenvolvedorImplDAO implements ServicoDesenvolvedor{
 		try {
 
 			stm = conn.createStatement();
-
+			
 			String SQL = " SELECT * FROM desenvolvedor WHERE "+
-			" email = '"+email+"' AND senha = '"+senha+"';";
-
+            " listaEmail like '%"+email+"%' AND senha = '"+senha+"';";
 
 			//System.out.println(SQL);
 			ResultSet rs = stm.executeQuery(SQL);
