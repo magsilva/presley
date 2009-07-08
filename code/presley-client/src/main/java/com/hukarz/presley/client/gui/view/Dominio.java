@@ -76,6 +76,8 @@ public class Dominio extends ViewPart {
 	private List listaDocumentosBase; 
 	private PresleyJayFX aDB;
 	
+	private Logger logger = Logger.getLogger(this.getClass());
+	
 	public Dominio() {
 		this.viewComunication = new ViewComunication(ipServidor);
 	}
@@ -84,7 +86,6 @@ public class Dominio extends ViewPart {
 	public void createPartControl(Composite parent) {
 		parent.setLayout(null);
 		initComponents(parent);
-
 	}
 
 	@Override
@@ -96,11 +97,12 @@ public class Dominio extends ViewPart {
 	{
 		this.parentComposite = parent;
 		
-    	try {
+    	/*try {
 			treeConhecimentos = getViewComunication().getArvoreGraficaDeConhecimentos(parentComposite, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
 		} catch (ConhecimentoInexistenteException e2) {
 			e2.printStackTrace();
-		}
+		}*/
+		treeConhecimentos = new Tree(parentComposite, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
 		treeConhecimentos.setLocation(0, posVerPainelTopicosDominio);
 		treeConhecimentos.setSize(larguraJanela, alturaPainelTopicosDominio);
 		treeConhecimentos.setVisible(true);
@@ -323,13 +325,15 @@ public class Dominio extends ViewPart {
 		
 		File[] listagemDiretorio = diretorioCD.listFiles(new FilenameFilter() {  
 			public boolean accept(File d, String name) {  
-				return name.toLowerCase().endsWith(".pergunta");  
+				return name.toLowerCase().endsWith(".question");  
 			}  
 		}); 		
 		
 		try {
 			for (int i = 0; i < listagemDiretorio.length; i++) {
 				File file = new File( listagemDiretorio[i].getAbsolutePath() );
+				//this.logger.info("Processando arquivo " + file.getName());
+				System.out.println("Processando arquivo " + file.getName());
 				FileReader fileReader = new FileReader(file);
 				BufferedReader reader = new BufferedReader(fileReader);
 
@@ -357,18 +361,22 @@ public class Dominio extends ViewPart {
         		problema.setDescricao( linha );
         		
         		// Corpo da Mensagem
-        		String CorpoMensagem = "";
-				while( (CorpoMensagem = reader.readLine()) != null ){
-	        		problema.setMensagem( problema.getMensagem() + " " + CorpoMensagem );
+        		StringBuilder corpoDaMensagem = new StringBuilder();
+				while( (linha = reader.readLine()) != null ){
+	        		corpoDaMensagem.append(linha + " ");
 				}
+				problema.setMensagem(corpoDaMensagem.toString());
 
+				System.out.println("Obtendo classes relacionadas...");
         		problema.setClassesRelacionadas( 
         			 aDB.getClassesRelacionadas(problema.getDescricao() + " " + problema.getMensagem(), " ") ) ;
         		
         		//Adciona problema ao banco
+        		System.out.println("Classes relacionadas obtidas");
         		viewComunication.adicionaProblema(problema);
 			}
 		} catch (Exception e) {
+			e.printStackTrace();
 
 		}
 

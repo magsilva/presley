@@ -3,9 +3,9 @@ package com.hukarz.presley.server.validacao.implementacao;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.Date;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import org.apache.log4j.Logger;
 
@@ -37,7 +37,9 @@ public class ValidacaoLogControleVersaoImpl {
 	private ServicoProjeto servicoProjeto = new ServicoProjetoImplDAO();
 	private ServicoDesenvolvedor servicoDesenvolvedor = new ServicoDesenvolvedorImplDAO();
 	private ServicoArquivo servicoArquivo = new ServicoArquivoImplDAO(); 
+
 	private Logger logger = Logger.getLogger(this.getClass());
+	
 	private Projeto projeto;
 	
 	public ValidacaoLogControleVersaoImpl() {
@@ -47,6 +49,8 @@ public class ValidacaoLogControleVersaoImpl {
 
 	public void registrarLogDoArquivo() {
 		Date dataUltimoRegistro = servicoLogControleVersao.getDataHoraUltimoRegistro();
+		
+		this.logger.info("Carregando arquivo de log");
 
 		try {
 			// open a file and read the content into a byte array
@@ -95,6 +99,7 @@ public class ValidacaoLogControleVersaoImpl {
 			}
 
 			ap0.resetXPath();
+			System.out.println("Arquivos de Log carregados");
 
 		} catch (ParseException e) {
 			this.logger.trace(" XML file parsing error \n"+e);

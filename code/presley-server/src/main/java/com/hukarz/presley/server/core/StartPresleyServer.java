@@ -1,6 +1,7 @@
 package com.hukarz.presley.server.core;
 
-import java.util.logging.Logger;
+
+import org.apache.log4j.Logger;
 
 import com.hukarz.presley.communication.facade.PrincipalSUBJECT;
 import com.hukarz.presley.communication.server.ServerBridge;
@@ -16,25 +17,19 @@ import com.hukarz.presley.server.validacao.implementacao.ValidacaoLogControleVer
  */
 public class StartPresleyServer {
 	
-	private Logger logger = Logger.getLogger(this.getClass().getName());
+	private Logger logger = Logger.getLogger(this.getClass());
+	
 	private ValidacaoLogControleVersaoImpl validacaoLogControleVersao = new ValidacaoLogControleVersaoImpl();
 	
 	public StartPresleyServer() {
 		
 		this.logger.info("Iniciando Servidor Presley...\n");
 		try {
-			/** Instanciando servidor.
-			 * parametro1: "server" ou "client"
-			 * parametro2: ip (no caso do servidor vai nulo).
-			 * parametro3: porta que o servidor vai escutar.
-			 */
 			this.logger.info("Criando Instancia do Servidor...");
 			PrincipalSUBJECT.getInstance("server", null, 1099);
 			this.logger.info("Instancia Criada com Sucesso!");
-			
 			validacaoLogControleVersao.registrarLogDoArquivo();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		

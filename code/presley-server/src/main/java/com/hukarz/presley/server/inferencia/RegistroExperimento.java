@@ -64,11 +64,10 @@ public class RegistroExperimento {
 	private void gerarArquivos() throws FileNotFoundException{
 		Projeto projeto = problema.getProjeto();
 
-		String nomeArquivo = "000" + Integer.toString(contarQuantidadeArquivos(".recomendacoes") + 1);
+		String nomeArquivo = Integer.toString(contarQuantidadeArquivos(".recomendations") + 1);
 		
-		nomeArquivo = nomeArquivo.substring(nomeArquivo.length()-4);
 		PrintWriter saidaRecomendacao = new PrintWriter(new 
-				FileOutputStream(projeto.getEndereco_Servidor_Gravacao() + nomeArquivo + ".recomendacoes"));
+				FileOutputStream(projeto.getEndereco_Servidor_Gravacao() + nomeArquivo + ".recomendations"));
 
 		PrintWriter saidaPontuacao = new PrintWriter(new 
 				FileOutputStream(projeto.getEndereco_Servidor_Gravacao() + nomeArquivo + ".extra"));
@@ -93,8 +92,7 @@ public class RegistroExperimento {
 
 		Projeto projeto = problema.getProjeto();
 
-		String nomeArquivoEmail = "000" + Integer.toString(contarQuantidadeArquivos(".recomendacoes"));
-		nomeArquivoEmail = nomeArquivoEmail.substring(nomeArquivoEmail.length()-4);
+		String nomeArquivoEmail = Integer.toString(contarQuantidadeArquivos(".recomendations"));
 
 		File file = new File( projeto.getEndereco_Servidor_Gravacao() + nomeArquivoEmail+ ".emails" );
 		FileReader fileReader = new FileReader(file);
