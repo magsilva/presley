@@ -13,6 +13,7 @@ import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.StringTokenizer;
 
 import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
@@ -355,9 +356,12 @@ public class Dominio extends ViewPart {
         		// Desenvolvedor que enviou o problema
 				String linha = reader.readLine();
 				if (linha.contains("jira@apache.org")) {
-					linha = linha.replace("jira@apache.org", "");
-					linha = linha.replace("\"", "").trim();
-					problema.setDesenvolvedorOrigem( viewComunication.getDesenvolvedorPorNome(linha) ) ;
+					String email = linha.replace("<", " ").replace(">", " ").trim();
+					StringTokenizer st = new StringTokenizer(email);
+					while (st.hasMoreTokens())
+						email = st.nextToken();
+					
+					problema.setDesenvolvedorOrigem( viewComunication.login(email, "1") ) ;
 				}
 				else {
 					String email = extractEmail(linha);
