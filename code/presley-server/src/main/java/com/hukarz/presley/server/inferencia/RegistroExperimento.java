@@ -65,7 +65,7 @@ public class RegistroExperimento {
 		Projeto projeto = problema.getProjeto();
 
 		PrintWriter saidaRecomendacao = new PrintWriter(new 
-				FileOutputStream(projeto.getEndereco_Servidor_Gravacao() + problema.getNumeroArquivoExperimento() + ".recomendations"));
+				FileOutputStream(projeto.getEndereco_Servidor_Gravacao() + problema.getNumeroArquivoExperimento() + ".recommendation"));
 
 		PrintWriter saidaPontuacao = new PrintWriter(new 
 				FileOutputStream(projeto.getEndereco_Servidor_Gravacao() + problema.getNumeroArquivoExperimento() + ".extra"));

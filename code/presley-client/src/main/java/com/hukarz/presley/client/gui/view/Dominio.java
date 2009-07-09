@@ -3,6 +3,7 @@ package com.hukarz.presley.client.gui.view;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FilenameFilter;
@@ -34,6 +35,7 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
 
 import ca.mcgill.cs.swevo.PresleyJayFX;
+import ca.mcgill.cs.swevo.jayfx.ConversionException;
 import ca.mcgill.cs.swevo.jayfx.JayFXException;
 
 import com.hukarz.presley.beans.Arquivo;
@@ -42,6 +44,8 @@ import com.hukarz.presley.beans.Problema;
 import com.hukarz.presley.beans.Projeto;
 import com.hukarz.presley.client.gui.view.comunication.ViewComunication;
 import com.hukarz.presley.excessao.ConhecimentoInexistenteException;
+import com.hukarz.presley.excessao.DesenvolvedorInexistenteException;
+import com.hukarz.presley.excessao.NomeInvalidoException;
 
 
 public class Dominio extends ViewPart {
@@ -329,35 +333,35 @@ public class Dominio extends ViewPart {
 			}  
 		}); 		
 		
+		File file = null;
 		try {
 			for (int i = 0; i < listagemDiretorio.length; i++) {
-				File file = new File( listagemDiretorio[i].getAbsolutePath() );
+				file = new File( listagemDiretorio[i].getAbsolutePath() );
 				//this.logger.info("Processando arquivo " + file.getName());
 				System.out.println("Processando arquivo " + file.getName());
-				FileReader fileReader = new FileReader(file);
+				FileReader fileReader;
+				
+					fileReader = new FileReader(file);
 				BufferedReader reader = new BufferedReader(fileReader);
 
 				int posicaoDoPonto = file.getName().indexOf('.');       		        		
         		int numeroArquivoExperimento = Integer.parseInt(file.getName().substring(0, posicaoDoPonto));				
 				
         		Problema problema = new Problema();
-        		
-        		
-        		
         		problema.setNumeroArquivoExperimento(numeroArquivoExperimento);
-        		
-        		
         		problema.setResolvido(false);
         		problema.setProjeto( projetoAtivo );
         		
         		// Desenvolvedor que enviou o problema
 				String linha = reader.readLine();
-				if (!linha.contains("jira@apache.org"))
-					problema.setDesenvolvedorOrigem( viewComunication.login(linha, "1") ) ;
-				else {
+				if (linha.contains("jira@apache.org")) {
 					linha = linha.replace("jira@apache.org", "");
 					linha = linha.replace("\"", "").trim();
 					problema.setDesenvolvedorOrigem( viewComunication.getDesenvolvedorPorNome(linha) ) ;
+				}
+				else {
+					String email = extractEmail(linha);
+					problema.setDesenvolvedorOrigem( viewComunication.login(email, "1") ) ;
 				}	
 				
         		// Data do envio
@@ -384,11 +388,34 @@ public class Dominio extends ViewPart {
         		System.out.println("Classes relacionadas obtidas");
         		viewComunication.adicionaProblema(problema);
 			}
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			System.err.println("Não foi possível ler do arquivo " + file.getName());
+			e.printStackTrace();
+		} catch (DesenvolvedorInexistenteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ConversionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		} catch (Exception e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
 	}
-	
-	
+
+	private String extractEmail(String fromHeader) {
+		
+		if (fromHeader.contains("<")) {
+			int beginIndex = fromHeader.indexOf('<') + 1;
+			int endIndex = fromHeader.indexOf('>');
+			return fromHeader.substring(beginIndex, endIndex);
+		}
+		else {
+			return fromHeader;
+		}
+		
+	}
 }

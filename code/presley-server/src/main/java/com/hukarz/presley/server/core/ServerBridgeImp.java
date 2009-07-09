@@ -1,11 +1,8 @@
 package com.hukarz.presley.server.core;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.logging.Logger;
 
-import com.hukarz.presley.beans.DadosAutenticacao;
-import com.hukarz.presley.beans.Desenvolvedor;
 import com.hukarz.presley.communication.facade.PacketStruct;
 import com.hukarz.presley.communication.server.ServerBridge;
 import com.hukarz.presley.excessao.ConhecimentoInexistenteException;

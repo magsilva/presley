@@ -2,7 +2,6 @@ package com.hukarz.presley.client.gui.view;
 
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 

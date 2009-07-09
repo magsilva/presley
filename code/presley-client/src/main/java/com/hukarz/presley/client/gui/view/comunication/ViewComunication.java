@@ -1,12 +1,13 @@
 package com.hukarz.presley.client.gui.view.comunication;
 
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 
 import org.apache.log4j.Logger;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.TreeItem;
 
 import com.hukarz.presley.beans.Arquivo;
 import com.hukarz.presley.beans.Conhecimento;
@@ -24,9 +25,6 @@ import com.hukarz.presley.excessao.ConhecimentoInexistenteException;
 import com.hukarz.presley.excessao.DesenvolvedorInexistenteException;
 import com.hukarz.presley.excessao.NomeInvalidoException;
 import com.hukarz.presley.excessao.ProjetoInexistenteException;
-
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.TreeItem;
 
 /**
  * Esta classe controla a comunicacao entre o cliente e o servidor.
@@ -411,10 +409,8 @@ public class ViewComunication implements CorePresleyOperations{
 		PacketStruct respostaPacket = sendPack(desenvolvedor,CorePresleyOperations.ADICIONA_DESENVOLVEDOR);//TESTE
     	//return resposta.booleanValue();
     	
-		if(respostaPacket.getId() == CorePresleyOperations.ERRO) {
+		if (respostaPacket.getId() == CorePresleyOperations.ERRO) {
 			throw new Exception((String) respostaPacket.getData());
-		}else{
-			Boolean resposta = (Boolean)respostaPacket.getData();
 		}
 
 		listaDesenvolvedores.add(desenvolvedor);

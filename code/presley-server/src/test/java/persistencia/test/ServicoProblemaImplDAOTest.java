@@ -1,11 +1,9 @@
 package persistencia.test;
 
 import java.sql.Date;
-import java.util.ArrayList;
 import java.util.Calendar;
 
 import junit.framework.TestCase;
-
 
 import com.hukarz.presley.server.persistencia.implementacao.ServicoDesenvolvedorImplDAO;
 import com.hukarz.presley.server.persistencia.implementacao.ServicoProblemaImplDAO;
