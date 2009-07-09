@@ -356,12 +356,12 @@ public class Dominio extends ViewPart {
         		// Desenvolvedor que enviou o problema
 				String linha = reader.readLine();
 				if (linha.contains("jira@apache.org")) {
-					String email = linha.replace("<", " ").replace(">", " ").trim();
-					StringTokenizer st = new StringTokenizer(email);
-					while (st.hasMoreTokens())
-						email = st.nextToken();
+					String nome = linha.replace("jira@apache.org", "");
+					nome = nome.replace("<", "").replace(">", "");
+					nome = nome.replace("\"", "");
+					nome = nome.replace("(JIRA)", "").trim();
 					
-					problema.setDesenvolvedorOrigem( viewComunication.login(email, "1") ) ;
+					problema.setDesenvolvedorOrigem( viewComunication.getDesenvolvedorPorNome(nome) ) ;
 				}
 				else {
 					String email = extractEmail(linha);
