@@ -386,7 +386,6 @@ public class Dominio extends ViewPart {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-
 		}
 
 	}
