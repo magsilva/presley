@@ -120,14 +120,16 @@ public class ValidacaoProblemaImpl {
 
 		this.logger.debug("Cadastro do Problema");
 		
-		// Retorna os desenvolvedores que receberão o problema
-		Inferencia inferencia = new Inferencia();
-		ArrayList<Desenvolvedor> desenvolvedores = inferencia.getDesenvolvedores(arquivoDesenvolvedores, 
-				problema);
-		
-		servicoMensagem.adicionarMensagem(desenvolvedores, problema);
-		
-		this.logger.debug("Mensagem Adcionada");
+		if (problema.isTemResposta()){
+			// Retorna os desenvolvedores que receberão o problema
+			Inferencia inferencia = new Inferencia();
+			ArrayList<Desenvolvedor> desenvolvedores = inferencia.getDesenvolvedores(arquivoDesenvolvedores, 
+					problema);
+			
+			servicoMensagem.adicionarMensagem(desenvolvedores, problema);
+			
+			this.logger.debug("Mensagem Adcionada");
+		}
 
 		return problema;
 	}

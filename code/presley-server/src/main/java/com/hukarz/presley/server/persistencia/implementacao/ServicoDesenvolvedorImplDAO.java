@@ -1,6 +1,7 @@
 package com.hukarz.presley.server.persistencia.implementacao;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -295,23 +296,18 @@ public class ServicoDesenvolvedorImplDAO implements ServicoDesenvolvedor{
 		//Connection conn = MySQLConnectionFactory.getConnection();
 		Connection conn = MySQLConnectionFactory.open();
 		
-		Statement stm = null;
-			
 		try {
 
-			stm = conn.createStatement();
-
 			String SQL = " SELECT email, nome, cvsNome, listaEmail FROM desenvolvedor WHERE "+
-			" nome = '"+nome+"';";
+			" nome = ? ;";
 
+			PreparedStatement stmt = conn.prepareStatement(SQL);
+			
+			stmt.setString(1, nome);  
+			ResultSet rs = stmt.executeQuery();
 
-			//System.out.println(SQL);
-			ResultSet rs = stm.executeQuery(SQL);
-
+			Desenvolvedor desenvolvedor = new Desenvolvedor();
 			if (rs.next()){
-
-				Desenvolvedor desenvolvedor = new Desenvolvedor();
-
 				desenvolvedor.setEmail(rs.getString("email"));
 				desenvolvedor.setNome(rs.getString("nome"));
 				desenvolvedor.setCVSNome(rs.getString("cvsNome"));
@@ -319,22 +315,15 @@ public class ServicoDesenvolvedorImplDAO implements ServicoDesenvolvedor{
 				desenvolvedor.setListaConhecimento(this.getConhecimentosDoDesenvolvedor(rs.getString("email"), 1));
 				desenvolvedor.setSenha("");
 
-				return desenvolvedor;
 			}else{
 				throw new DesenvolvedorInexistenteException();
 			}
-
+			
+			stmt.close();
+			return desenvolvedor;
 		} catch (SQLException e) {
 			//e.printStackTrace();
 			return null;
-		} finally {
-			try {
-				stm.close();
-				//conn.close();
-			} catch (SQLException onConClose) {
-				System.out.println(" Houve erro no fechamento da conexão ");
-				onConClose.printStackTrace();	             
-			}
 		}
 	}
 

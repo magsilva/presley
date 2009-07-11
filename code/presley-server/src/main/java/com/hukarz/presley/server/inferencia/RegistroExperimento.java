@@ -13,6 +13,8 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.StringTokenizer;
 
+import org.apache.log4j.Logger;
+
 import com.hukarz.presley.beans.Desenvolvedor;
 import com.hukarz.presley.beans.Problema;
 import com.hukarz.presley.beans.Projeto;
@@ -25,6 +27,7 @@ public class RegistroExperimento {
 	private ArrayList<Desenvolvedor> listaDesenvolvedores; 
 	private Map<Desenvolvedor, Integer> participacaoDesenvolvedor;
 	private Problema problema;
+	private Logger logger = Logger.getLogger(this.getClass());
 	
 	public RegistroExperimento(ArrayList<Desenvolvedor> listaDesenvolvedores,
 			Map<Desenvolvedor, Integer> participacaoDesenvolvedor,
@@ -65,7 +68,7 @@ public class RegistroExperimento {
 		Projeto projeto = problema.getProjeto();
 
 		PrintWriter saidaRecomendacao = new PrintWriter(new 
-				FileOutputStream(projeto.getEndereco_Servidor_Gravacao() + problema.getNumeroArquivoExperimento() + ".recommendation"));
+				FileOutputStream(projeto.getEndereco_Servidor_Gravacao() + problema.getNumeroArquivoExperimento() + ".recomendations"));
 
 		PrintWriter saidaPontuacao = new PrintWriter(new 
 				FileOutputStream(projeto.getEndereco_Servidor_Gravacao() + problema.getNumeroArquivoExperimento() + ".extra"));
@@ -89,33 +92,38 @@ public class RegistroExperimento {
 		String conteudoEmail = "";
 
 		Projeto projeto = problema.getProjeto();
-
+		
 		File file = new File( projeto.getEndereco_Servidor_Gravacao() + problema.getNumeroArquivoExperimento() + ".emails" );
-		FileReader fileReader = new FileReader(file);
-		BufferedReader reader = new BufferedReader(fileReader);
+		
+		try {
+			FileReader fileReader = new FileReader(file);
+			BufferedReader reader = new BufferedReader(fileReader);
 
-		String linha = "";
-		while( (linha = reader.readLine()) != null ){
-			conteudoEmail += linha + " ";
-		}
+			String linha = "";
+			while( (linha = reader.readLine()) != null ){
+				conteudoEmail += linha + " ";
+			}
 
-		for (Desenvolvedor desenvolvedor : listaDesenvolvedores) {
+			for (Desenvolvedor desenvolvedor : listaDesenvolvedores) {
 
-			StringTokenizer st = new StringTokenizer( desenvolvedor.getListaEmail() );
-			while (st.hasMoreTokens()){
-				String email = st.nextToken();
-				if (conteudoEmail.contains(email)){
-					Solucao solucao = new Solucao();
-					solucao.setAjudou(true);
-					solucao.setProblema(problema);
-					solucao.setData( new Date(System.currentTimeMillis()) ) ;
-					solucao.setMensagem("");
-					solucao.setDesenvolvedor(desenvolvedor);
+				StringTokenizer st = new StringTokenizer( desenvolvedor.getListaEmail() );
+				while (st.hasMoreTokens()){
+					String email = st.nextToken();
+					if (conteudoEmail.contains(email)){
+						Solucao solucao = new Solucao();
+						solucao.setAjudou(true);
+						solucao.setProblema(problema);
+						solucao.setData( new Date(System.currentTimeMillis()) ) ;
+						solucao.setMensagem("");
+						solucao.setDesenvolvedor(desenvolvedor);
 
-					validacaoSolucao.cadastrarSolucao(solucao);
-					break;
-				}
-			} 
+						validacaoSolucao.cadastrarSolucao(solucao);
+						break;
+					}
+				} 
+			}
+		} catch (FileNotFoundException e) {
+			this.logger.info("Question " + problema.getNumeroArquivoExperimento() + " sem resposta.");
 		}
 	}
 	

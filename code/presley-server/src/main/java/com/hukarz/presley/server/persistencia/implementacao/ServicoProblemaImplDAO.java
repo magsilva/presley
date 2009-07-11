@@ -90,7 +90,7 @@ public class ServicoProblemaImplDAO implements ServicoProblema{
 			pstmt.setInt(5,		1);
 			pstmt.setString(6,	problema.getConhecimento().getNome());
 			pstmt.setString(7,	problema.getProjeto().getNome());
-			pstmt.setInt(8, problema.getNumeroArquivoExperimento());
+			pstmt.setString(8, problema.getNumeroArquivoExperimento());
 			
 			pstmt.executeUpdate();
 			
@@ -232,7 +232,7 @@ public class ServicoProblemaImplDAO implements ServicoProblema{
 				problema.setResolvido( rs.getBoolean("resolvido") );
 				problema.setData( rs.getDate("dataRelato") );
 				problema.setMensagem( rs.getString("mensagem") );
-				problema.setNumeroArquivoExperimento(rs.getInt("numero_arquivo_experimento"));
+				problema.setNumeroArquivoExperimento(rs.getString("numero_arquivo_experimento"));
 				problema.setDesenvolvedorOrigem( sd.getDesenvolvedor( rs.getString("desenvolvedor_email") ) ) ;
 				problema.setProjeto( servicoProjeto.getProjeto( rs.getString("projeto_nome") ) );
 				problema.setConhecimento( servicoConhecimento.getConhecimento(rs.getString("conhecimento_nome")) );

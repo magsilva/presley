@@ -10,6 +10,7 @@ import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -41,6 +42,7 @@ import ca.mcgill.cs.swevo.jayfx.JayFXException;
 
 import com.hukarz.presley.beans.Arquivo;
 import com.hukarz.presley.beans.Conhecimento;
+import com.hukarz.presley.beans.Desenvolvedor;
 import com.hukarz.presley.beans.Problema;
 import com.hukarz.presley.beans.Projeto;
 import com.hukarz.presley.client.gui.view.comunication.ViewComunication;
@@ -80,6 +82,7 @@ public class Dominio extends ViewPart {
 	private Label documentosBase;
 	private List listaDocumentosBase; 
 	private PresleyJayFX aDB;
+	private Projeto projetoAtivo;
 	
 	private Logger logger = Logger.getLogger(this.getClass());
 	
@@ -179,11 +182,11 @@ public class Dominio extends ViewPart {
 			private Logger logger = Logger.getLogger(this.getClass());
 
 			public void mouseDoubleClick(MouseEvent e) {
-				Projeto projetoAtivo;
 				
 				this.logger.debug("clique duplo");
 
-				projetoAtivo = viewComunication.getProjetoAtivo(); 
+				projetoAtivo = viewComunication.getProjetoAtivo();
+
 				// Objeto para o JayFX
 				try {
 					if (aDB == null)
@@ -197,7 +200,15 @@ public class Dominio extends ViewPart {
 				DirectoryDialog dialog = new DirectoryDialog(shell, SWT.OPEN);
 				dialog.setFilterPath( "C://" );
 				String diretorio = dialog.open();
-		 		
+		 		/*
+					try {
+						ajustarArquivosEmails();
+					} catch (Exception e1) {
+						e1.printStackTrace();
+						System.exit(1);
+					}
+				*/
+				
 				executarExperimento(diretorio, projetoAtivo);		 		
 			}
 
@@ -346,7 +357,7 @@ public class Dominio extends ViewPart {
 				BufferedReader reader = new BufferedReader(fileReader);
 
 				int posicaoDoPonto = file.getName().indexOf('.');       		        		
-        		int numeroArquivoExperimento = Integer.parseInt(file.getName().substring(0, posicaoDoPonto));				
+        		String numeroArquivoExperimento = file.getName().substring(0, posicaoDoPonto);				
 				
         		Problema problema = new Problema();
         		problema.setNumeroArquivoExperimento(numeroArquivoExperimento);
@@ -355,11 +366,9 @@ public class Dominio extends ViewPart {
         		
         		// Desenvolvedor que enviou o problema
 				String linha = reader.readLine();
+			
 				if (linha.contains("jira@apache.org")) {
-					String nome = linha.replace("jira@apache.org", "");
-					nome = nome.replace("<", "").replace(">", "");
-					nome = nome.replace("\"", "");
-					nome = nome.replace("(JIRA)", "").trim();
+					String nome = extractNomeJira( linha );
 					
 					problema.setDesenvolvedorOrigem( viewComunication.getDesenvolvedorPorNome(nome) ) ;
 				}
@@ -388,9 +397,13 @@ public class Dominio extends ViewPart {
         		problema.setClassesRelacionadas( 
         			 aDB.getClassesRelacionadas(problema.getDescricao() + " " + problema.getMensagem(), " ") ) ;
         		
+        		File arq = new File(projetoAtivo.getEndereco_Servidor_Gravacao() + numeroArquivoExperimento + ".emails");  
+        		problema.setTemResposta( arq.exists() );
+        		
         		//Adciona problema ao banco
         		System.out.println("Classes relacionadas obtidas");
         		viewComunication.adicionaProblema(problema);
+        		
 			}
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
@@ -398,18 +411,62 @@ public class Dominio extends ViewPart {
 			System.err.println("Não foi possível ler do arquivo " + file.getName());
 			e.printStackTrace();
 		} catch (DesenvolvedorInexistenteException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (ConversionException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
 	}
 
+	private void ajustarArquivosEmails() throws IOException, Exception {
+		File diretorioCD = new File( projetoAtivo.getEndereco_Servidor_Gravacao() );
+
+		File[] listagemDiretorio = diretorioCD.listFiles(new FilenameFilter() {  
+			public boolean accept(File d, String name) {  
+				return name.toLowerCase().endsWith( ".emails" );  
+			}  
+		}); 
+
+		for (File recommendationFile : listagemDiretorio) {
+			String linha = "";
+    		ArrayList<String> emails = new ArrayList<String>();
+
+			FileReader fileReader = new FileReader(recommendationFile);
+			BufferedReader reader = new BufferedReader(fileReader);
+
+			// - Busca pelos e-mails dos desenvolvedores -
+			while( (linha = reader.readLine()) != null ){
+				if (linha.contains("jira@apache.org")){
+					String nome = extractNomeJira(linha);
+
+					Desenvolvedor desenvolvedor;
+					try {
+						desenvolvedor = viewComunication.getDesenvolvedorPorNome(nome);
+					} catch (Exception e) {
+						desenvolvedor = viewComunication.login(nome, "1");
+					}
+
+					emails.add(desenvolvedor.getEmail());
+				} else {
+					emails.add(linha);
+				}
+			}
+
+			
+			// - Atualiza o arquivo -
+			PrintWriter saidaPontuacao = new PrintWriter(new FileOutputStream(recommendationFile));
+			
+			for (String email : emails) {
+				saidaPontuacao.println( email );
+			}
+						
+			saidaPontuacao.close();
+		}
+		
+	}
+	
 	private String extractEmail(String fromHeader) {
 		
 		if (fromHeader.contains("<")) {
@@ -420,6 +477,16 @@ public class Dominio extends ViewPart {
 		else {
 			return fromHeader;
 		}
+	}
+	
+	private String extractNomeJira(String fromHeader){
+		int endIndex = fromHeader.indexOf("jira@apache.org");
+		String nome = fromHeader.substring(0, endIndex);
+		nome = nome.replace("<", "").replace(">", "");
+		nome = nome.replace("\"", "");
+		nome = nome.replace("(JIRA)", "").trim();
+		nome = nome.replace("(", "").replace(")", "");
 		
+		return nome;
 	}
 }

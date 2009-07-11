@@ -78,6 +78,7 @@ CREATE TABLE  problema (
   mensagem longtext,
   conhecimento_nome varchar(70) default NULL,
   projeto_nome varchar(40) NOT NULL,
+  numero_arquivo_experimento varchar(30) default NULL,
   PRIMARY KEY  (id),
   KEY problema_FKIndex1 (atividade_id),
   KEY conhecimento_nome (conhecimento_nome),
