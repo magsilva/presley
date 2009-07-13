@@ -85,8 +85,8 @@ public class ServicoLogControleVersaoImplDAO implements
 		try {
 
 			String SQL = "SELECT desenvolvedor_email FROM log_controle_versao " +
-					" WHERE arquivo_id =? AND data_hora <= ?"+
-					" GROUP BY desenvolvedor_email"; 	
+					" WHERE arquivo_id =? AND data_hora <= ?";
+					//" GROUP BY desenvolvedor_email"; 	
 			PreparedStatement stmt = conn.prepareStatement(SQL);
 
 			stmt.setInt(1, arquivoJava.getId());  

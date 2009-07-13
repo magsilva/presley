@@ -104,14 +104,15 @@ public class Inferencia {
 		} else if (participacaoDesenvolvedorConhecimento.size() == 0){
 			pontuacaoParticipacao = participacaoDesenvolvedorArq;
 		} else {
+			/*
 			int pontuacaoMax = 0;
 			if (participacaoDesenvolvedorArq.size() > participacaoDesenvolvedorConhecimento.size())
 				pontuacaoMax = participacaoDesenvolvedorArq.size();
 			else 
 				pontuacaoMax = participacaoDesenvolvedorConhecimento.size();
-			
-			participacaoDesenvolvedorConhecimento	= classificacarDesenvolvedores(participacaoDesenvolvedorConhecimento, pontuacaoMax);
-			participacaoDesenvolvedorArq			= classificacarDesenvolvedores(participacaoDesenvolvedorArq, pontuacaoMax);
+			*/
+			participacaoDesenvolvedorConhecimento	= classificacarDesenvolvedores(participacaoDesenvolvedorConhecimento, 20);
+			participacaoDesenvolvedorArq			= classificacarDesenvolvedores(participacaoDesenvolvedorArq, 20);
 			
 			pontuacaoParticipacao = participacaoDesenvolvedorArq ;
 			
@@ -180,7 +181,13 @@ public class Inferencia {
 			}
 		}
 		
-		return pontuarClassificacao(classificacaoDesenvolvedores, participacaoDesenvolvedor, pontuacaoMax);
+		int qtde = 10;
+		if (qtde > classificacaoDesenvolvedores.length)
+			qtde = classificacaoDesenvolvedores.length;
+		
+		Desenvolvedor[] classificacaoMelhoresDesenvolvedores = new Desenvolvedor[ qtde ];
+		System.arraycopy(classificacaoDesenvolvedores, 0, classificacaoMelhoresDesenvolvedores, 0, qtde);
+		return pontuarClassificacao(classificacaoMelhoresDesenvolvedores, participacaoDesenvolvedor, pontuacaoMax);
 	}
 	
 	private Map<Desenvolvedor, Integer> pontuarClassificacao(Desenvolvedor[] desenvolvedores, 
@@ -196,7 +203,7 @@ public class Inferencia {
 			if (i+1 < desenvolvedores.length){
 				int participacaoProx = participacaoDesenvolvedor.get(desenvolvedores[i+1]) ;
 				if (participacao > participacaoProx)
-				pontuacaoMax--;
+				pontuacaoMax = pontuacaoMax - 2;
 			}
 			
 		}
