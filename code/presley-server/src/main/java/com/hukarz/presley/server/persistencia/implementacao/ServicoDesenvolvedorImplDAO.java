@@ -112,7 +112,7 @@ public class ServicoDesenvolvedorImplDAO implements ServicoDesenvolvedor{
 
 			stm = conn.createStatement();
 
-			String SQL = " INSERT INTO desenvolvedor " +
+			String SQL = " INSERT INTO desenvolvedor (email, nome, cvsNome, senha)" +
 			" VALUES('"+email+"','"+
 			nome+"','"+cvsNome+"','"+senha+"');";
 

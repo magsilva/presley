@@ -185,7 +185,17 @@ public class Dominio extends ViewPart {
 				
 				this.logger.debug("clique duplo");
 
+				
 				projetoAtivo = viewComunication.getProjetoAtivo();
+
+		 		/*
+				try {
+					ajustarArquivosEmails();
+				} catch (Exception e1) {
+					e1.printStackTrace();
+					System.exit(1);
+				}
+		 		*/
 
 				// Objeto para o JayFX
 				try {
@@ -200,16 +210,9 @@ public class Dominio extends ViewPart {
 				DirectoryDialog dialog = new DirectoryDialog(shell, SWT.OPEN);
 				dialog.setFilterPath( "C://" );
 				String diretorio = dialog.open();
-		 		/*
-					try {
-						ajustarArquivosEmails();
-					} catch (Exception e1) {
-						e1.printStackTrace();
-						System.exit(1);
-					}
-				*/
 				
-				executarExperimento(diretorio, projetoAtivo);		 		
+				executarExperimento(diretorio, projetoAtivo);
+		 		
 			}
 
 			public void mouseDown(MouseEvent e) {
@@ -442,16 +445,28 @@ public class Dominio extends ViewPart {
 			FileReader fileReader = new FileReader(recommendationFile);
 			BufferedReader reader = new BufferedReader(fileReader);
 
+			System.out.println( recommendationFile.getAbsolutePath()  );
 			// - Busca pelos e-mails dos desenvolvedores -
 			while( (linha = reader.readLine()) != null ){
+				System.out.println( linha ) ;
 				if (linha.contains("jira@apache.org")){
 					String nome = extractNomeJira(linha);
 
-					Desenvolvedor desenvolvedor;
+					Desenvolvedor desenvolvedor ;
 					try {
 						desenvolvedor = viewComunication.getDesenvolvedorPorNome(nome);
 					} catch (Exception e) {
-						desenvolvedor = viewComunication.login(nome, "1");
+						try {
+							desenvolvedor = viewComunication.login(nome, "1");
+						} catch (Exception e2) {
+							desenvolvedor = new Desenvolvedor();
+							desenvolvedor.setEmail(nome + "@presley");
+							desenvolvedor.setNome(nome );
+							desenvolvedor.setCVSNome("");
+							desenvolvedor.setListaEmail(nome + "@presley");
+							desenvolvedor.setSenha("1");
+							viewComunication.adicionaDesenvolvedor(desenvolvedor);
+						}
 					}
 
 					emails.add(desenvolvedor.getEmail());
@@ -490,8 +505,8 @@ public class Dominio extends ViewPart {
 		String nome = fromHeader.substring(0, endIndex);
 		nome = nome.replace("<", "").replace(">", "");
 		nome = nome.replace("\"", "");
-		nome = nome.replace("(JIRA)", "").trim();
 		nome = nome.replace("(", "").replace(")", "");
+		nome = nome.replace("JIRA", "").trim();
 		
 		return nome;
 	}

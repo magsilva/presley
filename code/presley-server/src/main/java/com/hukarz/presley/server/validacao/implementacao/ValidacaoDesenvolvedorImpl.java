@@ -114,7 +114,7 @@ public class ValidacaoDesenvolvedorImpl {
 			String cvsNome, String senha, HashMap<Conhecimento, Double> hashMap) throws DesenvolvedorExisteException, SenhaInvalidaException, ListagemDeConhecimentoInexistenteException {
 		
 		if (servicoDesenvolvedor.desenvolvedorExiste(email)) throw new DesenvolvedorExisteException();
-		if (!ValidacaoUtil.validaSenha(senha)) throw new SenhaInvalidaException();
+		//if (!ValidacaoUtil.validaSenha(senha)) throw new SenhaInvalidaException();
 		
 		boolean teste = servicoDesenvolvedor.criarDesenvolvedor(email, nome, cvsNome, senha);
 		
@@ -128,10 +128,10 @@ public class ValidacaoDesenvolvedorImpl {
 				servicoDesenvolvedor.adicionarConhecimentoAoDesenvolvedor(email, conhecimento.getNome(), grau, 0);
 			}
 			
-			return teste;
-		} else {
-			throw new ListagemDeConhecimentoInexistenteException();
+//		} else {
+//			throw new ListagemDeConhecimentoInexistenteException();
 		}	
+		return teste;
 		
 	}
 	
