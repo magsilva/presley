@@ -11,10 +11,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.sql.Date;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.StringTokenizer;
 
 import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
@@ -48,7 +49,6 @@ import com.hukarz.presley.beans.Projeto;
 import com.hukarz.presley.client.gui.view.comunication.ViewComunication;
 import com.hukarz.presley.excessao.ConhecimentoInexistenteException;
 import com.hukarz.presley.excessao.DesenvolvedorInexistenteException;
-import com.hukarz.presley.excessao.NomeInvalidoException;
 
 
 public class Dominio extends ViewPart {
@@ -338,6 +338,8 @@ public class Dominio extends ViewPart {
 	
 	private void executarExperimento(String diretorioArquivos, Projeto projetoAtivo){
 		File diretorioCD = new File( diretorioArquivos );
+//		DateFormat formataData = new SimpleDateFormat("dd/MM/yyyy");  
+		DateFormat formataHora = new SimpleDateFormat("HH:mm:ss.SSS"); 
 		
 		File[] listagemDiretorio = diretorioCD.listFiles(new FilenameFilter() {  
 			public boolean accept(File d, String name) {  
@@ -349,8 +351,10 @@ public class Dominio extends ViewPart {
 		try {
 			for (int i = 0; i < listagemDiretorio.length; i++) {
 				file = new File( listagemDiretorio[i].getAbsolutePath() );
-				//this.logger.info("Processando arquivo " + file.getName());
+				
 				System.out.println("Processando arquivo " + file.getName());
+				System.out.println("Inicio >>>> " + 
+						formataHora.format(System.currentTimeMillis()) );
 				FileReader fileReader;
 				
 					fileReader = new FileReader(file);
@@ -393,7 +397,7 @@ public class Dominio extends ViewPart {
 				}
 				problema.setMensagem(corpoDaMensagem.toString());
 
-				System.out.println("Obtendo classes relacionadas...");
+				//System.out.println("Obtendo classes relacionadas...");
         		problema.setClassesRelacionadas( 
         			 aDB.getClassesRelacionadas(problema.getDescricao() + " " + problema.getMensagem(), " ") ) ;
         		
@@ -401,8 +405,10 @@ public class Dominio extends ViewPart {
         		problema.setTemResposta( arq.exists() );
         		
         		//Adciona problema ao banco
-        		System.out.println("Classes relacionadas obtidas");
+        		//System.out.println("Classes relacionadas obtidas");
         		viewComunication.adicionaProblema(problema);
+				System.out.println("Fim    >>>> " + 
+						formataHora.format(System.currentTimeMillis()) );
         		
 			}
 		} catch (FileNotFoundException e) {

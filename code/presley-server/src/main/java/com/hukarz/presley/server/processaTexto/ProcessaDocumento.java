@@ -41,7 +41,7 @@ public class ProcessaDocumento {
 	private String identificacaoDePalavras(String texto){
 		
 		boolean primeiraPalavra = true;
-		String retorno = "";
+		StringBuilder retorno = new StringBuilder();
 		
 		StringTokenizer st = new StringTokenizer(texto);
 		
@@ -92,14 +92,14 @@ public class ProcessaDocumento {
 			
 			
 			if (bValida){
-				retorno += palavra + ' ' ;
+				retorno.append( palavra + ' ' ) ;
 			}
 				
 			
 			primeiraPalavra = ((caracter == '.') || (caracter == '!') || (caracter == '?')) ;
 		}
 		
-		return remocaoDePalavrasNegativas(retorno);
+		return remocaoDePalavrasNegativas(retorno.toString());
 	}
 
 	private char ss1Palavra(char caracter){

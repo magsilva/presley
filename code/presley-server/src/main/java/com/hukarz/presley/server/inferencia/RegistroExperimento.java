@@ -52,18 +52,6 @@ public class RegistroExperimento {
 		}  
 	}
 	
-	private int contarQuantidadeArquivos(final String extencao){
-		File diretorioCD = new File( problema.getProjeto().getEndereco_Servidor_Gravacao() );
-
-		File[] listagemDiretorio = diretorioCD.listFiles(new FilenameFilter() {  
-			public boolean accept(File d, String name) {  
-				return name.toLowerCase().endsWith( extencao );  
-			}  
-		}); 
-		
-		return listagemDiretorio.length;
-	}
-	
 	private void gerarArquivos() throws FileNotFoundException{
 		Projeto projeto = problema.getProjeto();
 

@@ -100,12 +100,11 @@ public class ValidacaoProblemaImpl {
 		// Identifica o conhecimeto do problema a se cadastrar
 		ProcessaSimilaridade processaSimilaridade = new ProcessaSimilaridade();
 	
-		String comentariosCodigo = "";
-		
+		StringBuilder comentariosCodigo = new StringBuilder();
 		for (Iterator<ArquivoJava> it = problema.getClassesRelacionadas().values().iterator(); it.hasNext();) {  
 			ArquivoJava arquivoJava = it.next();  
 			try {
-				comentariosCodigo += " " +arquivoJava.getTexto();
+				comentariosCodigo.append(arquivoJava.getTexto() +" ");
 			} catch (IOException e) {
 				//e.printStackTrace();
 			}			
