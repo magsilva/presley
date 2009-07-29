@@ -91,7 +91,7 @@ public class ValidacaoProblemaImpl {
 		if (!servicoProjeto.projetoExiste( problema.getProjeto() )) throw new ProjetoInexistenteException();
 
 		this.logger.debug("Validação");
-		
+
 		// Cria uma lista com os Desenvolvedores de cada arquivo java		 
 		Map<ArquivoJava, ArrayList<Desenvolvedor>> arquivoDesenvolvedores = validacaoArquivo.getDesenvolvedoresArquivos(problema);
 		
@@ -101,6 +101,7 @@ public class ValidacaoProblemaImpl {
 		ProcessaSimilaridade processaSimilaridade = new ProcessaSimilaridade();
 	
 		StringBuilder comentariosCodigo = new StringBuilder();
+		
 		for (Iterator<ArquivoJava> it = problema.getClassesRelacionadas().values().iterator(); it.hasNext();) {  
 			ArquivoJava arquivoJava = it.next();  
 			try {

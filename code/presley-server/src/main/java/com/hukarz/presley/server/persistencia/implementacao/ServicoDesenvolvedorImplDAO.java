@@ -423,6 +423,55 @@ public class ServicoDesenvolvedorImplDAO implements ServicoDesenvolvedor{
 		}
 	}
 	
+	@Override
+	public Desenvolvedor getDesenvolvedorNaListaEmail(String email)
+			throws DesenvolvedorInexistenteException {
+		//Connection conn = MySQLConnectionFactory.getConnection();
+		Connection conn = MySQLConnectionFactory.open();
+		
+		Statement stm = null;
+			
+		try {
+
+			stm = conn.createStatement();
+
+			String SQL = " SELECT email, nome, cvsNome, listaEmail FROM desenvolvedor WHERE "+
+			" listaEmail LIKE '%"+email+"%';";
+
+
+			//System.out.println(SQL);
+			ResultSet rs = stm.executeQuery(SQL);
+
+			if (rs.next()){
+
+				Desenvolvedor desenvolvedor = new Desenvolvedor();
+
+				desenvolvedor.setEmail(rs.getString("email"));
+				desenvolvedor.setNome(rs.getString("nome"));
+				desenvolvedor.setCVSNome(rs.getString("cvsNome"));
+				desenvolvedor.setListaEmail(rs.getString("listaEmail"));
+				desenvolvedor.setListaConhecimento(this.getConhecimentosDoDesenvolvedor(rs.getString("email"), 1));
+				desenvolvedor.setSenha("");
+
+				return desenvolvedor;
+			}else{
+				return null;
+			}
+
+		} catch (SQLException e) {
+			//e.printStackTrace();
+			return null;
+		} finally {
+			try {
+				stm.close();
+				//conn.close();
+			} catch (SQLException onConClose) {
+				System.out.println(" Houve erro no fechamento da conexão ");
+				onConClose.printStackTrace();	             
+			}
+		}
+	}
+
 	public int getQntResposta(String email, String conhecimento){
 		//Connection conn = MySQLConnectionFactory.getConnection();
 		Connection conn = MySQLConnectionFactory.open();

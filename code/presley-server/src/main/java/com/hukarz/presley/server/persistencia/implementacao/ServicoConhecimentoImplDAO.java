@@ -493,12 +493,14 @@ public class ServicoConhecimentoImplDAO implements ServicoConhecimento{
 					"  FROM problema p"+
 					"  INNER JOIN solucao s ON s.problema_id = p.id"+
 					"  WHERE p.resolvido = 1 and p.desenvolvedor_email = '"+ desenvolvedor.getEmail() +"' AND p.conhecimento_nome = '"+ conhecimento.getNome() +"'" +
+//					"  AND YEAR( p.dataRelato ) >= 2008" +
 					"  GROUP BY s.desenvolvedor_email"+
 					"        UNION ALL"+
 					"  SELECT p.desenvolvedor_email, 0 as qtdeSolucao, COUNT(p.desenvolvedor_email) as qtdeProblema"+
 					"  FROM solucao s"+
 					"  INNER JOIN problema p ON p.id = s.problema_id AND p.conhecimento_nome = '"+ conhecimento.getNome() +"'" +
 					"  WHERE s.resolveu = 1 and s.desenvolvedor_email = '"+ desenvolvedor.getEmail() +"'" +
+//					"  AND YEAR( p.dataRelato ) >= 2008" +
 					"  GROUP BY p.desenvolvedor_email"+
 					"  ) AS T"+
 					" GROUP BY desenvolvedor_email";
@@ -524,6 +526,7 @@ public class ServicoConhecimentoImplDAO implements ServicoConhecimento{
 						"  FROM problema p" +
 						"  INNER JOIN solucao s ON s.problema_id = p.id AND s.resolveu = 1" +
 						"  WHERE p.conhecimento_nome = '"+ conhecimento.getNome() +"'" +
+//						"  AND YEAR( p.dataRelato ) >= 2008" +
 						"  GROUP BY s.desenvolvedor_email" +
 						" ) AS T" +
 						" GROUP BY desenvolvedor_email";

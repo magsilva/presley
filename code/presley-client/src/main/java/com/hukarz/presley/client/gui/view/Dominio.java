@@ -11,7 +11,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
-import java.sql.Date;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -185,34 +184,37 @@ public class Dominio extends ViewPart {
 				
 				this.logger.debug("clique duplo");
 
-				
 				projetoAtivo = viewComunication.getProjetoAtivo();
-
-		 		/*
-				try {
-					ajustarArquivosEmails();
-				} catch (Exception e1) {
-					e1.printStackTrace();
-					System.exit(1);
-				}
-		 		*/
-
+				
 				// Objeto para o JayFX
 				try {
 					if (aDB == null)
 						aDB = new PresleyJayFX( projetoAtivo );
 				} catch (JayFXException e1) {
-					//e1.printStackTrace();
 					System.exit(1);
 				}
+				
 				Shell shell = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
 
 				DirectoryDialog dialog = new DirectoryDialog(shell, SWT.OPEN);
 				dialog.setFilterPath( "C://" );
 				String diretorio = dialog.open();
 				
-				executarExperimento(diretorio, projetoAtivo);
-		 		
+				try {
+					executarExperimento(diretorio, projetoAtivo);
+				} catch (FileNotFoundException e1) {
+					e1.printStackTrace();
+				}
+/*
+				try {
+					ajustarArquivosQuestion(diretorio);
+					ajustarArquivosEmails();
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				} catch (Exception e1) {
+					e1.printStackTrace();
+				}
+*/								
 			}
 
 			public void mouseDown(MouseEvent e) {
@@ -339,9 +341,12 @@ public class Dominio extends ViewPart {
 	}	
 	
 	
-	private void executarExperimento(String diretorioArquivos, Projeto projetoAtivo){
+	private void executarExperimento(String diretorioArquivos, Projeto projetoAtivo) throws FileNotFoundException{
 		File diretorioCD = new File( diretorioArquivos );
 //		DateFormat formataData = new SimpleDateFormat("dd/MM/yyyy");  
+		PrintWriter saidaTempoProcessamento = new PrintWriter(new 
+				FileOutputStream("C:/TempoProcessamento.txt"));
+		
 		DateFormat formataHora = new SimpleDateFormat("HH:mm:ss.SSS"); 
 		
 		File[] listagemDiretorio = diretorioCD.listFiles(new FilenameFilter() {  
@@ -356,8 +361,10 @@ public class Dominio extends ViewPart {
 				file = new File( listagemDiretorio[i].getAbsolutePath() );
 				
 				System.out.println("Processando arquivo " + file.getName());
-				System.out.println("Inicio >>>> " + 
-						formataHora.format(System.currentTimeMillis()) );
+				saidaTempoProcessamento.println( "Processando arquivo " + file.getName() );
+
+				saidaTempoProcessamento.println( "Inicio >>>> " + formataHora.format(System.currentTimeMillis()) );
+				
 				FileReader fileReader;
 				
 					fileReader = new FileReader(file);
@@ -410,8 +417,7 @@ public class Dominio extends ViewPart {
         		//Adciona problema ao banco
         		//System.out.println("Classes relacionadas obtidas");
         		viewComunication.adicionaProblema(problema);
-				System.out.println("Fim    >>>> " + 
-						formataHora.format(System.currentTimeMillis()) );
+				saidaTempoProcessamento.println( "Fim    >>>> " + formataHora.format(System.currentTimeMillis()) );
         		
 			}
 		} catch (FileNotFoundException e) {
@@ -426,6 +432,8 @@ public class Dominio extends ViewPart {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		
+		saidaTempoProcessamento.close();
 
 	}
 
@@ -487,6 +495,43 @@ public class Dominio extends ViewPart {
 		}
 		
 	}
+	
+	private void ajustarArquivosQuestion(String diretorio) throws IOException, Exception {
+		File diretorioCD = new File( diretorio );
+
+		File[] listagemDiretorio = diretorioCD.listFiles(new FilenameFilter() {  
+			public boolean accept(File d, String name) {  
+				return name.toLowerCase().endsWith( ".question" );  
+			}  
+		}); 
+
+		for (File recommendationFile : listagemDiretorio) {
+			String linha = "";
+			ArrayList<String> emails = new ArrayList<String>();
+
+			FileReader fileReader = new FileReader(recommendationFile);
+			BufferedReader reader = new BufferedReader(fileReader);
+
+			System.out.println( recommendationFile.getAbsolutePath()  );
+			// - Busca pelos e-mails dos desenvolvedores -
+			linha = reader.readLine();
+			System.out.println( linha ) ;
+			if (linha.contains("jira@apache.org")){
+				String nome = extractNomeJira(linha);
+
+				Desenvolvedor desenvolvedor ;
+				desenvolvedor = viewComunication.getDesenvolvedorPorNome(nome);
+
+				emails.add(desenvolvedor.getEmail());
+			} else {
+				String email = extractEmail(linha);
+				viewComunication.login(email, "1") ;
+			}
+
+		}
+
+	}
+
 	
 	private String extractEmail(String fromHeader) {
 		

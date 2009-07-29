@@ -58,7 +58,7 @@ public class ArvoreEmail extends JFrame implements ActionListener {
 		getContentPane().setLayout(new BorderLayout());  
 
 		campo      = new JTextField(); 
-		campo.setText("C:/Java/lucene/Experimento_1.0/Entradas/Comunicacao/java-dev/arq/");
+		campo.setText("C:/java/lucene/Experimento_Final/java-dev/arq/");
 
 		botao      = new JButton("Procurar");  
 		painelCima = new JPanel(new BorderLayout());  
@@ -81,7 +81,8 @@ public class ArvoreEmail extends JFrame implements ActionListener {
 
 	public void actionPerformed(ActionEvent e) {  	        
 		DefaultMutableTreeNode pai = new DefaultMutableTreeNode(campo.getText());  
-		varreArvoreEmail(campo.getText(), pai);  
+		varreArvoreEmail(campo.getText(), pai);
+		//varreEmailDesenvolvedoresFrom(campo.getText(), pai);
 		ArvoreEmail = new JTree(pai);  
 		painelBaixo.removeAll();  
 		painelBaixo.add(new JScrollPane(ArvoreEmail));  
@@ -98,7 +99,7 @@ public class ArvoreEmail extends JFrame implements ActionListener {
 		try {
 			// (28	88)					Arquivos de 01/2004 até 12/2008
 			// (89  conteudo.length)	Arquivos de 01/2009 até o ultimo
-			for (int i=90; i < conteudo.length; i++) {    
+			for (int i=0; i < conteudo.length; i++) {    
 
 				File file = new File( conteudo[i].getAbsolutePath() );
 				FileReader fileReader = new FileReader(file);
@@ -212,7 +213,7 @@ public class ArvoreEmail extends JFrame implements ActionListener {
 				}
 			}
 
-			//cadastrarProblemas(emails);
+			cadastrarProblemas(emails);
 			preencherArvore(emails, no);
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -335,10 +336,14 @@ public class ArvoreEmail extends JFrame implements ActionListener {
 						while (st.hasMoreTokens()){
 							String email = st.nextToken();
 
-							if (email.contains("@") && ( !email.contains("jira@apache.org")) ){
+							if (email.contains("@")){
 								email	= retirarCaracteresExtras(email);
-								nome		= retirarCaracteresExtras(nome);
+								nome	= retirarCaracteresExtras(nome);
 
+								if (email.contains("jira@apache.org")){
+									email = email.replace("jira@apache.org", nome.trim() + "@presley" );
+								}
+								
 								if (emails.get(nome)==null){
 									emails.put(nome, email) ;
 								} else {
@@ -380,7 +385,8 @@ public class ArvoreEmail extends JFrame implements ActionListener {
 
 					while (st.hasMoreTokens()){   
 						String emailPrincipal = st.nextToken();
-						String SQL = "SELECT email FROM desenvolvedor WHERE listaEmail LIKE '%"+ emailPrincipal +"%'"; 
+						String SQL = "SELECT email FROM desenvolvedor WHERE listaEmail LIKE '%"+ emailPrincipal +"%' or " +
+								" nome = '"+ nome +"'"; 
 						ResultSet rs = stm.executeQuery(SQL);
 
 						if (emailPrincipal.length() > 50)
@@ -388,15 +394,16 @@ public class ArvoreEmail extends JFrame implements ActionListener {
 
 						if (!rs.next()){
 							// Se o nome não estiver vazio (Os grupos estão formados por nome)
+							
 							if (!nome.isEmpty()){
 								SQL = "INSERT INTO desenvolvedor (senha, cvsNome, nome, email, listaEmail) " +
-								" VALUES ('1', '', '"+ nome +"', '"+ emailPrincipal +"', '"+ email +"')";
+								" VALUES ('9', '', '"+ nome +"', '"+ emailPrincipal +"', '"+ email +"')";
 
 								stm.execute(SQL);
 								break;
 							} else {
 								SQL = "INSERT INTO desenvolvedor (senha, cvsNome, nome, email, listaEmail) " +
-								" VALUES ('1', '', '"+ nome +"', '"+ emailPrincipal +"', '"+ emailPrincipal +"')";
+								" VALUES ('9', '', '"+ nome +"', '"+ emailPrincipal +"', '"+ emailPrincipal +"')";
 
 								stm.execute(SQL);
 							}
@@ -426,6 +433,7 @@ public class ArvoreEmail extends JFrame implements ActionListener {
 	}  
 
 	private String retirarCaracteresExtras(String palavra) {
+		palavra = palavra.replace("JIRA", "");
 		palavra = palavra.replace("<", "");
 		palavra = palavra.replace(">", "");
 		palavra = palavra.replace("(", "");

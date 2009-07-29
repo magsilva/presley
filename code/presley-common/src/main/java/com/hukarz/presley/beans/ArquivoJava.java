@@ -17,7 +17,7 @@ public class ArquivoJava extends Arquivo {
 
 	@Override
 	public String getTexto() throws IOException {
-		String textoRetorno = "";
+		StringBuilder textoRetorno = new StringBuilder();
 
 		File file = new File(getEnderecoServidor());
 		FileReader fileReader = new FileReader(file);
@@ -29,12 +29,12 @@ public class ArquivoJava extends Arquivo {
 
 			for(int x=0; x < texto.length();x++){
 				if (x <= texto.length()-2 && texto.charAt(x)=='/' && texto.charAt(x+1)=='/') {
-					textoRetorno += " " + texto.substring(x+2).trim();
+					textoRetorno.append( " " + texto.substring(x+2).trim() );
 					break;
 				}
 
 				if (x <= texto.length()-2 && texto.charAt(x)=='/' && texto.charAt(x+1)=='*' ){
-					textoRetorno += " "; 
+					textoRetorno.append(" "); 
 					comentarioBloco = true ;
 				}
 
@@ -42,13 +42,13 @@ public class ArquivoJava extends Arquivo {
 					comentarioBloco = false ;
 
 				if (comentarioBloco && texto.charAt(x)!='*' && texto.charAt(x)!='/' ){
-					textoRetorno += texto.charAt(x); 
+					textoRetorno.append(texto.charAt(x)); 
 				}
 			}
 
 		}
 		
-		return textoRetorno;
+		return textoRetorno.toString();
 	}
 
 	public void setEnderecoServidor(String enderecoArquivo) {

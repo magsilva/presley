@@ -25,7 +25,7 @@ CREATE TABLE  arquivo (
   arquivo_nome varchar(70) NOT NULL,
   endereco_servidor text NOT NULL,
   quantidadePalavras int(11) default NULL,
-  endereco_log text NOT NULL,
+  endereco_log text,
   PRIMARY KEY  (id)
 );
 

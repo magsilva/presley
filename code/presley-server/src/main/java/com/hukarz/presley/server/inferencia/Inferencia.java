@@ -1,5 +1,6 @@
 package com.hukarz.presley.server.inferencia;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -36,8 +37,9 @@ public class Inferencia {
 		Map<Desenvolvedor, Integer> participacaoDesenvolvedorArq = getParticipacaoDesenvolvedores(arquivoDesenvolvedores);
 		Map<Desenvolvedor, Integer> participacaoDesenvolvedorConhecimento = getParticipacaoDesenvolvedores(problema.getConhecimento(), problema.getDesenvolvedorOrigem());
 		
-		Map<Desenvolvedor, Integer> participacaoDesenvolvedor = somarParticipacaoDosDesenvolvedores(participacaoDesenvolvedorArq, participacaoDesenvolvedorConhecimento);
+		Map<Desenvolvedor, Integer> participacaoDesenvolvedor = somarParticipacaoDosDesenvolvedores(problema, participacaoDesenvolvedorArq, participacaoDesenvolvedorConhecimento);
 
+		participacaoDesenvolvedor.remove(problema.getDesenvolvedorOrigem());
 		return retornarMelhoresDesenvolvedores(problema, participacaoDesenvolvedor, 5);
 	}
 	
@@ -95,22 +97,23 @@ public class Inferencia {
 	/*	3º Passo 
 	(Soma os vetores de participação dos Desenvolvedor nos Arquivos e nas mensagens)
 	 */
-	private Map<Desenvolvedor, Integer> somarParticipacaoDosDesenvolvedores(Map<Desenvolvedor, Integer> participacaoDesenvolvedorArq, 
+	private Map<Desenvolvedor, Integer> somarParticipacaoDosDesenvolvedores(Problema problema, Map<Desenvolvedor, Integer> participacaoDesenvolvedorArq, 
 			Map<Desenvolvedor, Integer> participacaoDesenvolvedorConhecimento ){
 		Map<Desenvolvedor, Integer> pontuacaoParticipacao = new HashMap<Desenvolvedor, Integer>();
+		
+		RegistroExperimento registroExperimento = new RegistroExperimento();
+		try {
+			registroExperimento.gerarArquivosExtra(participacaoDesenvolvedorArq, participacaoDesenvolvedorConhecimento, problema);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
 		
 		if (participacaoDesenvolvedorArq.size() == 0){
 			pontuacaoParticipacao = participacaoDesenvolvedorConhecimento;
 		} else if (participacaoDesenvolvedorConhecimento.size() == 0){
 			pontuacaoParticipacao = participacaoDesenvolvedorArq;
 		} else {
-			/*
-			int pontuacaoMax = 0;
-			if (participacaoDesenvolvedorArq.size() > participacaoDesenvolvedorConhecimento.size())
-				pontuacaoMax = participacaoDesenvolvedorArq.size();
-			else 
-				pontuacaoMax = participacaoDesenvolvedorConhecimento.size();
-			*/
+
 			participacaoDesenvolvedorConhecimento	= classificacarDesenvolvedores(participacaoDesenvolvedorConhecimento, 20);
 			participacaoDesenvolvedorArq			= classificacarDesenvolvedores(participacaoDesenvolvedorArq, 20);
 			
@@ -249,10 +252,13 @@ public class Inferencia {
 			}
 		}
 		
-		RegistroExperimento registroExperimento = new 
-			RegistroExperimento(listaDesenvolvedores, participacaoDesenvolvedor, problema);
-		registroExperimento.gerarLog();
-		
+		RegistroExperimento registroExperimento = new RegistroExperimento();
+		try {
+			registroExperimento.gerarArquivosRecomendations(listaDesenvolvedores, problema);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+	
 		return listaDesenvolvedores;
 	}
 	

@@ -57,16 +57,16 @@ public class Arquivo implements Serializable{
 			BufferedReader reader = new BufferedReader(fileReader);
 			
 			String textoTemp = null;
-			String textoArq = "";
+			StringBuilder textoArq = new StringBuilder();
 			while( (textoTemp = reader.readLine()) != null )
-				textoArq += textoTemp + " ";
+				textoArq.append( textoTemp + " " );
 				
 			fileReader.close();
 			reader.close();
 			
-			setTexto(textoArq) ;
+			setTexto(textoArq.toString()) ;
 			
-			return textoArq;
+			return textoArq.toString();
 		} else
 			return texto;
 	}

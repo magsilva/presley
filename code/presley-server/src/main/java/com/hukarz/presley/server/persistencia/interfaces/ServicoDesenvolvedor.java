@@ -88,6 +88,14 @@ public interface ServicoDesenvolvedor {
 	public Desenvolvedor getDesenvolvedorCVS(String cvsNome) throws DesenvolvedorInexistenteException;
 	
 	/**
+	 * Este método retorna o desenvolvedor que possui o email na lista de e-mails
+	 * @param email Email do desenvolvedor.
+	 * @return <Desenvolvedor> 
+	 * @throws DesenvolvedorInexistenteException 
+	 */
+	public Desenvolvedor getDesenvolvedorNaListaEmail(String email) throws DesenvolvedorInexistenteException;
+	
+	/**
 	 * Esse método retorna uma lista de conhecimentos que o desenvolvedor possui
 	 * @param email Email do desenvolvedor
 	 * @return ArrayList<Conhecimento>
