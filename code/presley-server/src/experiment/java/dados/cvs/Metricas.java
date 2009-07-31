@@ -2,23 +2,11 @@ package dados.cvs;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FilenameFilter;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.Scanner;
 
 import com.hukarz.presley.excessao.DesenvolvedorInexistenteException;
-import com.hukarz.presley.server.persistencia.MySQLConnectionFactory;
-import com.hukarz.presley.server.persistencia.implementacao.ServicoDesenvolvedorImplDAO;
-import com.hukarz.presley.server.persistencia.interfaces.ServicoDesenvolvedor;
 
 public class Metricas {
 
@@ -42,7 +30,7 @@ public class Metricas {
 		System.out.println("Abrangência Total	= " + metricas.abrangencia(0));
 		
 		for (int i = 1; i < 6; i++) {
-			System.out.println("Quantidade  ("+ i +") = " + metricas.getQtdeRespostas(i));
+//			System.out.println("Quantidade  ("+ i +") = " + metricas.getQtdeRespostas(i));
 			System.out.println("Precisão    ("+ i +") = " + metricas.precisao(i));
 			System.out.println("Abrangência ("+ i +") = " + metricas.abrangencia(i));
 		}

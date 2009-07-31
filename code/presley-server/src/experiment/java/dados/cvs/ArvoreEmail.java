@@ -8,12 +8,16 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -58,7 +62,8 @@ public class ArvoreEmail extends JFrame implements ActionListener {
 		getContentPane().setLayout(new BorderLayout());  
 
 		campo      = new JTextField(); 
-		campo.setText("C:/java/lucene/Experimento_Final/java-dev/arq/");
+	
+		campo.setText("C:/java/lucene/java-dev/");
 
 		botao      = new JButton("Procurar");  
 		painelCima = new JPanel(new BorderLayout());  
@@ -186,7 +191,7 @@ public class ArvoreEmail extends JFrame implements ActionListener {
 						proximaLinhaSubject = true;
 						
 						linha = linha.replaceAll("subject: ", "");
-						email.setSubject( email.getSubject() + linha);
+						email.setSubject( email.getSubject() + " " +linha);
 					} else if (encontrouMessageID && encontrouSubject && linha.isEmpty() ){
 						encontrouMensagem  = true;
 					}
@@ -213,7 +218,8 @@ public class ArvoreEmail extends JFrame implements ActionListener {
 				}
 			}
 
-			cadastrarProblemas(emails);
+			//cadastrarProblemas(emails);
+			//gerarArquivos(base, emails);
 			preencherArvore(emails, no);
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -290,6 +296,60 @@ public class ArvoreEmail extends JFrame implements ActionListener {
 				e.printStackTrace();
 			}
 			
+		}
+	}
+
+	public ArrayList<Email> retornarFilhosSemRepeticao(Email email){
+		ArrayList<Email> emailsResposta = email.getEmailsFilho();
+		ArrayList<Email> emailsExperimento = new ArrayList<Email>();
+		for (Email emailResposta : emailsResposta) {
+			if ( !emailResposta.getFrom().equals(email.getFrom()) ){
+				boolean achei = false;
+				for (Email emailExperimento : emailsExperimento) {
+					if ( emailResposta.getFrom().equals(emailExperimento.getFrom())){
+						achei = true;
+						break;						
+					}
+				}
+
+				if (!achei)
+					emailsExperimento.add(emailResposta);
+			}
+		}
+
+		return emailsExperimento;
+	}
+	
+	public void gerarArquivos(String base, ArrayList<Email> emails) throws FileNotFoundException{
+		int count = 1;
+		
+		for (Email email : emails) {
+			
+			if (email.getFrom().isEmpty())
+				continue;
+
+			ArrayList<Email> emailsExperimento = retornarFilhosSemRepeticao(email);
+			
+			if (emailsExperimento.size() == 5){
+				String nomeArquivo = base + System.currentTimeMillis()+ "_" + count ;
+				
+				PrintWriter arquivoQuestion = new PrintWriter(new 
+						FileOutputStream( nomeArquivo + ".question"));
+				
+				arquivoQuestion.println( email.getFrom() );
+				arquivoQuestion.println( (new SimpleDateFormat("dd/MM/yyyy").format(email.getData()))  );
+				arquivoQuestion.println( email.getSubject() );
+				arquivoQuestion.println( email.getMensagem() );
+
+				arquivoQuestion.close();
+				
+				PrintWriter arquivoEmails = new PrintWriter(new FileOutputStream( nomeArquivo + ".emails"));
+				for (Email emailArquivo : emailsExperimento)
+					arquivoEmails.println( emailArquivo.getFrom() );
+				arquivoEmails.close();
+				
+				count += 1;
+			}
 		}
 	}
 	

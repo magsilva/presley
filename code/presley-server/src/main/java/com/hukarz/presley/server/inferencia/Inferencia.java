@@ -40,7 +40,7 @@ public class Inferencia {
 		Map<Desenvolvedor, Integer> participacaoDesenvolvedor = somarParticipacaoDosDesenvolvedores(problema, participacaoDesenvolvedorArq, participacaoDesenvolvedorConhecimento);
 
 		participacaoDesenvolvedor.remove(problema.getDesenvolvedorOrigem());
-		return retornarMelhoresDesenvolvedores(problema, participacaoDesenvolvedor, 5);
+		return retornarMelhoresDesenvolvedores(problema, participacaoDesenvolvedor);
 	}
 	
 	/*	1º Passo 
@@ -113,10 +113,10 @@ public class Inferencia {
 		} else if (participacaoDesenvolvedorConhecimento.size() == 0){
 			pontuacaoParticipacao = participacaoDesenvolvedorArq;
 		} else {
-
+			/*
 			participacaoDesenvolvedorConhecimento	= classificacarDesenvolvedores(participacaoDesenvolvedorConhecimento, 20);
 			participacaoDesenvolvedorArq			= classificacarDesenvolvedores(participacaoDesenvolvedorArq, 20);
-			
+			*/
 			pontuacaoParticipacao = participacaoDesenvolvedorArq ;
 			
 			for (Iterator<Desenvolvedor> it = participacaoDesenvolvedorConhecimento.keySet().iterator(); it.hasNext();) {
@@ -214,43 +214,26 @@ public class Inferencia {
 		return pontuacaoParticipacao;
 	}
 
+	
 	/*	4º Passo 
 	(Seleciona os melhores desenvolvedores como retorno)
 	 */
-	private ArrayList<Desenvolvedor> retornarMelhoresDesenvolvedores(Problema problema, Map<Desenvolvedor, Integer> participacaoDesenvolvedor, int qtde ){
+	private ArrayList<Desenvolvedor> retornarMelhoresDesenvolvedores(Problema problema, Map<Desenvolvedor, Integer> participacaoDesenvolvedor ){
 		ArrayList<Desenvolvedor> listaDesenvolvedores = new ArrayList<Desenvolvedor>();
-		Desenvolvedor desenvolvedorMenor = new Desenvolvedor();
-
 		for (Iterator<Desenvolvedor> it = participacaoDesenvolvedor.keySet().iterator(); it.hasNext();) {
 			Desenvolvedor desenvolvedor = it.next();
 			double porcentagem = participacaoDesenvolvedor.get(desenvolvedor) ;
-			
-			if ( listaDesenvolvedores.size() < qtde )
-				listaDesenvolvedores.add( desenvolvedor );
-			else {
-				double porcentagemRetorno = participacaoDesenvolvedor.get(desenvolvedorMenor) ;
-				if (porcentagem > porcentagemRetorno){
-					listaDesenvolvedores.remove(desenvolvedorMenor);
-					listaDesenvolvedores.add(desenvolvedor);
+	
+			int posicao = 0;
+			for (Desenvolvedor desenvolvedorLista : listaDesenvolvedores) {
+				if (porcentagem > participacaoDesenvolvedor.get(desenvolvedorLista) ){
+					break;
 				}
+				posicao++;
 			}
-				
-			
-			// Seleciona o Desenvolvedor com menor porcentagem
-			if ( listaDesenvolvedores.size() == qtde ){
-				for (int i = 0; i < qtde; i++) {
-					if (i==0)
-						desenvolvedorMenor = listaDesenvolvedores.get(i);
-					else{
-						double porcentagemDesenvolvedor = participacaoDesenvolvedor.get(listaDesenvolvedores.get(i)) ;
-						double porcentagemDesenvolvedorMenor = participacaoDesenvolvedor.get(desenvolvedorMenor) ;
-						
-						if (porcentagemDesenvolvedor < porcentagemDesenvolvedorMenor)
-							desenvolvedorMenor = listaDesenvolvedores.get(i);
-					}
-				}
-			}
+			listaDesenvolvedores.add(posicao, desenvolvedor);
 		}
+		
 		
 		RegistroExperimento registroExperimento = new RegistroExperimento();
 		try {

@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Map;
-import java.util.StringTokenizer;
 
 import org.apache.log4j.Logger;
 
@@ -25,9 +24,6 @@ public class RegistroExperimento {
 			Problema problema) throws FileNotFoundException{
 		Projeto projeto = problema.getProjeto();
 		
-		PrintWriter saidaRecomendacao = new PrintWriter(new 
-				FileOutputStream(projeto.getEndereco_Servidor_Gravacao() + problema.getNumeroArquivoExperimento() + ".recomendations"));
-
 		PrintWriter saidaPontuacao = new PrintWriter(new 
 				FileOutputStream(projeto.getEndereco_Servidor_Gravacao() + problema.getNumeroArquivoExperimento() + ".extra"));
 		
@@ -44,20 +40,15 @@ public class RegistroExperimento {
 		}
 		// <-
 		
+		saidaPontuacao.println( problema.getDescricao() );
+				
 		for (Desenvolvedor desenvolvedor : listaDesenvolvedores) {
-
-			StringTokenizer st = new StringTokenizer( desenvolvedor.getListaEmail() );
-			while (st.hasMoreTokens()){
-				String email = st.nextToken();
-				saidaRecomendacao.println( email );
-			}
 
 			saidaPontuacao.println( desenvolvedor.getEmail() + "," + 
 					participacaoDesenvolvedorArq.get(desenvolvedor) +"," +
 					participacaoDesenvolvedorConhecimento.get(desenvolvedor));
 		}
 
-		saidaRecomendacao.close();
 		saidaPontuacao.close();
 	}
 

@@ -72,35 +72,54 @@ public class PresleyJayFX extends JayFX {
 				if (elemento.getCategory() == ICategories.METHOD)
 					retorno.putAll( getRelacionamentosMetodo( (MethodElement) elemento ) );
 			}
+			
+			lRange = getRange( element, Relation.T_EXTENDS_CLASS ); 
+			retorno.putAll( getListaClasseArquivo( lRange )  );
+
+			lRange = getRange( element, Relation.T_EXTENDS_INTERFACES );
+			retorno.putAll( getListaClasseArquivo( lRange )  );
 		}
 
 		return retorno;
 	}
 
-	private Map<ClasseJava, ArquivoJava> getRelacionamentosMetodo( MethodElement methodElement ) {
+	private Map<ClasseJava, ArquivoJava> getRelacionamentosMetodo( MethodElement methodElement ) throws ConversionException {
+		
+		Set<IElement> lRange = getRange( methodElement, Relation.T_ACCESSES) ;
+		lRange.addAll( getRange( methodElement, Relation.T_CALLS ) ) ;
+
+		return getListaClasseArquivo(lRange);    	
+	}
+
+	private Map<ClasseJava, ArquivoJava> getListaClasseArquivo(Set<IElement> elements) {
 		Map<ClasseJava, ArquivoJava> retorno = new HashMap<ClasseJava, ArquivoJava>();
 
-		Set<IElement> lRange = getRange( methodElement, Relation.ACCESSES) ;
-		lRange.addAll( getRange( methodElement, Relation.CALLS ) ) ;
-
-		for (Iterator<IElement> iterator = lRange.iterator(); iterator.hasNext();) {
+		for (Iterator<IElement> iterator = elements.iterator(); iterator.hasNext();) {
 			IElement element = iterator.next();
-			try{
-				if (isProjectElement(element)){
-					ClasseJava classe   = new ClasseJava( element.getDeclaringClass().getId() ) ;
-
+			if (isProjectElement(element)){
+				ClasseJava classe;
+				
+				if (element.getDeclaringClass() != null )
+					classe   = new ClasseJava( element.getDeclaringClass().getId() ) ;
+				else
+					classe   = new ClasseJava( element.getId()) ; 
+				
+				try{
 					ArquivoJava arquivo = new ArquivoJava( convertToJavaElement(element).getResource().getName(), getProjetoSelecionado());
 					arquivo.setEnderecoServidor( convertToJavaElement(element).getPath().toString() ) ;
 					retorno.put(classe, arquivo);
+				} catch (ConversionException e) {
+					// e.printStackTrace();
+					// Como o Lucene está com erros no Eclipse isso é necessario 
 				}
-			} catch (ConversionException e) {
-
+				
 			}
 		}
 
+
 		return retorno;    	
 	}
-
+	
 	/**
 	 * Retorna todos as Classes e metodos no projeto na forma escrita pelo programador
 	 * @return A Set of IElement objects representing all the elements in the 
