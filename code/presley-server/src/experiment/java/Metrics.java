@@ -8,6 +8,8 @@ import java.util.Scanner;
 
 public class Metrics {
 
+	private static final int ALL_EMAILS = 0;
+	private int maxNumberOfRecommendations;
 	private File[] recommendationsFiles;
 	private File[] repliesFiles;
 	private double[] precisions;
@@ -15,103 +17,42 @@ public class Metrics {
 	private double precisionTotal;
 	private double recallTotal;
 	private int total;
+	private double precisionPlus;
+	private double recallPlus;
+	private int totalPlus;
 
 
-	public Metrics(String path) {
+	public Metrics(String path, int maxNumberOfRecommendations) {
 		File directory = new File(path);
+		this.maxNumberOfRecommendations = maxNumberOfRecommendations;
 		
-		recommendationsFiles = directory.listFiles(new FilenameFilter() {  
+		this.recommendationsFiles = directory.listFiles(new FilenameFilter() {  
 			public boolean accept(File d, String name) {  
 				return name.toLowerCase().endsWith(".recomendations");  
 			}  
 		}); 	
 		
-		repliesFiles = directory.listFiles(new FilenameFilter() {  
+		this.repliesFiles = directory.listFiles(new FilenameFilter() {  
 			public boolean accept(File d, String name) {  
 				return name.toLowerCase().endsWith(".emails");  
 			}  
 		});
 		
-		precisions = new double[recommendationsFiles.length];
-		recalls = new double[recommendationsFiles.length];
-		precisionTotal = 0;
-		recallTotal = 0;
+		this.precisions = new double[recommendationsFiles.length];
+		this.recalls = new double[recommendationsFiles.length];
+		this.total = precisions.length;
+		this.precisionTotal = 0;
+		this.recallTotal = 0;
+		
+		totalPlus = 0;
+		precisionPlus = 0;
+		recallPlus = 0;
 		
 	}
 
-	public static void main(String[] args) throws FileNotFoundException {
-		Metrics metrics = new Metrics(args[0]);
-		metrics.calculate();
-		metrics.report();
-		metrics.detailedReport();
+	public void compute() throws FileNotFoundException {
+		computeAllPrecisionAndRecall();	
 		
-	}	
-	
-	public void detailedReport() throws FileNotFoundException {
-		double precisionUntil;
-		double recallUntil;
-		int totalUntil;
-		double precisionBy;
-		double recallBy;
-		int totalBy;
-		
-		System.out.println("PrecisionBy\tRecallBy\tPrecisionUntil\tRecallUntil");
-		
-		for (int n = 1; n <= 9; n++) {
-			precisionUntil = 0;
-			recallUntil = 0;
-			totalUntil = 0;
-			precisionBy = 0;
-			recallBy = 0;
-			totalBy = 0;
-			for (int i = 0; i < this.repliesFiles.length; i++) {
-				File repliesFile = this.repliesFiles[i];
-				int numberOfReplies = getEmails(repliesFile).size();
-				if (numberOfReplies <= n) {
-					precisionUntil += precisions[i];
-					recallUntil += recalls[i];
-					totalUntil++;
-				}
-				if (numberOfReplies == n) {
-					precisionBy += precisions[i];
-					recallBy += recalls[i];
-					totalBy++;
-				}
-				
-			}
-				
-			precisionUntil = precisionUntil/totalUntil;
-			recallUntil = recallUntil/totalUntil;
-			/*System.out.println("N=" + n + "\t\tMessages=" + totalUntil);
-			System.out.println("precision\t" + precisionUntil);
-			System.out.println("recall\t\t" + recallUntil);*/
-			
-			precisionBy = precisionBy/totalBy;
-			recallBy = recallBy/totalBy;
-			/*System.out.println("N=" + n + "\t\tMessages=" + totalBy);
-			System.out.println("precision\t" + precisionBy);
-			System.out.println("recall\t\t" + recallBy);*/
-			System.out.println(precisionBy + "\t" + recallBy + "\t" + precisionUntil + "\t" + recallUntil);
-			
-		}
-	}
-	
-
-	public void calculate() throws FileNotFoundException {
-		for (int i = 0; i < this.recommendationsFiles.length; i++) {
-			File recommendationsFile = this.recommendationsFiles[i];
-			File repliesFile = this.repliesFiles[i];
-			
-			System.out.println("file " + recommendationsFile.getName());
-			List<String> recommendations = getEmails(recommendationsFile);
-			List<String> replies = getEmails(repliesFile);
-			
-			precisions[i] = precision(recommendations, replies);
-			recalls[i] = recall(recommendations, replies);
-		}	
-		
-		total = this.recommendationsFiles.length;
-				
 		for (int i = 0; i < total; i++) {
 			precisionTotal += this.precisions[i];
 			recallTotal += this.recalls[i];
@@ -121,11 +62,23 @@ public class Metrics {
 		
 	}
 
+	private void computeAllPrecisionAndRecall() throws FileNotFoundException {
+		for (int i = 0; i < total; i++) {
+			File recommendationsFile = this.recommendationsFiles[i];
+			File repliesFile = this.repliesFiles[i];
+			
+			List<String> recommendations = getEmails(recommendationsFile, this.maxNumberOfRecommendations);
+			List<String> replies = getEmails(repliesFile, ALL_EMAILS);
+			
+			precisions[i] = precision(recommendations, replies);
+			recalls[i] = recall(recommendations, replies);
+		}
+	}
+
 	private double recall(List<String> recommendations, List<String> replies) {
 		int numberOfCorrectRecommendations = getNumberOfCorrectRecommendations(recommendations, replies);
 		int numberOfReplies = replies.size();
 		double recall = (double)numberOfCorrectRecommendations/numberOfReplies;
-		System.out.println("recall " + recall);
 		return recall;
 	}
 
@@ -133,7 +86,6 @@ public class Metrics {
 		int numberOfCorrectRecommendations = getNumberOfCorrectRecommendations(recommendations, replies);
 		int numberOfRecommendations = recommendations.size();
 		double precision = (double)numberOfCorrectRecommendations/numberOfRecommendations;
-		System.out.println("precision " + precision);
 		return precision;
 	}
 
@@ -146,21 +98,156 @@ public class Metrics {
 		}
 		return hits;
 	}
+	
+	public void computePlus() {
+		for (int i = 0; i < total; i++) {
+			precisionPlus += this.precisions[i];
+			recallPlus += this.recalls[i];
+			if (this.precisions[i] != 0) {
+				totalPlus++;
+			}
+		}
+		
+		precisionPlus = precisionPlus/totalPlus;
+		recallPlus = recallPlus/totalPlus;
+	}
 
 	public void report() {
-		System.out.println("Total de emails " + total);
+		System.out.println("********************************");
+		System.out.println("Number of recommendations: " + this.maxNumberOfRecommendations);
+		System.out.println("Emails: " + total);
 		System.out.println("Precision\t\t" + precisionTotal);
 		System.out.println("Recall\t\t\t" + recallTotal);
 	}
 	
-	private List<String> getEmails(File file) throws FileNotFoundException {
+	public void reportPlus() {
+		System.out.println("********************************");
+		System.out.println("Number of recommendations: " + this.maxNumberOfRecommendations);
+		System.out.println("Emails w/ successfull recommendation: " + totalPlus 
+				+ "(" + (double)totalPlus/total + ")");
+		System.out.println("Precision\t\t" + precisionPlus);
+		System.out.println("Recall\t\t\t" + recallPlus);
+	}
+	
+	
+	
+	/**
+	 * Returns all emails in the file as a list
+	 * @param file Filename of the file with the emails
+	 * @param maxEmails Number maximum of emails to fetch. Use ALL_EMAILS to fetch all.
+	 * @return A List<String> with all emails
+	 * @throws FileNotFoundException
+	 */
+	private List<String> getEmails(File file, int maxEmails) throws FileNotFoundException {
 		Scanner scanner = new Scanner(file);
 		List<String> emails = new ArrayList<String>();
+		int i = 0;
 		
-		while (scanner.hasNext()) {
+		if (ALL_EMAILS == maxEmails) {
+			i = Integer.MIN_VALUE;
+		}
+		
+		while (scanner.hasNext() && i < maxEmails) {
 			emails.add(scanner.next());
+			i++;
 		}
 		return emails;
+	}
+	
+	public static void main(String[] args) throws FileNotFoundException {
+		String path = args[0];
+		int maxNumberOfRecommendations = Integer.parseInt(args[1]);
+		
+		
+		for (int i = 1; i <= maxNumberOfRecommendations; i++ ) {
+			Metrics metrics = new Metrics(path, i);
+			metrics.compute();
+			metrics.report();
+			metrics.computePlus();
+			metrics.reportPlus();
+		}
+		
+	}	
+	
+	
+	// FIXME
+	public void detailedReport() throws FileNotFoundException {
+		reportBy();
+		reportUntil();
+	}
+	
+	// FIXME
+	private void reportUntil() throws FileNotFoundException {
+		double precision;
+		double recall;
+		int totalPositive;
+		int total;
+		
+		System.out.println("REPORT UNTIL");
+		for (int n = 1; n <= this.maxNumberOfRecommendations; n++) {
+			precision = 0;
+			recall = 0;
+			total = 0;
+			totalPositive = 0;
+
+			for (int i = 0; i < this.repliesFiles.length; i++) {
+				File repliesFile = this.repliesFiles[i];
+				int numberOfReplies = getEmails(repliesFile, ALL_EMAILS).size();
+				
+				if (numberOfReplies <= n) {
+					precision += precisions[i];
+					recall += recalls[i];
+					total++;					
+					if (precisions[i] != 0) {
+						totalPositive++;
+					}
+				}
+			}
+
+			printReport(precision, recall, total, totalPositive, n);
+		}
+	}
+
+	// FIXME
+	private void printReport(double precision, double recall,
+			int total, int totalPositive, int n) {
+		System.out.println("N = " + n + "\t\tTotal = " + total + "\t\tTotal+ = " + totalPositive);
+		System.out.println("precision \t" + precision/total);
+		System.out.println("precision+\t" + precision/totalPositive);
+		System.out.println("recall \t\t" + recall/total);
+		System.out.println("recall+\t\t" + recall/totalPositive);
+	}
+
+	// FIXME
+	private void reportBy() throws FileNotFoundException {
+		double precision;
+		double recall;
+		int totalPositive;
+		int total;
+		
+		System.out.println("REPORT BY");
+		for (int n = 1; n <= this.maxNumberOfRecommendations; n++) {
+			precision = 0;
+			recall = 0;
+			total = 0;
+			totalPositive = 0;
+
+			for (int i = 0; i < this.repliesFiles.length; i++) {
+				File repliesFile = this.repliesFiles[i];
+				int numberOfReplies = getEmails(repliesFile, ALL_EMAILS).size();
+				
+				if (numberOfReplies == n) {
+					precision += precisions[i];
+					recall += recalls[i];
+					total++;					
+					if (precisions[i] != 0) {
+						totalPositive++;
+					}
+				}
+			}
+
+			printReport(precision, recall, totalPositive, total, n);
+		}
 	}
 
 }
