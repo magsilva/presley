@@ -9,6 +9,7 @@ import java.util.Map;
 import com.hukarz.presley.beans.Arquivo;
 import com.hukarz.presley.beans.Conhecimento;
 import com.hukarz.presley.excessao.ConhecimentoNaoEncontradoException;
+import com.hukarz.presley.server.inferencia.RegistroExperimento;
 import com.hukarz.presley.server.persistencia.implementacao.ServicoArquivoImplDAO;
 import com.hukarz.presley.server.persistencia.implementacao.ServicoConhecimentoImplDAO;
 import com.hukarz.presley.server.persistencia.interfaces.ServicoArquivo;
@@ -23,21 +24,33 @@ public class ProcessaSimilaridade {
 	
 	public Conhecimento verificaConhecimentoDoTexto(String texto) throws IOException, ConhecimentoNaoEncontradoException{
 		ArrayList<Arquivo> arquivos = servicoArquivo.getListaArquivo();
-		qtdeArquivos = arquivos.size();		
+		qtdeArquivos = arquivos.size();
 		
 		Arquivo arquivoTexto = processaDocumento.transformaTextoEmArquivo(texto);
 		Arquivo arquivoMaisSimilar = null; 
 		
 		double grauDeSimilaridadeMaior = 0;
+		
+		RegistroExperimento registroExperimento = RegistroExperimento.getInstance(); 
+		
 		for (Arquivo arquivo : arquivos) {
 			
 			double grauDeSimilaridade = calculaGrauDeSimilaridadeEntreTextos(arquivo, arquivoTexto);
+			
+			//TODO: criar na memória relacionamento entre conhecimento e arquivo
+			Conhecimento conhecimento = servicoConhecimento.getConhecimentoAssociado(arquivo);
+			System.out.println(conhecimento.getNome() + ": " + grauDeSimilaridade);
+			registroExperimento.addSimilaridadeConhecimento(conhecimento, grauDeSimilaridade);
+			
 			
 			if (grauDeSimilaridadeMaior < grauDeSimilaridade){
 				arquivoMaisSimilar = arquivo;
 				grauDeSimilaridadeMaior = grauDeSimilaridade;
 			}
 		}
+		
+		
+		
 		
 		
 		if (arquivoMaisSimilar == null)
@@ -115,6 +128,7 @@ public class ProcessaSimilaridade {
 			segundoMin  = b_a;
 		
 		return (primeiroMin+segundoMin)/2;
+		
 	}
 	
 

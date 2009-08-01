@@ -10,9 +10,9 @@ public class Metrics {
 
 	private static final int ALL_EMAILS = 0;
 	private int maxNumberOfRecommendations;
-	private File[] recommendationsFiles;
-	private File[] repliesFiles;
-	private double[] precisions;
+	protected File[] recommendationsFiles;
+	protected File[] repliesFiles;
+	protected double[] precisions;
 	private double[] recalls;
 	private double precisionTotal;
 	private double recallTotal;
@@ -60,6 +60,10 @@ public class Metrics {
 		precisionTotal = precisionTotal/total;
 		recallTotal = recallTotal/total;
 		
+	}
+	
+	public double F1() {
+		return (2*precisionTotal*recallTotal)/(precisionTotal + recallTotal);
 	}
 
 	private void computeAllPrecisionAndRecall() throws FileNotFoundException {
@@ -110,6 +114,8 @@ public class Metrics {
 		
 		precisionPlus = precisionPlus/totalPlus;
 		recallPlus = recallPlus/totalPlus;
+		
+		System.out.println((2*precisionPlus*recallPlus)/(precisionPlus + recallPlus));
 	}
 
 	public void report() {
@@ -162,9 +168,9 @@ public class Metrics {
 		for (int i = 1; i <= maxNumberOfRecommendations; i++ ) {
 			Metrics metrics = new Metrics(path, i);
 			metrics.compute();
-			metrics.report();
+			//metrics.report();
 			metrics.computePlus();
-			metrics.reportPlus();
+			//metrics.reportPlus();
 		}
 		
 	}	

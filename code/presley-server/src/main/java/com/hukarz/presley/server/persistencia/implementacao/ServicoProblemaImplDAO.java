@@ -265,6 +265,7 @@ public class ServicoProblemaImplDAO implements ServicoProblema{
 		ArrayList<Problema> list = new ArrayList<Problema>();
 		ServicoDesenvolvedor sd = new ServicoDesenvolvedorImplDAO();
 		ServicoConhecimento sc = new ServicoConhecimentoImplDAO();
+		
 		try {
 
 			stm = conn.createStatement();

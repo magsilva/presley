@@ -32,7 +32,7 @@ import com.hukarz.presley.server.persistencia.interfaces.ServicoDesenvolvedor;
 public class Inferencia {
 
 	public ArrayList<Desenvolvedor> getDesenvolvedores(Map<ArquivoJava, ArrayList<Desenvolvedor>> arquivoDesenvolvedores,
-			Problema problema) {
+			Problema problema) throws FileNotFoundException {
 
 		Map<Desenvolvedor, Integer> participacaoDesenvolvedorArq = getParticipacaoDesenvolvedores(arquivoDesenvolvedores);
 		Map<Desenvolvedor, Integer> participacaoDesenvolvedorConhecimento = getParticipacaoDesenvolvedores(problema.getConhecimento(), problema.getDesenvolvedorOrigem());
@@ -40,6 +40,10 @@ public class Inferencia {
 		Map<Desenvolvedor, Integer> participacaoDesenvolvedor = somarParticipacaoDosDesenvolvedores(problema, participacaoDesenvolvedorArq, participacaoDesenvolvedorConhecimento);
 
 		participacaoDesenvolvedor.remove(problema.getDesenvolvedorOrigem());
+		RegistroExperimento registroExperimento = RegistroExperimento.getInstance();
+		registroExperimento.salvar();
+		registroExperimento.limpar();
+		
 		return retornarMelhoresDesenvolvedores(problema, participacaoDesenvolvedor);
 	}
 	
@@ -101,12 +105,11 @@ public class Inferencia {
 			Map<Desenvolvedor, Integer> participacaoDesenvolvedorConhecimento ){
 		Map<Desenvolvedor, Integer> pontuacaoParticipacao = new HashMap<Desenvolvedor, Integer>();
 		
-		RegistroExperimento registroExperimento = new RegistroExperimento();
-		try {
-			registroExperimento.gerarArquivosExtra(participacaoDesenvolvedorArq, participacaoDesenvolvedorConhecimento, problema);
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
+		RegistroExperimento registroExperimento = RegistroExperimento.getInstance();
+		
+		registroExperimento.setParticipacaoDesenvolvedorArquivo(participacaoDesenvolvedorArq);
+		registroExperimento.setParticipacaoDesenvolvedorConhecimento(participacaoDesenvolvedorConhecimento);
+		registroExperimento.setProblema(problema);
 		
 		if (participacaoDesenvolvedorArq.size() == 0){
 			pontuacaoParticipacao = participacaoDesenvolvedorConhecimento;
@@ -234,13 +237,8 @@ public class Inferencia {
 			listaDesenvolvedores.add(posicao, desenvolvedor);
 		}
 		
-		
-		RegistroExperimento registroExperimento = new RegistroExperimento();
-		try {
-			registroExperimento.gerarArquivosRecomendations(listaDesenvolvedores, problema);
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
+		RegistroExperimento registroExperimento = RegistroExperimento.getInstance();
+		registroExperimento.setListaDesenvolvedores(listaDesenvolvedores);
 	
 		return listaDesenvolvedores;
 	}
