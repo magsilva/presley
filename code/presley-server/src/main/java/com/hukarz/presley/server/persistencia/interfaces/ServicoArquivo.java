@@ -2,9 +2,11 @@ package com.hukarz.presley.server.persistencia.interfaces;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 import com.hukarz.presley.beans.Arquivo;
+import com.hukarz.presley.beans.Conhecimento;
 
 
 public interface ServicoArquivo {
@@ -74,4 +76,6 @@ public interface ServicoArquivo {
 	 * @throws SQLException 
 	 */
 	public int getQuantidadeArquivosComTermo(String termo) ;
+	
+	public Map<Integer, Conhecimento> getIdArquivosPorConhecimento();
 }

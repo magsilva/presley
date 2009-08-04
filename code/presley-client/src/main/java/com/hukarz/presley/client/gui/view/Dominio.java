@@ -367,7 +367,7 @@ public class Dominio extends ViewPart {
 				
 				FileReader fileReader;
 				
-					fileReader = new FileReader(file);
+				fileReader = new FileReader(file);
 				BufferedReader reader = new BufferedReader(fileReader);
 
 				int posicaoDoPonto = file.getName().indexOf('.');       		        		
@@ -437,102 +437,6 @@ public class Dominio extends ViewPart {
 
 	}
 
-	private void ajustarArquivosEmails() throws IOException, Exception {
-		File diretorioCD = new File( projetoAtivo.getEndereco_Servidor_Gravacao() );
-
-		File[] listagemDiretorio = diretorioCD.listFiles(new FilenameFilter() {  
-			public boolean accept(File d, String name) {  
-				return name.toLowerCase().endsWith( ".emails" );  
-			}  
-		}); 
-
-		for (File recommendationFile : listagemDiretorio) {
-			String linha = "";
-    		ArrayList<String> emails = new ArrayList<String>();
-
-			FileReader fileReader = new FileReader(recommendationFile);
-			BufferedReader reader = new BufferedReader(fileReader);
-
-			System.out.println( recommendationFile.getAbsolutePath()  );
-			// - Busca pelos e-mails dos desenvolvedores -
-			while( (linha = reader.readLine()) != null ){
-				System.out.println( linha ) ;
-				if (linha.contains("jira@apache.org")){
-					String nome = extractNomeJira(linha);
-
-					Desenvolvedor desenvolvedor ;
-					try {
-						desenvolvedor = viewComunication.getDesenvolvedorPorNome(nome);
-					} catch (Exception e) {
-						try {
-							desenvolvedor = viewComunication.login(nome, "1");
-						} catch (Exception e2) {
-							desenvolvedor = new Desenvolvedor();
-							desenvolvedor.setEmail(nome + "@presley");
-							desenvolvedor.setNome(nome );
-							desenvolvedor.setCVSNome("");
-							desenvolvedor.setListaEmail(nome + "@presley");
-							desenvolvedor.setSenha("1");
-							viewComunication.adicionaDesenvolvedor(desenvolvedor);
-						}
-					}
-
-					emails.add(desenvolvedor.getEmail());
-				} else {
-					emails.add(linha);
-				}
-			}
-
-			
-			// - Atualiza o arquivo -
-			PrintWriter saidaPontuacao = new PrintWriter(new FileOutputStream(recommendationFile));
-			
-			for (String email : emails) {
-				saidaPontuacao.println( email );
-			}
-						
-			saidaPontuacao.close();
-		}
-		
-	}
-	
-	private void ajustarArquivosQuestion(String diretorio) throws IOException, Exception {
-		File diretorioCD = new File( diretorio );
-
-		File[] listagemDiretorio = diretorioCD.listFiles(new FilenameFilter() {  
-			public boolean accept(File d, String name) {  
-				return name.toLowerCase().endsWith( ".question" );  
-			}  
-		}); 
-
-		for (File recommendationFile : listagemDiretorio) {
-			String linha = "";
-			ArrayList<String> emails = new ArrayList<String>();
-
-			FileReader fileReader = new FileReader(recommendationFile);
-			BufferedReader reader = new BufferedReader(fileReader);
-
-			System.out.println( recommendationFile.getAbsolutePath()  );
-			// - Busca pelos e-mails dos desenvolvedores -
-			linha = reader.readLine();
-			System.out.println( linha ) ;
-			if (linha.contains("jira@apache.org")){
-				String nome = extractNomeJira(linha);
-
-				Desenvolvedor desenvolvedor ;
-				desenvolvedor = viewComunication.getDesenvolvedorPorNome(nome);
-
-				emails.add(desenvolvedor.getEmail());
-			} else {
-				String email = extractEmail(linha);
-				viewComunication.login(email, "1") ;
-			}
-
-		}
-
-	}
-
-	
 	private String extractEmail(String fromHeader) {
 		
 		if (fromHeader.contains("<")) {
@@ -555,4 +459,5 @@ public class Dominio extends ViewPart {
 		
 		return nome;
 	}
+	
 }

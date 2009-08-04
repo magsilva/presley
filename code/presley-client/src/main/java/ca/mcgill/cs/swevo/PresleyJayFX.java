@@ -170,8 +170,10 @@ public class PresleyJayFX extends JayFX {
 				elemento = element.getShortName();
 			//				elemento = element.getPackageName() +"."+ element.getShortName();
 
-			if (!elemento.equals(""))
-				listaElementos.put(elemento, element.getId());
+			if (!elemento.equals("")){
+				listaElementos.put(elemento.toLowerCase(), element.getId());
+				//System.out.println(elemento +"\t" + element.getId());
+			}
 		}
 
 		return listaElementos;
@@ -191,7 +193,7 @@ public class PresleyJayFX extends JayFX {
 		StringTokenizer st = new StringTokenizer(texto, separadorPalavras);
 
 		while (st.hasMoreTokens()){   
-			String palavra = st.nextToken();
+			String palavra = st.nextToken().toLowerCase().toLowerCase();
 
 			if (!Character.isLetter(palavra.charAt(0))) {
 				continue;
@@ -211,11 +213,13 @@ public class PresleyJayFX extends JayFX {
 				ClasseJava classe;   
 				classe = new ClasseJava( elemento.getId() ); 
 
-				ArquivoJava arquivo = new ArquivoJava(convertToJavaElement(elemento).getResource().getName(), getProjetoSelecionado());
+				if (retorno.get(classe) == null){
+					ArquivoJava arquivo = new ArquivoJava(convertToJavaElement(elemento).getResource().getName(), getProjetoSelecionado());
 
-				arquivo.setEnderecoServidor( convertToJavaElement(elemento).getPath().toString() ) ;
-				retorno.put(classe, arquivo);
-				break;
+					arquivo.setEnderecoServidor( convertToJavaElement(elemento).getPath().toString() ) ;
+					retorno.put(classe, arquivo);
+				}
+				//break;
 			}						
 		}
 

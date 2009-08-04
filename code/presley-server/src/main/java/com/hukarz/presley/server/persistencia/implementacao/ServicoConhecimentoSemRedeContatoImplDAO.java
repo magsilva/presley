@@ -26,7 +26,7 @@ import com.hukarz.presley.server.persistencia.interfaces.ServicoDesenvolvedor;
  * Última modificacao: 16/09/2008 por RodrigoCMD
  */
 
-public class ServicoConhecimentoImplDAO implements ServicoConhecimento{
+public class ServicoConhecimentoSemRedeContatoImplDAO implements ServicoConhecimento{
 	ServicoArquivo servicoArquivo= new ServicoArquivoImplDAO();
 	ServicoDesenvolvedor servicoDesenvolvedor = new ServicoDesenvolvedorImplDAO();
 

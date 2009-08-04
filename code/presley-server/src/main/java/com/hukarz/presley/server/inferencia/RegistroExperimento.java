@@ -6,10 +6,10 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
-
+import com.hukarz.presley.beans.Arquivo;
 import com.hukarz.presley.beans.Conhecimento;
 import com.hukarz.presley.beans.Desenvolvedor;
 import com.hukarz.presley.beans.Problema;
@@ -19,44 +19,18 @@ import com.hukarz.presley.excessao.ProblemaInexistenteException;
 
 public class RegistroExperimento {
 
-
 	private Map<Desenvolvedor, Integer> participacaoDesenvolvedorArquivo;
 	private Map<Desenvolvedor, Integer> participacaoDesenvolvedorConhecimento;
 	private Problema problema;
 	private ArrayList<Desenvolvedor> listaDesenvolvedores;
 	private Map<Conhecimento, Double> grauSimilaridadeConhecimento;
-
-	public void addSimilaridadeConhecimento(Conhecimento conhecimento, double valor) {
-		Double valorAtual = grauSimilaridadeConhecimento.get(conhecimento);
-		if (null == valorAtual) { 
-			grauSimilaridadeConhecimento.put(conhecimento, valor);
-		}
-		else if (valor > valorAtual) {
-			grauSimilaridadeConhecimento.put(conhecimento, valor);
-		}
-	}
-
-	public void setListaDesenvolvedores(
-			ArrayList<Desenvolvedor> listaDesenvolvedores) {
-		this.listaDesenvolvedores = listaDesenvolvedores;
-	}
-
-	/**
-	 * Singleton instance 
-	 */
-	private static RegistroExperimento instance = null; 
-
-
-
+	private Map<Integer, Conhecimento> idArquivoPorConhecimento;
+	
 	/** 
 	 * Private constructor to allow Singleton Pattern
 	 */
 	private RegistroExperimento() {
-		participacaoDesenvolvedorArquivo = null;
-		participacaoDesenvolvedorConhecimento = null;
-		problema = null;
-		listaDesenvolvedores = null;
-		grauSimilaridadeConhecimento = new HashMap<Conhecimento, Double>();
+		limpar();
 	}
 
 	public static RegistroExperimento getInstance() {
@@ -72,8 +46,40 @@ public class RegistroExperimento {
 		problema = null;
 		listaDesenvolvedores = null;		
 		grauSimilaridadeConhecimento = new HashMap<Conhecimento, Double>();
+		idArquivoPorConhecimento = null;
+	}
+	
+	public void addSimilaridadeConhecimento(Integer idArquivo, double valor) {
+		Conhecimento conhecimentoArquivo = idArquivoPorConhecimento.get(idArquivo);
+		
+		Double valorAtual = null;
+		
+		Conhecimento conhecimento = new Conhecimento();
+		for (Iterator<Conhecimento> it = grauSimilaridadeConhecimento.keySet().iterator(); it.hasNext();) {
+			conhecimento = it.next();
+			if (conhecimentoArquivo.getNome().equals(conhecimento.getNome())){
+				valorAtual = grauSimilaridadeConhecimento.get(conhecimento);
+				break;
+			}
+		}
+		
+		if (null == valorAtual) { 
+			grauSimilaridadeConhecimento.put(conhecimentoArquivo, valor);
+		} else if (valor > valorAtual) {
+			grauSimilaridadeConhecimento.remove(conhecimento);
+			grauSimilaridadeConhecimento.put(conhecimentoArquivo, valor);
+		}
 	}
 
+	public void setListaDesenvolvedores(
+			ArrayList<Desenvolvedor> listaDesenvolvedores) {
+		this.listaDesenvolvedores = listaDesenvolvedores;
+	}
+
+	/**
+	 * Singleton instance 
+	 */
+	private static RegistroExperimento instance = null; 
 
 
 
@@ -85,6 +91,11 @@ public class RegistroExperimento {
 	public void setParticipacaoDesenvolvedorConhecimento(
 			Map<Desenvolvedor, Integer> participacaoDesenvolvedorConhecimento) {
 		this.participacaoDesenvolvedorConhecimento = participacaoDesenvolvedorConhecimento;
+	}
+
+	public void setIdArquivoPorConhecimento(
+			Map<Integer, Conhecimento> arquivoPorConhecimento) {
+		this.idArquivoPorConhecimento = arquivoPorConhecimento;
 	}
 
 	public void setProblema(Problema problema) {
@@ -136,14 +147,6 @@ public class RegistroExperimento {
 
 		for (Desenvolvedor desenvolvedor : listaDesenvolvedores) {
 			saidaRecomendacao.println( desenvolvedor.getEmail() );
-
-			/*
-			StringTokenizer st = new StringTokenizer( desenvolvedor.getListaEmail() );
-			while (st.hasMoreTokens()){
-				String email = st.nextToken();
-				saidaRecomendacao.println( email );
-			}
-			 */
 		}
 
 		saidaRecomendacao.close();
@@ -155,11 +158,12 @@ public class RegistroExperimento {
 
 		PrintWriter saida = new PrintWriter(new 
 				FileOutputStream(projeto.getEndereco_Servidor_Gravacao() + problema.getNumeroArquivoExperimento() + ".conhecimentos"));
-		
-		
-		for (Conhecimento conhecimento : grauSimilaridadeConhecimento.keySet()) {
+
+		for (Iterator<Conhecimento> it = grauSimilaridadeConhecimento.keySet().iterator(); it.hasNext();) {
+			Conhecimento conhecimento = it.next();
 			double grau = grauSimilaridadeConhecimento.get(conhecimento);
-			saida.println(grau + " " + conhecimento.getNome());
+			saida.println( String.valueOf( grau ).replace('.', ',') + "\t" + 
+							conhecimento.getNome());
 		}
 
 		saida.close();
@@ -169,7 +173,6 @@ public class RegistroExperimento {
 
 	public void criarSolucoesValidas() throws ProblemaInexistenteException, DesenvolvedorInexistenteException, IOException{
 		/*
-
 		ValidacaoSolucaoImpl  validacaoSolucao = new ValidacaoSolucaoImpl();
 		String conteudoEmail = "";
 
@@ -205,9 +208,9 @@ public class RegistroExperimento {
 				} 
 			}
 		} catch (FileNotFoundException e) {
-			this.logger.info("Question " + problema.getNumeroArquivoExperimento() + " sem resposta.");
+			 System.out.println("Question " + problema.getNumeroArquivoExperimento() + " sem resposta.");
 		}
-		 */		
+		*/
 	}
 
 }

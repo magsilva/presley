@@ -219,7 +219,7 @@ public class ArvoreEmail extends JFrame implements ActionListener {
 			}
 
 			//cadastrarProblemas(emails);
-			//gerarArquivos(base, emails);
+			gerarArquivos(base, emails);
 			preencherArvore(emails, no);
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -299,7 +299,7 @@ public class ArvoreEmail extends JFrame implements ActionListener {
 		}
 	}
 
-	public ArrayList<Email> retornarFilhosSemRepeticao(Email email){
+	public ArrayList<Email> retornarFilhosSemRepeticao(Email email, String emailQuestion){
 		ArrayList<Email> emailsResposta = email.getEmailsFilho();
 		ArrayList<Email> emailsExperimento = new ArrayList<Email>();
 		for (Email emailResposta : emailsResposta) {
@@ -325,12 +325,12 @@ public class ArvoreEmail extends JFrame implements ActionListener {
 		
 		for (Email email : emails) {
 			
-			if (email.getFrom().isEmpty())
+			if (email.getFrom().isEmpty() || email.getSubject().contains("re:"))
 				continue;
 
-			ArrayList<Email> emailsExperimento = retornarFilhosSemRepeticao(email);
+			ArrayList<Email> emailsExperimento = retornarFilhosSemRepeticao(email, email.getFrom());
 			
-			if (emailsExperimento.size() == 5){
+			if (emailsExperimento.size() > 0){
 				String nomeArquivo = base + System.currentTimeMillis()+ "_" + count ;
 				
 				PrintWriter arquivoQuestion = new PrintWriter(new 

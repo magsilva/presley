@@ -18,12 +18,16 @@ public class Arquivo implements Serializable{
 	private int qtdPalavrasTotal;
 	private Map<String, Integer> termosSelecionados = new HashMap<String, Integer>();
 	private String enderecoLog;
-	
+
 	public Arquivo(String nome) {
 		this.nome = nome;
 		this.texto = "";
 	}
 
+	public int hashCode() {
+		return id;
+	}
+	
 	public int getId() {
 		return id;
 	}

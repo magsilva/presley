@@ -29,29 +29,20 @@ public class ProcessaSimilaridade {
 		Arquivo arquivoTexto = processaDocumento.transformaTextoEmArquivo(texto);
 		Arquivo arquivoMaisSimilar = null; 
 		
-		double grauDeSimilaridadeMaior = 0;
+		double grauDeSimilaridadeMaior = -1;
 		
 		RegistroExperimento registroExperimento = RegistroExperimento.getInstance(); 
+		registroExperimento.setIdArquivoPorConhecimento( servicoArquivo.getIdArquivosPorConhecimento() );
 		
 		for (Arquivo arquivo : arquivos) {
-			
 			double grauDeSimilaridade = calculaGrauDeSimilaridadeEntreTextos(arquivo, arquivoTexto);
 			
-			//TODO: criar na memória relacionamento entre conhecimento e arquivo
-			Conhecimento conhecimento = servicoConhecimento.getConhecimentoAssociado(arquivo);
-			System.out.println(conhecimento.getNome() + ": " + grauDeSimilaridade);
-			registroExperimento.addSimilaridadeConhecimento(conhecimento, grauDeSimilaridade);
-			
-			
+			registroExperimento.addSimilaridadeConhecimento(arquivo.getId(), grauDeSimilaridade);
 			if (grauDeSimilaridadeMaior < grauDeSimilaridade){
 				arquivoMaisSimilar = arquivo;
 				grauDeSimilaridadeMaior = grauDeSimilaridade;
 			}
 		}
-		
-		
-		
-		
 		
 		if (arquivoMaisSimilar == null)
 			throw new ConhecimentoNaoEncontradoException( );

@@ -8,6 +8,7 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 
 import com.hukarz.presley.beans.ArquivoJava;
+import com.hukarz.presley.beans.Conhecimento;
 import com.hukarz.presley.beans.Desenvolvedor;
 import com.hukarz.presley.beans.Problema;
 import com.hukarz.presley.beans.Solucao;
@@ -113,7 +114,11 @@ public class ValidacaoProblemaImpl {
 				
 		problema.setConhecimento( processaSimilaridade.verificaConhecimentoDoTexto( problema.getDescricao() + "  " + 
 				problema.getMensagem() + " " + comentariosCodigo ) ) ;
-
+/*
+		Conhecimento conhecimento = new Conhecimento();
+		conhecimento.setNome("Core");
+		problema.setConhecimento( conhecimento );
+*/		
 		this.logger.debug("Conhecimeto do problema");
 	
 		problema = servicoProblema.cadastrarProblema(problema) ;

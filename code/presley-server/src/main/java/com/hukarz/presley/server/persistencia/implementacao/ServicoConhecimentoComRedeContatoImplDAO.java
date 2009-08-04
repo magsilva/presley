@@ -26,7 +26,7 @@ import com.hukarz.presley.server.persistencia.interfaces.ServicoDesenvolvedor;
  * Última modificacao: 16/09/2008 por RodrigoCMD
  */
 
-public class ServicoConhecimentoImplDAO implements ServicoConhecimento{
+public class ServicoConhecimentoComRedeContatoImplDAO implements ServicoConhecimento{
 	ServicoArquivo servicoArquivo= new ServicoArquivoImplDAO();
 	ServicoDesenvolvedor servicoDesenvolvedor = new ServicoDesenvolvedorImplDAO();
 
@@ -486,27 +486,58 @@ public class ServicoConhecimentoImplDAO implements ServicoConhecimento{
 			stm = conn.createStatement();
 			String SQL = ""; 	
 
-			SQL = "SELECT desenvolvedor_email, SUM(qtdeProblema+qtdeSolucao) qtde FROM (" +
-					"  SELECT desenvolvedor_email, 0 as qtdeSolucao, count(desenvolvedor_email) as qtdeProblema" +
-					"  FROM problema" +
-					"  WHERE resolvido = 1 and conhecimento_nome = '"+ conhecimento.getNome() +"'" +
-					"  AND YEAR( dataRelato ) >= 2008" +
-					"  GROUP BY desenvolvedor_email" +
-					"        UNION ALL" +
-					"  SELECT s.desenvolvedor_email, count(s.desenvolvedor_email) as qtdeSolucao, 0 as qtdeProblema" +
-					"  FROM problema p" +
-					"  INNER JOIN solucao s ON s.problema_id = p.id AND s.resolveu = 1" +
-					"  WHERE p.conhecimento_nome = '"+ conhecimento.getNome() +"'" +
-					"  AND YEAR( s.dataProposta ) >= 2008" +
-					"  GROUP BY s.desenvolvedor_email" +
-					" ) AS T" +
-				  " GROUP BY desenvolvedor_email";
+			// Retorna a soma das contribuições feitas ao desenvolvedor pesquisado que tem relação 
+			// com o conhecimento encontrado 
+			SQL = "SELECT desenvolvedor_email, SUM(qtdeProblema+qtdeSolucao) qtde FROM ("+
+					"   SELECT s.desenvolvedor_email, COUNT(s.desenvolvedor_email) as qtdeSolucao, 0 as qtdeProblema"+
+					"   FROM problema p"+
+					"   INNER JOIN solucao s ON s.problema_id = p.id"+
+					"   WHERE p.resolvido = 1 and p.desenvolvedor_email = '"+ desenvolvedor.getEmail() +"' AND p.conhecimento_nome = '"+ conhecimento.getNome() +"'" +
+					"   AND YEAR( p.dataRelato ) >= 2008" +
+					"   GROUP BY s.desenvolvedor_email"+
+					"        UNION ALL"+
+					"   SELECT p.desenvolvedor_email, 0 as qtdeSolucao, COUNT(p.desenvolvedor_email) as qtdeProblema"+
+					"   FROM solucao s"+
+					"   INNER JOIN problema p ON p.id = s.problema_id AND p.conhecimento_nome = '"+ conhecimento.getNome() +"'" +
+					"   WHERE s.resolveu = 1 and s.desenvolvedor_email = '"+ desenvolvedor.getEmail() +"'" +
+					"   AND YEAR( s.dataProposta ) >= 2008" +
+					"   GROUP BY p.desenvolvedor_email"+
+					" ) AS T"+
+					" GROUP BY desenvolvedor_email";
+					
+			ResultSet rs = stm.executeQuery(SQL);
 
-			ResultSet rs2 = stm.executeQuery(SQL);
+			while (rs.next()){
+				Desenvolvedor desenvolvedorRetorno = servicoDesenvolvedor.getDesenvolvedor( rs.getString("desenvolvedor_email") ) ;
+				retorno.put(desenvolvedorRetorno, rs.getInt("qtde"));
+			}
+			
+			/* Caso o desenvolvedor seja novato e não teve contato com outras pessoas
+			 *  busca pelos desenvolvedores com contribuições aos problemas neste conhecimeto
+			 */
+			if (retorno.isEmpty()){
+				SQL = "SELECT desenvolvedor_email, SUM(qtdeProblema+qtdeSolucao) qtde FROM (" +
+						"  SELECT desenvolvedor_email, 0 as qtdeSolucao, count(desenvolvedor_email) as qtdeProblema" +
+						"  FROM problema" +
+						"  WHERE resolvido = 1 and conhecimento_nome = '"+ conhecimento.getNome() +"'" +
+						"  AND YEAR( dataRelato ) >= 2008" +
+						"  GROUP BY desenvolvedor_email" +
+						"        UNION ALL" +
+						"  SELECT s.desenvolvedor_email, count(s.desenvolvedor_email) as qtdeSolucao, 0 as qtdeProblema" +
+						"  FROM problema p" +
+						"  INNER JOIN solucao s ON s.problema_id = p.id AND s.resolveu = 1" +
+						"  WHERE p.conhecimento_nome = '"+ conhecimento.getNome() +"'" +
+						"  AND YEAR( s.dataProposta ) >= 2008" +
+						"  GROUP BY s.desenvolvedor_email" +
+						" ) AS T" +
+						" GROUP BY desenvolvedor_email";
 
-			while (rs2.next()){
-				Desenvolvedor desenvolvedorRetorno = servicoDesenvolvedor.getDesenvolvedor( rs2.getString("desenvolvedor_email") ) ;
-				retorno.put(desenvolvedorRetorno, rs2.getInt("qtde"));
+				ResultSet rs2 = stm.executeQuery(SQL);
+
+				while (rs2.next()){
+					Desenvolvedor desenvolvedorRetorno = servicoDesenvolvedor.getDesenvolvedor( rs2.getString("desenvolvedor_email") ) ;
+					retorno.put(desenvolvedorRetorno, rs2.getInt("qtde"));
+				}
 			}
 			
 			if (!retorno.isEmpty()){

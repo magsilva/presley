@@ -76,20 +76,25 @@ public class Metrics {
 			
 			precisions[i] = precision(recommendations, replies);
 			recalls[i] = recall(recommendations, replies);
+				
 		}
 	}
 
 	private double recall(List<String> recommendations, List<String> replies) {
 		int numberOfCorrectRecommendations = getNumberOfCorrectRecommendations(recommendations, replies);
 		int numberOfReplies = replies.size();
-		double recall = (double)numberOfCorrectRecommendations/numberOfReplies;
+		double recall = 0;
+		if (numberOfCorrectRecommendations > 0)
+			recall = (double)numberOfCorrectRecommendations/numberOfReplies;
 		return recall;
 	}
 
 	private double precision(List<String> recommendations, List<String> replies) {
 		int numberOfCorrectRecommendations = getNumberOfCorrectRecommendations(recommendations, replies);
 		int numberOfRecommendations = recommendations.size();
-		double precision = (double)numberOfCorrectRecommendations/numberOfRecommendations;
+		double precision = 0;
+		if (numberOfCorrectRecommendations > 0)
+			precision = (double)numberOfCorrectRecommendations/numberOfRecommendations;
 		return precision;
 	}
 
@@ -168,9 +173,9 @@ public class Metrics {
 		for (int i = 1; i <= maxNumberOfRecommendations; i++ ) {
 			Metrics metrics = new Metrics(path, i);
 			metrics.compute();
-			//metrics.report();
+			metrics.report();
 			metrics.computePlus();
-			//metrics.reportPlus();
+			metrics.reportPlus();
 		}
 		
 	}	

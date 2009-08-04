@@ -5,6 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
@@ -12,6 +13,7 @@ import java.util.Set;
 import org.apache.log4j.Logger;
 
 import com.hukarz.presley.beans.Arquivo;
+import com.hukarz.presley.beans.Conhecimento;
 import com.hukarz.presley.server.persistencia.MySQLConnectionFactory;
 import com.hukarz.presley.server.persistencia.interfaces.ServicoArquivo;
 
@@ -336,7 +338,8 @@ public class ServicoArquivoImplDAO implements ServicoArquivo {
 		try {
 			stm = conn.createStatement();
 			String SQL = " SELECT id, arquivo_nome, endereco_servidor, " +
-					" quantidadePalavras, endereco_log FROM arquivo;";
+					" quantidadePalavras, endereco_log FROM arquivo" +
+					" WHERE quantidadePalavras > 0;";
 
 			ResultSet rs = stm.executeQuery(SQL);
 
@@ -376,6 +379,37 @@ public class ServicoArquivoImplDAO implements ServicoArquivo {
 				onConClose.printStackTrace();	             
 			}
 		}
+	}
+
+	@Override
+	public Map<Integer, Conhecimento> getIdArquivosPorConhecimento() {
+		Map<Integer, Conhecimento> retorno = new HashMap<Integer, Conhecimento>();
+		
+		Connection conn = MySQLConnectionFactory.open();
+		Statement stm = null;
+		try {
+			stm = conn.createStatement();
+			
+			String SQL = "SELECT arquivo_id, arquivo_nome, conhecimento_nome " +
+					" FROM conhecimento_has_arquivo" +
+					" INNER JOIN arquivo ON id = arquivo_id;" ; 
+				
+			ResultSet rs = stm.executeQuery(SQL);
+			
+			while (rs.next()) {
+				Conhecimento conhecimento = new Conhecimento( ) ;
+				conhecimento.setNome( rs.getString("conhecimento_nome"));
+				retorno.put(rs.getInt("arquivo_id"), conhecimento);
+			}
+			
+			stm.close();
+			//conn.close();
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return retorno;
 	}
 
 }

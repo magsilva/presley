@@ -40,11 +40,14 @@ public class Inferencia {
 		Map<Desenvolvedor, Integer> participacaoDesenvolvedor = somarParticipacaoDosDesenvolvedores(problema, participacaoDesenvolvedorArq, participacaoDesenvolvedorConhecimento);
 
 		participacaoDesenvolvedor.remove(problema.getDesenvolvedorOrigem());
+		ArrayList<Desenvolvedor> desenvolvedoresRecomendados = retornarMelhoresDesenvolvedores(problema, participacaoDesenvolvedor);		
+
 		RegistroExperimento registroExperimento = RegistroExperimento.getInstance();
+		registroExperimento.setListaDesenvolvedores(desenvolvedoresRecomendados);
 		registroExperimento.salvar();
 		registroExperimento.limpar();
 		
-		return retornarMelhoresDesenvolvedores(problema, participacaoDesenvolvedor);
+		return desenvolvedoresRecomendados;
 	}
 	
 	/*	1º Passo 
