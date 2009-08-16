@@ -213,13 +213,12 @@ public class PresleyJayFX extends JayFX {
 				ClasseJava classe;   
 				classe = new ClasseJava( elemento.getId() ); 
 
-				if (retorno.get(classe) == null){
-					ArquivoJava arquivo = new ArquivoJava(convertToJavaElement(elemento).getResource().getName(), getProjetoSelecionado());
-
-					arquivo.setEnderecoServidor( convertToJavaElement(elemento).getPath().toString() ) ;
-					retorno.put(classe, arquivo);
-				}
-				//break;
+				ArquivoJava arquivo = new ArquivoJava(convertToJavaElement(elemento).getResource().getName(), getProjetoSelecionado());
+				arquivo.setEnderecoServidor( convertToJavaElement(elemento).getPath().toString() ) ;
+				arquivo.setPrincipal(true);
+				
+				retorno.remove(classe);
+				retorno.put(classe, arquivo);
 			}						
 		}
 

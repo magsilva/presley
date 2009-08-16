@@ -17,6 +17,7 @@ import com.hukarz.presley.excessao.DescricaoInvalidaException;
 import com.hukarz.presley.excessao.ProblemaInexistenteException;
 import com.hukarz.presley.excessao.ProjetoInexistenteException;
 import com.hukarz.presley.server.inferencia.Inferencia;
+import com.hukarz.presley.server.inferencia.InferenciaLine10;
 import com.hukarz.presley.server.persistencia.implementacao.ServicoArquivoImplDAO;
 import com.hukarz.presley.server.persistencia.implementacao.ServicoMensagemImplDAO;
 import com.hukarz.presley.server.persistencia.implementacao.ServicoProblemaImplDAO;
@@ -114,11 +115,12 @@ public class ValidacaoProblemaImpl {
 				
 		problema.setConhecimento( processaSimilaridade.verificaConhecimentoDoTexto( problema.getDescricao() + "  " + 
 				problema.getMensagem() + " " + comentariosCodigo ) ) ;
+		
 /*
 		Conhecimento conhecimento = new Conhecimento();
 		conhecimento.setNome("Core");
 		problema.setConhecimento( conhecimento );
-*/		
+*/
 		this.logger.debug("Conhecimeto do problema");
 	
 		problema = servicoProblema.cadastrarProblema(problema) ;

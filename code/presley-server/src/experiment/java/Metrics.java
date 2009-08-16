@@ -9,17 +9,17 @@ import java.util.Scanner;
 public class Metrics {
 
 	private static final int ALL_EMAILS = 0;
-	private int maxNumberOfRecommendations;
+	protected int maxNumberOfRecommendations;
 	protected File[] recommendationsFiles;
 	protected File[] repliesFiles;
 	protected double[] precisions;
-	private double[] recalls;
-	private double precisionTotal;
-	private double recallTotal;
-	private int total;
-	private double precisionPlus;
-	private double recallPlus;
-	private int totalPlus;
+	protected double[] recalls;
+	protected double precisionTotal;
+	protected double recallTotal;
+	protected int total;
+	protected double precisionPlus;
+	protected double recallPlus;
+	protected int totalPlus;
 
 
 	public Metrics(String path, int maxNumberOfRecommendations) {
@@ -120,7 +120,7 @@ public class Metrics {
 		precisionPlus = precisionPlus/totalPlus;
 		recallPlus = recallPlus/totalPlus;
 		
-		System.out.println((2*precisionPlus*recallPlus)/(precisionPlus + recallPlus));
+		//System.out.println((2*precisionPlus*recallPlus)/(precisionPlus + recallPlus));
 	}
 
 	public void report() {

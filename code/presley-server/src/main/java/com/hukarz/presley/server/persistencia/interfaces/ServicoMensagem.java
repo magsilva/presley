@@ -11,4 +11,5 @@ public interface ServicoMensagem {
 	
 	public boolean adicionarMensagem(ArrayList<Desenvolvedor> desenvolvedoresDestino, Problema problema);
 
+	public boolean existeResposta(String emailDesenvolvedorDestino, String emailDesenvolvedorOrigem);
 }

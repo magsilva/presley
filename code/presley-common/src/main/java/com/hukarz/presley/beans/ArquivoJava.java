@@ -9,10 +9,12 @@ public class ArquivoJava extends Arquivo {
 
 	private static final long serialVersionUID = 1L;
 	private Projeto projeto;
+	private boolean principal;
 	
 	public ArquivoJava(String nome, Projeto projeto) {
 		super(nome);
 		this.projeto = projeto;
+		this.principal = false;
 	}
 
 	@Override
@@ -64,4 +66,12 @@ public class ArquivoJava extends Arquivo {
 				enderecoLog.replaceFirst("/"+projeto.getNome() , "") )  ;
 	}
 
+	public boolean isPrincipal() {
+		return principal;
+	}
+
+	public void setPrincipal(boolean principal) {
+		this.principal = principal;
+	}
+	
 }

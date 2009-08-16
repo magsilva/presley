@@ -342,6 +342,7 @@ public class Dominio extends ViewPart {
 	
 	
 	private void executarExperimento(String diretorioArquivos, Projeto projetoAtivo) throws FileNotFoundException{
+		
 		File diretorioCD = new File( diretorioArquivos );
 //		DateFormat formataData = new SimpleDateFormat("dd/MM/yyyy");  
 		PrintWriter saidaTempoProcessamento = new PrintWriter(new 

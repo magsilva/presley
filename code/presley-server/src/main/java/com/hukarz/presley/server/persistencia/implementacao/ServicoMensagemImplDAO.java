@@ -95,4 +95,42 @@ public class ServicoMensagemImplDAO implements ServicoMensagem{
 		return mensagens;
 	}
 
+	@Override
+	public boolean existeResposta(String emailDesenvolvedorDestino,
+			String emailDesenvolvedorOrigem) {
+		Connection conn = MySQLConnectionFactory.open();
+		Statement stm = null;
+
+		try {
+			stm = conn.createStatement();
+
+			String sql = "SELECT s.id FROM problema as p " +
+					" INNER JOIN solucao as s ON problema_id = p.id " +
+					" WHERE s.desenvolvedor_email = '"+ emailDesenvolvedorOrigem +"'" +
+					" AND p.desenvolvedor_email = '"+ emailDesenvolvedorDestino +"'" +
+					" AND YEAR( dataProposta ) >= 2008";
+			ResultSet rs = stm.executeQuery(sql);
+						
+			if (rs.next()) {
+				return true;
+			} else {
+				return false;
+			}
+			
+			
+		} catch (SQLException e) {
+			//e.printStackTrace();
+			return false;
+		} finally {
+			try {
+				stm.close();
+				//conn.close();
+			} catch (SQLException onConClose) {
+				System.out.println(" Houve erro no fechamento da conexão ");
+				onConClose.printStackTrace();	
+				return false;
+			}
+		}
+	}
+
 }

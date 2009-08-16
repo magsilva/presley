@@ -12,8 +12,10 @@ import com.hukarz.presley.beans.Desenvolvedor;
 import com.hukarz.presley.beans.Problema;
 import com.hukarz.presley.server.persistencia.implementacao.ServicoConhecimentoImplDAO;
 import com.hukarz.presley.server.persistencia.implementacao.ServicoDesenvolvedorImplDAO;
+import com.hukarz.presley.server.persistencia.implementacao.ServicoMensagemImplDAO;
 import com.hukarz.presley.server.persistencia.interfaces.ServicoConhecimento;
 import com.hukarz.presley.server.persistencia.interfaces.ServicoDesenvolvedor;
+import com.hukarz.presley.server.persistencia.interfaces.ServicoMensagem;
 
 
 /*
@@ -34,10 +36,11 @@ public class Inferencia {
 	public ArrayList<Desenvolvedor> getDesenvolvedores(Map<ArquivoJava, ArrayList<Desenvolvedor>> arquivoDesenvolvedores,
 			Problema problema) throws FileNotFoundException {
 
-		Map<Desenvolvedor, Integer> participacaoDesenvolvedorArq = getParticipacaoDesenvolvedores(arquivoDesenvolvedores);
-		Map<Desenvolvedor, Integer> participacaoDesenvolvedorConhecimento = getParticipacaoDesenvolvedores(problema.getConhecimento(), problema.getDesenvolvedorOrigem());
-		
-		Map<Desenvolvedor, Integer> participacaoDesenvolvedor = somarParticipacaoDosDesenvolvedores(problema, participacaoDesenvolvedorArq, participacaoDesenvolvedorConhecimento);
+		Map<Desenvolvedor, Integer> participacaoDesenvolvedorArquivo = getParticipacaoDesenvolvedores(arquivoDesenvolvedores);
+		//Map<Desenvolvedor, Integer> participacaoDesenvolvedorConhecimento = getParticipacaoDesenvolvedores(problema.getConhecimento(), problema.getDesenvolvedorOrigem());
+		Map<Desenvolvedor, Integer> participacaoDesenvolvedorConhecimento = new HashMap<Desenvolvedor, Integer>();
+
+		Map<Desenvolvedor, Integer> participacaoDesenvolvedor = somarParticipacaoDosDesenvolvedores(problema, participacaoDesenvolvedorArquivo, participacaoDesenvolvedorConhecimento);
 
 		participacaoDesenvolvedor.remove(problema.getDesenvolvedorOrigem());
 		ArrayList<Desenvolvedor> desenvolvedoresRecomendados = retornarMelhoresDesenvolvedores(problema, participacaoDesenvolvedor);		
@@ -53,7 +56,7 @@ public class Inferencia {
 	/*	1º Passo 
 	(Analisar a participação de cada Desenvolvedor nos Arquivos)
 	 */
-	private Map<Desenvolvedor, Integer> getParticipacaoDesenvolvedores(Map<ArquivoJava, ArrayList<Desenvolvedor>> arquivoDesenvolvedores){
+	protected Map<Desenvolvedor, Integer> getParticipacaoDesenvolvedores(Map<ArquivoJava, ArrayList<Desenvolvedor>> arquivoDesenvolvedores){
 		Map<Desenvolvedor, Integer> desenvolvedorPorArq = new HashMap<Desenvolvedor, Integer>();
 		
 		for (Iterator<ArquivoJava> itArquivo = arquivoDesenvolvedores.keySet().iterator(); itArquivo.hasNext();) {
@@ -65,7 +68,7 @@ public class Inferencia {
 				if ( desenvolvedorPorArq.get(desenvolvedor) == null)
 					desenvolvedorPorArq.put(desenvolvedor, 1);
 				else
-					desenvolvedorPorArq.put(desenvolvedor, desenvolvedorPorArq.get(desenvolvedor) +1);
+					desenvolvedorPorArq.put(desenvolvedor, desenvolvedorPorArq.get(desenvolvedor) + 1);
 			}
 		}
 		
@@ -76,26 +79,11 @@ public class Inferencia {
 	(Analisar a participação de cada Desenvolvedor nas resolucao de problemas
 	referentes ao conhecimento passado)
 	 */
-	private Map<Desenvolvedor, Integer> getParticipacaoDesenvolvedores(Conhecimento conhecimento, Desenvolvedor desenvolvedor){
+	protected Map<Desenvolvedor, Integer> getParticipacaoDesenvolvedores(Conhecimento conhecimento, Desenvolvedor desenvolvedor){
 		ServicoConhecimento servicoConhecimento = new ServicoConhecimentoImplDAO();
-		ServicoDesenvolvedor servicoDesenvolvedor = new ServicoDesenvolvedorImplDAO();
+		ServicoMensagem servicoMensagem = new ServicoMensagemImplDAO();
 		
 		Map<Desenvolvedor, Integer> desenvolvedorPorConhecimento = servicoConhecimento.getContribuintesConhecimento(conhecimento, desenvolvedor);
-		
-		// Calcula o conhecimento informado pelo cadastro de desenvolvedor
-		ArrayList<Desenvolvedor> desenvolvedoresConhecimento = servicoDesenvolvedor.getDesenvolvedoresPorConhecimento(conhecimento);
-		for (Iterator<Desenvolvedor> iterator = desenvolvedoresConhecimento.iterator(); iterator.hasNext();) {
-			Desenvolvedor desenvolvedorConhecimento =  iterator.next();
-			Integer qtde = desenvolvedorPorConhecimento.get(desenvolvedorConhecimento) ;
-
-			if (qtde ==0)
-				qtde = desenvolvedorConhecimento.getListaConhecimento().get(conhecimento).intValue() ;
-			else
-				qtde *= desenvolvedorConhecimento.getListaConhecimento().get(conhecimento); 
-
-			desenvolvedorPorConhecimento.put(desenvolvedorConhecimento, qtde);			
-		}
-		
 		
 		return desenvolvedorPorConhecimento;
 	}
@@ -104,7 +92,7 @@ public class Inferencia {
 	/*	3º Passo 
 	(Soma os vetores de participação dos Desenvolvedor nos Arquivos e nas mensagens)
 	 */
-	private Map<Desenvolvedor, Integer> somarParticipacaoDosDesenvolvedores(Problema problema, Map<Desenvolvedor, Integer> participacaoDesenvolvedorArq, 
+	protected Map<Desenvolvedor, Integer> somarParticipacaoDosDesenvolvedores(Problema problema, Map<Desenvolvedor, Integer> participacaoDesenvolvedorArq, 
 			Map<Desenvolvedor, Integer> participacaoDesenvolvedorConhecimento ){
 		Map<Desenvolvedor, Integer> pontuacaoParticipacao = new HashMap<Desenvolvedor, Integer>();
 		
@@ -123,7 +111,7 @@ public class Inferencia {
 			participacaoDesenvolvedorConhecimento	= classificacarDesenvolvedores(participacaoDesenvolvedorConhecimento, 20);
 			participacaoDesenvolvedorArq			= classificacarDesenvolvedores(participacaoDesenvolvedorArq, 20);
 			*/
-			pontuacaoParticipacao = participacaoDesenvolvedorArq ;
+			pontuacaoParticipacao.putAll( participacaoDesenvolvedorArq );
 			
 			for (Iterator<Desenvolvedor> it = participacaoDesenvolvedorConhecimento.keySet().iterator(); it.hasNext();) {
 				Desenvolvedor desenvolvedor = it.next();
@@ -141,9 +129,52 @@ public class Inferencia {
 		
 		return pontuacaoParticipacao;
 	}
+
+	/*	3º Passo 
+	(Aplica a formula F1 nos vetores de participação dos Desenvolvedor nos Arquivos e nas mensagens)
+	
+		  2 * (C * A)
+	F1 = -------------
+  		    C + A
+	 */
+	protected Map<Desenvolvedor, Double> calcularF1_DaParticipacaoDosDesenvolvedores(Problema problema, Map<Desenvolvedor, Integer> participacaoDesenvolvedorArquivo, 
+			Map<Desenvolvedor, Integer> participacaoDesenvolvedorConhecimento ){
+		Map<Desenvolvedor, Double> pontuacaoParticipacao = new HashMap<Desenvolvedor, Double>();
+		
+		RegistroExperimento registroExperimento = RegistroExperimento.getInstance();
+		
+		registroExperimento.setParticipacaoDesenvolvedorArquivo(participacaoDesenvolvedorArquivo);
+		registroExperimento.setParticipacaoDesenvolvedorConhecimento(participacaoDesenvolvedorConhecimento);
+		registroExperimento.setProblema(problema);
+		
+		ArrayList<Desenvolvedor> listaDesenvolvedores = new ArrayList<Desenvolvedor>();
+		listaDesenvolvedores.addAll( participacaoDesenvolvedorConhecimento.keySet() );
+		listaDesenvolvedores.addAll( participacaoDesenvolvedorArquivo.keySet() );
+		
+		for (Desenvolvedor desenvolvedor : listaDesenvolvedores) {
+			if (!pontuacaoParticipacao.keySet().contains(desenvolvedor)){
+				double resultadoF1 = 0;
+				double participacaoConhecimento = 1;
+				double participacaoArquivo = 1;
+				
+				if (participacaoDesenvolvedorConhecimento.keySet().contains(desenvolvedor)) 
+					participacaoConhecimento = participacaoDesenvolvedorConhecimento.get(desenvolvedor) + 1;
+				
+				if (participacaoDesenvolvedorArquivo.keySet().contains(desenvolvedor)) 
+					participacaoArquivo = participacaoDesenvolvedorArquivo.get(desenvolvedor) + 1 ;
+				
+				resultadoF1 = (2 * participacaoConhecimento * participacaoArquivo)/ 
+								(participacaoConhecimento + participacaoArquivo);
+				
+				pontuacaoParticipacao.put(desenvolvedor, resultadoF1);			
+			}
+		}
+		
+		return pontuacaoParticipacao;
+	}
 	
 	// Metodo para classificar os desenvolvedores por participação
-	private Map<Desenvolvedor, Integer> classificacarDesenvolvedores( Map<Desenvolvedor, Integer> participacaoDesenvolvedor,
+	protected Map<Desenvolvedor, Integer> classificacarDesenvolvedores( Map<Desenvolvedor, Integer> participacaoDesenvolvedor,
 			Integer pontuacaoMax) {
 		Desenvolvedor[] classificacaoDesenvolvedores = new Desenvolvedor[ participacaoDesenvolvedor.size() ];
 		
@@ -199,7 +230,7 @@ public class Inferencia {
 		return pontuarClassificacao(classificacaoMelhoresDesenvolvedores, participacaoDesenvolvedor, pontuacaoMax);
 	}
 	
-	private Map<Desenvolvedor, Integer> pontuarClassificacao(Desenvolvedor[] desenvolvedores, 
+	protected Map<Desenvolvedor, Integer> pontuarClassificacao(Desenvolvedor[] desenvolvedores, 
 			Map<Desenvolvedor, Integer> participacaoDesenvolvedor, Integer pontuacaoMax) {
 
 		Map<Desenvolvedor, Integer> pontuacaoParticipacao = new HashMap<Desenvolvedor, Integer>();
@@ -224,7 +255,7 @@ public class Inferencia {
 	/*	4º Passo 
 	(Seleciona os melhores desenvolvedores como retorno)
 	 */
-	private ArrayList<Desenvolvedor> retornarMelhoresDesenvolvedores(Problema problema, Map<Desenvolvedor, Integer> participacaoDesenvolvedor ){
+	protected ArrayList<Desenvolvedor> retornarMelhoresDesenvolvedores(Problema problema, Map<Desenvolvedor, Integer> participacaoDesenvolvedor ){
 		ArrayList<Desenvolvedor> listaDesenvolvedores = new ArrayList<Desenvolvedor>();
 		for (Iterator<Desenvolvedor> it = participacaoDesenvolvedor.keySet().iterator(); it.hasNext();) {
 			Desenvolvedor desenvolvedor = it.next();
@@ -245,5 +276,30 @@ public class Inferencia {
 	
 		return listaDesenvolvedores;
 	}
+
+	/*	4º Passo 
+	(Seleciona os melhores desenvolvedores como retorno)
+	 */
+	protected ArrayList<Desenvolvedor> retornarMelhoresDesenvolvedores(Map<Desenvolvedor, Double> participacaoDesenvolvedor ){
+		ArrayList<Desenvolvedor> listaDesenvolvedores = new ArrayList<Desenvolvedor>();
+		for (Iterator<Desenvolvedor> it = participacaoDesenvolvedor.keySet().iterator(); it.hasNext();) {
+			Desenvolvedor desenvolvedor = it.next();
+			double porcentagem = participacaoDesenvolvedor.get(desenvolvedor) ;
 	
+			int posicao = 0;
+			for (Desenvolvedor desenvolvedorLista : listaDesenvolvedores) {
+				if (porcentagem > participacaoDesenvolvedor.get(desenvolvedorLista) ){
+					break;
+				}
+				posicao++;
+			}
+			listaDesenvolvedores.add(posicao, desenvolvedor);
+		}
+		
+		RegistroExperimento registroExperimento = RegistroExperimento.getInstance();
+		registroExperimento.setListaDesenvolvedores(listaDesenvolvedores);
+	
+		return listaDesenvolvedores;
+	}
+
 }
