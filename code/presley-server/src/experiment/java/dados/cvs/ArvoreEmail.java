@@ -63,7 +63,7 @@ public class ArvoreEmail extends JFrame implements ActionListener {
 
 		campo      = new JTextField(); 
 	
-		campo.setText("C:/java/lucene/java-dev/");
+		campo.setText("C:/Java/Math/Apache Commons/Math/mbox_Math/");
 
 		botao      = new JButton("Procurar");  
 		painelCima = new JPanel(new BorderLayout());  
@@ -104,7 +104,7 @@ public class ArvoreEmail extends JFrame implements ActionListener {
 		try {
 			// (28	88)					Arquivos de 01/2004 até 12/2008
 			// (89  conteudo.length)	Arquivos de 01/2009 até o ultimo
-			for (int i=0; i < conteudo.length; i++) {    
+			for (int i=0; i < 15; i++) {    
 
 				File file = new File( conteudo[i].getAbsolutePath() );
 				FileReader fileReader = new FileReader(file);
@@ -125,8 +125,8 @@ public class ArvoreEmail extends JFrame implements ActionListener {
 				while( (linha = reader.readLine()) != null ){
 					
 					if ( linha.trim().equals("---------------------------------------------------------------------") ||
-							linha.trim().equals("To unsubscribe, e-mail: java-dev-unsubscribe@lucene.apache.org") ||
-							linha.trim().equals("For additional commands, e-mail: java-dev-help@lucene.apache.org"))
+							linha.trim().equals("To unsubscribe, e-mail: dev-unsubscribe@commons.apache.org") ||
+							linha.trim().equals("For additional commands, e-mail: dev-help@commons.apache.org"))
 						continue;
 										
 					linha = linha.toLowerCase();
@@ -219,7 +219,7 @@ public class ArvoreEmail extends JFrame implements ActionListener {
 			}
 
 			//cadastrarProblemas(emails);
-			gerarArquivos(base, emails);
+			//gerarArquivos(base, emails);
 			preencherArvore(emails, no);
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -355,7 +355,7 @@ public class ArvoreEmail extends JFrame implements ActionListener {
 	
 	public void preencherArvore(ArrayList<Email> emails, DefaultMutableTreeNode no){
 		for (Email email : emails) {
-			DefaultMutableTreeNode assunto = new DefaultMutableTreeNode( email.getSubject() + " - " + email.getFrom());
+			DefaultMutableTreeNode assunto = new DefaultMutableTreeNode( email.getSubject() + " - " + email.getMessageID());
 			if (email.getEmailsFilho().size()==0){
 				no.add( assunto );
 			} else {
