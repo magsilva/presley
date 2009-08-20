@@ -170,7 +170,8 @@ public class Email {
 	private static String retornarAssuntoResposta( String assuntoResposta ) {
 		assuntoResposta = assuntoResposta.trim();
 		if (assuntoResposta.startsWith("re") && assuntoResposta.indexOf(":") > -1 )
-			assuntoResposta = assuntoResposta.substring( assuntoResposta.indexOf(":") +1 ).trim() ;
+			assuntoResposta = assuntoResposta.replace("re: ", "") ;
+			//assuntoResposta = assuntoResposta.substring( assuntoResposta.indexOf(":") +1 ).trim() ;
 		
 		return assuntoResposta;		
 	}
@@ -179,6 +180,7 @@ public class Email {
 		boolean retorno = false;
 		String assuntoRespostaIncluir 	= "";
 		String assuntoRespostaEmail 	= "";
+
 		for (Email email : emails) {
 			
 			assuntoRespostaIncluir	= retornarAssuntoResposta( emailIncluir.getSubject() ) ;
@@ -187,7 +189,7 @@ public class Email {
 			// -> No caso normal quando a resposta vem depois do 1º e-mail
 			if ( emailIncluir.getInReplyTo().equals( email.messageID ) ||
 					emailIncluir.getReferences().contains( email.messageID ) ||
-					email.getSubject().equals( assuntoRespostaIncluir )) {
+					assuntoRespostaEmail.equals( assuntoRespostaIncluir )) {
 				email.emailsFilho.add(emailIncluir);
 				retorno = true;
 				break;
