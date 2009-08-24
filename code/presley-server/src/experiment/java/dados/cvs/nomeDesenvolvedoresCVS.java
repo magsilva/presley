@@ -1,11 +1,16 @@
 package dados.cvs;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.FileInputStream;
 import java.util.ArrayList;
-import java.util.Iterator;
+
+import com.ximpleware.AutoPilot;
+import com.ximpleware.NavException;
+import com.ximpleware.ParseException;
+import com.ximpleware.VTDGen;
+import com.ximpleware.VTDNav;
+import com.ximpleware.XPathEvalException;
+import com.ximpleware.XPathParseException;
 
 public class nomeDesenvolvedoresCVS {
 
@@ -13,44 +18,54 @@ public class nomeDesenvolvedoresCVS {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		File file = new File("C:/Java/lucene/Entradas/changeLog.txt");
-		FileReader fileReader;
-		ArrayList<String> nomesCVS = new ArrayList<String>(); 
+		ArrayList<String> nomesCVS = new ArrayList<String>();
 		
 		try {
-			fileReader = new FileReader(file);
-			BufferedReader reader = new BufferedReader(fileReader);
+			// open a file and read the content into a byte array
+			File f = new File("C:/Java/Math/Inicial/trunk_20_08_2009/log_20_08_2009.xml");
+
+			FileInputStream fis =  new FileInputStream(f);
+			byte[] b = new byte[(int) f.length()];
+			fis.read(b);
+
+			VTDGen vg = new VTDGen();
+			vg.setDoc(b);
+			vg.parse(true);  // set namespace awareness to true
+			VTDNav vn = vg.getNav();
+
+			AutoPilot ap0 = new AutoPilot();
+			AutoPilot ap1 = new AutoPilot();
+
+			ap0.selectXPath("/log/logentry");
+			ap1.selectXPath("author");
+
+			ap0.bind(vn);
+			ap1.bind(vn);
+			while(ap0.evalXPath()!=-1){
+				String author = ap1.evalXPathToString();
+				if (nomesCVS.indexOf(author) == -1)
+					nomesCVS.add( author );
+			}
+
+			ap0.resetXPath();
 			
-			String linhaArquivo = null;
-			String texto = "";
-			String nome = "";
-			while( (linhaArquivo = reader.readLine()) != null ){
-				if ( !(linhaArquivo.isEmpty())
-						&& (linhaArquivo.charAt(0) == 'r') 
-						&& ( linhaArquivo.indexOf(" | ") > -1 ) ){
-					int posInicial = linhaArquivo.indexOf(" | ") + 3;
-					texto = linhaArquivo.substring(posInicial);
-					
-					if (texto.indexOf(" | ") > -1){
-						int posFinal = texto.indexOf(" | ");
-						
-						nome = texto.substring(0, posFinal) ;
-						 
-						if (nomesCVS.indexOf(nome) == -1)
-							nomesCVS.add( texto.substring(0, posFinal) );
-					}
-				}
+			for (String nome : nomesCVS) {
+				System.out.println(nome);
 			}
 			
-			for (Iterator<String> iterator = nomesCVS.iterator(); iterator.hasNext();) {
-				nome = iterator.next();
-				
-				System.out.println(nome);				
-			}
-		} catch (IOException e) {
+			System.out.println("Arquivos de Log carregados");
+
+		} catch (ParseException e) {
+			e.printStackTrace();
+		} catch (NavException e) {
+			e.printStackTrace();
+		} catch (XPathParseException e) {
+			e.printStackTrace();
+		} catch (XPathEvalException e) {
+			e.printStackTrace();
+		} catch (java.io.IOException e)	{
 			e.printStackTrace();
 		}
-		
 
 	}
 
