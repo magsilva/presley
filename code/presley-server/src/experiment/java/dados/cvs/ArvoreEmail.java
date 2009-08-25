@@ -63,7 +63,7 @@ public class ArvoreEmail extends JFrame implements ActionListener {
 
 		campo      = new JTextField(); 
 	
-		campo.setText("C:/Java/Math/Apache Commons/Math/mbox_Math/");
+		campo.setText("C:/Java/Math/Inicial/mbox_Math/");
 
 		botao      = new JButton("Procurar");  
 		painelCima = new JPanel(new BorderLayout());  
@@ -104,7 +104,7 @@ public class ArvoreEmail extends JFrame implements ActionListener {
 		try {
 			// (28	88)					Arquivos de 01/2004 até 12/2008
 			// (89  conteudo.length)	Arquivos de 01/2009 até o ultimo
-			for (int i=0; i < 15; i++) {    
+			for (int i=0; i < conteudo.length; i++) {    
 
 				File file = new File( conteudo[i].getAbsolutePath() );
 				FileReader fileReader = new FileReader(file);
@@ -218,7 +218,7 @@ public class ArvoreEmail extends JFrame implements ActionListener {
 				}
 			}
 
-			//cadastrarProblemas(emails);
+			cadastrarProblemas(emails);
 			//gerarArquivos(base, emails);
 			preencherArvore(emails, no);
 		} catch (IOException e) {
@@ -229,7 +229,7 @@ public class ArvoreEmail extends JFrame implements ActionListener {
 
 	public void cadastrarProblemas(ArrayList<Email> emails) {
 		Projeto projeto = new Projeto();
-		projeto.setNome("lucene");
+		projeto.setNome("math");
 		ValidacaoProblemaImpl validacaoProblema = new ValidacaoProblemaImpl();
 		
 		for (Email email : emails) {
@@ -248,6 +248,7 @@ public class ArvoreEmail extends JFrame implements ActionListener {
 			problema.setDescricao(email.getSubject());
 			problema.setMensagem(email.getMensagem());
 			problema.setResolvido(true);
+			problema.setTemResposta(false);
 			
 			try {
 				problema = validacaoProblema.cadastrarProblema(problema);

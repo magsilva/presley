@@ -104,12 +104,12 @@ public class Dominio extends ViewPart {
 	{
 		this.parentComposite = parent;
 		
-    	/*try {
+    	try {
 			treeConhecimentos = getViewComunication().getArvoreGraficaDeConhecimentos(parentComposite, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
 		} catch (ConhecimentoInexistenteException e2) {
 			e2.printStackTrace();
-		}*/
-		treeConhecimentos = new Tree(parentComposite, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
+		}
+		//treeConhecimentos = new Tree(parentComposite, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
 		treeConhecimentos.setLocation(0, posVerPainelTopicosDominio);
 		treeConhecimentos.setSize(larguraJanela, alturaPainelTopicosDominio);
 		treeConhecimentos.setVisible(true);
@@ -265,29 +265,44 @@ public class Dominio extends ViewPart {
 					Projeto projeto = viewComunication.getProjetoAtivo();
 					
 					Shell shell = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
+					/*
 					FileDialog dialog = new FileDialog(shell, SWT.OPEN);
 					dialog.setFilterPath( "C://" );
 					final String file = dialog.open();
-
-					File arquivoSelecionado = new File(file);
-					File arquivoNovo = new File(projeto.getEndereco_Servidor_Gravacao()+ arquivoSelecionado.getName());
+					 */
 					
-					try {
-						arquivoNovo.createNewFile();
-						copyFile(arquivoSelecionado, arquivoNovo);
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
+					DirectoryDialog dialog = new DirectoryDialog(shell, SWT.OPEN);
+					dialog.setFilterPath( "C://" );
+					String diretorio = dialog.open();
+					File diretorioCD = new File( diretorio );
+					File[] listagemDiretorio = diretorioCD.listFiles(new FilenameFilter() {  
+						public boolean accept(File d, String name) {  
+							return name.toLowerCase().endsWith(".txt");  
+						}  
+					}); 		
 					
-					Arquivo arquivo = new Arquivo( arquivoSelecionado.getName() );
-					arquivo.setEnderecoServidor( projeto.getEndereco_Servidor_Gravacao()+ arquivoSelecionado.getName() ) ;
 					
-					try {
-						Conhecimento conhecimento = (Conhecimento) treeConhecimentos.getSelection()[0].getData();
-						viewComunication.associaArquivo(conhecimento, arquivo);
-						preencherListaDocumentosBase();
-					} catch (Exception e) {
-						e.printStackTrace();
+					for (int i = 0; i < listagemDiretorio.length; i++) {
+						File arquivoSelecionado = new File( listagemDiretorio[i].getAbsolutePath() );
+						File arquivoNovo = new File(projeto.getEndereco_Servidor_Gravacao()+ arquivoSelecionado.getName());
+						
+						try {
+							arquivoNovo.createNewFile();
+							copyFile(arquivoSelecionado, arquivoNovo);
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
+						
+						Arquivo arquivo = new Arquivo( arquivoSelecionado.getName() );
+						arquivo.setEnderecoServidor( projeto.getEndereco_Servidor_Gravacao()+ arquivoSelecionado.getName() ) ;
+						
+						try {
+							Conhecimento conhecimento = (Conhecimento) treeConhecimentos.getSelection()[0].getData();
+							viewComunication.associaArquivo(conhecimento, arquivo);
+							preencherListaDocumentosBase();
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
 					}
 				}
 
