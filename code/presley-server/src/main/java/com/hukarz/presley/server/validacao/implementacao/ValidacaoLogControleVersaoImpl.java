@@ -146,12 +146,12 @@ public class ValidacaoLogControleVersaoImpl {
 		
 		while(ap0.evalXPath()!=-1){
 			String enderecoLog = ap1.evalXPathToString();
-			if (enderecoLog.endsWith(".java")){
+			if (enderecoLog.endsWith(".java") && enderecoLog.indexOf("/src/") > -1){
 				ArquivoJava arquivoJava = new ArquivoJava( enderecoLog.substring(enderecoLog.lastIndexOf("/")+1), projeto);
 								
 				arquivoJava.setEnderecoServidor(
-						"/"+projeto.getNome() + "/"+
-						enderecoLog.replaceFirst(projeto.getDiretorio_Subversion()+ "/", "")
+						"/"+projeto.getNome() +
+						enderecoLog.substring( enderecoLog.indexOf("/src/") )
 				);
 				if (!servicoArquivo.arquivoExiste(arquivoJava)){
 					servicoArquivo.criarArquivo(arquivoJava);

@@ -63,7 +63,7 @@ public class ArvoreEmail extends JFrame implements ActionListener {
 
 		campo      = new JTextField(); 
 	
-		campo.setText("C:/Java/Math/Inicial/mbox_Math/");
+		campo.setText("C:/Java/Math/Experimento/mbox_experimento/");
 
 		botao      = new JButton("Procurar");  
 		painelCima = new JPanel(new BorderLayout());  
@@ -218,8 +218,8 @@ public class ArvoreEmail extends JFrame implements ActionListener {
 				}
 			}
 
-			cadastrarProblemas(emails);
-			//gerarArquivos(base, emails);
+			//cadastrarProblemas(emails);
+			gerarArquivos(base, emails);
 			preencherArvore(emails, no);
 		} catch (IOException e) {
 			e.printStackTrace();
