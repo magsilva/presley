@@ -37,8 +37,8 @@ public class Inferencia {
 			Problema problema) throws FileNotFoundException {
 
 		Map<Desenvolvedor, Integer> participacaoDesenvolvedorArquivo = getParticipacaoDesenvolvedores(arquivoDesenvolvedores);
-		//Map<Desenvolvedor, Integer> participacaoDesenvolvedorConhecimento = getParticipacaoDesenvolvedores(problema.getConhecimento(), problema.getDesenvolvedorOrigem());
-		Map<Desenvolvedor, Integer> participacaoDesenvolvedorConhecimento = new HashMap<Desenvolvedor, Integer>();
+		Map<Desenvolvedor, Integer> participacaoDesenvolvedorConhecimento = getParticipacaoDesenvolvedores(problema.getConhecimento(), problema.getDesenvolvedorOrigem());
+		//Map<Desenvolvedor, Integer> participacaoDesenvolvedorConhecimento = new HashMap<Desenvolvedor, Integer>();
 
 		Map<Desenvolvedor, Integer> participacaoDesenvolvedor = somarParticipacaoDosDesenvolvedores(problema, participacaoDesenvolvedorArquivo, participacaoDesenvolvedorConhecimento);
 
