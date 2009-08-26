@@ -108,7 +108,7 @@ public class PresleyJayFX extends JayFX {
 					ArquivoJava arquivo = new ArquivoJava( convertToJavaElement(element).getResource().getName(), getProjetoSelecionado());
 					arquivo.setEnderecoServidor( convertToJavaElement(element).getPath().toString() ) ;
 					retorno.put(classe, arquivo);
-				} catch (ConversionException e) {
+				} catch (Exception e) {
 					// e.printStackTrace();
 					// Como o Lucene está com erros no Eclipse isso é necessario 
 				}
