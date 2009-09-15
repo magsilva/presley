@@ -1,9 +1,5 @@
 package com.hukarz.presley.client.gui.wizard;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FilenameFilter;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.Date;
 
@@ -40,12 +36,7 @@ public class AdicionaProblemaWizard extends Wizard implements INewWizard {
 
 	@Override
 	public boolean performFinish() {
-		if (page.executarExperimentoWDDS()){
-			executarExperimento();
-		} else {
-			cadastrarProblema();
-		}
-
+		cadastrarProblema();
 
 		try {
 			getContainer().run(true, true, new IRunnableWithProgress() {
@@ -75,6 +66,7 @@ public class AdicionaProblemaWizard extends Wizard implements INewWizard {
 					mensagemAba.getDadosProjetoAtivo().getClassesRelacionadas(page.getDescricao() + " " + page.getMensagem(), " ") ) ;
 			problema.setDesenvolvedorOrigem( MensagemAba.getDesenvolvedorLogado() ) ;
 			problema.setResolvido(false);
+			problema.setExperimento(false);
 			problema.setProjeto( mensagemAba.getViewComunication().getProjetoAtivo());
 
 			//Adciona problema ao banco
@@ -85,52 +77,6 @@ public class AdicionaProblemaWizard extends Wizard implements INewWizard {
 			logger.error(e.getMessage());
 			e.printStackTrace();
 		}
-	}
-	
-	private void executarExperimento(){
-		File diretorioCD = new File( page.getDiretorioArquivos() );
-		
-		File[] listagemDiretorio = diretorioCD.listFiles(new FilenameFilter() {  
-			public boolean accept(File d, String name) {  
-				return name.toLowerCase().endsWith(".pergunta");  
-			}  
-		}); 		
-		
-		try {
-			for (int i = 0; i < listagemDiretorio.length; i++) {
-				File file = new File( listagemDiretorio[i].getAbsolutePath() );
-				FileReader fileReader = new FileReader(file);
-				BufferedReader reader = new BufferedReader(fileReader);
-
-        		Problema problema = new Problema();
-        		problema.setResolvido(false);
-        		problema.setData(new Date(System.currentTimeMillis()));
-        		problema.setProjeto( mensagemAba.getViewComunication().getProjetoAtivo() );
-        		
-        		// Desenvolvedor que enviou o problema
-				String linha = reader.readLine();
-        		problema.setDesenvolvedorOrigem( mensagemAba.getViewComunication().login(linha, "1") ) ;
-
-        		// Descrição do problema
-        		linha = reader.readLine();
-        		problema.setDescricao( linha );
-        		
-        		// Corpo da Mensagem
-        		String CorpoMensagem = "";
-				while( (CorpoMensagem = reader.readLine()) != null ){
-	        		problema.setMensagem( problema.getMensagem() + " " + CorpoMensagem );
-				}
-
-        		problema.setClassesRelacionadas( 
-        				mensagemAba.getDadosProjetoAtivo().getClassesRelacionadas(problema.getDescricao() + " " + problema.getMensagem(), " ") ) ;
-        		
-        		//Adciona problema ao banco
-        		mensagemAba.getViewComunication().adicionaProblema(problema);
-			}
-		} catch (Exception e) {
-
-		}
-
 	}
 	
     private void performOperation(IProgressMonitor monitor) {

@@ -2,20 +2,16 @@ package com.hukarz.presley.server.inferencia;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import com.hukarz.presley.beans.Arquivo;
 import com.hukarz.presley.beans.Conhecimento;
 import com.hukarz.presley.beans.Desenvolvedor;
 import com.hukarz.presley.beans.Problema;
 import com.hukarz.presley.beans.Projeto;
-import com.hukarz.presley.excessao.DesenvolvedorInexistenteException;
-import com.hukarz.presley.excessao.ProblemaInexistenteException;
 
 public class RegistroExperimento {
 
@@ -25,6 +21,11 @@ public class RegistroExperimento {
 	private ArrayList<Desenvolvedor> listaDesenvolvedores;
 	private Map<Conhecimento, Double> grauSimilaridadeConhecimento;
 	private Map<Integer, Conhecimento> idArquivoPorConhecimento;
+	
+	/**
+	 * Singleton instance 
+	 */
+	private static RegistroExperimento instance = null;
 	
 	/** 
 	 * Private constructor to allow Singleton Pattern
@@ -76,13 +77,6 @@ public class RegistroExperimento {
 		this.listaDesenvolvedores = listaDesenvolvedores;
 	}
 
-	/**
-	 * Singleton instance 
-	 */
-	private static RegistroExperimento instance = null; 
-
-
-
 	public void setParticipacaoDesenvolvedorArquivo(
 			Map<Desenvolvedor, Integer> participacaoDesenvolvedorArquivo) {
 		this.participacaoDesenvolvedorArquivo = participacaoDesenvolvedorArquivo;
@@ -103,9 +97,11 @@ public class RegistroExperimento {
 	}
 
 	public void salvar() throws FileNotFoundException {
-		gerarArquivosExtra();
-		gerarArquivosRecomendations();
-		gerarConhecimentosIdentificados();
+		if (problema.isExperimento()){
+			gerarArquivosExtra();
+			gerarArquivosRecomendations();
+			gerarConhecimentosIdentificados();
+		}
 	}
 
 	private void gerarArquivosExtra() throws FileNotFoundException{
@@ -169,48 +165,5 @@ public class RegistroExperimento {
 		saida.close();
 	}
 	
-	
-
-	public void criarSolucoesValidas() throws ProblemaInexistenteException, DesenvolvedorInexistenteException, IOException{
-		/*
-		ValidacaoSolucaoImpl  validacaoSolucao = new ValidacaoSolucaoImpl();
-		String conteudoEmail = "";
-
-		Projeto projeto = problema.getProjeto();
-
-		File file = new File( projeto.getEndereco_Servidor_Gravacao() + problema.getNumeroArquivoExperimento() + ".emails" );
-
-		try {
-			FileReader fileReader = new FileReader(file);
-			BufferedReader reader = new BufferedReader(fileReader);
-
-			String linha = "";
-			while( (linha = reader.readLine()) != null ){
-				conteudoEmail += linha + " ";
-			}
-
-			for (Desenvolvedor desenvolvedor : listaDesenvolvedores) {
-
-				StringTokenizer st = new StringTokenizer( desenvolvedor.getListaEmail() );
-				while (st.hasMoreTokens()){
-					String email = st.nextToken();
-					if (conteudoEmail.contains(email)){
-						Solucao solucao = new Solucao();
-						solucao.setAjudou(true);
-						solucao.setProblema(problema);
-						solucao.setData( new Date(System.currentTimeMillis()) ) ;
-						solucao.setMensagem("");
-						solucao.setDesenvolvedor(desenvolvedor);
-
-						validacaoSolucao.cadastrarSolucao(solucao);
-						break;
-					}
-				} 
-			}
-		} catch (FileNotFoundException e) {
-			 System.out.println("Question " + problema.getNumeroArquivoExperimento() + " sem resposta.");
-		}
-		*/
-	}
 
 }

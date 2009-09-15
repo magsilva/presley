@@ -20,7 +20,7 @@ public class InferenciaLine10 extends Inferencia {
 			getParticipacaoDesenvolvedores(arquivoDesenvolvedores);
 		
 		participacaoDesenvolvedorArquivo.remove(problema.getDesenvolvedorOrigem());
-		ArrayList<Desenvolvedor> desenvolvedoresRecomendados = retornarMelhoresDesenvolvedores(problema, participacaoDesenvolvedorArquivo);		
+		ArrayList<Desenvolvedor> desenvolvedoresRecomendados = retornarMelhoresDesenvolvedores(problema, participacaoDesenvolvedorArquivo, 5);		
 
 		RegistroExperimento registroExperimento = RegistroExperimento.getInstance();
 		registroExperimento.setParticipacaoDesenvolvedorArquivo(participacaoDesenvolvedorArquivo);
@@ -91,7 +91,7 @@ public class InferenciaLine10 extends Inferencia {
 
 	@Override
 	protected ArrayList<Desenvolvedor> retornarMelhoresDesenvolvedores(
-			Problema problema, Map<Desenvolvedor, Integer> participacaoDesenvolvedor) {
+			Problema problema, Map<Desenvolvedor, Integer> participacaoDesenvolvedor, int qtde) {
 		
 		ArrayList<Desenvolvedor> listaDesenvolvedores = new ArrayList<Desenvolvedor>();
 		for (Iterator<Desenvolvedor> it = participacaoDesenvolvedor.keySet().iterator(); it.hasNext();) {

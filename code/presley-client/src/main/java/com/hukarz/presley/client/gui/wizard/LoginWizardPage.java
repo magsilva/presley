@@ -73,7 +73,7 @@ public class LoginWizardPage extends WizardPage {
 
      	    usernameField = new Text(controls, SWT.SINGLE | SWT.BORDER);
      	    GridData data = new GridData(GridData.FILL_HORIZONTAL);
-     	    usernameField.setText("cct@cin.ufpe.br");
+     	    usernameField.setText("");
      	    usernameField.setLayoutData(data);
 
      	    final Label passwordLabel = new Label(controls, SWT.RIGHT);
@@ -82,7 +82,7 @@ public class LoginWizardPage extends WizardPage {
      	    passwordField = new Text(controls, SWT.SINGLE 
      	    		| SWT.PASSWORD | SWT.BORDER);
      	    data = new GridData(GridData.FILL_HORIZONTAL);
-     	    passwordField.setText("1");
+     	    passwordField.setText("");
      	    passwordField.setLayoutData(data);
      	    
      	    Label ipLabel = new Label(controls, SWT.RIGHT);

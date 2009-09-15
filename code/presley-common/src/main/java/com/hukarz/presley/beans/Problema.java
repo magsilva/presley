@@ -37,6 +37,7 @@ public class Problema implements Serializable {
 	private Projeto projeto;
 	private String numeroArquivoExperimento;
 	private boolean temResposta = true;
+	private boolean experimento = true;
 
 	public Problema() {
 		classesRelacionadas = new HashMap<ClasseJava, ArquivoJava>();
@@ -131,5 +132,12 @@ public class Problema implements Serializable {
 		this.temResposta = temResposta;
 	}
 
+	public boolean isExperimento() {
+		return experimento;
+	}
+
+	public void setExperimento(boolean experimento) {
+		this.experimento = experimento;
+	}
 }
 
