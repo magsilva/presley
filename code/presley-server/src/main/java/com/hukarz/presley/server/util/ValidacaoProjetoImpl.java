@@ -1,4 +1,4 @@
-package com.hukarz.presley.server.validacao.implementacao;
+package com.hukarz.presley.server.util;
 
 import java.util.ArrayList;
 

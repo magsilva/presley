@@ -65,8 +65,8 @@ public class AdicionaConhecimentoWizard extends Wizard implements INewWizard {
     		for (Iterator<Conhecimento> iterator = conhecimentosFilho.iterator(); iterator.hasNext();) {
     			Conhecimento filho = iterator.next();
 				
-	    		Conhecimento pai = null;
-   				Conhecimento paiConhecimento = conhecimentoFilhoPai.get( filho );
+    			Conhecimento pai = null;
+    			Conhecimento paiConhecimento = conhecimentoFilhoPai.get( filho );
    				if (paiConhecimento != null){
    		    		for (Conhecimento conhecimento : listaConhecimento) {
    						if (conhecimento.getNome().equals(paiConhecimento.getNome())) {

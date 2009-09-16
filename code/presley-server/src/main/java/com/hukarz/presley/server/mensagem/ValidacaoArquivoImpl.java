@@ -1,4 +1,4 @@
-package com.hukarz.presley.server.validacao.implementacao;
+package com.hukarz.presley.server.mensagem;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -35,12 +35,11 @@ public class ValidacaoArquivoImpl {
 	}
 
 	/**
-	 * Este metodo atualiza um conhecimento previamente cadastrado na base da dados 
-	 * @param nome Nome do conhecimento a ser atualizado.
-	 * @param novoNome Novo nome do conhecimento.
-	 * @param descricao Nova descricao do conhecimento.
-	 * @return true se o conhecimento foi atualizado.
-	 * @throws NomeInvalidoException 
+	 * Este metodo atualiza um Arquivo previamente cadastrado na base da dados 
+	 * @param arquivoAnterior
+	 * @param arquivoNovo
+	 * @return true se o Arquivo foi atualizado.
+	 * @throws ArquivoInexistenteException
 	 */
 	public boolean atualizarArquivo(Arquivo arquivoAnterior, Arquivo arquivoNovo) throws ArquivoInexistenteException {
 		if (!servicoArquivo.arquivoExiste(arquivoAnterior)) throw new ArquivoInexistenteException();
@@ -49,7 +48,7 @@ public class ValidacaoArquivoImpl {
 	}
 	
 	/**
-	 * Este mtodo verifica se um conhecimento existe na base de dados.
+	 * Este mtodo verifica se um Arquivo existe na base de dados.
 	 * @parame nome Nome do conhecimento para verificacao.
 	 * @return true se o conhecimento existe.
 	 */
@@ -59,10 +58,10 @@ public class ValidacaoArquivoImpl {
 	}
 	
 	/**
-	 * Este metodo cria um novo conhecimento na base de dados
-	 * @param nome Nome do novo conhecimento
-	 * @param descricao Descricao do novo conhecimento
-	 * @return true se o conhecimento foi inserido na base de dados.
+	 * Este metodo cria um novo Arquivo na base de dados
+	 * @param arquivo
+	 * @return true se o Arquivo foi inserido na base de dados.
+	 * @throws ArquivoInexistenteException
 	 */
 	public boolean criarArquivo(Arquivo arquivo) throws ArquivoInexistenteException {
 		
@@ -75,10 +74,9 @@ public class ValidacaoArquivoImpl {
 	}
 	
 	/**
-	 * Esse metodo retorna um objeto do tipo conhecimento que possui o nome
-	 * passado por parametro.
-	 * @param nome Nome do conhecimento a ser retornado.
-	 * @return <Conhecimento>
+	 * @param arquivo
+	 * @return
+	 * @throws ArquivoInexistenteException
 	 */
 	public Arquivo getArquivo(Arquivo arquivo) throws ArquivoInexistenteException {
 		Arquivo arquivoRetorno = servicoArquivo.getArquivo(arquivo);
@@ -88,9 +86,9 @@ public class ValidacaoArquivoImpl {
 	}
 	
 	/**
-	 * Este metodo remove um conhecimento previamente cadastrado. 
-	 * @param nome Nome do conhecimento a ser removido.
-	 * @return true se o conhecimento foi removido com sucesso
+	 * Este metodo remove um Arquivo previamente cadastrado. 
+	 * @param arquivo Arquivo a ser removido.
+	 * @return true se o Arquivo foi removido com sucesso
 	 */
 	public boolean removerArquivo(Arquivo arquivo) throws ArquivoInexistenteException {
 		if (!servicoArquivo.arquivoExiste(arquivo)) throw new ArquivoInexistenteException();

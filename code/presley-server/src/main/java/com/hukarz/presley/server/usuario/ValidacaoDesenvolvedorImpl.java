@@ -1,4 +1,4 @@
-package com.hukarz.presley.server.validacao.implementacao;
+package com.hukarz.presley.server.usuario;
 
 
 import java.util.ArrayList;
@@ -24,6 +24,7 @@ import com.hukarz.presley.server.persistencia.implementacao.ServicoSolucaoImplDA
 import com.hukarz.presley.server.persistencia.interfaces.ServicoConhecimento;
 import com.hukarz.presley.server.persistencia.interfaces.ServicoDesenvolvedor;
 import com.hukarz.presley.server.persistencia.interfaces.ServicoSolucao;
+import com.hukarz.presley.server.util.ValidacaoUtil;
 
 /**
  * 
@@ -149,7 +150,7 @@ public class ValidacaoDesenvolvedorImpl {
 	/**
 	 * Esse mtodo retorna uma lista de conhecimentos que o desenvolvedor possui
 	 * @param email Email do desenvolvedor
-	 * @return ArrayList<Conhecimento>
+	 * @return ArrayList<TopicoConhecimento>
 	 * @throws DescricaoInvalidaException 
 	 */
 	public ArrayList<Conhecimento> getConhecimentosDoDesenvolvedor(String email) 

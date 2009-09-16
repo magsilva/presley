@@ -1,4 +1,4 @@
-package com.hukarz.presley.server.validacao.implementacao;
+package com.hukarz.presley.server.mensagem;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -16,8 +16,9 @@ import com.hukarz.presley.excessao.ConhecimentoNaoEncontradoException;
 import com.hukarz.presley.excessao.DescricaoInvalidaException;
 import com.hukarz.presley.excessao.ProblemaInexistenteException;
 import com.hukarz.presley.excessao.ProjetoInexistenteException;
-import com.hukarz.presley.server.inferencia.Inferencia;
-import com.hukarz.presley.server.inferencia.InferenciaLine10;
+import com.hukarz.presley.server.inferencia.identificador.Identificador;
+import com.hukarz.presley.server.inferencia.recomendador.Recomendador;
+import com.hukarz.presley.server.inferencia.recomendador.RecomendadorLine10;
 import com.hukarz.presley.server.persistencia.implementacao.ServicoArquivoImplDAO;
 import com.hukarz.presley.server.persistencia.implementacao.ServicoMensagemImplDAO;
 import com.hukarz.presley.server.persistencia.implementacao.ServicoProblemaImplDAO;
@@ -28,7 +29,7 @@ import com.hukarz.presley.server.persistencia.interfaces.ServicoMensagem;
 import com.hukarz.presley.server.persistencia.interfaces.ServicoProblema;
 import com.hukarz.presley.server.persistencia.interfaces.ServicoProjeto;
 import com.hukarz.presley.server.persistencia.interfaces.ServicoSolucao;
-import com.hukarz.presley.server.processaTexto.ProcessaSimilaridade;
+import com.hukarz.presley.server.util.ValidacaoUtil;
 
 
 /**
@@ -100,7 +101,7 @@ public class ValidacaoProblemaImpl {
 		this.logger.debug("Lista com os Desenvolvedores de cada arquivo"); 
 
 		// Identifica o conhecimeto do problema a se cadastrar
-		ProcessaSimilaridade processaSimilaridade = new ProcessaSimilaridade();
+		Identificador processaSimilaridade = new Identificador();
 	
 		StringBuilder comentariosCodigo = new StringBuilder();
 		
@@ -129,7 +130,7 @@ public class ValidacaoProblemaImpl {
 		
 		if (problema.isTemResposta()){
 			// Retorna os desenvolvedores que receberão o problema
-			Inferencia inferencia = new Inferencia();
+			Recomendador inferencia = new Recomendador();
 			ArrayList<Desenvolvedor> desenvolvedores = inferencia.getDesenvolvedores(arquivoDesenvolvedores, 
 					problema);
 			

@@ -42,9 +42,9 @@ import com.hukarz.presley.excessao.DescricaoInvalidaException;
 import com.hukarz.presley.excessao.DesenvolvedorInexistenteException;
 import com.hukarz.presley.excessao.ProblemaInexistenteException;
 import com.hukarz.presley.excessao.ProjetoInexistenteException;
+import com.hukarz.presley.server.mensagem.ValidacaoProblemaImpl;
+import com.hukarz.presley.server.mensagem.ValidacaoSolucaoImpl;
 import com.hukarz.presley.server.persistencia.MySQLConnectionFactory;
-import com.hukarz.presley.server.validacao.implementacao.ValidacaoProblemaImpl;
-import com.hukarz.presley.server.validacao.implementacao.ValidacaoSolucaoImpl;
 
 
 public class ArvoreEmail extends JFrame implements ActionListener {

@@ -1,4 +1,4 @@
-package com.hukarz.presley.server.inferencia;
+package com.hukarz.presley.server.inferencia.recomendador;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -9,8 +9,9 @@ import java.util.Map;
 import com.hukarz.presley.beans.ArquivoJava;
 import com.hukarz.presley.beans.Desenvolvedor;
 import com.hukarz.presley.beans.Problema;
+import com.hukarz.presley.server.inferencia.RegistroExperimento;
 
-public class InferenciaLine10 extends Inferencia {
+public class RecomendadorLine10 extends Recomendador {
 
 	@Override
 	public ArrayList<Desenvolvedor> getDesenvolvedores(

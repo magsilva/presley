@@ -1,4 +1,4 @@
-package com.hukarz.presley.server.inferencia;
+package com.hukarz.presley.server.inferencia.recomendador;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -10,6 +10,7 @@ import com.hukarz.presley.beans.ArquivoJava;
 import com.hukarz.presley.beans.Conhecimento;
 import com.hukarz.presley.beans.Desenvolvedor;
 import com.hukarz.presley.beans.Problema;
+import com.hukarz.presley.server.inferencia.RegistroExperimento;
 import com.hukarz.presley.server.persistencia.implementacao.ServicoConhecimentoImplDAO;
 import com.hukarz.presley.server.persistencia.implementacao.ServicoDesenvolvedorImplDAO;
 import com.hukarz.presley.server.persistencia.implementacao.ServicoMensagemImplDAO;
@@ -31,7 +32,7 @@ import com.hukarz.presley.server.persistencia.interfaces.ServicoMensagem;
  * TODO To change the template for this generated type comment go to
  * Window - Preferences - Java - Code Style - Code Templates
  */
-public class Inferencia {
+public class Recomendador {
 
 	public ArrayList<Desenvolvedor> getDesenvolvedores(Map<ArquivoJava, ArrayList<Desenvolvedor>> arquivoDesenvolvedores,
 			Problema problema) throws FileNotFoundException {

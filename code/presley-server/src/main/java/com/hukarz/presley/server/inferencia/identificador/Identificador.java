@@ -1,4 +1,4 @@
-package com.hukarz.presley.server.processaTexto;
+package com.hukarz.presley.server.inferencia.identificador;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -10,14 +10,15 @@ import com.hukarz.presley.beans.Arquivo;
 import com.hukarz.presley.beans.Conhecimento;
 import com.hukarz.presley.excessao.ConhecimentoNaoEncontradoException;
 import com.hukarz.presley.server.inferencia.RegistroExperimento;
+import com.hukarz.presley.server.inferencia.classificador.Classificador;
 import com.hukarz.presley.server.persistencia.implementacao.ServicoArquivoImplDAO;
 import com.hukarz.presley.server.persistencia.implementacao.ServicoConhecimentoImplDAO;
 import com.hukarz.presley.server.persistencia.interfaces.ServicoArquivo;
 import com.hukarz.presley.server.persistencia.interfaces.ServicoConhecimento;
 
-public class ProcessaSimilaridade {
+public class Identificador {
 
-	ProcessaDocumento processaDocumento = new ProcessaDocumento();
+	Classificador processaDocumento = new Classificador();
 	ServicoConhecimento servicoConhecimento = new ServicoConhecimentoImplDAO();
 	ServicoArquivo servicoArquivo = new ServicoArquivoImplDAO();
 	int qtdeArquivos = 0;

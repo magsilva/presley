@@ -1,4 +1,4 @@
-package com.hukarz.presley.server.processaTexto;
+package com.hukarz.presley.server.inferencia.classificador;
 import java.util.Map;
 
 public class Documento {

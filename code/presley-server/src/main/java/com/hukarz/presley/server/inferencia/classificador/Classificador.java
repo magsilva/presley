@@ -1,4 +1,4 @@
-package com.hukarz.presley.server.processaTexto;
+package com.hukarz.presley.server.inferencia.classificador;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -11,7 +11,7 @@ import java.util.StringTokenizer;
 
 import com.hukarz.presley.beans.Arquivo;
 
-public class ProcessaDocumento {
+public class Classificador {
 	
 	public Arquivo getDocumentoProcessado(Arquivo arquivo) throws IOException {
 		

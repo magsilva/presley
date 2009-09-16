@@ -5,7 +5,7 @@ import org.apache.log4j.Logger;
 
 import com.hukarz.presley.communication.facade.PrincipalSUBJECT;
 import com.hukarz.presley.communication.server.ServerBridge;
-import com.hukarz.presley.server.validacao.implementacao.ValidacaoLogControleVersaoImpl;
+import com.hukarz.presley.server.usuario.ValidacaoLogControleVersaoImpl;
 
 
 /**

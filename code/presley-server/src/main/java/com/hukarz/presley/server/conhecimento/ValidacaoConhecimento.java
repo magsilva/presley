@@ -1,4 +1,4 @@
-package com.hukarz.presley.server.validacao.implementacao;
+package com.hukarz.presley.server.conhecimento;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -12,13 +12,14 @@ import com.hukarz.presley.beans.Tree;
 import com.hukarz.presley.excessao.ConhecimentoInexistenteException;
 import com.hukarz.presley.excessao.DescricaoInvalidaException;
 import com.hukarz.presley.excessao.NomeInvalidoException;
+import com.hukarz.presley.server.inferencia.classificador.Classificador;
 import com.hukarz.presley.server.persistencia.implementacao.ServicoArquivoImplDAO;
 import com.hukarz.presley.server.persistencia.implementacao.ServicoConhecimentoImplDAO;
 import com.hukarz.presley.server.persistencia.implementacao.ServicoDesenvolvedorImplDAO;
 import com.hukarz.presley.server.persistencia.interfaces.ServicoArquivo;
 import com.hukarz.presley.server.persistencia.interfaces.ServicoConhecimento;
 import com.hukarz.presley.server.persistencia.interfaces.ServicoDesenvolvedor;
-import com.hukarz.presley.server.processaTexto.ProcessaDocumento;
+import com.hukarz.presley.server.util.ValidacaoUtil;
 
 
 /**
@@ -29,13 +30,13 @@ import com.hukarz.presley.server.processaTexto.ProcessaDocumento;
  * ltima modificacao: 09/09/2008 por RodrigoCMD
  */
 
-public class ValidacaoConhecimentoImpl {
+public class ValidacaoConhecimento {
 	
 	ServicoConhecimento servicoConhecimento;
 	ServicoDesenvolvedor servicoDesenvolvedor;
 	ServicoArquivo servicoArquivo; 
 	
-	public ValidacaoConhecimentoImpl() {
+	public ValidacaoConhecimento() {
 		servicoConhecimento		= new ServicoConhecimentoImplDAO();
 		servicoDesenvolvedor	= new ServicoDesenvolvedorImplDAO();
 		servicoArquivo			= new ServicoArquivoImplDAO();
@@ -192,7 +193,7 @@ public class ValidacaoConhecimentoImpl {
 	/**
 	 * Metodo que retorna os conhecimentos filhos de um conhecimento.
 	 * @param idConhecimentoPai
-	 * @return ArrayList<Conhecimento> Lista dos conhecimentos filhos.
+	 * @return ArrayList<TopicoConhecimento> Lista dos conhecimentos filhos.
 	 * @throws ConhecimentoInexistenteException
 	 */
 	public ArrayList<Conhecimento> getFilhos(String nomeConhecimentoPai)
@@ -207,7 +208,7 @@ public class ValidacaoConhecimentoImpl {
 	/**
 	 * Metodo que retorna os conhecimentos pais de um conhecimento.
 	 * @param idConhecimentoPai
-	 * @return ArrayList<Conhecimento> Lista dos conhecimentos filhos.
+	 * @return ArrayList<TopicoConhecimento> Lista dos conhecimentos filhos.
 	 * @throws ConhecimentoInexistenteException
 	 */
 	public ArrayList<Conhecimento> getPais(String nomeConhecimentoFilho)
@@ -248,7 +249,7 @@ public class ValidacaoConhecimentoImpl {
 		
 		for (Iterator<Arquivo> iterator = arquivos.iterator(); iterator.hasNext();) {
 			Arquivo arquivo = iterator.next();
-			ProcessaDocumento processaDocumento = new ProcessaDocumento() ;
+			Classificador processaDocumento = new Classificador() ;
 			arquivo = processaDocumento.getDocumentoProcessado(arquivo) ;
 			
 			if (!servicoArquivo.arquivoExiste(arquivo)){

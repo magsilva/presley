@@ -55,7 +55,7 @@ public interface ServicoConhecimento {
 	 * Esse método retorna um objeto do tipo conhecimento que possui o nome
 	 * passado por parametro.
 	 * @param nome Nome do conhecimento a ser retornado.
-	 * @return <Conhecimento>
+	 * @return <TopicoConhecimento>
 	 */
 	public Conhecimento getConhecimento(String nome);
 	
@@ -80,7 +80,7 @@ public interface ServicoConhecimento {
 	/**
 	 * Metodo que retorna os conhecimentos filhos de um conhecimento.
 	 * @param idConhecimentoPai
-	 * @return ArrayList<Conhecimento> Lista dos conhecimentos filhos.
+	 * @return ArrayList<TopicoConhecimento> Lista dos conhecimentos filhos.
 	 * @throws ConhecimentoInexistenteException
 	 */
 	public ArrayList<Conhecimento> getFilhos(String nomeConhecimentoPai) throws ConhecimentoInexistenteException;
@@ -88,7 +88,7 @@ public interface ServicoConhecimento {
 	/**
 	 * Metodo que retorna os conhecimentos pais de um conhecimento.
 	 * @param idConhecimentoPai
-	 * @return ArrayList<Conhecimento> Lista dos conhecimentos filhos.
+	 * @return ArrayList<TopicoConhecimento> Lista dos conhecimentos filhos.
 	 * @throws ConhecimentoInexistenteException
 	 */
 	public ArrayList<Conhecimento> getPais(String nomeConhecimentoFilho) throws ConhecimentoInexistenteException;

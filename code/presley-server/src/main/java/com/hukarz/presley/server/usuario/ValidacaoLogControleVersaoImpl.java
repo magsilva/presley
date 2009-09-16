@@ -1,4 +1,4 @@
-package com.hukarz.presley.server.validacao.implementacao;
+package com.hukarz.presley.server.usuario;
 
 import java.io.File;
 import java.io.FileInputStream;

@@ -91,7 +91,7 @@ public class AdicionaDesenvolvedorWizardPage2 extends WizardPage {
     	conhecimentos = new ArrayList<Conhecimento>();
     	//Preenche a lista de conhecimentos para resposta
     	for (String nome : conhecimentosNomes) {
-			Conhecimento conh1 = tabelaConhecimentos.get(nome);
+    		Conhecimento conh1 = tabelaConhecimentos.get(nome);
 			if (conh1!=null) {
 				conhecimentos.add(conh1);
 			}

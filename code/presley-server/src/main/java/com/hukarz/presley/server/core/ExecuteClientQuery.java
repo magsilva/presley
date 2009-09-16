@@ -31,13 +31,13 @@ import com.hukarz.presley.excessao.ProblemaInexistenteException;
 import com.hukarz.presley.excessao.ProjetoInexistenteException;
 import com.hukarz.presley.excessao.SenhaInvalidaException;
 import com.hukarz.presley.excessao.SolucaoIniexistenteException;
+import com.hukarz.presley.server.conhecimento.ValidacaoConhecimento;
 import com.hukarz.presley.server.core.interfaces.CorePresleyOperations;
-import com.hukarz.presley.server.validacao.implementacao.ValidacaoConhecimentoImpl;
-import com.hukarz.presley.server.validacao.implementacao.ValidacaoDesenvolvedorImpl;
-import com.hukarz.presley.server.validacao.implementacao.ValidacaoMensagemImpl;
-import com.hukarz.presley.server.validacao.implementacao.ValidacaoProblemaImpl;
-import com.hukarz.presley.server.validacao.implementacao.ValidacaoProjetoImpl;
-import com.hukarz.presley.server.validacao.implementacao.ValidacaoSolucaoImpl;
+import com.hukarz.presley.server.mensagem.ValidacaoMensagemImpl;
+import com.hukarz.presley.server.mensagem.ValidacaoProblemaImpl;
+import com.hukarz.presley.server.mensagem.ValidacaoSolucaoImpl;
+import com.hukarz.presley.server.usuario.ValidacaoDesenvolvedorImpl;
+import com.hukarz.presley.server.util.ValidacaoProjetoImpl;
 
 
 /**
@@ -51,7 +51,7 @@ public class ExecuteClientQuery implements CorePresleyOperations{
 	 * Variaveis instanciadas uma única vez para ter acesso aos servicos de 
 	 * persistência oferecidos pelas classes de validação
 	 */
-	ValidacaoConhecimentoImpl  validacaoConhecimento;
+	ValidacaoConhecimento  validacaoConhecimento;
 	ValidacaoProblemaImpl 	   validacaoProblema; 
 	ValidacaoDesenvolvedorImpl validacaoDesenvolvedor; 
 	ValidacaoMensagemImpl 	   validacaoMensagem;
@@ -59,7 +59,7 @@ public class ExecuteClientQuery implements CorePresleyOperations{
 	ValidacaoProjetoImpl       validacaoProjeto;
 
 	public ExecuteClientQuery() {
-		validacaoConhecimento	= new ValidacaoConhecimentoImpl();
+		validacaoConhecimento	= new ValidacaoConhecimento();
 		validacaoProblema		= new ValidacaoProblemaImpl();
 		validacaoDesenvolvedor	= new ValidacaoDesenvolvedorImpl();
 		validacaoMensagem		= new ValidacaoMensagemImpl();

@@ -1,4 +1,4 @@
-package com.hukarz.presley.server.validacao.implementacao;
+package com.hukarz.presley.server.mensagem;
 
 import java.util.ArrayList;
 
@@ -7,6 +7,7 @@ import com.hukarz.presley.beans.Mensagem;
 import com.hukarz.presley.beans.Problema;
 import com.hukarz.presley.excessao.DesenvolvedorInexistenteException;
 import com.hukarz.presley.server.persistencia.implementacao.ServicoMensagemImplDAO;
+import com.hukarz.presley.server.usuario.ValidacaoDesenvolvedorImpl;
 
 
 
