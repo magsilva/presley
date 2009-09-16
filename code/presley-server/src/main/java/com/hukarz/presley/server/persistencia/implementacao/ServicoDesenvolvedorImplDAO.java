@@ -64,8 +64,8 @@ public class ServicoDesenvolvedorImplDAO implements ServicoDesenvolvedor{
 		return true;
 	}
 
-	public boolean atualizarDesenvolvedor(String email, String novoEmail, String nome,
-			String cvsNome, String senha) {
+	public boolean atualizarDesenvolvedor(String email, String novoEmail, String novoNome,
+			String novoCVS_Nome, String novaSenha) {
 
 		//Connection conn = MySQLConnectionFactory.getConnection();
 		Connection conn = MySQLConnectionFactory.open();
@@ -77,7 +77,7 @@ public class ServicoDesenvolvedorImplDAO implements ServicoDesenvolvedor{
 			stm = conn.createStatement();
 
 			String SQL = " UPDATE desenvolvedor SET email = '"+novoEmail+"',"+
-			" nome = '"+nome+"', cvsNome = '"+cvsNome+"', senha = '"+senha+
+			" nome = '"+novoNome+"', cvsNome = '"+novoCVS_Nome+"', senha = '"+novaSenha+
 			"' WHERE email = '"+email+"';";
 
 			//System.out.println(SQL);

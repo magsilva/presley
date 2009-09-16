@@ -7,20 +7,17 @@ import com.hukarz.presley.beans.Mensagem;
 import com.hukarz.presley.beans.Problema;
 import com.hukarz.presley.excessao.DesenvolvedorInexistenteException;
 import com.hukarz.presley.server.persistencia.implementacao.ServicoMensagemImplDAO;
-import com.hukarz.presley.server.usuario.ValidacaoDesenvolvedorImpl;
+import com.hukarz.presley.server.usuario.Usuario;
 
 
 
 public class ValidacaoMensagemImpl {
 
 	ServicoMensagemImplDAO servicoMensagem;
-	ValidacaoDesenvolvedorImpl validacaoDesenvolvedor;
 
 	public ValidacaoMensagemImpl() {
 
 		servicoMensagem = new ServicoMensagemImplDAO();
-		validacaoDesenvolvedor = new ValidacaoDesenvolvedorImpl();
-
 	}
 
 	/**
@@ -35,7 +32,8 @@ public class ValidacaoMensagemImpl {
 	public boolean adicionarMensagem(ArrayList<Desenvolvedor> desenvolvedoresDestino, Problema problema) throws DesenvolvedorInexistenteException {
 
 		for(Desenvolvedor d : desenvolvedoresDestino) {
-			if(!validacaoDesenvolvedor.desenvolvedorExiste(d.getEmail())) throw new DesenvolvedorInexistenteException();
+			Usuario validacaoDesenvolvedor = new Usuario(d);
+			if(!validacaoDesenvolvedor.desenvolvedorExiste()) throw new DesenvolvedorInexistenteException();
 		}
 		
 		return servicoMensagem.adicionarMensagem(desenvolvedoresDestino, problema);

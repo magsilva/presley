@@ -31,7 +31,7 @@ public class ServicoConhecimentoImplDAO implements ServicoConhecimento{
 	ServicoDesenvolvedor servicoDesenvolvedor = new ServicoDesenvolvedorImplDAO();
 
 	public boolean atualizarConhecimento(String nome, String novoNome,
-			String descricao) {
+			String novaDescricao) {
 
 		//Connection conn = MySQLConnectionFactory.getConnection();
 		Connection conn = MySQLConnectionFactory.open();
@@ -43,7 +43,7 @@ public class ServicoConhecimentoImplDAO implements ServicoConhecimento{
 			stm = conn.createStatement();
 
 			String SQL = " UPDATE conhecimento SET nome = '"+novoNome+"',"+
-			" descricao = '"+descricao+"' "+
+			" descricao = '"+novaDescricao+"' "+
 			" WHERE nome = '"+nome+"';";
 
 			//System.out.println(SQL);

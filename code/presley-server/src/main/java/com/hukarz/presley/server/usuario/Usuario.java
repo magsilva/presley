@@ -34,16 +34,19 @@ import com.hukarz.presley.server.util.ValidacaoUtil;
  * ltima modificacao: 09/09/2008 por RodrigoCMD
  */
 
-public class ValidacaoDesenvolvedorImpl {
+public class Usuario {
 	
 	ServicoConhecimento servicoConhecimento;
 	ServicoSolucao servicoSolucao;
 	ServicoDesenvolvedor servicoDesenvolvedor;
+	Desenvolvedor desenvolvedor;
 	
-	public ValidacaoDesenvolvedorImpl() {
+	public Usuario(Desenvolvedor desenvolvedor) {
 		servicoConhecimento = new ServicoConhecimentoImplDAO();
 		servicoDesenvolvedor = new ServicoDesenvolvedorImplDAO();
 		servicoSolucao = new ServicoSolucaoImplDAO();
+		
+		this.desenvolvedor = desenvolvedor;
 	}
 	
 	/**
@@ -55,13 +58,13 @@ public class ValidacaoDesenvolvedorImpl {
 	 * @throws ConhecimentoInexistenteException 
 	 */
 	public boolean adicionarConhecimentoAoDesenvolvedor(
-			String emailDesenvolvedor, String nomeConhecimento, int grau, int qntResposta) throws DescricaoInvalidaException, ConhecimentoInexistenteException {
+			String nomeConhecimento, int grau, int qntResposta) throws DescricaoInvalidaException, ConhecimentoInexistenteException {
 		
-		if (!servicoDesenvolvedor.desenvolvedorExiste(emailDesenvolvedor)) throw new DescricaoInvalidaException();
+		if (!servicoDesenvolvedor.desenvolvedorExiste(desenvolvedor.getEmail())) throw new DescricaoInvalidaException();
 		if (!servicoConhecimento.conhecimentoExiste(nomeConhecimento)) throw new ConhecimentoInexistenteException();
 		
 		return servicoDesenvolvedor.adicionarConhecimentoAoDesenvolvedor(
-				emailDesenvolvedor, nomeConhecimento, grau, qntResposta);
+				desenvolvedor.getEmail(), nomeConhecimento, grau, qntResposta);
 	}
 	
 	/**
@@ -75,13 +78,18 @@ public class ValidacaoDesenvolvedorImpl {
 	 * @throws DesenvolvedorInexistenteException 
 	 * @throws SenhaInvalidaException 
 	 */
-	public boolean atualizarDesenvolvedor(String email, String novoEmail,
+	public boolean atualizarDesenvolvedor(String novoEmail,
 			String nome, String cvsNome, String senha) throws DesenvolvedorInexistenteException, SenhaInvalidaException {
 		
-		if (!servicoDesenvolvedor.desenvolvedorExiste(email)) throw new DesenvolvedorInexistenteException();
+//		if (!servicoDesenvolvedor.desenvolvedorExiste(desenvolvedor.getEmail())) throw new DesenvolvedorInexistenteException();
 		if (!ValidacaoUtil.validaSenha(senha)) throw new SenhaInvalidaException();
+
+		desenvolvedor.setEmail(novoEmail);
+		desenvolvedor.setCVSNome(cvsNome);
+		desenvolvedor.setNome(nome);
+		desenvolvedor.setSenha(senha);
 		
-		return servicoDesenvolvedor.atualizarDesenvolvedor(email, novoEmail, nome, cvsNome, senha);
+		return servicoDesenvolvedor.atualizarDesenvolvedor(desenvolvedor.getEmail(), novoEmail, nome, cvsNome, senha);
 	}
 	
 	/**
@@ -92,13 +100,12 @@ public class ValidacaoDesenvolvedorImpl {
 	 * @throws DesenvolvedorInexistenteException 
 	 * @throws ConhecimentoInexistenteException 
 	 */
-	public boolean conhecimentoDoDesenvolvedorExiste(String emailDesenvolvedor,
-			String nomeConhecimento) throws DesenvolvedorInexistenteException, ConhecimentoInexistenteException {
+	public boolean desenvolvedorTemConhecimento(String nomeConhecimento) throws DesenvolvedorInexistenteException, ConhecimentoInexistenteException {
 		
-		if (!servicoDesenvolvedor.desenvolvedorExiste(emailDesenvolvedor)) throw new DesenvolvedorInexistenteException();
+		if (!servicoDesenvolvedor.desenvolvedorExiste(desenvolvedor.getEmail())) throw new DesenvolvedorInexistenteException();
 		if (!servicoConhecimento.conhecimentoExiste(nomeConhecimento)) throw new ConhecimentoInexistenteException();
 		
-		return servicoDesenvolvedor.conhecimentoDoDesenvolvedorExiste(emailDesenvolvedor, nomeConhecimento);
+		return servicoDesenvolvedor.conhecimentoDoDesenvolvedorExiste(desenvolvedor.getEmail(), nomeConhecimento);
 	}
 	
 	/**
@@ -111,27 +118,33 @@ public class ValidacaoDesenvolvedorImpl {
 	 * @throws SenhaInvalidaException 
 	 * @throws ListagemDeConhecimentoInexistenteException 
 	 */
-	public boolean criarDesenvolvedor(String email, String nome,
-			String cvsNome, String senha, HashMap<Conhecimento, Double> hashMap) throws DesenvolvedorExisteException, SenhaInvalidaException, ListagemDeConhecimentoInexistenteException {
+	public boolean criarDesenvolvedor() throws DesenvolvedorExisteException, SenhaInvalidaException, ListagemDeConhecimentoInexistenteException {
 		
-		if (servicoDesenvolvedor.desenvolvedorExiste(email)) throw new DesenvolvedorExisteException();
+		if (servicoDesenvolvedor.desenvolvedorExiste(desenvolvedor.getEmail())) throw new DesenvolvedorExisteException();
 		//if (!ValidacaoUtil.validaSenha(senha)) throw new SenhaInvalidaException();
 		
-		boolean teste = servicoDesenvolvedor.criarDesenvolvedor(email, nome, cvsNome, senha);
-		
+		boolean teste = servicoDesenvolvedor.criarDesenvolvedor(
+				desenvolvedor.getEmail(), 
+				desenvolvedor.getNome(), 
+				desenvolvedor.getCVSNome(),
+				desenvolvedor.getSenha());
+		/*
 		Set<Conhecimento> setConhecimento = null;
+		
 		if(hashMap != null) {
 			
 			setConhecimento = hashMap.keySet();
 			
 			for(Conhecimento conhecimento: setConhecimento) {
 				Double grau = hashMap.get(conhecimento);
-				servicoDesenvolvedor.adicionarConhecimentoAoDesenvolvedor(email, conhecimento.getNome(), grau, 0);
+				servicoDesenvolvedor.adicionarConhecimentoAoDesenvolvedor(
+						desenvolvedor.getEmail(), conhecimento.getNome(), grau, 0);
 			}
 			
 //		} else {
 //			throw new ListagemDeConhecimentoInexistenteException();
-		}	
+		}
+		*/	
 		return teste;
 		
 	}
@@ -141,9 +154,8 @@ public class ValidacaoDesenvolvedorImpl {
 	 * @param email Email do desenvolvedor
 	 * @return true se o desenvolvedro estiver cadastrado no sistema.
 	 */
-	public boolean desenvolvedorExiste(String email) {
-		
-		return servicoDesenvolvedor.desenvolvedorExiste(email);
+	public boolean desenvolvedorExiste() {
+		return servicoDesenvolvedor.desenvolvedorExiste(desenvolvedor.getEmail());
 	}
 	
 	
@@ -153,12 +165,12 @@ public class ValidacaoDesenvolvedorImpl {
 	 * @return ArrayList<TopicoConhecimento>
 	 * @throws DescricaoInvalidaException 
 	 */
-	public ArrayList<Conhecimento> getConhecimentosDoDesenvolvedor(String email) 
+	public ArrayList<Conhecimento> getConhecimentosDoDesenvolvedor() 
 		throws DescricaoInvalidaException  {
 		
-		if (!servicoDesenvolvedor.desenvolvedorExiste(email)) throw new DescricaoInvalidaException();
+		if (!servicoDesenvolvedor.desenvolvedorExiste(desenvolvedor.getEmail())) throw new DescricaoInvalidaException();
 		
-		return servicoDesenvolvedor.getConhecimentosDoDesenvolvedor(email);
+		return servicoDesenvolvedor.getConhecimentosDoDesenvolvedor(desenvolvedor.getEmail());
 	}
 	
 	/**
@@ -167,10 +179,17 @@ public class ValidacaoDesenvolvedorImpl {
 	 * @return <Desenvolvedor> 
 	 * @throws DesenvolvedorInexistenteException 
 	 */
-	public Desenvolvedor getDesenvolvedor(String email) throws DesenvolvedorInexistenteException {
+	public Desenvolvedor getDesenvolvedor() throws DesenvolvedorInexistenteException {
 		
-		Desenvolvedor desenvolvedor = servicoDesenvolvedor.getDesenvolvedor(email);
+		Desenvolvedor desenvolvedor = servicoDesenvolvedor.getDesenvolvedor(this.desenvolvedor.getEmail());
 		if (desenvolvedor == null) throw new DesenvolvedorInexistenteException();
+		
+		this.desenvolvedor.setCVSNome( desenvolvedor.getCVSNome() ) ;
+		this.desenvolvedor.setEmail( desenvolvedor.getEmail() );
+		this.desenvolvedor.setListaConhecimento( desenvolvedor.getListaConhecimento() );
+		this.desenvolvedor.setListaEmail( desenvolvedor.getListaEmail() );
+		this.desenvolvedor.setNome( desenvolvedor.getNome() );
+		this.desenvolvedor.setSenha( desenvolvedor.getSenha() );
 		
 		return desenvolvedor;
 	}
@@ -181,10 +200,8 @@ public class ValidacaoDesenvolvedorImpl {
 	 * @param nomeConhecimento Nome do conhecimento a ser removido do desenvolvedor.
 	 * @return true se a associacao foi desfeita.
 	 */
-	public boolean removerConhecimentoDoDesenvolvedor(
-			String emailDesenvolvedor, String nomeConhecimento) {
-		
-		return servicoDesenvolvedor.removerConhecimentoDoDesenvolvedor(emailDesenvolvedor, nomeConhecimento);
+	public boolean removerConhecimentoDoDesenvolvedor( String nomeConhecimento) {
+		return servicoDesenvolvedor.removerConhecimentoDoDesenvolvedor(desenvolvedor.getEmail(), nomeConhecimento);
 	}
 	
 	/**
@@ -192,7 +209,8 @@ public class ValidacaoDesenvolvedorImpl {
 	 * @param email Email do desenvolvedor.
 	 * @return true se o desenvolvedor foi removido com sucesso.
 	 */
-	public boolean removerDesenvolvedor(String email) {
+	public boolean removerDesenvolvedor() {
+		String email = desenvolvedor.getEmail();
 		
 		// Remover Solucoes do Desenvolvedor
 		ArrayList<Solucao> solucoes = servicoSolucao.listarSolucoesDoDesenvolvedor(email);
@@ -229,13 +247,13 @@ public class ValidacaoDesenvolvedorImpl {
 	 * @param nomeConhecimento Nome do conhecimento associado ao desenvolvedor. 
 	 * @return quantidade de respostas.
 	 */
-	public int getQntResposta(String email, String nomeConhecimento) 
+	public int getQntResposta(String nomeConhecimento) 
 		throws ConhecimentoInexistenteException, DesenvolvedorInexistenteException {
 		
-		if (!servicoDesenvolvedor.desenvolvedorExiste(email)) throw new DesenvolvedorInexistenteException();
+		if (!servicoDesenvolvedor.desenvolvedorExiste( desenvolvedor.getEmail() )) throw new DesenvolvedorInexistenteException();
 		if (!servicoConhecimento.conhecimentoExiste(nomeConhecimento)) throw new ConhecimentoInexistenteException();
 		
-		return servicoDesenvolvedor.getQntResposta(email, nomeConhecimento);
+		return servicoDesenvolvedor.getQntResposta(desenvolvedor.getEmail(), nomeConhecimento);
 	}
 	
 	/**
@@ -244,13 +262,13 @@ public class ValidacaoDesenvolvedorImpl {
 	 * @param nomeConhecimento Nome do conhecimento associado ao desenvolvedor. 
 	 * @return grau de conhecimento.
 	 */
-	public int getGrau(String email, String nomeConhecimento) 
+	public int getGrau(String nomeConhecimento) 
 		throws ConhecimentoInexistenteException, DesenvolvedorInexistenteException {
 		
-		if (!servicoDesenvolvedor.desenvolvedorExiste(email)) throw new DesenvolvedorInexistenteException();
+		if (!servicoDesenvolvedor.desenvolvedorExiste(desenvolvedor.getEmail())) throw new DesenvolvedorInexistenteException();
 		if (!servicoConhecimento.conhecimentoExiste(nomeConhecimento)) throw new ConhecimentoInexistenteException();
 		
-		return servicoDesenvolvedor.getGrau(email, nomeConhecimento);
+		return servicoDesenvolvedor.getGrau(desenvolvedor.getEmail(), nomeConhecimento);
 	}
 	
 	/**
@@ -259,13 +277,13 @@ public class ValidacaoDesenvolvedorImpl {
 	 * @param nomeConhecimento Nome do conhecimento associado ao desenvolvedor. 
 	 * @return true se a atualização foi feita com sucesso.
 	 */
-	public boolean updateQntResposta(String email, String nomeConhecimento, int quantidade)
+	public boolean updateQntResposta(String nomeConhecimento, int quantidade)
 		throws DesenvolvedorInexistenteException, ConhecimentoInexistenteException{
 		
-		if (!servicoDesenvolvedor.desenvolvedorExiste(email)) throw new DesenvolvedorInexistenteException();
+		if (!servicoDesenvolvedor.desenvolvedorExiste(desenvolvedor.getEmail())) throw new DesenvolvedorInexistenteException();
 		if (!servicoConhecimento.conhecimentoExiste(nomeConhecimento)) throw new ConhecimentoInexistenteException();
 		
-		return servicoDesenvolvedor.updateQntResposta(email, nomeConhecimento, quantidade);
+		return servicoDesenvolvedor.updateQntResposta(desenvolvedor.getEmail(), nomeConhecimento, quantidade);
 		
 	}
 	
@@ -311,8 +329,9 @@ public class ValidacaoDesenvolvedorImpl {
 		return desenvolvedor;
 	}
 	
-	public Desenvolvedor getDesenvolvedorPorNome(String nome) throws DesenvolvedorInexistenteException {
-		return servicoDesenvolvedor.getDesenvolvedorPorNome(nome);
+	public Desenvolvedor getDesenvolvedorPorNome() throws DesenvolvedorInexistenteException {
+		desenvolvedor = servicoDesenvolvedor.getDesenvolvedorPorNome(desenvolvedor.getNome()) ;
+		return desenvolvedor;
 	}
 
 }

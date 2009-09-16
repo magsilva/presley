@@ -5,7 +5,7 @@ import org.apache.log4j.Logger;
 
 import com.hukarz.presley.communication.facade.PrincipalSUBJECT;
 import com.hukarz.presley.communication.server.ServerBridge;
-import com.hukarz.presley.server.usuario.ValidacaoLogControleVersaoImpl;
+import com.hukarz.presley.server.usuario.RegistroLogControleVersaoImpl;
 
 
 /**
@@ -19,7 +19,7 @@ public class StartPresleyServer {
 	
 	private Logger logger = Logger.getLogger(this.getClass());
 	
-	private ValidacaoLogControleVersaoImpl validacaoLogControleVersao = new ValidacaoLogControleVersaoImpl();
+	private RegistroLogControleVersaoImpl validacaoLogControleVersao = new RegistroLogControleVersaoImpl();
 	
 	public StartPresleyServer() {
 		

@@ -6,8 +6,6 @@ package com.hukarz.presley.server.core;
  * @since 2008
  */
 
-
-
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -36,7 +34,7 @@ import com.hukarz.presley.server.core.interfaces.CorePresleyOperations;
 import com.hukarz.presley.server.mensagem.ValidacaoMensagemImpl;
 import com.hukarz.presley.server.mensagem.ValidacaoProblemaImpl;
 import com.hukarz.presley.server.mensagem.ValidacaoSolucaoImpl;
-import com.hukarz.presley.server.usuario.ValidacaoDesenvolvedorImpl;
+import com.hukarz.presley.server.usuario.Usuario;
 import com.hukarz.presley.server.util.ValidacaoProjetoImpl;
 
 
@@ -53,15 +51,12 @@ public class ExecuteClientQuery implements CorePresleyOperations{
 	 */
 	ValidacaoConhecimento  validacaoConhecimento;
 	ValidacaoProblemaImpl 	   validacaoProblema; 
-	ValidacaoDesenvolvedorImpl validacaoDesenvolvedor; 
 	ValidacaoMensagemImpl 	   validacaoMensagem;
 	ValidacaoSolucaoImpl       validacaoSolucao;
 	ValidacaoProjetoImpl       validacaoProjeto;
 
 	public ExecuteClientQuery() {
-		validacaoConhecimento	= new ValidacaoConhecimento();
 		validacaoProblema		= new ValidacaoProblemaImpl();
-		validacaoDesenvolvedor	= new ValidacaoDesenvolvedorImpl();
 		validacaoMensagem		= new ValidacaoMensagemImpl();
 		validacaoSolucao		= new ValidacaoSolucaoImpl();
 		validacaoProjeto		= new ValidacaoProjetoImpl();
@@ -86,26 +81,23 @@ public class ExecuteClientQuery implements CorePresleyOperations{
 		this.adicionaConhecimento(pai,filho); 
 		return true;
 	}
+	
 	public boolean adicionaConhecimento(Conhecimento pai, Conhecimento filho) throws DescricaoInvalidaException, ConhecimentoInexistenteException, Exception {
-
-		validacaoConhecimento.criarConhecimento( filho.getNome(), filho.getDescricao() );
+		validacaoConhecimento	= new ValidacaoConhecimento(pai);
+		validacaoConhecimento.criarConhecimento( );
 		if (pai != null) {
 			try {
-				validacaoConhecimento.associaConhecimentos( pai.getNome(), filho.getNome());
+				validacaoConhecimento.associaConhecimentos( filho );
 			} catch (Exception e) {
-				validacaoConhecimento.removerConhecimento(filho.getNome());
+				validacaoConhecimento.removerConhecimento( );
 				throw e;
 			}
 		}
 		return true;
-
 	}
 
 
 	public ArrayList<Desenvolvedor> buscaDesenvolvedores(Problema problema) throws DesenvolvedorInexistenteException {
-//		ArrayList<Desenvolvedor> listaDesenvolvedores = Inferencia.getDesenvolvedores(validacaoProblema.getDesenvolvedoresArquivo(problema), 
-//				problema.getConhecimento(), problema.getDesenvolvedorOrigem());
-
 		return new ArrayList<Desenvolvedor>();
 	}
 
@@ -137,6 +129,7 @@ public class ExecuteClientQuery implements CorePresleyOperations{
 	}
 
 	public ArrayList<Desenvolvedor> getListaDesenvolvedores() {
+		Usuario validacaoDesenvolvedor = new Usuario( desenvolvedor );
 
 		return validacaoDesenvolvedor.getListaDesenvolvedores();
 	}
@@ -171,11 +164,8 @@ public class ExecuteClientQuery implements CorePresleyOperations{
 		return adicionaDesenvolvedor(desenvolvedor);
 	}
 	public boolean adicionaDesenvolvedor(Desenvolvedor desenvolvedor) throws Exception {
-		validacaoDesenvolvedor.criarDesenvolvedor(desenvolvedor.getEmail(), 
-				desenvolvedor.getNome(), 
-				desenvolvedor.getCVSNome(), 
-				desenvolvedor.getSenha(),
-				desenvolvedor.getListaConhecimento());
+		Usuario validacaoDesenvolvedor = new Usuario(desenvolvedor);
+		validacaoDesenvolvedor.criarDesenvolvedor();
 		return true;
 	}
 
@@ -196,7 +186,8 @@ public class ExecuteClientQuery implements CorePresleyOperations{
 		return removerConhecimento(conhecimento);
 	}
 	public boolean removerConhecimento(Conhecimento conhecimento) throws ConhecimentoInexistenteException {
-		return validacaoConhecimento.removerConhecimento(conhecimento.getNome());
+		validacaoConhecimento	= new ValidacaoConhecimento(conhecimento);
+		return validacaoConhecimento.removerConhecimento();
 	}
 
 	public Object possuiFilhos(PacketStruct packet) throws ConhecimentoInexistenteException {
@@ -204,7 +195,8 @@ public class ExecuteClientQuery implements CorePresleyOperations{
 		return this.possuiFilhos(conhecimento);
 	}
 	public boolean possuiFilhos(Conhecimento conhecimento) throws ConhecimentoInexistenteException {
-		return validacaoConhecimento.possuiFilhos(conhecimento);
+		validacaoConhecimento	= new ValidacaoConhecimento(conhecimento);
+		return validacaoConhecimento.possuiFilhos();
 	}
 
 	public boolean removerDesenvolvedor(PacketStruct packet) {
@@ -212,7 +204,8 @@ public class ExecuteClientQuery implements CorePresleyOperations{
 		return this.removerDesenvolvedor(desenvolvedor);
 	}
 	public boolean removerDesenvolvedor(Desenvolvedor desenvolvedor) {
-		return validacaoDesenvolvedor.removerDesenvolvedor(desenvolvedor.getEmail());
+		Usuario validacaoDesenvolvedor = new Usuario(desenvolvedor);
+		return validacaoDesenvolvedor.removerDesenvolvedor();
 	}
 	
 	public ArrayList<Mensagem> obterMensagens(PacketStruct packet) {
@@ -363,7 +356,8 @@ public class ExecuteClientQuery implements CorePresleyOperations{
 	}
 	
 	public Conhecimento associaArquivo(Conhecimento conhecimento) throws ConhecimentoInexistenteException, IOException {
-		return validacaoConhecimento.associaArquivo(conhecimento);
+		validacaoConhecimento	= new ValidacaoConhecimento(conhecimento);
+		return validacaoConhecimento.associaArquivo();
 	}
 
 	public Projeto getProjetoAtivo()  {
@@ -408,7 +402,11 @@ public class ExecuteClientQuery implements CorePresleyOperations{
 	@Override
 	public Desenvolvedor getDesenvolvedorPorNome(String nome)
 			throws DesenvolvedorInexistenteException {
-		return validacaoDesenvolvedor.getDesenvolvedorPorNome(nome);
+		Desenvolvedor desenvolvedor = new Desenvolvedor();
+		desenvolvedor.setNome(nome);
+		Usuario validacaoDesenvolvedor = new Usuario( desenvolvedor );
+		
+		return validacaoDesenvolvedor.getDesenvolvedorPorNome();
 	}
 	
 }

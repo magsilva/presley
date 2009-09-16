@@ -32,20 +32,24 @@ import com.ximpleware.VTDNav;
 import com.ximpleware.XPathEvalException;
 import com.ximpleware.XPathParseException;
 
-public class ValidacaoLogControleVersaoImpl {
-	private ServicoLogControleVersao servicoLogControleVersao = new ServicoLogControleVersaoImplDAO();
-	private ServicoProjeto servicoProjeto = new ServicoProjetoImplDAO();
-	private ServicoDesenvolvedor servicoDesenvolvedor = new ServicoDesenvolvedorImplDAO();
-	private ServicoArquivo servicoArquivo = new ServicoArquivoImplDAO(); 
+public class RegistroLogControleVersaoImpl {
+	private ServicoLogControleVersao servicoLogControleVersao ;
+	private ServicoProjeto servicoProjeto ;
+	private ServicoDesenvolvedor servicoDesenvolvedor ;
+	private ServicoArquivo servicoArquivo ; 
 
 	private Logger logger = Logger.getLogger(this.getClass());
 	
 	private Projeto projeto;
 	
-	public ValidacaoLogControleVersaoImpl() {
+	public RegistroLogControleVersaoImpl() {
 		projeto = servicoProjeto.getProjetoAtivo();
-	}
 
+		servicoLogControleVersao = new ServicoLogControleVersaoImplDAO();
+		servicoProjeto = new ServicoProjetoImplDAO();
+		servicoDesenvolvedor = new ServicoDesenvolvedorImplDAO();
+		servicoArquivo = new ServicoArquivoImplDAO(); 
+	}
 
 	public void registrarLogDoArquivo() {
 		Date dataUltimoRegistro = servicoLogControleVersao.getDataHoraUltimoRegistro();
@@ -116,7 +120,6 @@ public class ValidacaoLogControleVersaoImpl {
 		} catch (java.text.ParseException e) {
 			e.printStackTrace();
 		}
-
 	}
 
 	
