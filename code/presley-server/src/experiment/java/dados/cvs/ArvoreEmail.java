@@ -42,8 +42,9 @@ import com.hukarz.presley.excessao.DescricaoInvalidaException;
 import com.hukarz.presley.excessao.DesenvolvedorInexistenteException;
 import com.hukarz.presley.excessao.ProblemaInexistenteException;
 import com.hukarz.presley.excessao.ProjetoInexistenteException;
-import com.hukarz.presley.server.mensagem.ValidacaoProblemaImpl;
-import com.hukarz.presley.server.mensagem.ValidacaoSolucaoImpl;
+import com.hukarz.presley.excessao.SolucaoIniexistenteException;
+import com.hukarz.presley.server.mensagem.MensagemProblema;
+import com.hukarz.presley.server.mensagem.MensagemSolucao;
 import com.hukarz.presley.server.persistencia.MySQLConnectionFactory;
 
 
@@ -54,7 +55,7 @@ public class ArvoreEmail extends JFrame implements ActionListener {
 	private JPanel      painelCima;  
 	private JPanel      painelBaixo;  
 	private JTree       ArvoreEmail;
-	private ValidacaoSolucaoImpl  validacaoSolucao = new ValidacaoSolucaoImpl();
+	private MensagemSolucao  validacaoSolucao = new MensagemSolucao();
 
 	public ArvoreEmail() {  	        
 		super("Browser");  
@@ -230,7 +231,7 @@ public class ArvoreEmail extends JFrame implements ActionListener {
 	public void cadastrarProblemas(ArrayList<Email> emails) {
 		Projeto projeto = new Projeto();
 		projeto.setNome("math");
-		ValidacaoProblemaImpl validacaoProblema = new ValidacaoProblemaImpl();
+		MensagemProblema validacaoProblema = new MensagemProblema();
 		
 		for (Email email : emails) {
 			if (email.getFrom().isEmpty())
@@ -251,7 +252,8 @@ public class ArvoreEmail extends JFrame implements ActionListener {
 			problema.setTemResposta(false);
 			
 			try {
-				problema = validacaoProblema.cadastrarProblema(problema);
+				validacaoProblema.setProblema(problema);
+				problema = validacaoProblema.cadastrarProblema();
 			} catch (DescricaoInvalidaException e) {
 				e.printStackTrace();
 			} catch (IOException e) {
@@ -259,6 +261,8 @@ public class ArvoreEmail extends JFrame implements ActionListener {
 			} catch (ProjetoInexistenteException e) {
 				e.printStackTrace();
 			} catch (ConhecimentoNaoEncontradoException e) {
+				e.printStackTrace();
+			} catch (ProblemaInexistenteException e) {
 				e.printStackTrace();
 			}
 			
@@ -285,15 +289,18 @@ public class ArvoreEmail extends JFrame implements ActionListener {
 			solucao.setDesenvolvedor(desenvolvedor);
 
 			try {
+				validacaoSolucao.setSolucao(solucao);
 				if (email.getEmailsFilho().size()==0){
-					validacaoSolucao.cadastrarSolucao(solucao);
+					validacaoSolucao.cadastrarSolucao();
 				} else {
 					cadastrarSolucoes(email.getEmailsFilho(), problema);
-					validacaoSolucao.cadastrarSolucao(solucao);
+					validacaoSolucao.cadastrarSolucao();
 				}
 			} catch (ProblemaInexistenteException e) {
 				e.printStackTrace();
 			} catch (DesenvolvedorInexistenteException e) {
+				e.printStackTrace();
+			} catch (SolucaoIniexistenteException e) {
 				e.printStackTrace();
 			}
 			

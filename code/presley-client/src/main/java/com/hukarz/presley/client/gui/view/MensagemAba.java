@@ -753,10 +753,6 @@ public class MensagemAba extends ViewPart {
 		this.RunEnviaRetornoSolucao.run(null);
 	}
 
-	public Mensagem getMensagem() {
-		return (Mensagem) treeProblemasRecebidos.getSelection()[0].getData();
-	}
-
 	@Override
 	public void setFocus() {
 		// TODO Auto-generated method stub

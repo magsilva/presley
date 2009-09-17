@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.Map;
 
 import com.hukarz.presley.beans.Arquivo;
-import com.hukarz.presley.beans.Conhecimento;
 import com.hukarz.presley.beans.Desenvolvedor;
+import com.hukarz.presley.beans.TopicoConhecimento;
 import com.hukarz.presley.excessao.ConhecimentoInexistenteException;
 
 
@@ -57,7 +57,7 @@ public interface ServicoConhecimento {
 	 * @param nome Nome do conhecimento a ser retornado.
 	 * @return <TopicoConhecimento>
 	 */
-	public Conhecimento getConhecimento(String nome);
+	public TopicoConhecimento getConhecimento(String nome);
 	
 	/**
 	 * Esse metodo cria uma associacao de herança entre dois conhecimentos
@@ -83,7 +83,7 @@ public interface ServicoConhecimento {
 	 * @return ArrayList<TopicoConhecimento> Lista dos conhecimentos filhos.
 	 * @throws ConhecimentoInexistenteException
 	 */
-	public ArrayList<Conhecimento> getFilhos(String nomeConhecimentoPai) throws ConhecimentoInexistenteException;
+	public ArrayList<TopicoConhecimento> getFilhos(String nomeConhecimentoPai) throws ConhecimentoInexistenteException;
 	
 	/**
 	 * Metodo que retorna os conhecimentos pais de um conhecimento.
@@ -91,9 +91,9 @@ public interface ServicoConhecimento {
 	 * @return ArrayList<TopicoConhecimento> Lista dos conhecimentos filhos.
 	 * @throws ConhecimentoInexistenteException
 	 */
-	public ArrayList<Conhecimento> getPais(String nomeConhecimentoFilho) throws ConhecimentoInexistenteException;
+	public ArrayList<TopicoConhecimento> getPais(String nomeConhecimentoFilho) throws ConhecimentoInexistenteException;
 
-	public ArrayList<Conhecimento> getListaConhecimento();
+	public ArrayList<TopicoConhecimento> getListaConhecimento();
 
 	/**
 	 * Esse metodo cria uma associacao do conhecimento com seus arquivos relacionados
@@ -101,7 +101,7 @@ public interface ServicoConhecimento {
 	 * @param arquivos lista de arquivos relacionados 
 	 * @return
 	 */
-	public boolean associaArquivo(Conhecimento conhecimento, Arquivo arquivo);
+	public boolean associaArquivo(TopicoConhecimento conhecimento, Arquivo arquivo);
 	
 	/**
 	 * Esse metodo retorna os desenvolvedores que tiveram problemas relacionados ao
@@ -109,13 +109,13 @@ public interface ServicoConhecimento {
 	 * @param conhecimento
 	 * @return
 	 */
-	public Map<Desenvolvedor, Integer> getContribuintesConhecimento(Conhecimento conhecimento, Desenvolvedor desenvolvedor); 
+	public Map<Desenvolvedor, Integer> getContribuintesConhecimento(TopicoConhecimento conhecimento, Desenvolvedor desenvolvedor); 
 	
 	/**
 	 * Esse metodo retorna o conhecimento associado ao arquivo passado como parametro
 	 * @param arquivo
 	 * @return
 	 */
-	public Conhecimento getConhecimentoAssociado(Arquivo arquivo);
+	public TopicoConhecimento getConhecimentoAssociado(Arquivo arquivo);
 }
 

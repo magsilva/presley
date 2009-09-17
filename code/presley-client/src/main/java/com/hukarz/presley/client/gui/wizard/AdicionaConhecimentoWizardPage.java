@@ -25,7 +25,7 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 
-import com.hukarz.presley.beans.Conhecimento;
+import com.hukarz.presley.beans.TopicoConhecimento;
 import com.hukarz.presley.client.gui.view.Dominio;
 
 
@@ -39,7 +39,7 @@ public class AdicionaConhecimentoWizardPage extends WizardPage {
 	private Tree arvoreConhecimento;
 	private ArrayList<TreeItem> conhecimentosSelecionados;
 	private ArrayList<String> nomesNosAdicionado;
-	private Map<Conhecimento, Conhecimento> conhecimentoFilhoPai;
+	private Map<TopicoConhecimento, TopicoConhecimento> conhecimentoFilhoPai;
 
     public AdicionaConhecimentoWizardPage(ISelection selection, Dominio dominio) {
         super("wizardPage");
@@ -49,7 +49,7 @@ public class AdicionaConhecimentoWizardPage extends WizardPage {
         conhecimentosSelecionados = new ArrayList<TreeItem>();
         nomesNosAdicionado = new ArrayList<String>();
         
-        conhecimentoFilhoPai = new HashMap<Conhecimento, Conhecimento>();
+        conhecimentoFilhoPai = new HashMap<TopicoConhecimento, TopicoConhecimento>();
     }
 
     private void updateStatus(String message) {
@@ -69,7 +69,7 @@ public class AdicionaConhecimentoWizardPage extends WizardPage {
     	return nomesNosAdicionado;
     }
     
-    public Map<Conhecimento, Conhecimento> conhecimentoFilhoPai(){
+    public Map<TopicoConhecimento, TopicoConhecimento> conhecimentoFilhoPai(){
     	return conhecimentoFilhoPai;
     }
 
@@ -120,17 +120,17 @@ public class AdicionaConhecimentoWizardPage extends WizardPage {
 			public void mouseDown(MouseEvent e) {
 				// TODO Auto-generated method stub
 				//Adiciona novo nó na arvore gráfica
-				Conhecimento conhecimentoPai=null, conhecimentoFilho=null;
+				TopicoConhecimento conhecimentoPai=null, conhecimentoFilho=null;
 				TreeItem[] treeItem = arvoreConhecimento.getSelection();
 				treeItem[0].setChecked(true);
 				if (treeItem[0]!=null) {
-					conhecimentoPai = new Conhecimento();
+					conhecimentoPai = new TopicoConhecimento();
 					conhecimentoPai.setNome( treeItem[0].getText() ) ;
 				}
 				
 				if (treeItem!=null && treeItem[0]!=null) {
 					TreeItem novoItem = new TreeItem(treeItem[0],treeItem[0].getStyle());
-					conhecimentoFilho = new Conhecimento();
+					conhecimentoFilho = new TopicoConhecimento();
 					conhecimentoFilho.setNome( nomeConhecimentoText.getText() );
 					if (null != conhecimentoFilho.getNome() 
 							&& !conhecimentoFilho.getNome().equals("")) {

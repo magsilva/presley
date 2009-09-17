@@ -14,24 +14,34 @@ import com.hukarz.presley.beans.ClasseJava;
 import com.hukarz.presley.beans.Desenvolvedor;
 import com.hukarz.presley.beans.Problema;
 import com.hukarz.presley.excessao.ArquivoInexistenteException;
-import com.hukarz.presley.excessao.NomeInvalidoException;
+import com.hukarz.presley.excessao.ProblemaInexistenteException;
 import com.hukarz.presley.server.persistencia.implementacao.ServicoArquivoImplDAO;
 import com.hukarz.presley.server.persistencia.implementacao.ServicoDesenvolvedorImplDAO;
 import com.hukarz.presley.server.persistencia.implementacao.ServicoLogControleVersaoImplDAO;
-import com.hukarz.presley.server.persistencia.implementacao.ServicoLogControleVersaoLine10ImplDAO;
 import com.hukarz.presley.server.persistencia.interfaces.ServicoArquivo;
 import com.hukarz.presley.server.persistencia.interfaces.ServicoDesenvolvedor;
 import com.hukarz.presley.server.persistencia.interfaces.ServicoLogControleVersao;
 
 
-public class ValidacaoArquivoImpl {
+public class MensagemArquivo {
 	ServicoArquivo servicoArquivo;
 	ServicoDesenvolvedor servicoDesenvolvedor;
+	Arquivo arquivo;
+	Problema problema;
+	
 	private Logger logger = Logger.getLogger(this.getClass());
 
-	public ValidacaoArquivoImpl() {
+	public MensagemArquivo() {
 		servicoArquivo = new ServicoArquivoImplDAO();
 		servicoDesenvolvedor = new ServicoDesenvolvedorImplDAO();
+	}
+
+	public void setProblema(Problema problema) {
+		this.problema = problema;
+	}
+
+	public void setArquivo(Arquivo arquivo) {
+		this.arquivo = arquivo;
 	}
 
 	/**
@@ -41,19 +51,21 @@ public class ValidacaoArquivoImpl {
 	 * @return true se o Arquivo foi atualizado.
 	 * @throws ArquivoInexistenteException
 	 */
-	public boolean atualizarArquivo(Arquivo arquivoAnterior, Arquivo arquivoNovo) throws ArquivoInexistenteException {
-		if (!servicoArquivo.arquivoExiste(arquivoAnterior)) throw new ArquivoInexistenteException();
+	public boolean atualizarArquivo(Arquivo arquivoNovo) throws ArquivoInexistenteException {
+		if (arquivo == null) throw new ArquivoInexistenteException();
+		if (!servicoArquivo.arquivoExiste(arquivo)) throw new ArquivoInexistenteException();
 		
-		return servicoArquivo.atualizarArquivo(arquivoAnterior, arquivoNovo);
+		return servicoArquivo.atualizarArquivo(arquivo, arquivoNovo);
 	}
 	
 	/**
 	 * Este mtodo verifica se um Arquivo existe na base de dados.
 	 * @parame nome Nome do conhecimento para verificacao.
 	 * @return true se o conhecimento existe.
+	 * @throws ArquivoInexistenteException 
 	 */
-	public boolean arquivoExiste(Arquivo arquivo) {
-		
+	public boolean arquivoExiste() throws ArquivoInexistenteException {
+		if (arquivo == null) throw new ArquivoInexistenteException();
 		return servicoArquivo.arquivoExiste(arquivo);
 	}
 	
@@ -63,10 +75,10 @@ public class ValidacaoArquivoImpl {
 	 * @return true se o Arquivo foi inserido na base de dados.
 	 * @throws ArquivoInexistenteException
 	 */
-	public boolean criarArquivo(Arquivo arquivo) throws ArquivoInexistenteException {
-		
+	public boolean criarArquivo() throws ArquivoInexistenteException {
 		// if (!ValidacaoUtil.validaNome(nome)) throw new NomeInvalidoException();
 		
+		if (arquivo == null) throw new ArquivoInexistenteException();
 		if (servicoArquivo.arquivoExiste(arquivo)) throw new ArquivoInexistenteException();
 		
 		return servicoArquivo.criarArquivo(arquivo);
@@ -78,11 +90,12 @@ public class ValidacaoArquivoImpl {
 	 * @return
 	 * @throws ArquivoInexistenteException
 	 */
-	public Arquivo getArquivo(Arquivo arquivo) throws ArquivoInexistenteException {
-		Arquivo arquivoRetorno = servicoArquivo.getArquivo(arquivo);
-		if (arquivoRetorno == null) throw new ArquivoInexistenteException();
+	public Arquivo getArquivo() throws ArquivoInexistenteException {
+		if (arquivo == null) throw new ArquivoInexistenteException();
+		arquivo = servicoArquivo.getArquivo(arquivo);
+		if (arquivo == null) throw new ArquivoInexistenteException();
 		
-		return arquivoRetorno;
+		return arquivo;
 	}
 	
 	/**
@@ -90,7 +103,8 @@ public class ValidacaoArquivoImpl {
 	 * @param arquivo Arquivo a ser removido.
 	 * @return true se o Arquivo foi removido com sucesso
 	 */
-	public boolean removerArquivo(Arquivo arquivo) throws ArquivoInexistenteException {
+	public boolean removerArquivo() throws ArquivoInexistenteException {
+		if (arquivo == null) throw new ArquivoInexistenteException();
 		if (!servicoArquivo.arquivoExiste(arquivo)) throw new ArquivoInexistenteException();
 				
 		return servicoArquivo.removerArquivo(arquivo);
@@ -100,13 +114,15 @@ public class ValidacaoArquivoImpl {
 	 * Cria uma lista com os Desenvolvedores de cada arquivo java	
 	 * @param problema
 	 * @return
+	 * @throws ProblemaInexistenteException 
 	 */	
-	public Map<ArquivoJava, ArrayList<Desenvolvedor>> getDesenvolvedoresArquivos(Problema problema){
+	public Map<ArquivoJava, ArrayList<Desenvolvedor>> getDesenvolvedoresArquivos() throws ProblemaInexistenteException{
 		// Cria uma lista com os Desenvolvedores de cada arquivo java		 
+		if (problema == null) throw new ProblemaInexistenteException();
 		Map<ArquivoJava, ArrayList<Desenvolvedor>> arquivoDesenvolvedores = new HashMap<ArquivoJava, ArrayList<Desenvolvedor>>();
 		ServicoLogControleVersao servicoLogControleVersao = new ServicoLogControleVersaoImplDAO();
 		
-		cadastrarArquivosProblema(problema);
+		cadastrarArquivosProblema();
 
 		Collection<ArquivoJava> listaArquivo = problema.getClassesRelacionadas().values();
 
@@ -119,8 +135,9 @@ public class ValidacaoArquivoImpl {
 		return arquivoDesenvolvedores;
 	}
 	
-	private void cadastrarArquivosProblema(Problema problema) {
+	private void cadastrarArquivosProblema() throws ProblemaInexistenteException {
 		// Cadastra as classes envolvidas no problema
+		if (problema == null) throw new ProblemaInexistenteException();
 		Map<ClasseJava, ArquivoJava> arquivos = problema.getClassesRelacionadas();
 		for (Iterator<ClasseJava> it = arquivos.keySet().iterator(); it.hasNext();) {  
 			ClasseJava classe = it.next();  

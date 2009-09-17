@@ -3,8 +3,8 @@ package com.hukarz.presley.server.persistencia.interfaces;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import com.hukarz.presley.beans.Conhecimento;
 import com.hukarz.presley.beans.Desenvolvedor;
+import com.hukarz.presley.beans.TopicoConhecimento;
 import com.hukarz.presley.excessao.DesenvolvedorInexistenteException;
 
 
@@ -100,14 +100,14 @@ public interface ServicoDesenvolvedor {
 	 * @param email Email do desenvolvedor
 	 * @return ArrayList<Conhecimento>
 	 */
-	public ArrayList<Conhecimento> getConhecimentosDoDesenvolvedor(String email);
+	public ArrayList<TopicoConhecimento> getConhecimentosDoDesenvolvedor(String email);
 	
 	/**
 	 * Esse método retorna uma lista de conhecimentos que o desenvolvedor possui
 	 * @param email Email do desenvolvedor
 	 * @return ArrayList<Conhecimento>
 	 */
-	public HashMap<Conhecimento, Double> getConhecimentosDoDesenvolvedor(String email, int x);
+	public HashMap<TopicoConhecimento, Double> getConhecimentosDoDesenvolvedor(String email, int x);
 	
 	/**
 	 * Esse método verifica se existe relacao entre um conhecimento e um desenvolvedor/
@@ -169,7 +169,7 @@ public interface ServicoDesenvolvedor {
 	 * @param conhecimento
 	 * @return
 	 */
-	public ArrayList<Desenvolvedor> getDesenvolvedoresPorConhecimento(Conhecimento conhecimento);
+	public ArrayList<Desenvolvedor> getDesenvolvedoresPorConhecimento(TopicoConhecimento conhecimento);
 	
 	/**
 	 * Este método retorna o desenvolvedor que possui o nome

@@ -41,7 +41,7 @@ import ca.mcgill.cs.swevo.jayfx.ConversionException;
 import ca.mcgill.cs.swevo.jayfx.JayFXException;
 
 import com.hukarz.presley.beans.Arquivo;
-import com.hukarz.presley.beans.Conhecimento;
+import com.hukarz.presley.beans.TopicoConhecimento;
 import com.hukarz.presley.beans.Desenvolvedor;
 import com.hukarz.presley.beans.Problema;
 import com.hukarz.presley.beans.Projeto;
@@ -259,7 +259,7 @@ public class Dominio extends ViewPart {
 
 			public void mouseDown(MouseEvent arg0) {
 				
-				if ((treeConhecimentos.getSelection()[0].getData() instanceof Conhecimento) &&
+				if ((treeConhecimentos.getSelection()[0].getData() instanceof TopicoConhecimento) &&
 					(treeConhecimentos.indexOf(treeConhecimentos.getSelection()[0]) != 0) ){
 
 					Projeto projeto = viewComunication.getProjetoAtivo();
@@ -297,7 +297,7 @@ public class Dominio extends ViewPart {
 						arquivo.setEnderecoServidor( projeto.getEndereco_Servidor_Gravacao()+ arquivoSelecionado.getName() ) ;
 						
 						try {
-							Conhecimento conhecimento = (Conhecimento) treeConhecimentos.getSelection()[0].getData();
+							TopicoConhecimento conhecimento = (TopicoConhecimento) treeConhecimentos.getSelection()[0].getData();
 							viewComunication.associaArquivo(conhecimento, arquivo);
 							preencherListaDocumentosBase();
 						} catch (Exception e) {
@@ -324,8 +324,8 @@ public class Dominio extends ViewPart {
 
 	private void preencherListaDocumentosBase() {
 		listaDocumentosBase.removeAll();
-		if (treeConhecimentos.getSelection()[0].getData() instanceof Conhecimento){
-			Conhecimento conhecimentoSelecionado = (Conhecimento) treeConhecimentos.getSelection()[0].getData();
+		if (treeConhecimentos.getSelection()[0].getData() instanceof TopicoConhecimento){
+			TopicoConhecimento conhecimentoSelecionado = (TopicoConhecimento) treeConhecimentos.getSelection()[0].getData();
 			ArrayList<Arquivo> arquivosDoConhecimento = conhecimentoSelecionado.getArquivos();
 			for (Iterator<Arquivo> iterator = arquivosDoConhecimento.iterator(); iterator.hasNext();) {
 				Arquivo arquivo = iterator.next();

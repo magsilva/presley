@@ -11,7 +11,7 @@ import java.util.ArrayList;
 public class Item implements Serializable{
 
 	private static final long serialVersionUID = 20L;
-	private Conhecimento conhecimento;
+	private TopicoConhecimento conhecimento;
 	private ArrayList<Item> filhos;
 	private Item pai;
 	
@@ -20,7 +20,7 @@ public class Item implements Serializable{
 	 * @param nome é o nome deste nó
 	 */
 	
-	public Item(Item pai, Conhecimento conhecimento){
+	public Item(Item pai, TopicoConhecimento conhecimento){
 		this.conhecimento=conhecimento;
 		this.pai=pai;
 		filhos = new ArrayList<Item>();
@@ -30,7 +30,7 @@ public class Item implements Serializable{
 	 * Retorna o nome deste nó
 	 * @return é o nome deste nó
 	 */
-	public Conhecimento getConhecimento(){
+	public TopicoConhecimento getConhecimento(){
 		return conhecimento;
 	}
 	
@@ -57,7 +57,7 @@ public class Item implements Serializable{
 	 * @param nome é o nome do nó
 	 * @return o filho que tem o nome do parametro ou null se não existir
 	 */
-	public Item getFilho(Conhecimento conhecimento){
+	public Item getFilho(TopicoConhecimento conhecimento){
 		Item filho = null;
 		for (Item item : filhos) {
 			if (item.getConhecimento().getNome().equals(conhecimento.getNome())  ) {
@@ -84,7 +84,7 @@ public class Item implements Serializable{
 	 * @param nome é o nome deste nó da árvore
 	 * @return true se foi adicionado com sucesso e false caso contrário
 	 */
-	public boolean adicionaFilho(Conhecimento conhecimento){
+	public boolean adicionaFilho(TopicoConhecimento conhecimento){
 		try{
 			if (temFilhos()) {
 				for (Item item : filhos) {
@@ -106,7 +106,7 @@ public class Item implements Serializable{
 	 * @param nome é o nome do nó da árvore
 	 * @return true se foi removido com sucesso e false caso contrário
 	 */
-	public boolean removeFilho(Conhecimento conhecimento){
+	public boolean removeFilho(TopicoConhecimento conhecimento){
 		int index = 0;
 		for (Item item : filhos) {
 			

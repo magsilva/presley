@@ -7,7 +7,7 @@ import java.util.Iterator;
 import java.util.Map;
 
 import com.hukarz.presley.beans.ArquivoJava;
-import com.hukarz.presley.beans.Conhecimento;
+import com.hukarz.presley.beans.TopicoConhecimento;
 import com.hukarz.presley.beans.Desenvolvedor;
 import com.hukarz.presley.beans.Problema;
 import com.hukarz.presley.server.inferencia.RegistroExperimento;
@@ -80,7 +80,7 @@ public class Recomendador {
 	(Analisar a participação de cada Desenvolvedor nas resolucao de problemas
 	referentes ao conhecimento passado)
 	 */
-	protected Map<Desenvolvedor, Integer> getParticipacaoDesenvolvedores(Conhecimento conhecimento, Desenvolvedor desenvolvedor){
+	protected Map<Desenvolvedor, Integer> getParticipacaoDesenvolvedores(TopicoConhecimento conhecimento, Desenvolvedor desenvolvedor){
 		ServicoConhecimento servicoConhecimento = new ServicoConhecimentoImplDAO();
 		ServicoMensagem servicoMensagem = new ServicoMensagemImplDAO();
 		

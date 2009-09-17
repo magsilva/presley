@@ -21,7 +21,7 @@ public class Desenvolvedor implements Serializable {
 	private String email;
 	private String nome;
 	private String cvsNome;
-	private HashMap<Conhecimento,Double> listaConhecimento;
+	private HashMap<TopicoConhecimento,Double> listaConhecimento;
 	private String senha;
 	private String listaEmail;
 	
@@ -43,10 +43,10 @@ public class Desenvolvedor implements Serializable {
 	public void setCVSNome(String cvsNome) {
 		this.cvsNome = cvsNome;
 	}
-	public HashMap<Conhecimento,Double> getListaConhecimento() {
+	public HashMap<TopicoConhecimento,Double> getListaConhecimento() {
 		return listaConhecimento;
 	}
-	public void setListaConhecimento(HashMap<Conhecimento,Double> listaConhecimentosDesenvolvedor) {
+	public void setListaConhecimento(HashMap<TopicoConhecimento,Double> listaConhecimentosDesenvolvedor) {
 		this.listaConhecimento = listaConhecimentosDesenvolvedor;
 	}
 	public void setSenha(String senha) {

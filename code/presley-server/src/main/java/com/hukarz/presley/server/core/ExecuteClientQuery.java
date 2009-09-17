@@ -9,7 +9,7 @@ package com.hukarz.presley.server.core;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import com.hukarz.presley.beans.Conhecimento;
+import com.hukarz.presley.beans.TopicoConhecimento;
 import com.hukarz.presley.beans.DadosAutenticacao;
 import com.hukarz.presley.beans.Desenvolvedor;
 import com.hukarz.presley.beans.Mensagem;
@@ -29,13 +29,13 @@ import com.hukarz.presley.excessao.ProblemaInexistenteException;
 import com.hukarz.presley.excessao.ProjetoInexistenteException;
 import com.hukarz.presley.excessao.SenhaInvalidaException;
 import com.hukarz.presley.excessao.SolucaoIniexistenteException;
-import com.hukarz.presley.server.conhecimento.ValidacaoConhecimento;
+import com.hukarz.presley.server.conhecimento.Conhecimento;
 import com.hukarz.presley.server.core.interfaces.CorePresleyOperations;
 import com.hukarz.presley.server.mensagem.ValidacaoMensagemImpl;
-import com.hukarz.presley.server.mensagem.ValidacaoProblemaImpl;
-import com.hukarz.presley.server.mensagem.ValidacaoSolucaoImpl;
+import com.hukarz.presley.server.mensagem.MensagemProblema;
+import com.hukarz.presley.server.mensagem.MensagemSolucao;
 import com.hukarz.presley.server.usuario.Usuario;
-import com.hukarz.presley.server.util.ValidacaoProjetoImpl;
+import com.hukarz.presley.server.util.CadastroProjeto;
 
 
 /**
@@ -49,17 +49,20 @@ public class ExecuteClientQuery implements CorePresleyOperations{
 	 * Variaveis instanciadas uma única vez para ter acesso aos servicos de 
 	 * persistência oferecidos pelas classes de validação
 	 */
-	ValidacaoConhecimento  validacaoConhecimento;
-	ValidacaoProblemaImpl 	   validacaoProblema; 
-	ValidacaoMensagemImpl 	   validacaoMensagem;
-	ValidacaoSolucaoImpl       validacaoSolucao;
-	ValidacaoProjetoImpl       validacaoProjeto;
+	Conhecimento		validacaoConhecimento;
+	MensagemProblema	validacaoProblema; 
+	ValidacaoMensagemImpl	validacaoMensagem;
+	MensagemSolucao		validacaoSolucao;
+	CadastroProjeto		validacaoProjeto ;
+	Usuario				validacaoDesenvolvedor ;
 
 	public ExecuteClientQuery() {
-		validacaoProblema		= new ValidacaoProblemaImpl();
+		validacaoProblema		= new MensagemProblema();
 		validacaoMensagem		= new ValidacaoMensagemImpl();
-		validacaoSolucao		= new ValidacaoSolucaoImpl();
-		validacaoProjeto		= new ValidacaoProjetoImpl();
+		validacaoSolucao		= new MensagemSolucao();
+		validacaoConhecimento	= new Conhecimento();
+		validacaoProjeto		= new CadastroProjeto();
+		validacaoDesenvolvedor	= new Usuario();
 	}
 
 	/**
@@ -71,19 +74,19 @@ public class ExecuteClientQuery implements CorePresleyOperations{
 	 * @throws DescricaoInvalidaException 
 	 */
 	public boolean adicionaConhecimento(PacketStruct packet) throws DescricaoInvalidaException, ConhecimentoInexistenteException, Exception {
-		ArrayList<Conhecimento> conhecimento = (ArrayList<Conhecimento>) packet.getData();
+		ArrayList<TopicoConhecimento> conhecimento = (ArrayList<TopicoConhecimento>) packet.getData();
 		if (conhecimento==null) {
 			this.adicionaConhecimento(null, null);
 		}
-		Conhecimento pai = conhecimento.get(1);
-		Conhecimento filho = conhecimento.get(0);
+		TopicoConhecimento pai = conhecimento.get(1);
+		TopicoConhecimento filho = conhecimento.get(0);
 
 		this.adicionaConhecimento(pai,filho); 
 		return true;
 	}
 	
-	public boolean adicionaConhecimento(Conhecimento pai, Conhecimento filho) throws DescricaoInvalidaException, ConhecimentoInexistenteException, Exception {
-		validacaoConhecimento	= new ValidacaoConhecimento(pai);
+	public boolean adicionaConhecimento(TopicoConhecimento pai, TopicoConhecimento filho) throws DescricaoInvalidaException, ConhecimentoInexistenteException, Exception {
+		validacaoConhecimento.setConhecimento(pai);
 		validacaoConhecimento.criarConhecimento( );
 		if (pai != null) {
 			try {
@@ -111,7 +114,8 @@ public class ExecuteClientQuery implements CorePresleyOperations{
 	}
 
 	public boolean removerProblema(Problema problema) throws ProblemaInexistenteException {
-		return validacaoProblema.removerProblema(problema);
+		validacaoProblema.setProblema(problema);
+		return validacaoProblema.removerProblema();
 	}
 
 	public boolean enviarMensagem(PacketStruct packet) throws DesenvolvedorInexistenteException {
@@ -157,8 +161,8 @@ public class ExecuteClientQuery implements CorePresleyOperations{
 		return true;
 	}
 
-	public ArrayList<Conhecimento> getListaConhecimentos() {
-		ArrayList<Conhecimento> retorno = null;
+	public ArrayList<TopicoConhecimento> getListaConhecimentos() {
+		ArrayList<TopicoConhecimento> retorno = null;
 		retorno = validacaoConhecimento.getListaConhecimento();
 		return retorno;
 	}
@@ -168,7 +172,7 @@ public class ExecuteClientQuery implements CorePresleyOperations{
 		return adicionaDesenvolvedor(desenvolvedor);
 	}
 	public boolean adicionaDesenvolvedor(Desenvolvedor desenvolvedor) throws Exception {
-		Usuario validacaoDesenvolvedor = new Usuario(desenvolvedor);
+		validacaoDesenvolvedor.setDesenvolvedor(desenvolvedor);
 		validacaoDesenvolvedor.criarDesenvolvedor();
 		return true;
 	}
@@ -179,27 +183,27 @@ public class ExecuteClientQuery implements CorePresleyOperations{
 
 	public ArrayList<Problema> getListaProblemas(PacketStruct packet) {
 		Desenvolvedor desenvolvedor = (Desenvolvedor) packet.getData();
-		
-		ArrayList<Problema> listaProblemas = validacaoProblema.getListaProblema(desenvolvedor);
+		validacaoProblema.setDesenvolvedor(desenvolvedor);
+		ArrayList<Problema> listaProblemas = validacaoProblema.getListaProblema();
 		return listaProblemas;
 	}
 
 
 	public Object removerConhecimento(PacketStruct packet) throws ConhecimentoInexistenteException {
-		Conhecimento conhecimento = (Conhecimento) packet.getData();
+		TopicoConhecimento conhecimento = (TopicoConhecimento) packet.getData();
 		return removerConhecimento(conhecimento);
 	}
-	public boolean removerConhecimento(Conhecimento conhecimento) throws ConhecimentoInexistenteException {
-		validacaoConhecimento	= new ValidacaoConhecimento(conhecimento);
+	public boolean removerConhecimento(TopicoConhecimento conhecimento) throws ConhecimentoInexistenteException {
+		validacaoConhecimento.setConhecimento(conhecimento);
 		return validacaoConhecimento.removerConhecimento();
 	}
 
 	public Object possuiFilhos(PacketStruct packet) throws ConhecimentoInexistenteException {
-		Conhecimento conhecimento = (Conhecimento)packet.getData();
+		TopicoConhecimento conhecimento = (TopicoConhecimento)packet.getData();
 		return this.possuiFilhos(conhecimento);
 	}
-	public boolean possuiFilhos(Conhecimento conhecimento) throws ConhecimentoInexistenteException {
-		validacaoConhecimento	= new ValidacaoConhecimento(conhecimento);
+	public boolean possuiFilhos(TopicoConhecimento conhecimento) throws ConhecimentoInexistenteException {
+		validacaoConhecimento.setConhecimento(conhecimento);
 		return validacaoConhecimento.possuiFilhos();
 	}
 
@@ -208,7 +212,7 @@ public class ExecuteClientQuery implements CorePresleyOperations{
 		return this.removerDesenvolvedor(desenvolvedor);
 	}
 	public boolean removerDesenvolvedor(Desenvolvedor desenvolvedor) throws DesenvolvedorInexistenteException {
-		Usuario validacaoDesenvolvedor = new Usuario(desenvolvedor);
+		validacaoDesenvolvedor.setDesenvolvedor(desenvolvedor);
 		return validacaoDesenvolvedor.removerDesenvolvedor();
 	}
 	
@@ -220,9 +224,11 @@ public class ExecuteClientQuery implements CorePresleyOperations{
 		return validacaoMensagem.getMensagens(email);
 	}
 	
-	public ArrayList<String> buscaConhecimentosProblema(PacketStruct packet) {
+	public ArrayList<String> buscaConhecimentosProblema(PacketStruct packet) throws ProblemaInexistenteException {
 		String nomeProblema = (String)packet.getData();
-		return validacaoProblema.getConhecimentosAssociados(nomeProblema);
+		Problema problema = new Problema();
+		problema.setDescricao(nomeProblema);
+		return validacaoProblema.getConhecimentosAssociados( );
 	}
 
 	/**
@@ -235,8 +241,9 @@ public class ExecuteClientQuery implements CorePresleyOperations{
 	 * @throws IOException 
 	 * @throws ProjetoInexistenteException 
 	 * @throws ConhecimentoNaoEncontradoException 
+	 * @throws ProblemaInexistenteException 
 	 */
-	public boolean adicionaProblema(PacketStruct packet) throws DescricaoInvalidaException, IOException, ProjetoInexistenteException, ConhecimentoNaoEncontradoException {
+	public boolean adicionaProblema(PacketStruct packet) throws DescricaoInvalidaException, IOException, ProjetoInexistenteException, ConhecimentoNaoEncontradoException, ProblemaInexistenteException {
 		Problema problema = (Problema) packet.getData();
 
 		if (problema == null) {
@@ -250,8 +257,9 @@ public class ExecuteClientQuery implements CorePresleyOperations{
 		return adicionaProblema(problema);
 	}
 	
-	public boolean adicionaProblema(Problema problema) throws DescricaoInvalidaException, IOException, ProjetoInexistenteException, ConhecimentoNaoEncontradoException {
-		validacaoProblema.cadastrarProblema(problema);
+	public boolean adicionaProblema(Problema problema) throws DescricaoInvalidaException, IOException, ProjetoInexistenteException, ConhecimentoNaoEncontradoException, ProblemaInexistenteException {
+		validacaoProblema.setProblema(problema);
+		validacaoProblema.cadastrarProblema();
 
 		return true;
 	}
@@ -262,15 +270,17 @@ public class ExecuteClientQuery implements CorePresleyOperations{
 	 * @return
 	 * @throws ProblemaInexistenteException 
 	 * @throws DesenvolvedorInexistenteException
+	 * @throws SolucaoIniexistenteException 
 	 */
-	public Solucao adicionaSolucao(PacketStruct packet) throws ProblemaInexistenteException, DesenvolvedorInexistenteException {
+	public Solucao adicionaSolucao(PacketStruct packet) throws ProblemaInexistenteException, DesenvolvedorInexistenteException, SolucaoIniexistenteException {
 		Solucao solucao = (Solucao) packet.getData();
 
 		return adicionaSolucao( solucao );
 	}
 	
-	public Solucao adicionaSolucao(Solucao solucao) throws ProblemaInexistenteException, DesenvolvedorInexistenteException{
-		return validacaoSolucao.cadastrarSolucao(solucao);
+	public Solucao adicionaSolucao(Solucao solucao) throws ProblemaInexistenteException, DesenvolvedorInexistenteException, SolucaoIniexistenteException{
+		validacaoSolucao.setSolucao(solucao);
+		return validacaoSolucao.cadastrarSolucao();
 	}
 	
 	
@@ -296,15 +306,17 @@ public class ExecuteClientQuery implements CorePresleyOperations{
 	}
 	
 	public ArrayList<Solucao> listarSolucoesDoProblema(Problema problema) throws ProblemaInexistenteException{
-		return validacaoSolucao.listarSolucoesDoProblema(problema);
+		validacaoSolucao.setProblema(problema);
+		return validacaoSolucao.listarSolucoesDoProblema();
 	}
 	
-	public boolean atualizarStatusSolucao(PacketStruct packet) throws SolucaoIniexistenteException  {
+	public boolean atualizarStatusSolucao(PacketStruct packet) throws SolucaoIniexistenteException, ProblemaInexistenteException, DesenvolvedorInexistenteException   {
 		Solucao solucao = (Solucao) packet.getData();
 		return atualizarStatusSolucao(solucao);
 	}
-	public boolean atualizarStatusSolucao(Solucao solucao) throws SolucaoIniexistenteException{
-		return validacaoSolucao.atualizarStatusDaSolucao(solucao.getId(), solucao.isAjudou());
+	public boolean atualizarStatusSolucao(Solucao solucao) throws SolucaoIniexistenteException, ProblemaInexistenteException, DesenvolvedorInexistenteException{
+		validacaoSolucao.setSolucao(solucao);
+		return validacaoSolucao.atualizarStatusDaSolucao();
 	}
 
 	
@@ -313,15 +325,17 @@ public class ExecuteClientQuery implements CorePresleyOperations{
 		return atualizarStatusProblema(problema);
 	}
 	public boolean atualizarStatusProblema(Problema problema) throws ProblemaInexistenteException {
-		return validacaoProblema.atualizarStatusDoProblema(problema.getId(), problema.isResolvido());
+		validacaoProblema.setProblema(problema);
+		return validacaoProblema.atualizarStatusDoProblema();
 	}
 	
-	public boolean atualizarSolucao(PacketStruct packet) throws ProblemaInexistenteException, DesenvolvedorInexistenteException {
+	public boolean atualizarSolucao(PacketStruct packet) throws ProblemaInexistenteException, DesenvolvedorInexistenteException, SolucaoIniexistenteException {
 		Solucao solucao = (Solucao) packet.getData();
 		return atualizarSolucao(solucao);
 	}
-	public boolean atualizarSolucao(Solucao solucao) throws ProblemaInexistenteException, DesenvolvedorInexistenteException  {
-		return validacaoSolucao.atualizarStatusDaSolucao(solucao);
+	public boolean atualizarSolucao(Solucao solucao) throws ProblemaInexistenteException, DesenvolvedorInexistenteException, SolucaoIniexistenteException  {
+		validacaoSolucao.setSolucao(solucao);
+		return validacaoSolucao.atualizarStatusDaSolucao();
 	}
 	
 
@@ -342,7 +356,8 @@ public class ExecuteClientQuery implements CorePresleyOperations{
 	
 	public ArrayList<Solucao> listarSolucoesRetornadasDoDesenvolvedor(Desenvolvedor desenvolvedor)
 	throws DesenvolvedorInexistenteException{
-		return validacaoSolucao.listarSolucoesRetornadasDoDesenvolvedor(desenvolvedor);
+		validacaoSolucao.setDesenvolvedor(desenvolvedor);
+		return validacaoSolucao.listarSolucoesRetornadasDoDesenvolvedor();
 	}
 	
 
@@ -353,14 +368,14 @@ public class ExecuteClientQuery implements CorePresleyOperations{
 	 * @throws IOException 
 	 * @throws ConhecimentoInexistenteException 
 	 */
-	public Conhecimento associaArquivo(PacketStruct packet) throws ConhecimentoInexistenteException, IOException  {
-		Conhecimento conhecimento = (Conhecimento) packet.getData();
+	public TopicoConhecimento associaArquivo(PacketStruct packet) throws ConhecimentoInexistenteException, IOException  {
+		TopicoConhecimento conhecimento = (TopicoConhecimento) packet.getData();
 
 		return associaArquivo(conhecimento);
 	}
 	
-	public Conhecimento associaArquivo(Conhecimento conhecimento) throws ConhecimentoInexistenteException, IOException {
-		validacaoConhecimento	= new ValidacaoConhecimento(conhecimento);
+	public TopicoConhecimento associaArquivo(TopicoConhecimento conhecimento) throws ConhecimentoInexistenteException, IOException {
+		validacaoConhecimento.setConhecimento(conhecimento);
 		return validacaoConhecimento.associaArquivo();
 	}
 
@@ -374,15 +389,17 @@ public class ExecuteClientQuery implements CorePresleyOperations{
 	}
 	public boolean atualizarStatusProjeto(Projeto projeto)
 			throws ProjetoInexistenteException {
-		return validacaoProjeto.atualizarStatusProjeto(projeto);
+		validacaoProjeto.setProjeto(projeto);
+		return validacaoProjeto.atualizarStatusProjeto();
 	}
 	
-	public boolean criarProjeto(PacketStruct packet) throws NomeInvalidoException {
+	public boolean criarProjeto(PacketStruct packet) throws NomeInvalidoException, ProjetoInexistenteException {
 		Projeto projeto = (Projeto) packet.getData();
 		return criarProjeto( projeto );
 	}
-	public boolean criarProjeto(Projeto projeto) throws NomeInvalidoException {
-		return validacaoProjeto.criarProjeto(projeto);
+	public boolean criarProjeto(Projeto projeto) throws NomeInvalidoException, ProjetoInexistenteException {
+		validacaoProjeto.setProjeto(projeto);
+		return validacaoProjeto.criarProjeto();
 	}
 
 	public boolean removerProjeto(PacketStruct packet) throws ProjetoInexistenteException {
@@ -391,7 +408,8 @@ public class ExecuteClientQuery implements CorePresleyOperations{
 	}
 	public boolean removerProjeto(Projeto projeto)
 			throws ProjetoInexistenteException {
-		return validacaoProjeto.removerProjeto(projeto);
+		validacaoProjeto.setProjeto(projeto);
+		return validacaoProjeto.removerProjeto();
 	}
 
 	public ArrayList<Projeto> getListaProjetos(PacketStruct packet) {
@@ -408,8 +426,7 @@ public class ExecuteClientQuery implements CorePresleyOperations{
 			throws DesenvolvedorInexistenteException {
 		Desenvolvedor desenvolvedor = new Desenvolvedor();
 		desenvolvedor.setNome(nome);
-		Usuario validacaoDesenvolvedor = new Usuario( desenvolvedor );
-		
+		validacaoDesenvolvedor.setDesenvolvedor(desenvolvedor);		
 		return validacaoDesenvolvedor.getDesenvolvedorPorNome();
 	}
 

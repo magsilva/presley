@@ -10,7 +10,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.TreeItem;
 
 import com.hukarz.presley.beans.Arquivo;
-import com.hukarz.presley.beans.Conhecimento;
+import com.hukarz.presley.beans.TopicoConhecimento;
 import com.hukarz.presley.beans.DadosAutenticacao;
 import com.hukarz.presley.beans.Desenvolvedor;
 import com.hukarz.presley.beans.Item;
@@ -35,9 +35,9 @@ public class ViewComunication implements CorePresleyOperations{
 	private static final Logger logger = Logger.getLogger("com.hukarz.presley.client.gui.view.comunication.ViewComunication");
 	
 	private ArrayList<Desenvolvedor> listaDesenvolvedores = new ArrayList<Desenvolvedor>();//Lista de todos os desenvolvedores
-	private ArrayList<Conhecimento> listaConhecimentos = new ArrayList<Conhecimento>();//Lista de todos os conhecimentos
+	private ArrayList<TopicoConhecimento> listaConhecimentos = new ArrayList<TopicoConhecimento>();//Lista de todos os conhecimentos
 	private ArrayList<Problema> listaProblemas = new ArrayList<Problema>();//Lista de todos os problemas
-	private HashMap<String,ArrayList<Conhecimento>> conhecimentos = new HashMap<String,ArrayList<Conhecimento>>();//mapeamento nome de atividade e seus conhecimentos associados
+	private HashMap<String,ArrayList<TopicoConhecimento>> conhecimentos = new HashMap<String,ArrayList<TopicoConhecimento>>();//mapeamento nome de atividade e seus conhecimentos associados
 	private com.hukarz.presley.beans.Tree arvoreConhecimentos; //Armazena arvore de conhecimentos
 
 	
@@ -67,9 +67,9 @@ public class ViewComunication implements CorePresleyOperations{
 
 			//Criando objetos contendo listas de desenvolvedores, etc
 			listaDesenvolvedores = new ArrayList<Desenvolvedor>();//Lista de todos os desenvolvedores
-			listaConhecimentos = new ArrayList<Conhecimento>();//Lista de todos os conhecimentos
+			listaConhecimentos = new ArrayList<TopicoConhecimento>();//Lista de todos os conhecimentos
 			listaProblemas = new ArrayList<Problema>();//Lista de todos os problemas
-			conhecimentos = new HashMap<String,ArrayList<Conhecimento>>();//mapeamento nome de atividade e seus conhecimentos associados
+			conhecimentos = new HashMap<String,ArrayList<TopicoConhecimento>>();//mapeamento nome de atividade e seus conhecimentos associados
 			arvoreConhecimentos = null;//Armazena a ontologia
 			
 			logger.info("instanciando cliente");
@@ -152,9 +152,9 @@ public class ViewComunication implements CorePresleyOperations{
 	 * @throws Exception 
 	 */
 	
-	public boolean adicionaConhecimento(Conhecimento novoConhecimento, Conhecimento pai) throws Exception{
+	public boolean adicionaConhecimento(TopicoConhecimento novoConhecimento, TopicoConhecimento pai) throws Exception{
 		
-		ArrayList<Conhecimento> filhoPai = new ArrayList<Conhecimento>();
+		ArrayList<TopicoConhecimento> filhoPai = new ArrayList<TopicoConhecimento>();
 		filhoPai.add(novoConhecimento);
 		filhoPai.add(pai);
 		
@@ -372,9 +372,9 @@ public class ViewComunication implements CorePresleyOperations{
 		//return false;
 	}
 
-	public ArrayList<Conhecimento> getListaConhecimentos() {
+	public ArrayList<TopicoConhecimento> getListaConhecimentos() {
 		PacketStruct respostaPacket = sendPack(null,CorePresleyOperations.GET_LISTA_CONHECIMENTO);
-		ArrayList<Conhecimento> resposta = (ArrayList<Conhecimento>)respostaPacket.getData();
+		ArrayList<TopicoConhecimento> resposta = (ArrayList<TopicoConhecimento>)respostaPacket.getData();
 		return resposta;
 	}
 	
@@ -430,7 +430,7 @@ public class ViewComunication implements CorePresleyOperations{
 		return null;
 	}
 
-	public boolean removerConhecimento(Conhecimento conhecimento) {
+	public boolean removerConhecimento(TopicoConhecimento conhecimento) {
 		PacketStruct respostaPacket = sendPack(conhecimento, CorePresleyOperations.REMOVER_CONHECIMENTO);
 		if(respostaPacket.getData() != null){
 			return true;
@@ -439,7 +439,7 @@ public class ViewComunication implements CorePresleyOperations{
 	}
 
 
-	public boolean possuiFilhos(Conhecimento conhecimento)
+	public boolean possuiFilhos(TopicoConhecimento conhecimento)
 			throws ConhecimentoInexistenteException {
 		PacketStruct respostaPacket = sendPack(conhecimento, CorePresleyOperations.CONHECIMENTO_POSSUI_FILHOS);
 		boolean retorno = false;
@@ -522,7 +522,7 @@ public class ViewComunication implements CorePresleyOperations{
 		return (ArrayList<Solucao>) respostaPacket.getData();
 	}
 	
-	public Conhecimento associaArquivo(Conhecimento conhecimento, Arquivo arquivo) throws Exception{
+	public TopicoConhecimento associaArquivo(TopicoConhecimento conhecimento, Arquivo arquivo) throws Exception{
 		
 		ArrayList<Arquivo> arquivosConhecimento = conhecimento.getArquivos();
 		arquivosConhecimento.add(arquivo);
@@ -539,7 +539,7 @@ public class ViewComunication implements CorePresleyOperations{
 		}
 
 		if(respostaPacket.getData() != null){
-			return (Conhecimento)respostaPacket.getData();
+			return (TopicoConhecimento)respostaPacket.getData();
 		}		
 		return conhecimento;
 	}

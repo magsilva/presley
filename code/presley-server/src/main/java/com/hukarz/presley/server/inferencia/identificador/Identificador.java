@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.hukarz.presley.beans.Arquivo;
-import com.hukarz.presley.beans.Conhecimento;
+import com.hukarz.presley.beans.TopicoConhecimento;
 import com.hukarz.presley.excessao.ConhecimentoNaoEncontradoException;
 import com.hukarz.presley.server.inferencia.RegistroExperimento;
 import com.hukarz.presley.server.inferencia.classificador.Classificador;
@@ -23,7 +23,7 @@ public class Identificador {
 	ServicoArquivo servicoArquivo = new ServicoArquivoImplDAO();
 	int qtdeArquivos = 0;
 	
-	public Conhecimento verificaConhecimentoDoTexto(String texto) throws IOException, ConhecimentoNaoEncontradoException{
+	public TopicoConhecimento verificaConhecimentoDoTexto(String texto) throws IOException, ConhecimentoNaoEncontradoException{
 		ArrayList<Arquivo> arquivos = servicoArquivo.getListaArquivo();
 		qtdeArquivos = arquivos.size();
 		

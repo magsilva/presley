@@ -2,7 +2,7 @@ package com.hukarz.presley.server.core.interfaces;
 
 import java.util.ArrayList;
 
-import com.hukarz.presley.beans.Conhecimento;
+import com.hukarz.presley.beans.TopicoConhecimento;
 import com.hukarz.presley.beans.DadosAutenticacao;
 import com.hukarz.presley.beans.Desenvolvedor;
 import com.hukarz.presley.beans.Problema;
@@ -89,7 +89,7 @@ public interface CorePresleyOperations {
 	 * @throws ConhecimentoInexistenteException 
 	 * @throws DescricaoInvalidaException 
 	 */
-	public boolean adicionaConhecimento(Conhecimento novoConhecimento, Conhecimento pai) throws DescricaoInvalidaException, ConhecimentoInexistenteException, Exception;
+	public boolean adicionaConhecimento(TopicoConhecimento novoConhecimento, TopicoConhecimento pai) throws DescricaoInvalidaException, ConhecimentoInexistenteException, Exception;
 
 	/**
 	 * Este método executa autenticação no servidor
@@ -135,7 +135,7 @@ public interface CorePresleyOperations {
 	 * CÓDIGO DA OPERAÇÃO -> 16
 	 * @return ArrayList<Conhecimento> lista de conhecimentos existentes.
 	 */
-	public ArrayList<Conhecimento> getListaConhecimentos();
+	public ArrayList<TopicoConhecimento> getListaConhecimentos();
 	
 
 	/**
@@ -156,9 +156,9 @@ public interface CorePresleyOperations {
 	 */
 	public Tree getArvoreConhecimentos() throws ConhecimentoInexistenteException;	
 	
-	public boolean removerConhecimento(Conhecimento conhecimento) throws ConhecimentoInexistenteException;
+	public boolean removerConhecimento(TopicoConhecimento conhecimento) throws ConhecimentoInexistenteException;
 	
-	public boolean possuiFilhos(Conhecimento conhecimento) throws ConhecimentoInexistenteException;
+	public boolean possuiFilhos(TopicoConhecimento conhecimento) throws ConhecimentoInexistenteException;
 
 	public boolean removerDesenvolvedor(Desenvolvedor desenvolvedor) throws DesenvolvedorInexistenteException;
 
@@ -239,8 +239,9 @@ public interface CorePresleyOperations {
 	 * Este método cadastra as informações sobre o projeto em execução no presley
 	 * CÓDIGO DA OPERAÇÃO -> 36
 	 * @return
+	 * @throws ProjetoInexistenteException 
 	 */
-	public boolean criarProjeto(Projeto projeto) throws NomeInvalidoException;
+	public boolean criarProjeto(Projeto projeto) throws NomeInvalidoException, ProjetoInexistenteException;
 	
 	
 	/**

@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import com.hukarz.presley.beans.Arquivo;
-import com.hukarz.presley.beans.Conhecimento;
+import com.hukarz.presley.beans.TopicoConhecimento;
 import com.hukarz.presley.beans.Desenvolvedor;
 import com.hukarz.presley.beans.Item;
 import com.hukarz.presley.beans.Tree;
@@ -19,7 +19,7 @@ import com.hukarz.presley.server.persistencia.implementacao.ServicoDesenvolvedor
 import com.hukarz.presley.server.persistencia.interfaces.ServicoArquivo;
 import com.hukarz.presley.server.persistencia.interfaces.ServicoConhecimento;
 import com.hukarz.presley.server.persistencia.interfaces.ServicoDesenvolvedor;
-import com.hukarz.presley.server.util.ValidacaoUtil;
+import com.hukarz.presley.server.util.Util;
 
 
 /**
@@ -30,20 +30,23 @@ import com.hukarz.presley.server.util.ValidacaoUtil;
  * ltima modificacao: 09/09/2008 por RodrigoCMD
  */
 
-public class ValidacaoConhecimento {
+public class Conhecimento {
 	
 	ServicoConhecimento servicoConhecimento;
 	ServicoDesenvolvedor servicoDesenvolvedor;
 	ServicoArquivo servicoArquivo; 
-	Conhecimento conhecimento;
+	TopicoConhecimento conhecimento;
 	
-	public ValidacaoConhecimento(Conhecimento conhecimento) {
+	public Conhecimento() {
 		servicoConhecimento		= new ServicoConhecimentoImplDAO();
 		servicoDesenvolvedor	= new ServicoDesenvolvedorImplDAO();
 		servicoArquivo			= new ServicoArquivoImplDAO();
-		this.conhecimento		= conhecimento;
 	}
-	
+
+	public void setConhecimento(TopicoConhecimento conhecimento) {
+		this.conhecimento = conhecimento;
+	}
+
 	/**
 	 * Este metodo atualiza um conhecimento previamente cadastrado na base da dados 
 	 * @param nome Nome do conhecimento a ser atualizado.
@@ -55,8 +58,9 @@ public class ValidacaoConhecimento {
 	public boolean atualizarConhecimento(String novoNome, String novaDescricao) 
 		throws ConhecimentoInexistenteException, DescricaoInvalidaException, NomeInvalidoException {
 		
-		if (!ValidacaoUtil.validaDescricao(novaDescricao)) throw new DescricaoInvalidaException();
-		if (!ValidacaoUtil.validaNome(novoNome)) throw new NomeInvalidoException();
+		if (conhecimento == null) throw new ConhecimentoInexistenteException();
+		if (!Util.validaDescricao(novaDescricao)) throw new DescricaoInvalidaException();
+		if (!Util.validaNome(novoNome)) throw new NomeInvalidoException();
 		
 		if (!servicoConhecimento.conhecimentoExiste(conhecimento.getNome())) throw new ConhecimentoInexistenteException();
 
@@ -69,8 +73,10 @@ public class ValidacaoConhecimento {
 	 * Este mtodo verifica se um conhecimento existe na base de dados.
 	 * @parame nome Nome do conhecimento para verificacao.
 	 * @return true se o conhecimento existe.
+	 * @throws ConhecimentoInexistenteException 
 	 */
-	public boolean conhecimentoExiste() {
+	public boolean conhecimentoExiste() throws ConhecimentoInexistenteException {
+		if (conhecimento == null) throw new ConhecimentoInexistenteException();
 		return servicoConhecimento.conhecimentoExiste(conhecimento.getNome());
 	}
 	
@@ -83,9 +89,8 @@ public class ValidacaoConhecimento {
 	public boolean criarConhecimento() throws NomeInvalidoException,
 		DescricaoInvalidaException,	ConhecimentoInexistenteException {
 		
-		if (!ValidacaoUtil.validaNome(conhecimento.getNome())) throw new NomeInvalidoException();
-		//if (!ValidacaoUtil.validaDescricao(descricao)) throw new DescricaoInvalidaException();
-		
+		if (conhecimento == null) throw new ConhecimentoInexistenteException();
+		if (!Util.validaNome(conhecimento.getNome())) throw new NomeInvalidoException();
 		if (servicoConhecimento.conhecimentoExiste(conhecimento.getNome())) throw new ConhecimentoInexistenteException();
 		
 		return servicoConhecimento.criarConhecimento(conhecimento.getNome(), conhecimento.getDescricao());
@@ -99,28 +104,30 @@ public class ValidacaoConhecimento {
 	 */
 	public boolean removerConhecimento() throws ConhecimentoInexistenteException {
 		
+		if (conhecimento == null) throw new ConhecimentoInexistenteException();
 		String nome = conhecimento.getNome();
+		
 		if (!servicoConhecimento.conhecimentoExiste(nome)) throw new ConhecimentoInexistenteException();
 		
 		// Desassociar e excluir conhecimentos filhos:
-		ArrayList<Conhecimento> conhecimentosFilhos = servicoConhecimento.getFilhos(nome);
+		ArrayList<TopicoConhecimento> conhecimentosFilhos = servicoConhecimento.getFilhos(nome);
 		if (conhecimentosFilhos != null) {
-			Iterator<Conhecimento> it1 = conhecimentosFilhos.iterator();
+			Iterator<TopicoConhecimento> it1 = conhecimentosFilhos.iterator();
 			
 			while (it1.hasNext()) {
-				Conhecimento conhecimentoFilho = it1.next();
+				TopicoConhecimento conhecimentoFilho = it1.next();
 				servicoConhecimento.desassociaConhecimentos(nome, conhecimentoFilho.getNome());
 				servicoConhecimento.removerConhecimento(conhecimentoFilho.getNome());
 			}
 		}
 		
 		// Desassociar conhecimentos pais:
-		ArrayList<Conhecimento> conhecimentosPais = servicoConhecimento.getFilhos(nome);
+		ArrayList<TopicoConhecimento> conhecimentosPais = servicoConhecimento.getFilhos(nome);
 		if (conhecimentosPais != null) {
-			Iterator<Conhecimento> it2 = conhecimentosPais.iterator();
+			Iterator<TopicoConhecimento> it2 = conhecimentosPais.iterator();
 			
 			while (it2.hasNext()) {
-				Conhecimento conhecimentoPai = it2.next();
+				TopicoConhecimento conhecimentoPai = it2.next();
 				servicoConhecimento.desassociaConhecimentos(conhecimentoPai.getNome(), nome);
 			}
 		}
@@ -148,9 +155,10 @@ public class ValidacaoConhecimento {
 	 * @param nomeConhecimentoFilho Nome do conhecimento Filho.
 	 * @return true de a associacao foi realizada com sucesso.
 	 */
-	public boolean associaConhecimentos(Conhecimento conhecimentoFilho) 
+	public boolean associaConhecimentos(TopicoConhecimento conhecimentoFilho) 
 		throws ConhecimentoInexistenteException {
 		
+		if (conhecimento == null) throw new ConhecimentoInexistenteException();
 //		if (!servicoConhecimento.conhecimentoExiste(nomeConhecimentoFilho)) 
 //			throw new ConhecimentoInexistenteException();
 //		
@@ -167,8 +175,9 @@ public class ValidacaoConhecimento {
 	 * @param nomeConhecimentoFilho Nome do conhecimento Filho.
 	 * @return true de a desassociacao foi realizada com sucesso.
 	 */
-	public boolean desassociaConhecimentos(Conhecimento conhecimentoFilho) throws ConhecimentoInexistenteException {
+	public boolean desassociaConhecimentos(TopicoConhecimento conhecimentoFilho) throws ConhecimentoInexistenteException {
 		
+		if (conhecimento == null) throw new ConhecimentoInexistenteException();
 		if (!servicoConhecimento.conhecimentoExiste(conhecimentoFilho.getNome())) 
 			throw new ConhecimentoInexistenteException();
 		
@@ -178,13 +187,13 @@ public class ValidacaoConhecimento {
 		return servicoConhecimento.desassociaConhecimentos(conhecimento.getNome(), conhecimentoFilho.getNome());
 	}
 	
-	public ArrayList<Conhecimento> getListaConhecimento() {
-		
+	public ArrayList<TopicoConhecimento> getListaConhecimento() {
 		return servicoConhecimento.getListaConhecimento();
 	}
 
 	public boolean possuiFilhos() throws ConhecimentoInexistenteException {
-		ArrayList<Conhecimento> listaConhecimento =  servicoConhecimento.getFilhos(conhecimento.getNome());
+		if (conhecimento == null) throw new ConhecimentoInexistenteException();
+		ArrayList<TopicoConhecimento> listaConhecimento =  servicoConhecimento.getFilhos(conhecimento.getNome());
 
 		if((listaConhecimento != null) && (listaConhecimento.size() == 0)) {
 			return false;
@@ -200,8 +209,8 @@ public class ValidacaoConhecimento {
 	 * @throws ConhecimentoInexistenteException
 	 * @throws IOException
 	 */
-	public Conhecimento associaArquivo() throws ConhecimentoInexistenteException, IOException {
-		
+	public TopicoConhecimento associaArquivo() throws ConhecimentoInexistenteException, IOException {
+		if (conhecimento == null) throw new ConhecimentoInexistenteException();
 		if (!servicoConhecimento.conhecimentoExiste(conhecimento.getNome())) 
 			throw new ConhecimentoInexistenteException();
 
@@ -234,19 +243,19 @@ public class ValidacaoConhecimento {
      * @throws ConhecimentoInexistenteException
      */
     public Tree getArvoreDeConhecimentos() throws ConhecimentoInexistenteException {
-    	Conhecimento conhecimentoRaiz =  new Conhecimento();
+    	TopicoConhecimento conhecimentoRaiz =  new TopicoConhecimento();
     	conhecimentoRaiz.setNome("Raiz") ;
     	Tree arvore = new Tree( conhecimentoRaiz );
 
-    	ArrayList<Conhecimento> filhosDoRaiz = new ArrayList<Conhecimento>();
+    	ArrayList<TopicoConhecimento> filhosDoRaiz = new ArrayList<TopicoConhecimento>();
 
-    	ArrayList<Conhecimento> conhecimentos = getListaConhecimento();
-    	Iterator<Conhecimento> it = conhecimentos.iterator();
+    	ArrayList<TopicoConhecimento> conhecimentos = getListaConhecimento();
+    	Iterator<TopicoConhecimento> it = conhecimentos.iterator();
 
     	// Buscando os conhecimentos que nao possuem pais (ou seja, os filhos do raiz).
     	while (it.hasNext()) {
-    		Conhecimento conhecimento = it.next();
-    		ArrayList<Conhecimento> paisDoConhecimento = null;
+    		TopicoConhecimento conhecimento = it.next();
+    		ArrayList<TopicoConhecimento> paisDoConhecimento = null;
 
     		paisDoConhecimento = servicoConhecimento.getPais(conhecimento.getNome());
     		if (paisDoConhecimento.size() == 0) {
@@ -255,16 +264,16 @@ public class ValidacaoConhecimento {
     	}
 
     	// Adicionando os filhos do raiz.
-    	Iterator<Conhecimento> it2 = filhosDoRaiz.iterator();
+    	Iterator<TopicoConhecimento> it2 = filhosDoRaiz.iterator();
     	while (it2.hasNext()) {
-    		Conhecimento conhecimento = it2.next();
+    		TopicoConhecimento conhecimento = it2.next();
     		arvore.adicionaFilho(conhecimento);
     	}
 
     	// Obtendo as sub-árvores para montar a arvore completa.
-    	Iterator<Conhecimento> it3 = filhosDoRaiz.iterator();
+    	Iterator<TopicoConhecimento> it3 = filhosDoRaiz.iterator();
     	while (it3.hasNext()) {
-    		Conhecimento filhoDoRaiz = it3.next();
+    		TopicoConhecimento filhoDoRaiz = it3.next();
     		Item item = arvore.getFilho(filhoDoRaiz);
     		montaSubArvore(item);
     	}
@@ -281,14 +290,14 @@ public class ValidacaoConhecimento {
      */
     private void montaSubArvore(Item itemPai) throws ConhecimentoInexistenteException {
     	String nomeItemPai = itemPai.getConhecimento().getNome();
-    	Conhecimento conhecimento      = servicoConhecimento.getConhecimento( nomeItemPai );
-    	ArrayList<Conhecimento> filhos = servicoConhecimento.getFilhos(conhecimento.getNome());
+    	TopicoConhecimento conhecimento      = servicoConhecimento.getConhecimento( nomeItemPai );
+    	ArrayList<TopicoConhecimento> filhos = servicoConhecimento.getFilhos(conhecimento.getNome());
 
     	if (filhos.size() != 0) {
-    		Iterator<Conhecimento> it1 = filhos.iterator();
+    		Iterator<TopicoConhecimento> it1 = filhos.iterator();
 
     		while (it1.hasNext()) {
-    			Conhecimento filho = it1.next();
+    			TopicoConhecimento filho = it1.next();
     			itemPai.adicionaFilho(filho);
     			Item itemFilho = itemPai.getFilho(filho);
     			montaSubArvore(itemFilho);

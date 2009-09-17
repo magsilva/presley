@@ -33,7 +33,7 @@ public class Problema implements Serializable {
 	private String mensagem;
 	private Map<ClasseJava, ArquivoJava> classesRelacionadas ;
 	private Desenvolvedor desenvolvedorOrigem;
-	private Conhecimento conhecimento;
+	private TopicoConhecimento conhecimento;
 	private Projeto projeto;
 	private String numeroArquivoExperimento;
 	private boolean temResposta = true;
@@ -108,7 +108,7 @@ public class Problema implements Serializable {
 		this.mensagem = mensagem;
 	}
 
-	public Conhecimento getConhecimento() {
+	public TopicoConhecimento getConhecimento() {
 		return conhecimento;
 	}
 
@@ -120,7 +120,7 @@ public class Problema implements Serializable {
 		this.numeroArquivoExperimento = numeroArquivoExperimento;
 	}
 
-	public void setConhecimento(Conhecimento conhecimento) {
+	public void setConhecimento(TopicoConhecimento conhecimento) {
 		this.conhecimento = conhecimento;
 	}
 	

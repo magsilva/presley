@@ -21,7 +21,7 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 
-import com.hukarz.presley.beans.Conhecimento;
+import com.hukarz.presley.beans.TopicoConhecimento;
 import com.hukarz.presley.client.gui.view.MensagemAba;
 
 public class AdicionaDesenvolvedorWizardPage2 extends WizardPage {
@@ -30,7 +30,7 @@ public class AdicionaDesenvolvedorWizardPage2 extends WizardPage {
 	private Tree arvoreConhecimento;
 	private MensagemAba mensagemAba;
 	private Hashtable<String,TreeItem> conhecimentosSelecionados;
-	private ArrayList<Conhecimento> conhecimentos;
+	private ArrayList<TopicoConhecimento> conhecimentos;
 	private Combo grauConhecimento;
 	private Button addConhecimentoButton;
 	private ArrayList<String> itensConhecimentos;
@@ -67,7 +67,7 @@ public class AdicionaDesenvolvedorWizardPage2 extends WizardPage {
     }
     
     
-    public ArrayList<Conhecimento> getConhecimentos(){
+    public ArrayList<TopicoConhecimento> getConhecimentos(){
     	ArrayList<String> conhecimentosNomes = new ArrayList<String>();
     	//Atualiza a lista de Conhecimetos existentes
     	//Armazena os nomes dos conheciementos selecionados na arvore gráfica
@@ -80,18 +80,18 @@ public class AdicionaDesenvolvedorWizardPage2 extends WizardPage {
 		}
     	//Fazendo um mapeamento entre o nome dos conhecimentos e o conhecimento
     	//para agilizar a recuperação mais a frente
-    	Hashtable<String,Conhecimento> tabelaConhecimentos = new Hashtable<String, Conhecimento>();
+    	Hashtable<String,TopicoConhecimento> tabelaConhecimentos = new Hashtable<String, TopicoConhecimento>();
     	
     	//Fazendo um mapeamento entre o nome dos conhecimentos e o conhecimento
     	//para agilizar a recuperação mais a frente
-    	for (Conhecimento conh : this.mensagemAba.getViewComunication().getListaConhecimentos()) {
+    	for (TopicoConhecimento conh : this.mensagemAba.getViewComunication().getListaConhecimentos()) {
 			tabelaConhecimentos.put(conh.getNome(), conh);
 		}
     	
-    	conhecimentos = new ArrayList<Conhecimento>();
+    	conhecimentos = new ArrayList<TopicoConhecimento>();
     	//Preenche a lista de conhecimentos para resposta
     	for (String nome : conhecimentosNomes) {
-    		Conhecimento conh1 = tabelaConhecimentos.get(nome);
+    		TopicoConhecimento conh1 = tabelaConhecimentos.get(nome);
 			if (conh1!=null) {
 				conhecimentos.add(conh1);
 			}

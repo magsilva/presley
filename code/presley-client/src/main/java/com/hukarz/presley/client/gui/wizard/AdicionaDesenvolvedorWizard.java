@@ -16,7 +16,7 @@ import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 
-import com.hukarz.presley.beans.Conhecimento;
+import com.hukarz.presley.beans.TopicoConhecimento;
 import com.hukarz.presley.beans.Desenvolvedor;
 import com.hukarz.presley.client.gui.view.MensagemAba;
 
@@ -61,10 +61,10 @@ public class AdicionaDesenvolvedorWizard extends Wizard implements INewWizard {
 		String senha = page.getSenhaDesenvolvedor();
 		ArrayList<Double> graus = page2.pegaGraus();
 		ArrayList<String> conhecimentos = page2.pegaConhecimentos();
-		ArrayList<Conhecimento> listaConhecimentos = this.mensagemAba.getViewComunication().getListaConhecimentos();
-		HashMap<Conhecimento,Double> mapConhecimentoGrau = new HashMap<Conhecimento, Double>();
+		ArrayList<TopicoConhecimento> listaConhecimentos = this.mensagemAba.getViewComunication().getListaConhecimentos();
+		HashMap<TopicoConhecimento,Double> mapConhecimentoGrau = new HashMap<TopicoConhecimento, Double>();
 		for (String nomeConhecimento : conhecimentos) {
-			for (Conhecimento conhecimento : listaConhecimentos) {
+			for (TopicoConhecimento conhecimento : listaConhecimentos) {
 				if(conhecimento.getNome().equals(nomeConhecimento)){
 					mapConhecimentoGrau.put(conhecimento, graus.get(conhecimentos.indexOf(nomeConhecimento)));
 				}

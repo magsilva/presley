@@ -3,7 +3,7 @@ package com.hukarz.presley.server.util;
 import java.sql.Date;
 
 
-public class ValidacaoUtil {
+public class Util {
 	
 	public static boolean validaNome(String nome) {		
 		return true;

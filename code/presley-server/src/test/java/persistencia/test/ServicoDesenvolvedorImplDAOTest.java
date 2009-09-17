@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import junit.framework.TestCase;
 
-import com.hukarz.presley.beans.Conhecimento;
+import com.hukarz.presley.beans.TopicoConhecimento;
 import com.hukarz.presley.beans.Desenvolvedor;
 import com.hukarz.presley.server.persistencia.implementacao.ServicoConhecimentoImplDAO;
 import com.hukarz.presley.server.persistencia.implementacao.ServicoDesenvolvedorImplDAO;
@@ -122,7 +122,7 @@ public class ServicoDesenvolvedorImplDAOTest extends TestCase {
 	}
 	
 	public void testGetConhecimentosDoDesenvolvedor() {
-		ArrayList<Conhecimento> list = sd.getConhecimentosDoDesenvolvedor("asju@gmail.com");
+		ArrayList<TopicoConhecimento> list = sd.getConhecimentosDoDesenvolvedor("asju@gmail.com");
 		
 		assertTrue(list.get(0).getNome().equals("MySQL"));
 		assertTrue(list.get(1).getNome().equals("SQL"));

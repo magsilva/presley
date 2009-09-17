@@ -19,7 +19,7 @@ import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 
-import com.hukarz.presley.beans.Conhecimento;
+import com.hukarz.presley.beans.TopicoConhecimento;
 import com.hukarz.presley.client.gui.view.Dominio;
 
 
@@ -57,18 +57,18 @@ public class AdicionaConhecimentoWizard extends Wizard implements INewWizard {
 	public boolean performFinish() {
         //First save all the page data as variables.
     	try{
-    		Map<Conhecimento, Conhecimento> conhecimentoFilhoPai = page.conhecimentoFilhoPai();
+    		Map<TopicoConhecimento, TopicoConhecimento> conhecimentoFilhoPai = page.conhecimentoFilhoPai();
     		
-    		Set<Conhecimento> conhecimentosFilho = conhecimentoFilhoPai.keySet(); 
-    		ArrayList<Conhecimento> listaConhecimento = dominio.getViewComunication().getListaConhecimentos();
+    		Set<TopicoConhecimento> conhecimentosFilho = conhecimentoFilhoPai.keySet(); 
+    		ArrayList<TopicoConhecimento> listaConhecimento = dominio.getViewComunication().getListaConhecimentos();
     		
-    		for (Iterator<Conhecimento> iterator = conhecimentosFilho.iterator(); iterator.hasNext();) {
-    			Conhecimento filho = iterator.next();
+    		for (Iterator<TopicoConhecimento> iterator = conhecimentosFilho.iterator(); iterator.hasNext();) {
+    			TopicoConhecimento filho = iterator.next();
 				
-    			Conhecimento pai = null;
-    			Conhecimento paiConhecimento = conhecimentoFilhoPai.get( filho );
+    			TopicoConhecimento pai = null;
+    			TopicoConhecimento paiConhecimento = conhecimentoFilhoPai.get( filho );
    				if (paiConhecimento != null){
-   		    		for (Conhecimento conhecimento : listaConhecimento) {
+   		    		for (TopicoConhecimento conhecimento : listaConhecimento) {
    						if (conhecimento.getNome().equals(paiConhecimento.getNome())) {
    							pai = conhecimento;
    							break;

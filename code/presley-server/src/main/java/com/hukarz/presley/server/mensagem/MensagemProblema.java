@@ -27,7 +27,7 @@ import com.hukarz.presley.server.persistencia.interfaces.ServicoMensagem;
 import com.hukarz.presley.server.persistencia.interfaces.ServicoProblema;
 import com.hukarz.presley.server.persistencia.interfaces.ServicoProjeto;
 import com.hukarz.presley.server.persistencia.interfaces.ServicoSolucao;
-import com.hukarz.presley.server.util.ValidacaoUtil;
+import com.hukarz.presley.server.util.Util;
 
 
 /**
@@ -38,7 +38,7 @@ import com.hukarz.presley.server.util.ValidacaoUtil;
  * ltima modificacao: 09/09/2008 por RodrigoCMD
  */
 
-public class ValidacaoProblemaImpl {
+public class MensagemProblema {
 	
 	ServicoSolucao  servicoSolucao;
 	ServicoProblema servicoProblema;
@@ -46,19 +46,32 @@ public class ValidacaoProblemaImpl {
 	ServicoMensagem servicoMensagem;
 	ServicoProjeto  servicoProjeto;
 	
-	ValidacaoArquivoImpl validacaoArquivo ;
+	MensagemArquivo validacaoArquivo ;
+	
+	Problema problema ;
+	Desenvolvedor desenvolvedor;
+	
 	private Logger logger = Logger.getLogger(this.getClass());
 	
-	public ValidacaoProblemaImpl() {
+	public MensagemProblema() {
 		servicoProblema = new ServicoProblemaImplDAO();
 		servicoSolucao  = new ServicoSolucaoImplDAO();
 		servicoArquivo  = new ServicoArquivoImplDAO();
 		servicoMensagem = new ServicoMensagemImplDAO();
 		servicoProjeto	= new ServicoProjetoImplDAO();
 		
-		validacaoArquivo = new ValidacaoArquivoImpl();
+		validacaoArquivo = new MensagemArquivo();
 	}
 	
+	public void setProblema(Problema problema) {
+		this.problema = problema;
+	}
+
+	
+	public void setDesenvolvedor(Desenvolvedor desenvolvedor) {
+		this.desenvolvedor = desenvolvedor;
+	}
+
 	/**
 	 * Esse método atualiza o status do problema, ou seja, se ele foi resolvido
 	 * ou não.
@@ -66,11 +79,12 @@ public class ValidacaoProblemaImpl {
 	 * @param status Situacao do problema.
 	 * @return true se a atualizacao foi concluida com sucesso.
 	 */
-	public boolean atualizarStatusDoProblema(int id, boolean status) throws ProblemaInexistenteException{
+	public boolean atualizarStatusDoProblema() throws ProblemaInexistenteException{
 		
-		if (!servicoProblema.problemaExiste(id)) throw new ProblemaInexistenteException();
+		if (problema == null) throw new ProblemaInexistenteException();
+		if (!servicoProblema.problemaExiste(problema.getId())) throw new ProblemaInexistenteException();
 		
-		return servicoProblema.atualizarStatusDoProblema(id, status);
+		return servicoProblema.atualizarStatusDoProblema(problema.getId(), problema.isResolvido());
 	}
 	
 	/**
@@ -83,18 +97,21 @@ public class ValidacaoProblemaImpl {
 	 * @throws IOException 
 	 * @throws ProjetoInexistenteException 
 	 * @throws ConhecimentoNaoEncontradoException 
+	 * @throws ProblemaInexistenteException 
 	 */
-	public Problema cadastrarProblema(Problema problema) 
-	throws DescricaoInvalidaException, IOException, ProjetoInexistenteException, ConhecimentoNaoEncontradoException {
+	public Problema cadastrarProblema() 
+		throws DescricaoInvalidaException, IOException, ProjetoInexistenteException, 
+		ConhecimentoNaoEncontradoException, ProblemaInexistenteException {
 
-		if (!ValidacaoUtil.validaDescricao( problema.getDescricao() )) throw new DescricaoInvalidaException();
-
+		if (problema == null) throw new ProblemaInexistenteException();
+		if (!Util.validaDescricao( problema.getDescricao() )) throw new DescricaoInvalidaException();
 		if (!servicoProjeto.projetoExiste( problema.getProjeto() )) throw new ProjetoInexistenteException();
 
 		this.logger.debug("Validação");
 
-		// Cria uma lista com os Desenvolvedores de cada arquivo java		 
-		Map<ArquivoJava, ArrayList<Desenvolvedor>> arquivoDesenvolvedores = validacaoArquivo.getDesenvolvedoresArquivos(problema);
+		// Cria uma lista com os Desenvolvedores de cada arquivo java		
+		validacaoArquivo.setProblema(problema);
+		Map<ArquivoJava, ArrayList<Desenvolvedor>> arquivoDesenvolvedores = validacaoArquivo.getDesenvolvedoresArquivos();
 		
 		this.logger.debug("Lista com os Desenvolvedores de cada arquivo"); 
 
@@ -146,19 +163,23 @@ public class ValidacaoProblemaImpl {
 	 * @return <Problema>
 	 */	
 	public Problema getProblema(int id) throws ProblemaInexistenteException {
+		if (problema == null) throw new ProblemaInexistenteException();
 		if (!servicoProblema.problemaExiste(id)) throw new ProblemaInexistenteException();
-
-		return servicoProblema.getProblema(id);
+		
+		problema = servicoProblema.getProblema(id);
+		
+		return problema; 
 	}
 	
 	/**
 	 * Esse método verifica se um dado problema existe na base de dados.
 	 * @param id Identificador do problema
 	 * @return true se o problema existir na base de dados.
+	 * @throws ProblemaInexistenteException 
 	 */
-	public boolean problemaExiste(int id) {
-
-		return servicoProblema.problemaExiste(id);
+	public boolean problemaExiste() throws ProblemaInexistenteException {
+		if (problema == null) throw new ProblemaInexistenteException();
+		return servicoProblema.problemaExiste(problema.getId());
 	}
 	
 	/**
@@ -167,7 +188,8 @@ public class ValidacaoProblemaImpl {
 	 * @return true se o problema foi removido da base de dados.
 	 * @throws ProblemaInexistenteException 
 	 */
-	public boolean removerProblema(Problema problema) throws ProblemaInexistenteException {
+	public boolean removerProblema() throws ProblemaInexistenteException {
+		if (problema == null) throw new ProblemaInexistenteException();
 		if (!servicoProblema.problemaExiste(problema.getId())) throw new ProblemaInexistenteException();
 		
 		// Remover Solucoes do Problema
@@ -182,13 +204,14 @@ public class ValidacaoProblemaImpl {
 		return servicoProblema.removerProblema(problema);
 	}
 
-	public ArrayList<Problema> getListaProblema(Desenvolvedor desenvolvedor) {
+	public ArrayList<Problema> getListaProblema() {
 		ArrayList<Problema> problemas = servicoProblema.getListaProblemas(desenvolvedor);
 		return problemas;
 	}
 	
-	public ArrayList<String> getConhecimentosAssociados(String nomeDoProblema) {		
-		ArrayList<String> problemas = servicoProblema.getConhecimentosAssociados(nomeDoProblema);
+	public ArrayList<String> getConhecimentosAssociados() throws ProblemaInexistenteException {		
+		if (problema == null) throw new ProblemaInexistenteException();
+		ArrayList<String> problemas = servicoProblema.getConhecimentosAssociados(problema.getDescricao());
 		return problemas;
 	}
 

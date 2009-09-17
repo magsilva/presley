@@ -10,7 +10,7 @@ import java.util.HashMap;
 import java.util.Set;
 import java.util.Map.Entry;
 
-import com.hukarz.presley.beans.Conhecimento;
+import com.hukarz.presley.beans.TopicoConhecimento;
 import com.hukarz.presley.beans.Desenvolvedor;
 import com.hukarz.presley.excessao.DesenvolvedorInexistenteException;
 import com.hukarz.presley.server.persistencia.MySQLConnectionFactory;
@@ -598,14 +598,14 @@ public class ServicoDesenvolvedorImplDAO implements ServicoDesenvolvedor{
 	}
 
 	// Modificado por Francisco - 16/09 - 18:50
-	public ArrayList<Conhecimento> getConhecimentosDoDesenvolvedor(String email) {
+	public ArrayList<TopicoConhecimento> getConhecimentosDoDesenvolvedor(String email) {
 		//Connection conn = MySQLConnectionFactory.getConnection();
 		Connection conn = MySQLConnectionFactory.open();
 		
 		Statement stm = null;
 		
-		ArrayList<Conhecimento> list = new ArrayList<Conhecimento>();
-		HashMap<Conhecimento, Double> map = new HashMap<Conhecimento, Double>();
+		ArrayList<TopicoConhecimento> list = new ArrayList<TopicoConhecimento>();
+		HashMap<TopicoConhecimento, Double> map = new HashMap<TopicoConhecimento, Double>();
 
 		try {
 
@@ -627,7 +627,7 @@ public class ServicoDesenvolvedorImplDAO implements ServicoDesenvolvedor{
 				
 				ServicoConhecimento sc = new ServicoConhecimentoImplDAO();
 
-				Conhecimento conhecimento = sc.getConhecimento(nomeConhecimento);
+				TopicoConhecimento conhecimento = sc.getConhecimento(nomeConhecimento);
 
 				//list.add(conhecimento);
 				map.put(conhecimento, grau);
@@ -648,20 +648,20 @@ public class ServicoDesenvolvedorImplDAO implements ServicoDesenvolvedor{
 			}
 		}
 		
-		Set<Entry<Conhecimento, Double>> set = map.entrySet();
+		Set<Entry<TopicoConhecimento, Double>> set = map.entrySet();
 		
-		for(Entry<Conhecimento, Double> c : set)
+		for(Entry<TopicoConhecimento, Double> c : set)
 			list.add(c.getKey());
 		return list;
 	}
 	
-	public HashMap<Conhecimento, Double> getConhecimentosDoDesenvolvedor(String email, int x) {
+	public HashMap<TopicoConhecimento, Double> getConhecimentosDoDesenvolvedor(String email, int x) {
 		//Connection conn = MySQLConnectionFactory.getConnection();
 		Connection conn = MySQLConnectionFactory.open();
 		
 		Statement stm = null;
 		
-		HashMap<Conhecimento, Double> map = new HashMap<Conhecimento, Double>();
+		HashMap<TopicoConhecimento, Double> map = new HashMap<TopicoConhecimento, Double>();
 
 		try {
 
@@ -683,7 +683,7 @@ public class ServicoDesenvolvedorImplDAO implements ServicoDesenvolvedor{
 				
 				ServicoConhecimento sc = new ServicoConhecimentoImplDAO();
 
-				Conhecimento conhecimento = sc.getConhecimento(nomeConhecimento);
+				TopicoConhecimento conhecimento = sc.getConhecimento(nomeConhecimento);
 
 				//list.add(conhecimento);
 				map.put(conhecimento, grau);
@@ -796,7 +796,7 @@ public class ServicoDesenvolvedorImplDAO implements ServicoDesenvolvedor{
 	}
 
 	
-	public ArrayList<Desenvolvedor> getDesenvolvedoresPorConhecimento(Conhecimento conhecimento) {
+	public ArrayList<Desenvolvedor> getDesenvolvedoresPorConhecimento(TopicoConhecimento conhecimento) {
 		//Connection conn = MySQLConnectionFactory.getConnection();
 		Connection conn = MySQLConnectionFactory.open();
 		

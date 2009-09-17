@@ -13,7 +13,7 @@ import java.util.Set;
 import org.apache.log4j.Logger;
 
 import com.hukarz.presley.beans.Arquivo;
-import com.hukarz.presley.beans.Conhecimento;
+import com.hukarz.presley.beans.TopicoConhecimento;
 import com.hukarz.presley.server.persistencia.MySQLConnectionFactory;
 import com.hukarz.presley.server.persistencia.interfaces.ServicoArquivo;
 
@@ -382,8 +382,8 @@ public class ServicoArquivoImplDAO implements ServicoArquivo {
 	}
 
 	@Override
-	public Map<Integer, Conhecimento> getIdArquivosPorConhecimento() {
-		Map<Integer, Conhecimento> retorno = new HashMap<Integer, Conhecimento>();
+	public Map<Integer, TopicoConhecimento> getIdArquivosPorConhecimento() {
+		Map<Integer, TopicoConhecimento> retorno = new HashMap<Integer, TopicoConhecimento>();
 		
 		Connection conn = MySQLConnectionFactory.open();
 		Statement stm = null;
@@ -397,7 +397,7 @@ public class ServicoArquivoImplDAO implements ServicoArquivo {
 			ResultSet rs = stm.executeQuery(SQL);
 			
 			while (rs.next()) {
-				Conhecimento conhecimento = new Conhecimento( ) ;
+				TopicoConhecimento conhecimento = new TopicoConhecimento( ) ;
 				conhecimento.setNome( rs.getString("conhecimento_nome"));
 				retorno.put(rs.getInt("arquivo_id"), conhecimento);
 			}

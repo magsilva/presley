@@ -1,12 +1,9 @@
 package com.hukarz.presley.server.usuario;
 
-
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Set;
 
-import com.hukarz.presley.beans.Conhecimento;
+import com.hukarz.presley.beans.TopicoConhecimento;
 import com.hukarz.presley.beans.DadosAutenticacao;
 import com.hukarz.presley.beans.Desenvolvedor;
 import com.hukarz.presley.beans.Solucao;
@@ -24,7 +21,7 @@ import com.hukarz.presley.server.persistencia.implementacao.ServicoSolucaoImplDA
 import com.hukarz.presley.server.persistencia.interfaces.ServicoConhecimento;
 import com.hukarz.presley.server.persistencia.interfaces.ServicoDesenvolvedor;
 import com.hukarz.presley.server.persistencia.interfaces.ServicoSolucao;
-import com.hukarz.presley.server.util.ValidacaoUtil;
+import com.hukarz.presley.server.util.Util;
 
 /**
  * 
@@ -42,20 +39,17 @@ public class Usuario {
 	Desenvolvedor desenvolvedor;
 	
 	public Usuario() {
-		inicializar();
-	}
-
-	public Usuario(Desenvolvedor desenvolvedor) {
-		inicializar();
-		this.desenvolvedor = desenvolvedor;
-	}
-	
-	private void inicializar() {
 		servicoConhecimento = new ServicoConhecimentoImplDAO();
 		servicoDesenvolvedor = new ServicoDesenvolvedorImplDAO();
 		servicoSolucao = new ServicoSolucaoImplDAO();
 	}
+
 	
+	public void setDesenvolvedor(Desenvolvedor desenvolvedor) {
+		this.desenvolvedor = desenvolvedor;
+	}
+
+
 	/**
 	 * Esse mtodo adiciona um conhecimento previamente cadastrado a um desenvolvedor.
 	 * @param emailDesenvolvedor Email do desenvolvedor.
@@ -93,7 +87,7 @@ public class Usuario {
 //		if (!servicoDesenvolvedor.desenvolvedorExiste(desenvolvedor.getEmail())) throw new DesenvolvedorInexistenteException();
 		if (desenvolvedor==null) throw new DesenvolvedorInexistenteException();
 		
-		if (!ValidacaoUtil.validaSenha(senha)) throw new SenhaInvalidaException();
+		if (!Util.validaSenha(senha)) throw new SenhaInvalidaException();
 
 		desenvolvedor.setEmail(novoEmail);
 		desenvolvedor.setCVSNome(cvsNome);
@@ -183,7 +177,7 @@ public class Usuario {
 	 * @throws DescricaoInvalidaException 
 	 * @throws DesenvolvedorInexistenteException 
 	 */
-	public ArrayList<Conhecimento> getConhecimentosDoDesenvolvedor() 
+	public ArrayList<TopicoConhecimento> getConhecimentosDoDesenvolvedor() 
 		throws DescricaoInvalidaException, DesenvolvedorInexistenteException  {
 		if (desenvolvedor==null) throw new DesenvolvedorInexistenteException();
 		
@@ -245,11 +239,11 @@ public class Usuario {
 		}
 		
 		// Desassociar Conhecimentos
-		ArrayList<Conhecimento> conhecimentos = servicoDesenvolvedor.getConhecimentosDoDesenvolvedor(email);
-		Iterator<Conhecimento> it2 = conhecimentos.iterator();
+		ArrayList<TopicoConhecimento> conhecimentos = servicoDesenvolvedor.getConhecimentosDoDesenvolvedor(email);
+		Iterator<TopicoConhecimento> it2 = conhecimentos.iterator();
 		
 		while (it2.hasNext()) {
-			Conhecimento conhecimento = it2.next();
+			TopicoConhecimento conhecimento = it2.next();
 			servicoDesenvolvedor.removerConhecimentoDoDesenvolvedor(email, conhecimento.getNome());
 		}
 		

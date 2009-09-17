@@ -8,31 +8,40 @@ import com.hukarz.presley.excessao.ProjetoInexistenteException;
 import com.hukarz.presley.server.persistencia.implementacao.ServicoProjetoImplDAO;
 import com.hukarz.presley.server.persistencia.interfaces.ServicoProjeto;
 
-public class ValidacaoProjetoImpl {
+public class CadastroProjeto {
 
 	ServicoProjeto servicoProjeto; 
-
-	public ValidacaoProjetoImpl() {
+	Projeto projeto;
+	
+	public CadastroProjeto() {
 		servicoProjeto = new ServicoProjetoImplDAO() ;
 	}
 
+	public void setProjeto(Projeto projeto) {
+		this.projeto = projeto;
+	}
+
 	public Projeto getProjetoAtivo() {
-		return servicoProjeto.getProjetoAtivo() ;
+		projeto = servicoProjeto.getProjetoAtivo() ; 
+		return projeto;
 	}
 	
-	public boolean criarProjeto(Projeto projeto) throws NomeInvalidoException {
+	public boolean criarProjeto() throws NomeInvalidoException, ProjetoInexistenteException {
+		if (projeto == null) throw new ProjetoInexistenteException();
 		if (servicoProjeto.projetoExiste(projeto)) throw new NomeInvalidoException();
 			
 		return servicoProjeto.criarProjeto(projeto) ;
 	}
 	
-	public boolean removerProjeto(Projeto projeto) throws ProjetoInexistenteException {
+	public boolean removerProjeto() throws ProjetoInexistenteException {
+		if (projeto == null) throw new ProjetoInexistenteException();
 		if (!servicoProjeto.projetoExiste(projeto)) throw new ProjetoInexistenteException();
 		
 		return servicoProjeto.removerProjeto(projeto);
 	}
 	
-	public boolean atualizarStatusProjeto(Projeto projeto) throws ProjetoInexistenteException {
+	public boolean atualizarStatusProjeto() throws ProjetoInexistenteException {
+		if (projeto == null) throw new ProjetoInexistenteException();
 		if (!servicoProjeto.projetoExiste(projeto)) throw new ProjetoInexistenteException();
 		
 		return servicoProjeto.atualizarStatusProjeto(projeto);

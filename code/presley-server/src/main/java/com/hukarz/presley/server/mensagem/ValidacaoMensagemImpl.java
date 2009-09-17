@@ -14,9 +14,10 @@ import com.hukarz.presley.server.usuario.Usuario;
 public class ValidacaoMensagemImpl {
 
 	ServicoMensagemImplDAO servicoMensagem;
+	Usuario validacaoDesenvolvedor;
 
 	public ValidacaoMensagemImpl() {
-
+		validacaoDesenvolvedor = new Usuario();
 		servicoMensagem = new ServicoMensagemImplDAO();
 	}
 
@@ -32,7 +33,7 @@ public class ValidacaoMensagemImpl {
 	public boolean adicionarMensagem(ArrayList<Desenvolvedor> desenvolvedoresDestino, Problema problema) throws DesenvolvedorInexistenteException {
 
 		for(Desenvolvedor d : desenvolvedoresDestino) {
-			Usuario validacaoDesenvolvedor = new Usuario(d);
+			validacaoDesenvolvedor.setDesenvolvedor(d);
 			if(!validacaoDesenvolvedor.desenvolvedorExiste()) throw new DesenvolvedorInexistenteException();
 		}
 		
