@@ -43,12 +43,12 @@ public class RegistroLogControleVersaoImpl {
 	private Projeto projeto;
 	
 	public RegistroLogControleVersaoImpl() {
-		projeto = servicoProjeto.getProjetoAtivo();
-
 		servicoLogControleVersao = new ServicoLogControleVersaoImplDAO();
 		servicoProjeto = new ServicoProjetoImplDAO();
 		servicoDesenvolvedor = new ServicoDesenvolvedorImplDAO();
-		servicoArquivo = new ServicoArquivoImplDAO(); 
+		servicoArquivo = new ServicoArquivoImplDAO();
+		
+		projeto = servicoProjeto.getProjetoAtivo();
 	}
 
 	public void registrarLogDoArquivo() {
