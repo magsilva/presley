@@ -200,13 +200,16 @@ public class ServerBridgeImp implements ServerBridge {
 			break;
 
 		case CorePresleyOperations.REMOVER_DESENVOLVEDOR:
-			retorno = executeClientQuery.removerDesenvolvedor(packet);
-			typeRetorno = CorePresleyOperations.REMOVER_DESENVOLVEDOR;
-
+			try {
+				retorno = executeClientQuery.removerDesenvolvedor(packet);
+				typeRetorno = CorePresleyOperations.REMOVER_DESENVOLVEDOR;
+			} catch (DesenvolvedorInexistenteException e2) {
+				retorno = "ERRO: Desenvolvedor Não Informado.";
+			}
 
 			pktRetorno = new PacketStruct(retorno, typeRetorno);
 			break;
-			
+
 		case CorePresleyOperations.OBTER_MENSAGENS:
 			retorno = executeClientQuery.obterMensagens(packet);
 			typeRetorno = CorePresleyOperations.OBTER_MENSAGENS;

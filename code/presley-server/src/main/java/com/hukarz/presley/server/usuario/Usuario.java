@@ -41,12 +41,19 @@ public class Usuario {
 	ServicoDesenvolvedor servicoDesenvolvedor;
 	Desenvolvedor desenvolvedor;
 	
+	public Usuario() {
+		inicializar();
+	}
+
 	public Usuario(Desenvolvedor desenvolvedor) {
+		inicializar();
+		this.desenvolvedor = desenvolvedor;
+	}
+	
+	private void inicializar() {
 		servicoConhecimento = new ServicoConhecimentoImplDAO();
 		servicoDesenvolvedor = new ServicoDesenvolvedorImplDAO();
 		servicoSolucao = new ServicoSolucaoImplDAO();
-		
-		this.desenvolvedor = desenvolvedor;
 	}
 	
 	/**
@@ -56,10 +63,12 @@ public class Usuario {
 	 * @return true se o conhecimento foi adicionado ao desenvolvedor.
 	 * @throws DescricaoInvalidaException 
 	 * @throws ConhecimentoInexistenteException 
+	 * @throws DesenvolvedorInexistenteException 
 	 */
 	public boolean adicionarConhecimentoAoDesenvolvedor(
-			String nomeConhecimento, int grau, int qntResposta) throws DescricaoInvalidaException, ConhecimentoInexistenteException {
+			String nomeConhecimento, int grau, int qntResposta) throws DescricaoInvalidaException, ConhecimentoInexistenteException, DesenvolvedorInexistenteException {
 		
+		if (desenvolvedor==null) throw new DesenvolvedorInexistenteException();
 		if (!servicoDesenvolvedor.desenvolvedorExiste(desenvolvedor.getEmail())) throw new DescricaoInvalidaException();
 		if (!servicoConhecimento.conhecimentoExiste(nomeConhecimento)) throw new ConhecimentoInexistenteException();
 		
@@ -82,6 +91,8 @@ public class Usuario {
 			String nome, String cvsNome, String senha) throws DesenvolvedorInexistenteException, SenhaInvalidaException {
 		
 //		if (!servicoDesenvolvedor.desenvolvedorExiste(desenvolvedor.getEmail())) throw new DesenvolvedorInexistenteException();
+		if (desenvolvedor==null) throw new DesenvolvedorInexistenteException();
+		
 		if (!ValidacaoUtil.validaSenha(senha)) throw new SenhaInvalidaException();
 
 		desenvolvedor.setEmail(novoEmail);
@@ -102,6 +113,7 @@ public class Usuario {
 	 */
 	public boolean desenvolvedorTemConhecimento(String nomeConhecimento) throws DesenvolvedorInexistenteException, ConhecimentoInexistenteException {
 		
+		if (desenvolvedor==null) throw new DesenvolvedorInexistenteException();
 		if (!servicoDesenvolvedor.desenvolvedorExiste(desenvolvedor.getEmail())) throw new DesenvolvedorInexistenteException();
 		if (!servicoConhecimento.conhecimentoExiste(nomeConhecimento)) throw new ConhecimentoInexistenteException();
 		
@@ -117,9 +129,11 @@ public class Usuario {
 	 * @throws DesenvolvedorInexistenteException 
 	 * @throws SenhaInvalidaException 
 	 * @throws ListagemDeConhecimentoInexistenteException 
+	 * @throws DesenvolvedorInexistenteException 
 	 */
-	public boolean criarDesenvolvedor() throws DesenvolvedorExisteException, SenhaInvalidaException, ListagemDeConhecimentoInexistenteException {
+	public boolean criarDesenvolvedor() throws DesenvolvedorExisteException, SenhaInvalidaException, ListagemDeConhecimentoInexistenteException, DesenvolvedorInexistenteException {
 		
+		if (desenvolvedor==null) throw new DesenvolvedorInexistenteException();
 		if (servicoDesenvolvedor.desenvolvedorExiste(desenvolvedor.getEmail())) throw new DesenvolvedorExisteException();
 		//if (!ValidacaoUtil.validaSenha(senha)) throw new SenhaInvalidaException();
 		
@@ -153,8 +167,11 @@ public class Usuario {
 	 * Esse mtodo verifica se um dado desenvolvedor est cadastrado no sistema.
 	 * @param email Email do desenvolvedor
 	 * @return true se o desenvolvedro estiver cadastrado no sistema.
+	 * @throws DesenvolvedorInexistenteException 
 	 */
-	public boolean desenvolvedorExiste() {
+	public boolean desenvolvedorExiste() throws DesenvolvedorInexistenteException {
+		if (desenvolvedor==null) throw new DesenvolvedorInexistenteException();
+		
 		return servicoDesenvolvedor.desenvolvedorExiste(desenvolvedor.getEmail());
 	}
 	
@@ -164,9 +181,11 @@ public class Usuario {
 	 * @param email Email do desenvolvedor
 	 * @return ArrayList<TopicoConhecimento>
 	 * @throws DescricaoInvalidaException 
+	 * @throws DesenvolvedorInexistenteException 
 	 */
 	public ArrayList<Conhecimento> getConhecimentosDoDesenvolvedor() 
-		throws DescricaoInvalidaException  {
+		throws DescricaoInvalidaException, DesenvolvedorInexistenteException  {
+		if (desenvolvedor==null) throw new DesenvolvedorInexistenteException();
 		
 		if (!servicoDesenvolvedor.desenvolvedorExiste(desenvolvedor.getEmail())) throw new DescricaoInvalidaException();
 		
@@ -179,10 +198,10 @@ public class Usuario {
 	 * @return <Desenvolvedor> 
 	 * @throws DesenvolvedorInexistenteException 
 	 */
-	public Desenvolvedor getDesenvolvedor() throws DesenvolvedorInexistenteException {
+	public Desenvolvedor getDesenvolvedor(String email) throws DesenvolvedorInexistenteException {
 		
-		Desenvolvedor desenvolvedor = servicoDesenvolvedor.getDesenvolvedor(this.desenvolvedor.getEmail());
-		if (desenvolvedor == null) throw new DesenvolvedorInexistenteException();
+		Desenvolvedor desenvolvedor = servicoDesenvolvedor.getDesenvolvedor(email);
+		if (desenvolvedor==null) throw new DesenvolvedorInexistenteException();
 		
 		this.desenvolvedor.setCVSNome( desenvolvedor.getCVSNome() ) ;
 		this.desenvolvedor.setEmail( desenvolvedor.getEmail() );
@@ -199,8 +218,10 @@ public class Usuario {
 	 * @param emailDesenvolvedor Email do desenvolvedor.
 	 * @param nomeConhecimento Nome do conhecimento a ser removido do desenvolvedor.
 	 * @return true se a associacao foi desfeita.
+	 * @throws DesenvolvedorInexistenteException 
 	 */
-	public boolean removerConhecimentoDoDesenvolvedor( String nomeConhecimento) {
+	public boolean removerConhecimentoDoDesenvolvedor( String nomeConhecimento) throws DesenvolvedorInexistenteException {
+		if (desenvolvedor==null) throw new DesenvolvedorInexistenteException();
 		return servicoDesenvolvedor.removerConhecimentoDoDesenvolvedor(desenvolvedor.getEmail(), nomeConhecimento);
 	}
 	
@@ -208,8 +229,10 @@ public class Usuario {
 	 * Esse mtodo remove um desenvolvedor da base de dados. 
 	 * @param email Email do desenvolvedor.
 	 * @return true se o desenvolvedor foi removido com sucesso.
+	 * @throws DesenvolvedorInexistenteException 
 	 */
-	public boolean removerDesenvolvedor() {
+	public boolean removerDesenvolvedor() throws DesenvolvedorInexistenteException {
+		if (desenvolvedor==null) throw new DesenvolvedorInexistenteException();
 		String email = desenvolvedor.getEmail();
 		
 		// Remover Solucoes do Desenvolvedor
@@ -250,6 +273,7 @@ public class Usuario {
 	public int getQntResposta(String nomeConhecimento) 
 		throws ConhecimentoInexistenteException, DesenvolvedorInexistenteException {
 		
+		if (desenvolvedor==null) throw new DesenvolvedorInexistenteException();
 		if (!servicoDesenvolvedor.desenvolvedorExiste( desenvolvedor.getEmail() )) throw new DesenvolvedorInexistenteException();
 		if (!servicoConhecimento.conhecimentoExiste(nomeConhecimento)) throw new ConhecimentoInexistenteException();
 		
@@ -265,6 +289,7 @@ public class Usuario {
 	public int getGrau(String nomeConhecimento) 
 		throws ConhecimentoInexistenteException, DesenvolvedorInexistenteException {
 		
+		if (desenvolvedor==null) throw new DesenvolvedorInexistenteException();
 		if (!servicoDesenvolvedor.desenvolvedorExiste(desenvolvedor.getEmail())) throw new DesenvolvedorInexistenteException();
 		if (!servicoConhecimento.conhecimentoExiste(nomeConhecimento)) throw new ConhecimentoInexistenteException();
 		
@@ -280,6 +305,7 @@ public class Usuario {
 	public boolean updateQntResposta(String nomeConhecimento, int quantidade)
 		throws DesenvolvedorInexistenteException, ConhecimentoInexistenteException{
 		
+		if (desenvolvedor==null) throw new DesenvolvedorInexistenteException();
 		if (!servicoDesenvolvedor.desenvolvedorExiste(desenvolvedor.getEmail())) throw new DesenvolvedorInexistenteException();
 		if (!servicoConhecimento.conhecimentoExiste(nomeConhecimento)) throw new ConhecimentoInexistenteException();
 		
@@ -296,6 +322,7 @@ public class Usuario {
 	public boolean updateGrau(String email, String nomeConhecimento, int grau)
 		throws DesenvolvedorInexistenteException, ConhecimentoInexistenteException{
 		
+		if (desenvolvedor==null) throw new DesenvolvedorInexistenteException();
 		if (!servicoDesenvolvedor.desenvolvedorExiste(email)) throw new DesenvolvedorInexistenteException();
 		if (!servicoConhecimento.conhecimentoExiste(nomeConhecimento)) throw new ConhecimentoInexistenteException();
 		
@@ -330,6 +357,7 @@ public class Usuario {
 	}
 	
 	public Desenvolvedor getDesenvolvedorPorNome() throws DesenvolvedorInexistenteException {
+		if (desenvolvedor==null) throw new DesenvolvedorInexistenteException();
 		desenvolvedor = servicoDesenvolvedor.getDesenvolvedorPorNome(desenvolvedor.getNome()) ;
 		return desenvolvedor;
 	}

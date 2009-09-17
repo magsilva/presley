@@ -129,18 +129,22 @@ public class ExecuteClientQuery implements CorePresleyOperations{
 	}
 
 	public ArrayList<Desenvolvedor> getListaDesenvolvedores() {
-		Usuario validacaoDesenvolvedor = new Usuario( desenvolvedor );
+		Usuario validacaoDesenvolvedor = new Usuario( );
 
 		return validacaoDesenvolvedor.getListaDesenvolvedores();
 	}
 
 	public Desenvolvedor login(PacketStruct packet) throws DesenvolvedorInexistenteException, EmailInvalidoException, SenhaInvalidaException, ErroDeAutenticacaoException {
 		DadosAutenticacao authData = (DadosAutenticacao) packet.getData();
+		
+		Usuario validacaoDesenvolvedor = new Usuario( );
 		Desenvolvedor desenvolvedor = validacaoDesenvolvedor.autenticaDesenvolvedor(authData);
 
 		return desenvolvedor;
 	}
+
 	public Desenvolvedor login(DadosAutenticacao authData) throws DesenvolvedorInexistenteException, EmailInvalidoException, SenhaInvalidaException, ErroDeAutenticacaoException {
+		Usuario validacaoDesenvolvedor = new Usuario( );
 		return validacaoDesenvolvedor.autenticaDesenvolvedor(authData);
 	}
 
@@ -199,11 +203,11 @@ public class ExecuteClientQuery implements CorePresleyOperations{
 		return validacaoConhecimento.possuiFilhos();
 	}
 
-	public boolean removerDesenvolvedor(PacketStruct packet) {
+	public boolean removerDesenvolvedor(PacketStruct packet) throws DesenvolvedorInexistenteException {
 		Desenvolvedor desenvolvedor = (Desenvolvedor)packet.getData();
 		return this.removerDesenvolvedor(desenvolvedor);
 	}
-	public boolean removerDesenvolvedor(Desenvolvedor desenvolvedor) {
+	public boolean removerDesenvolvedor(Desenvolvedor desenvolvedor) throws DesenvolvedorInexistenteException {
 		Usuario validacaoDesenvolvedor = new Usuario(desenvolvedor);
 		return validacaoDesenvolvedor.removerDesenvolvedor();
 	}
@@ -408,5 +412,5 @@ public class ExecuteClientQuery implements CorePresleyOperations{
 		
 		return validacaoDesenvolvedor.getDesenvolvedorPorNome();
 	}
-	
+
 }

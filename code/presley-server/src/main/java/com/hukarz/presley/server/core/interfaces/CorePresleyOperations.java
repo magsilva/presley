@@ -160,7 +160,7 @@ public interface CorePresleyOperations {
 	
 	public boolean possuiFilhos(Conhecimento conhecimento) throws ConhecimentoInexistenteException;
 
-	public boolean removerDesenvolvedor(Desenvolvedor desenvolvedor);
+	public boolean removerDesenvolvedor(Desenvolvedor desenvolvedor) throws DesenvolvedorInexistenteException;
 
 	/**
 	 * Este método Adiciona um problema 
