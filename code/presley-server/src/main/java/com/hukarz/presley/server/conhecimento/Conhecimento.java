@@ -219,7 +219,8 @@ public class Conhecimento {
 		for (Iterator<Arquivo> iterator = arquivos.iterator(); iterator.hasNext();) {
 			Arquivo arquivo = iterator.next();
 			Classificador processaDocumento = new Classificador() ;
-			arquivo = processaDocumento.getDocumentoProcessado(arquivo) ;
+			processaDocumento.setTexto( arquivo.getTexto() );
+			arquivo = processaDocumento.transformaTextoEmArquivo() ;
 			
 			if (!servicoArquivo.arquivoExiste(arquivo)){
 				servicoArquivo.criarArquivo(arquivo);

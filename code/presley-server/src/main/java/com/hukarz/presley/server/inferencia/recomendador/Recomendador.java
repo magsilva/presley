@@ -7,15 +7,13 @@ import java.util.Iterator;
 import java.util.Map;
 
 import com.hukarz.presley.beans.ArquivoJava;
-import com.hukarz.presley.beans.TopicoConhecimento;
 import com.hukarz.presley.beans.Desenvolvedor;
 import com.hukarz.presley.beans.Problema;
+import com.hukarz.presley.beans.TopicoConhecimento;
 import com.hukarz.presley.server.inferencia.RegistroExperimento;
 import com.hukarz.presley.server.persistencia.implementacao.ServicoConhecimentoImplDAO;
-import com.hukarz.presley.server.persistencia.implementacao.ServicoDesenvolvedorImplDAO;
 import com.hukarz.presley.server.persistencia.implementacao.ServicoMensagemImplDAO;
 import com.hukarz.presley.server.persistencia.interfaces.ServicoConhecimento;
-import com.hukarz.presley.server.persistencia.interfaces.ServicoDesenvolvedor;
 import com.hukarz.presley.server.persistencia.interfaces.ServicoMensagem;
 
 
@@ -34,8 +32,19 @@ import com.hukarz.presley.server.persistencia.interfaces.ServicoMensagem;
  */
 public class Recomendador {
 
-	public ArrayList<Desenvolvedor> getDesenvolvedores(Map<ArquivoJava, ArrayList<Desenvolvedor>> arquivoDesenvolvedores,
-			Problema problema) throws FileNotFoundException {
+	protected Map<ArquivoJava, ArrayList<Desenvolvedor>> arquivoDesenvolvedores;
+	protected Problema problema;
+	
+	public void setArquivoDesenvolvedores(
+			Map<ArquivoJava, ArrayList<Desenvolvedor>> arquivoDesenvolvedores) {
+		this.arquivoDesenvolvedores = arquivoDesenvolvedores;
+	}
+
+	public void setProblema(Problema problema) {
+		this.problema = problema;
+	}
+
+	public ArrayList<Desenvolvedor> getDesenvolvedores( ) throws FileNotFoundException {
 
 		Map<Desenvolvedor, Integer> participacaoDesenvolvedorArquivo = getParticipacaoDesenvolvedores(arquivoDesenvolvedores);
 		Map<Desenvolvedor, Integer> participacaoDesenvolvedorConhecimento = getParticipacaoDesenvolvedores(problema.getConhecimento(), problema.getDesenvolvedorOrigem());

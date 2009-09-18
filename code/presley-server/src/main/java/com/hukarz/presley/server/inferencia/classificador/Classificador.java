@@ -12,7 +12,7 @@ import java.util.StringTokenizer;
 import com.hukarz.presley.beans.Arquivo;
 
 public class Classificador {
-	
+/*	
 	public Arquivo getDocumentoProcessado(Arquivo arquivo) throws IOException {
 		
 		arquivo.setQtdPalavrasTotal( qtdPalavrasTotal( arquivo.getTexto() ) ) ;
@@ -22,8 +22,14 @@ public class Classificador {
 
 		return arquivo;
 	}
+*/	
+	private String texto;
 
-	public Arquivo transformaTextoEmArquivo(String texto) throws IOException {
+	public void setTexto(String texto) {
+		this.texto = texto;
+	}
+
+	public Arquivo transformaTextoEmArquivo() throws IOException {
 		Arquivo arquivo = new Arquivo("");
 		arquivo.setQtdPalavrasTotal( qtdPalavrasTotal( texto ) ) ;
 		arquivo.setTexto( identificacaoDePalavras( texto.toUpperCase() ) ) ;

@@ -14,9 +14,7 @@ import com.hukarz.presley.server.inferencia.RegistroExperimento;
 public class RecomendadorLine10 extends Recomendador {
 
 	@Override
-	public ArrayList<Desenvolvedor> getDesenvolvedores(
-			Map<ArquivoJava, ArrayList<Desenvolvedor>> arquivoDesenvolvedores,
-			Problema problema) throws FileNotFoundException {
+	public ArrayList<Desenvolvedor> getDesenvolvedores() throws FileNotFoundException {
 		Map<Desenvolvedor, Integer> participacaoDesenvolvedorArquivo = 
 			getParticipacaoDesenvolvedores(arquivoDesenvolvedores);
 		

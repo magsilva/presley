@@ -128,9 +128,9 @@ public class MensagemProblema {
 				//e.printStackTrace();
 			}			
 		}
-				
-		problema.setConhecimento( processaSimilaridade.verificaConhecimentoDoTexto( problema.getDescricao() + "  " + 
-				problema.getMensagem() + " " + comentariosCodigo ) ) ;
+		
+		processaSimilaridade.setTexto( problema.getDescricao() + "  " + problema.getMensagem() + " " + comentariosCodigo);
+		problema.setConhecimento( processaSimilaridade.verificaConhecimentoDoTexto( ) ) ;
 		
 /*
 		Conhecimento conhecimento = new Conhecimento();
@@ -146,8 +146,9 @@ public class MensagemProblema {
 		if (problema.isTemResposta()){
 			// Retorna os desenvolvedores que receberão o problema
 			Recomendador inferencia = new Recomendador();
-			ArrayList<Desenvolvedor> desenvolvedores = inferencia.getDesenvolvedores(arquivoDesenvolvedores, 
-					problema);
+			inferencia.setArquivoDesenvolvedores(arquivoDesenvolvedores);
+			inferencia.setProblema(problema);
+			ArrayList<Desenvolvedor> desenvolvedores = inferencia.getDesenvolvedores();
 			
 			servicoMensagem.adicionarMensagem(desenvolvedores, problema);
 			

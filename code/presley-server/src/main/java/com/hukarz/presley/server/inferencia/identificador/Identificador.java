@@ -18,16 +18,22 @@ import com.hukarz.presley.server.persistencia.interfaces.ServicoConhecimento;
 
 public class Identificador {
 
-	Classificador processaDocumento = new Classificador();
-	ServicoConhecimento servicoConhecimento = new ServicoConhecimentoImplDAO();
-	ServicoArquivo servicoArquivo = new ServicoArquivoImplDAO();
-	int qtdeArquivos = 0;
-	
-	public TopicoConhecimento verificaConhecimentoDoTexto(String texto) throws IOException, ConhecimentoNaoEncontradoException{
+	private Classificador processaDocumento = new Classificador();
+	private ServicoConhecimento servicoConhecimento = new ServicoConhecimentoImplDAO();
+	private ServicoArquivo servicoArquivo = new ServicoArquivoImplDAO();
+	private int qtdeArquivos = 0;
+	private String texto;
+
+	public void setTexto(String texto) {
+		this.texto = texto;
+	}
+
+	public TopicoConhecimento verificaConhecimentoDoTexto() throws IOException, ConhecimentoNaoEncontradoException{
 		ArrayList<Arquivo> arquivos = servicoArquivo.getListaArquivo();
 		qtdeArquivos = arquivos.size();
 		
-		Arquivo arquivoTexto = processaDocumento.transformaTextoEmArquivo(texto);
+		processaDocumento.setTexto(texto);
+		Arquivo arquivoTexto = processaDocumento.transformaTextoEmArquivo();
 		Arquivo arquivoMaisSimilar = null; 
 		
 		double grauDeSimilaridadeMaior = -1;
@@ -58,7 +64,7 @@ public class Identificador {
 	gs(X,Y)=___________
 	             N
 	 */
-	public double calculaGrauDeSimilaridadeEntreTextos(Arquivo documento1, Arquivo documento2){
+	private double calculaGrauDeSimilaridadeEntreTextos(Arquivo documento1, Arquivo documento2){
 		double somatorioGrauIgualdade = 0;
 		
 		Map<String, Integer> texto1 = documento1.getTermosSelecionados();
