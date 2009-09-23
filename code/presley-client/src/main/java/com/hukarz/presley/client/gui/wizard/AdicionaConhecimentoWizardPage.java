@@ -26,7 +26,9 @@ import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 
 import com.hukarz.presley.beans.TopicoConhecimento;
+import com.hukarz.presley.client.gui.component.ArvoreGraficaDeConhecimentos;
 import com.hukarz.presley.client.gui.view.Dominio;
+import com.hukarz.presley.interfaces.Conhecimento;
 
 
 public class AdicionaConhecimentoWizardPage extends WizardPage {
@@ -152,7 +154,10 @@ public class AdicionaConhecimentoWizardPage extends WizardPage {
         });
         
         try{
-        	arvoreConhecimento = dominio.getViewComunication().getArvoreGraficaDeConhecimentos(controls, SWT.BORDER | SWT.CHECK);
+			Conhecimento conhecimento = dominio.getConhecimento();
+			ArvoreGraficaDeConhecimentos arGraficaDeConhecimentos = new ArvoreGraficaDeConhecimentos();
+
+        	arvoreConhecimento = arGraficaDeConhecimentos.getArvoreGraficaDeConhecimentos(conhecimento.getArvoreDeConhecimentos(), controls, SWT.BORDER | SWT.CHECK);
         	arvoreConhecimento.addListener(SWT.Selection, new Listener() {
 			
 				public void handleEvent(Event e) {

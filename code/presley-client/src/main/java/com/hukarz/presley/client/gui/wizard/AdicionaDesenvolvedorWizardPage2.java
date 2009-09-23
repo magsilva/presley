@@ -1,5 +1,6 @@
 package com.hukarz.presley.client.gui.wizard;
 
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Hashtable;
 
@@ -22,6 +23,7 @@ import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 
 import com.hukarz.presley.beans.TopicoConhecimento;
+import com.hukarz.presley.client.gui.component.ArvoreGraficaDeConhecimentos;
 import com.hukarz.presley.client.gui.view.MensagemAba;
 
 public class AdicionaDesenvolvedorWizardPage2 extends WizardPage {
@@ -67,7 +69,7 @@ public class AdicionaDesenvolvedorWizardPage2 extends WizardPage {
     }
     
     
-    public ArrayList<TopicoConhecimento> getConhecimentos(){
+    public ArrayList<TopicoConhecimento> getConhecimentos() throws RemoteException{
     	ArrayList<String> conhecimentosNomes = new ArrayList<String>();
     	//Atualiza a lista de Conhecimetos existentes
     	//Armazena os nomes dos conheciementos selecionados na arvore gráfica
@@ -84,7 +86,7 @@ public class AdicionaDesenvolvedorWizardPage2 extends WizardPage {
     	
     	//Fazendo um mapeamento entre o nome dos conhecimentos e o conhecimento
     	//para agilizar a recuperação mais a frente
-    	for (TopicoConhecimento conh : this.mensagemAba.getViewComunication().getListaConhecimentos()) {
+    	for (TopicoConhecimento conh : this.mensagemAba.getConhecimento().getListaConhecimento()) {
 			tabelaConhecimentos.put(conh.getNome(), conh);
 		}
     	
@@ -140,8 +142,8 @@ public class AdicionaDesenvolvedorWizardPage2 extends WizardPage {
         label.setText("Selecione os conhecimentos que serão validados:");
         
         try{
-        	
-        	arvoreConhecimento = mensagemAba.getViewComunication().getArvoreGraficaDeConhecimentos(controls, SWT.BORDER );
+        	ArvoreGraficaDeConhecimentos arvGraficaDeConhecimentos = new ArvoreGraficaDeConhecimentos();
+        	arvoreConhecimento = arvGraficaDeConhecimentos.getArvoreGraficaDeConhecimentos( mensagemAba.getConhecimento().getArvoreDeConhecimentos(), controls, SWT.BORDER );
 
         	arvoreConhecimento.addListener(SWT.Selection, new Listener() {
 			
@@ -166,11 +168,10 @@ public class AdicionaDesenvolvedorWizardPage2 extends WizardPage {
         	addConhecimentoButton.addMouseListener(new MouseListener(){
             	
             	public void mouseDoubleClick(MouseEvent arg0) {
-    				// TODO Auto-generated method stub
+
     				
     			}
     			public void mouseDown(MouseEvent e) {
-    				// TODO Auto-generated method stub
     				//Adiciona novo nó na arvore gráfica
     				
     				TreeItem atual=null;
@@ -186,7 +187,6 @@ public class AdicionaDesenvolvedorWizardPage2 extends WizardPage {
     				
     			}
     			public void mouseUp(MouseEvent arg0) {
-    				// TODO Auto-generated method stub
     				
     			}
     			
@@ -195,7 +195,6 @@ public class AdicionaDesenvolvedorWizardPage2 extends WizardPage {
         	
             	
         }catch (Exception e) {
-			// TODO: handle exception
         	logger.error(e.getMessage());
         	e.printStackTrace();
 		}

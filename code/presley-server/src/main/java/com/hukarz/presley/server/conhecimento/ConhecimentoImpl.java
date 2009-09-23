@@ -1,6 +1,8 @@
 package com.hukarz.presley.server.conhecimento;
 
 import java.io.IOException;
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -12,6 +14,7 @@ import com.hukarz.presley.beans.Tree;
 import com.hukarz.presley.excessao.ConhecimentoInexistenteException;
 import com.hukarz.presley.excessao.DescricaoInvalidaException;
 import com.hukarz.presley.excessao.NomeInvalidoException;
+import com.hukarz.presley.interfaces.Conhecimento;
 import com.hukarz.presley.server.inferencia.classificador.Classificador;
 import com.hukarz.presley.server.persistencia.implementacao.ServicoArquivoImplDAO;
 import com.hukarz.presley.server.persistencia.implementacao.ServicoConhecimentoImplDAO;
@@ -30,20 +33,21 @@ import com.hukarz.presley.server.util.Util;
  * ltima modificacao: 09/09/2008 por RodrigoCMD
  */
 
-public class Conhecimento {
+public class ConhecimentoImpl extends UnicastRemoteObject implements Conhecimento {
 	
 	ServicoConhecimento servicoConhecimento;
 	ServicoDesenvolvedor servicoDesenvolvedor;
 	ServicoArquivo servicoArquivo; 
 	TopicoConhecimento conhecimento;
 	
-	public Conhecimento() {
+	public ConhecimentoImpl() throws RemoteException {
+        super();
 		servicoConhecimento		= new ServicoConhecimentoImplDAO();
 		servicoDesenvolvedor	= new ServicoDesenvolvedorImplDAO();
 		servicoArquivo			= new ServicoArquivoImplDAO();
 	}
 
-	public void setConhecimento(TopicoConhecimento conhecimento) {
+	public void setConhecimento(TopicoConhecimento conhecimento) throws RemoteException{
 		this.conhecimento = conhecimento;
 	}
 
@@ -56,7 +60,7 @@ public class Conhecimento {
 	 * @throws NomeInvalidoException 
 	 */
 	public boolean atualizarConhecimento(String novoNome, String novaDescricao) 
-		throws ConhecimentoInexistenteException, DescricaoInvalidaException, NomeInvalidoException {
+		throws ConhecimentoInexistenteException, DescricaoInvalidaException, NomeInvalidoException, RemoteException {
 		
 		if (conhecimento == null) throw new ConhecimentoInexistenteException();
 		if (!Util.validaDescricao(novaDescricao)) throw new DescricaoInvalidaException();
@@ -75,7 +79,7 @@ public class Conhecimento {
 	 * @return true se o conhecimento existe.
 	 * @throws ConhecimentoInexistenteException 
 	 */
-	public boolean conhecimentoExiste() throws ConhecimentoInexistenteException {
+	public boolean conhecimentoExiste() throws ConhecimentoInexistenteException, RemoteException {
 		if (conhecimento == null) throw new ConhecimentoInexistenteException();
 		return servicoConhecimento.conhecimentoExiste(conhecimento.getNome());
 	}
@@ -86,7 +90,7 @@ public class Conhecimento {
 	 * @param descricao Descricao do novo conhecimento
 	 * @return true se o conhecimento foi inserido na base de dados.
 	 */
-	public boolean criarConhecimento() throws NomeInvalidoException,
+	public boolean criarConhecimento() throws NomeInvalidoException, RemoteException, 
 		DescricaoInvalidaException,	ConhecimentoInexistenteException {
 		
 		if (conhecimento == null) throw new ConhecimentoInexistenteException();
@@ -102,7 +106,7 @@ public class Conhecimento {
 	 * @param nome Nome do conhecimento a ser removido.
 	 * @return true se o conhecimento foi removido com sucesso
 	 */
-	public boolean removerConhecimento() throws ConhecimentoInexistenteException {
+	public boolean removerConhecimento() throws RemoteException, ConhecimentoInexistenteException {
 		
 		if (conhecimento == null) throw new ConhecimentoInexistenteException();
 		String nome = conhecimento.getNome();
@@ -156,7 +160,7 @@ public class Conhecimento {
 	 * @return true de a associacao foi realizada com sucesso.
 	 */
 	public boolean associaConhecimentos(TopicoConhecimento conhecimentoFilho) 
-		throws ConhecimentoInexistenteException {
+		throws RemoteException, ConhecimentoInexistenteException {
 		
 		if (conhecimento == null) throw new ConhecimentoInexistenteException();
 //		if (!servicoConhecimento.conhecimentoExiste(nomeConhecimentoFilho)) 
@@ -175,7 +179,7 @@ public class Conhecimento {
 	 * @param nomeConhecimentoFilho Nome do conhecimento Filho.
 	 * @return true de a desassociacao foi realizada com sucesso.
 	 */
-	public boolean desassociaConhecimentos(TopicoConhecimento conhecimentoFilho) throws ConhecimentoInexistenteException {
+	public boolean desassociaConhecimentos(TopicoConhecimento conhecimentoFilho) throws RemoteException, ConhecimentoInexistenteException {
 		
 		if (conhecimento == null) throw new ConhecimentoInexistenteException();
 		if (!servicoConhecimento.conhecimentoExiste(conhecimentoFilho.getNome())) 
@@ -187,11 +191,11 @@ public class Conhecimento {
 		return servicoConhecimento.desassociaConhecimentos(conhecimento.getNome(), conhecimentoFilho.getNome());
 	}
 	
-	public ArrayList<TopicoConhecimento> getListaConhecimento() {
+	public ArrayList<TopicoConhecimento> getListaConhecimento() throws RemoteException  {
 		return servicoConhecimento.getListaConhecimento();
 	}
 
-	public boolean possuiFilhos() throws ConhecimentoInexistenteException {
+	public boolean possuiFilhos() throws RemoteException, ConhecimentoInexistenteException {
 		if (conhecimento == null) throw new ConhecimentoInexistenteException();
 		ArrayList<TopicoConhecimento> listaConhecimento =  servicoConhecimento.getFilhos(conhecimento.getNome());
 
@@ -209,7 +213,7 @@ public class Conhecimento {
 	 * @throws ConhecimentoInexistenteException
 	 * @throws IOException
 	 */
-	public TopicoConhecimento associaArquivo() throws ConhecimentoInexistenteException, IOException {
+	public TopicoConhecimento associaArquivo() throws RemoteException, ConhecimentoInexistenteException, IOException {
 		if (conhecimento == null) throw new ConhecimentoInexistenteException();
 		if (!servicoConhecimento.conhecimentoExiste(conhecimento.getNome())) 
 			throw new ConhecimentoInexistenteException();
@@ -243,7 +247,7 @@ public class Conhecimento {
      * @return Retorna a arvode de conhecimentos da ontologia.
      * @throws ConhecimentoInexistenteException
      */
-    public Tree getArvoreDeConhecimentos() throws ConhecimentoInexistenteException {
+    public Tree getArvoreDeConhecimentos() throws RemoteException, ConhecimentoInexistenteException {
     	TopicoConhecimento conhecimentoRaiz =  new TopicoConhecimento();
     	conhecimentoRaiz.setNome("Raiz") ;
     	Tree arvore = new Tree( conhecimentoRaiz );

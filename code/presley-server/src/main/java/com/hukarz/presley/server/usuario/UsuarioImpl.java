@@ -1,5 +1,7 @@
 package com.hukarz.presley.server.usuario;
 
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -15,6 +17,7 @@ import com.hukarz.presley.excessao.EmailInvalidoException;
 import com.hukarz.presley.excessao.ErroDeAutenticacaoException;
 import com.hukarz.presley.excessao.ListagemDeConhecimentoInexistenteException;
 import com.hukarz.presley.excessao.SenhaInvalidaException;
+import com.hukarz.presley.interfaces.Usuario;
 import com.hukarz.presley.server.persistencia.implementacao.ServicoConhecimentoImplDAO;
 import com.hukarz.presley.server.persistencia.implementacao.ServicoDesenvolvedorImplDAO;
 import com.hukarz.presley.server.persistencia.implementacao.ServicoSolucaoImplDAO;
@@ -31,21 +34,21 @@ import com.hukarz.presley.server.util.Util;
  * ltima modificacao: 09/09/2008 por RodrigoCMD
  */
 
-public class Usuario {
+public class UsuarioImpl extends UnicastRemoteObject implements Usuario {
 	
 	ServicoConhecimento servicoConhecimento;
 	ServicoSolucao servicoSolucao;
 	ServicoDesenvolvedor servicoDesenvolvedor;
 	Desenvolvedor desenvolvedor;
 	
-	public Usuario() {
+	public UsuarioImpl() throws RemoteException{
 		servicoConhecimento = new ServicoConhecimentoImplDAO();
 		servicoDesenvolvedor = new ServicoDesenvolvedorImplDAO();
 		servicoSolucao = new ServicoSolucaoImplDAO();
 	}
 
 	
-	public void setDesenvolvedor(Desenvolvedor desenvolvedor) {
+	public void setDesenvolvedor(Desenvolvedor desenvolvedor) throws RemoteException{
 		this.desenvolvedor = desenvolvedor;
 	}
 
@@ -60,7 +63,7 @@ public class Usuario {
 	 * @throws DesenvolvedorInexistenteException 
 	 */
 	public boolean adicionarConhecimentoAoDesenvolvedor(
-			String nomeConhecimento, int grau, int qntResposta) throws DescricaoInvalidaException, ConhecimentoInexistenteException, DesenvolvedorInexistenteException {
+			String nomeConhecimento, int grau, int qntResposta) throws RemoteException, DescricaoInvalidaException, ConhecimentoInexistenteException, DesenvolvedorInexistenteException {
 		
 		if (desenvolvedor==null) throw new DesenvolvedorInexistenteException();
 		if (!servicoDesenvolvedor.desenvolvedorExiste(desenvolvedor.getEmail())) throw new DescricaoInvalidaException();
@@ -82,7 +85,7 @@ public class Usuario {
 	 * @throws SenhaInvalidaException 
 	 */
 	public boolean atualizarDesenvolvedor(String novoEmail,
-			String nome, String cvsNome, String senha) throws DesenvolvedorInexistenteException, SenhaInvalidaException {
+			String nome, String cvsNome, String senha) throws RemoteException, DesenvolvedorInexistenteException, SenhaInvalidaException {
 		
 //		if (!servicoDesenvolvedor.desenvolvedorExiste(desenvolvedor.getEmail())) throw new DesenvolvedorInexistenteException();
 		if (desenvolvedor==null) throw new DesenvolvedorInexistenteException();
@@ -105,7 +108,7 @@ public class Usuario {
 	 * @throws DesenvolvedorInexistenteException 
 	 * @throws ConhecimentoInexistenteException 
 	 */
-	public boolean desenvolvedorTemConhecimento(String nomeConhecimento) throws DesenvolvedorInexistenteException, ConhecimentoInexistenteException {
+	public boolean desenvolvedorTemConhecimento(String nomeConhecimento) throws RemoteException, DesenvolvedorInexistenteException, ConhecimentoInexistenteException {
 		
 		if (desenvolvedor==null) throw new DesenvolvedorInexistenteException();
 		if (!servicoDesenvolvedor.desenvolvedorExiste(desenvolvedor.getEmail())) throw new DesenvolvedorInexistenteException();
@@ -125,7 +128,7 @@ public class Usuario {
 	 * @throws ListagemDeConhecimentoInexistenteException 
 	 * @throws DesenvolvedorInexistenteException 
 	 */
-	public boolean criarDesenvolvedor() throws DesenvolvedorExisteException, SenhaInvalidaException, ListagemDeConhecimentoInexistenteException, DesenvolvedorInexistenteException {
+	public boolean criarDesenvolvedor() throws RemoteException, DesenvolvedorExisteException, SenhaInvalidaException, ListagemDeConhecimentoInexistenteException, DesenvolvedorInexistenteException {
 		
 		if (desenvolvedor==null) throw new DesenvolvedorInexistenteException();
 		if (servicoDesenvolvedor.desenvolvedorExiste(desenvolvedor.getEmail())) throw new DesenvolvedorExisteException();
@@ -163,7 +166,7 @@ public class Usuario {
 	 * @return true se o desenvolvedro estiver cadastrado no sistema.
 	 * @throws DesenvolvedorInexistenteException 
 	 */
-	public boolean desenvolvedorExiste() throws DesenvolvedorInexistenteException {
+	public boolean desenvolvedorExiste() throws RemoteException, DesenvolvedorInexistenteException {
 		if (desenvolvedor==null) throw new DesenvolvedorInexistenteException();
 		
 		return servicoDesenvolvedor.desenvolvedorExiste(desenvolvedor.getEmail());
@@ -178,7 +181,7 @@ public class Usuario {
 	 * @throws DesenvolvedorInexistenteException 
 	 */
 	public ArrayList<TopicoConhecimento> getConhecimentosDoDesenvolvedor() 
-		throws DescricaoInvalidaException, DesenvolvedorInexistenteException  {
+		throws RemoteException, DescricaoInvalidaException, DesenvolvedorInexistenteException  {
 		if (desenvolvedor==null) throw new DesenvolvedorInexistenteException();
 		
 		if (!servicoDesenvolvedor.desenvolvedorExiste(desenvolvedor.getEmail())) throw new DescricaoInvalidaException();
@@ -192,7 +195,7 @@ public class Usuario {
 	 * @return <Desenvolvedor> 
 	 * @throws DesenvolvedorInexistenteException 
 	 */
-	public Desenvolvedor getDesenvolvedor(String email) throws DesenvolvedorInexistenteException {
+	public Desenvolvedor getDesenvolvedor(String email) throws RemoteException, DesenvolvedorInexistenteException {
 		
 		Desenvolvedor desenvolvedor = servicoDesenvolvedor.getDesenvolvedor(email);
 		if (desenvolvedor==null) throw new DesenvolvedorInexistenteException();
@@ -214,7 +217,7 @@ public class Usuario {
 	 * @return true se a associacao foi desfeita.
 	 * @throws DesenvolvedorInexistenteException 
 	 */
-	public boolean removerConhecimentoDoDesenvolvedor( String nomeConhecimento) throws DesenvolvedorInexistenteException {
+	public boolean removerConhecimentoDoDesenvolvedor( String nomeConhecimento) throws RemoteException, DesenvolvedorInexistenteException {
 		if (desenvolvedor==null) throw new DesenvolvedorInexistenteException();
 		return servicoDesenvolvedor.removerConhecimentoDoDesenvolvedor(desenvolvedor.getEmail(), nomeConhecimento);
 	}
@@ -225,7 +228,7 @@ public class Usuario {
 	 * @return true se o desenvolvedor foi removido com sucesso.
 	 * @throws DesenvolvedorInexistenteException 
 	 */
-	public boolean removerDesenvolvedor() throws DesenvolvedorInexistenteException {
+	public boolean removerDesenvolvedor() throws RemoteException, DesenvolvedorInexistenteException {
 		if (desenvolvedor==null) throw new DesenvolvedorInexistenteException();
 		String email = desenvolvedor.getEmail();
 		
@@ -254,7 +257,7 @@ public class Usuario {
 	 * Lista todos os desenvolvedores do banco.
 	 * @return
 	 */
-	public ArrayList<Desenvolvedor> getListaDesenvolvedores() {
+	public ArrayList<Desenvolvedor> getListaDesenvolvedores() throws RemoteException{
 		return servicoDesenvolvedor.getTodosDesenvolvedores();
 	}
 	
@@ -265,7 +268,7 @@ public class Usuario {
 	 * @return quantidade de respostas.
 	 */
 	public int getQntResposta(String nomeConhecimento) 
-		throws ConhecimentoInexistenteException, DesenvolvedorInexistenteException {
+		throws RemoteException, ConhecimentoInexistenteException, DesenvolvedorInexistenteException {
 		
 		if (desenvolvedor==null) throw new DesenvolvedorInexistenteException();
 		if (!servicoDesenvolvedor.desenvolvedorExiste( desenvolvedor.getEmail() )) throw new DesenvolvedorInexistenteException();
@@ -281,7 +284,7 @@ public class Usuario {
 	 * @return grau de conhecimento.
 	 */
 	public int getGrau(String nomeConhecimento) 
-		throws ConhecimentoInexistenteException, DesenvolvedorInexistenteException {
+		throws RemoteException, ConhecimentoInexistenteException, DesenvolvedorInexistenteException {
 		
 		if (desenvolvedor==null) throw new DesenvolvedorInexistenteException();
 		if (!servicoDesenvolvedor.desenvolvedorExiste(desenvolvedor.getEmail())) throw new DesenvolvedorInexistenteException();
@@ -297,7 +300,7 @@ public class Usuario {
 	 * @return true se a atualização foi feita com sucesso.
 	 */
 	public boolean updateQntResposta(String nomeConhecimento, int quantidade)
-		throws DesenvolvedorInexistenteException, ConhecimentoInexistenteException{
+		throws RemoteException, DesenvolvedorInexistenteException, ConhecimentoInexistenteException{
 		
 		if (desenvolvedor==null) throw new DesenvolvedorInexistenteException();
 		if (!servicoDesenvolvedor.desenvolvedorExiste(desenvolvedor.getEmail())) throw new DesenvolvedorInexistenteException();
@@ -314,7 +317,7 @@ public class Usuario {
 	 * @return true se a atualização foi feita com sucesso.
 	 */
 	public boolean updateGrau(String email, String nomeConhecimento, int grau)
-		throws DesenvolvedorInexistenteException, ConhecimentoInexistenteException{
+		throws RemoteException, DesenvolvedorInexistenteException, ConhecimentoInexistenteException{
 		
 		if (desenvolvedor==null) throw new DesenvolvedorInexistenteException();
 		if (!servicoDesenvolvedor.desenvolvedorExiste(email)) throw new DesenvolvedorInexistenteException();
@@ -332,7 +335,7 @@ public class Usuario {
 	 * @throws ErroDeAutenticacaoException EmailInvalidoException, 
 	 * SenhaInvalidaException, DesenvolvedorInexistenteException
 	 */
-	public Desenvolvedor autenticaDesenvolvedor(DadosAutenticacao dados) throws DesenvolvedorInexistenteException,
+	public Desenvolvedor autenticaDesenvolvedor(DadosAutenticacao dados) throws RemoteException, DesenvolvedorInexistenteException,
 			EmailInvalidoException, SenhaInvalidaException, ErroDeAutenticacaoException {
 		
 		String email = dados.getUser();
@@ -350,9 +353,8 @@ public class Usuario {
 		return desenvolvedor;
 	}
 	
-	public Desenvolvedor getDesenvolvedorPorNome() throws DesenvolvedorInexistenteException {
-		if (desenvolvedor==null) throw new DesenvolvedorInexistenteException();
-		desenvolvedor = servicoDesenvolvedor.getDesenvolvedorPorNome(desenvolvedor.getNome()) ;
+	public Desenvolvedor getDesenvolvedorPorNome(String sNome) throws RemoteException, DesenvolvedorInexistenteException {
+		desenvolvedor = servicoDesenvolvedor.getDesenvolvedorPorNome(sNome) ;
 		return desenvolvedor;
 	}
 

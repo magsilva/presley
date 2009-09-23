@@ -1,5 +1,6 @@
 package com.hukarz.presley.client.gui.wizard;
 
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -88,7 +89,11 @@ public class AdicionaProjetoWizardPage extends WizardPage {
         TabItem two = new TabItem(tabFolder, SWT.NONE);
         two.setText("Selecionar Projeto Ativo");
         two.setToolTipText("Selecionar Projeto Ativo");
-        two.setControl(getTabTwoControl(tabFolder));
+        try {
+			two.setControl(getTabTwoControl(tabFolder));
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		}
         
         
         setControl(controls);
@@ -166,8 +171,9 @@ public class AdicionaProjetoWizardPage extends WizardPage {
 	   * 
 	   * @param tabFolder the parent tab folder
 	   * @return Control
+	 * @throws RemoteException 
 	   */
-	  private Control getTabTwoControl(TabFolder tabFolder) {
+	  private Control getTabTwoControl(TabFolder tabFolder) throws RemoteException {
 		  Composite composite = new Composite(tabFolder, SWT.NULL);
 		  GridLayout layout = new GridLayout();
 		  composite.setLayout(layout);
@@ -177,7 +183,8 @@ public class AdicionaProjetoWizardPage extends WizardPage {
 		  lblProjetosExistentes.setText("Nome do Projeto: ");
 
 		  projetosExistentes = new Combo(composite, SWT.MULTI | SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
-		  projetos =  mensagem.getViewComunication().getListaProjetos(null);
+		  
+		  projetos =  mensagem.getCadastroProjeto().getProjetos();
 
 		  for (Iterator<Projeto> iterator = projetos.iterator(); iterator.hasNext();) {
 			Projeto projeto = iterator.next();

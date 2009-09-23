@@ -13,6 +13,7 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.rmi.RemoteException;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -43,8 +44,8 @@ import com.hukarz.presley.excessao.DesenvolvedorInexistenteException;
 import com.hukarz.presley.excessao.ProblemaInexistenteException;
 import com.hukarz.presley.excessao.ProjetoInexistenteException;
 import com.hukarz.presley.excessao.SolucaoIniexistenteException;
-import com.hukarz.presley.server.mensagem.MensagemProblema;
-import com.hukarz.presley.server.mensagem.MensagemSolucao;
+import com.hukarz.presley.server.mensagem.MensagemProblemaImpl;
+import com.hukarz.presley.server.mensagem.MensagemSolucaoImpl;
 import com.hukarz.presley.server.persistencia.MySQLConnectionFactory;
 
 
@@ -55,11 +56,13 @@ public class ArvoreEmail extends JFrame implements ActionListener {
 	private JPanel      painelCima;  
 	private JPanel      painelBaixo;  
 	private JTree       ArvoreEmail;
-	private MensagemSolucao  validacaoSolucao = new MensagemSolucao();
-
-	public ArvoreEmail() {  	        
+	private MensagemSolucaoImpl  validacaoSolucao;   
+	
+	public ArvoreEmail() throws RemoteException {  	        
 		super("Browser");  
 
+		validacaoSolucao = new MensagemSolucaoImpl();
+		
 		getContentPane().setLayout(new BorderLayout());  
 
 		campo      = new JTextField(); 
@@ -228,10 +231,10 @@ public class ArvoreEmail extends JFrame implements ActionListener {
 	}
 
 
-	public void cadastrarProblemas(ArrayList<Email> emails) {
+	public void cadastrarProblemas(ArrayList<Email> emails) throws RemoteException {
 		Projeto projeto = new Projeto();
 		projeto.setNome("math");
-		MensagemProblema validacaoProblema = new MensagemProblema();
+		MensagemProblemaImpl validacaoProblema = new MensagemProblemaImpl();
 		
 		for (Email email : emails) {
 			if (email.getFrom().isEmpty())
@@ -273,7 +276,7 @@ public class ArvoreEmail extends JFrame implements ActionListener {
 		
 	}
 
-	private void cadastrarSolucoes(ArrayList<Email> emails, Problema problema ) {
+	private void cadastrarSolucoes(ArrayList<Email> emails, Problema problema ) throws RemoteException {
 		for (Email email : emails) {
 			if (email.getFrom().isEmpty())
 				continue;
@@ -516,7 +519,7 @@ public class ArvoreEmail extends JFrame implements ActionListener {
 		return palavra;
 	}
 
-	public static void main(String args[]) {  
+	public static void main(String args[]) throws RemoteException {  
 		new ArvoreEmail();
 	}  
 

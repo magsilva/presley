@@ -1,23 +1,24 @@
 package com.hukarz.presley.server.mensagem;
 
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 
 import com.hukarz.presley.beans.Desenvolvedor;
 import com.hukarz.presley.beans.Mensagem;
 import com.hukarz.presley.beans.Problema;
 import com.hukarz.presley.excessao.DesenvolvedorInexistenteException;
+import com.hukarz.presley.interfaces.ValidacaoMensagem;
 import com.hukarz.presley.server.persistencia.implementacao.ServicoMensagemImplDAO;
-import com.hukarz.presley.server.usuario.Usuario;
+import com.hukarz.presley.server.usuario.UsuarioImpl;
 
-
-
-public class ValidacaoMensagemImpl {
+public class ValidacaoMensagemImpl extends UnicastRemoteObject implements ValidacaoMensagem {
 
 	ServicoMensagemImplDAO servicoMensagem;
-	Usuario validacaoDesenvolvedor;
+	UsuarioImpl validacaoDesenvolvedor;
 
-	public ValidacaoMensagemImpl() {
-		validacaoDesenvolvedor = new Usuario();
+	public ValidacaoMensagemImpl() throws RemoteException {
+		validacaoDesenvolvedor = new UsuarioImpl();
 		servicoMensagem = new ServicoMensagemImplDAO();
 	}
 
@@ -29,8 +30,9 @@ public class ValidacaoMensagemImpl {
 	 * @param texto Texto que caracteriza a mensagem.
 	 * @return true caso a mensagem seja armazenada com sucesso no banco de dados.
 	 * @throws DesenvolvedorInexistenteException 
+	 * @throws RemoteException 
 	 */
-	public boolean adicionarMensagem(ArrayList<Desenvolvedor> desenvolvedoresDestino, Problema problema) throws DesenvolvedorInexistenteException {
+	public boolean adicionarMensagem(ArrayList<Desenvolvedor> desenvolvedoresDestino, Problema problema) throws DesenvolvedorInexistenteException, RemoteException {
 
 		for(Desenvolvedor d : desenvolvedoresDestino) {
 			validacaoDesenvolvedor.setDesenvolvedor(d);
@@ -45,9 +47,7 @@ public class ValidacaoMensagemImpl {
 	 * @param desenvolvedorDestino Desenvolvedor que irá receber as mensagens.
 	 * @return Coleção com todas as mensagens referentes ao desenvolvedorDestino.
 	 */
-	public ArrayList<Mensagem> getMensagens(String emailDesenvolvedorDestino) {
-		
-		
+	public ArrayList<Mensagem> getMensagens(String emailDesenvolvedorDestino) throws RemoteException{
 		return servicoMensagem.getMensagens(emailDesenvolvedorDestino);
 	}
 

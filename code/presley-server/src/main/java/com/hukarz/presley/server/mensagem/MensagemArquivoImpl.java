@@ -1,5 +1,7 @@
 package com.hukarz.presley.server.mensagem;
 
+import java.rmi.RemoteException; 
+import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -15,6 +17,7 @@ import com.hukarz.presley.beans.Desenvolvedor;
 import com.hukarz.presley.beans.Problema;
 import com.hukarz.presley.excessao.ArquivoInexistenteException;
 import com.hukarz.presley.excessao.ProblemaInexistenteException;
+import com.hukarz.presley.interfaces.MensagemArquivo;
 import com.hukarz.presley.server.persistencia.implementacao.ServicoArquivoImplDAO;
 import com.hukarz.presley.server.persistencia.implementacao.ServicoDesenvolvedorImplDAO;
 import com.hukarz.presley.server.persistencia.implementacao.ServicoLogControleVersaoImplDAO;
@@ -23,7 +26,7 @@ import com.hukarz.presley.server.persistencia.interfaces.ServicoDesenvolvedor;
 import com.hukarz.presley.server.persistencia.interfaces.ServicoLogControleVersao;
 
 
-public class MensagemArquivo {
+public class MensagemArquivoImpl extends UnicastRemoteObject implements MensagemArquivo{
 	ServicoArquivo servicoArquivo;
 	ServicoDesenvolvedor servicoDesenvolvedor;
 	Arquivo arquivo;
@@ -31,16 +34,16 @@ public class MensagemArquivo {
 	
 	private Logger logger = Logger.getLogger(this.getClass());
 
-	public MensagemArquivo() {
+	public MensagemArquivoImpl() throws RemoteException{
 		servicoArquivo = new ServicoArquivoImplDAO();
 		servicoDesenvolvedor = new ServicoDesenvolvedorImplDAO();
 	}
 
-	public void setProblema(Problema problema) {
+	public void setProblema(Problema problema) throws RemoteException{
 		this.problema = problema;
 	}
 
-	public void setArquivo(Arquivo arquivo) {
+	public void setArquivo(Arquivo arquivo) throws RemoteException{
 		this.arquivo = arquivo;
 	}
 
@@ -51,7 +54,7 @@ public class MensagemArquivo {
 	 * @return true se o Arquivo foi atualizado.
 	 * @throws ArquivoInexistenteException
 	 */
-	public boolean atualizarArquivo(Arquivo arquivoNovo) throws ArquivoInexistenteException {
+	public boolean atualizarArquivo(Arquivo arquivoNovo) throws RemoteException, ArquivoInexistenteException {
 		if (arquivo == null) throw new ArquivoInexistenteException();
 		if (!servicoArquivo.arquivoExiste(arquivo)) throw new ArquivoInexistenteException();
 		
@@ -64,7 +67,7 @@ public class MensagemArquivo {
 	 * @return true se o conhecimento existe.
 	 * @throws ArquivoInexistenteException 
 	 */
-	public boolean arquivoExiste() throws ArquivoInexistenteException {
+	public boolean arquivoExiste() throws RemoteException, ArquivoInexistenteException {
 		if (arquivo == null) throw new ArquivoInexistenteException();
 		return servicoArquivo.arquivoExiste(arquivo);
 	}
@@ -75,7 +78,7 @@ public class MensagemArquivo {
 	 * @return true se o Arquivo foi inserido na base de dados.
 	 * @throws ArquivoInexistenteException
 	 */
-	public boolean criarArquivo() throws ArquivoInexistenteException {
+	public boolean criarArquivo() throws RemoteException, ArquivoInexistenteException {
 		// if (!ValidacaoUtil.validaNome(nome)) throw new NomeInvalidoException();
 		
 		if (arquivo == null) throw new ArquivoInexistenteException();
@@ -90,7 +93,7 @@ public class MensagemArquivo {
 	 * @return
 	 * @throws ArquivoInexistenteException
 	 */
-	public Arquivo getArquivo() throws ArquivoInexistenteException {
+	public Arquivo getArquivo() throws RemoteException, ArquivoInexistenteException {
 		if (arquivo == null) throw new ArquivoInexistenteException();
 		arquivo = servicoArquivo.getArquivo(arquivo);
 		if (arquivo == null) throw new ArquivoInexistenteException();
@@ -103,7 +106,7 @@ public class MensagemArquivo {
 	 * @param arquivo Arquivo a ser removido.
 	 * @return true se o Arquivo foi removido com sucesso
 	 */
-	public boolean removerArquivo() throws ArquivoInexistenteException {
+	public boolean removerArquivo() throws RemoteException, ArquivoInexistenteException {
 		if (arquivo == null) throw new ArquivoInexistenteException();
 		if (!servicoArquivo.arquivoExiste(arquivo)) throw new ArquivoInexistenteException();
 				
@@ -116,7 +119,7 @@ public class MensagemArquivo {
 	 * @return
 	 * @throws ProblemaInexistenteException 
 	 */	
-	public Map<ArquivoJava, ArrayList<Desenvolvedor>> getDesenvolvedoresArquivos() throws ProblemaInexistenteException{
+	public Map<ArquivoJava, ArrayList<Desenvolvedor>> getDesenvolvedoresArquivos() throws RemoteException, ProblemaInexistenteException{
 		// Cria uma lista com os Desenvolvedores de cada arquivo java		 
 		if (problema == null) throw new ProblemaInexistenteException();
 		Map<ArquivoJava, ArrayList<Desenvolvedor>> arquivoDesenvolvedores = new HashMap<ArquivoJava, ArrayList<Desenvolvedor>>();

@@ -21,6 +21,7 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 import com.hukarz.presley.beans.TopicoConhecimento;
 import com.hukarz.presley.client.gui.view.Dominio;
+import com.hukarz.presley.interfaces.Conhecimento;
 
 
 public class AdicionaConhecimentoWizard extends Wizard implements INewWizard {
@@ -57,10 +58,12 @@ public class AdicionaConhecimentoWizard extends Wizard implements INewWizard {
 	public boolean performFinish() {
         //First save all the page data as variables.
     	try{
+			Conhecimento conhecimento = dominio.getConhecimento();
     		Map<TopicoConhecimento, TopicoConhecimento> conhecimentoFilhoPai = page.conhecimentoFilhoPai();
     		
-    		Set<TopicoConhecimento> conhecimentosFilho = conhecimentoFilhoPai.keySet(); 
-    		ArrayList<TopicoConhecimento> listaConhecimento = dominio.getViewComunication().getListaConhecimentos();
+    		Set<TopicoConhecimento> conhecimentosFilho = conhecimentoFilhoPai.keySet();
+    		
+    		ArrayList<TopicoConhecimento> listaConhecimento = conhecimento.getListaConhecimento();
     		
     		for (Iterator<TopicoConhecimento> iterator = conhecimentosFilho.iterator(); iterator.hasNext();) {
     			TopicoConhecimento filho = iterator.next();
@@ -68,15 +71,17 @@ public class AdicionaConhecimentoWizard extends Wizard implements INewWizard {
     			TopicoConhecimento pai = null;
     			TopicoConhecimento paiConhecimento = conhecimentoFilhoPai.get( filho );
    				if (paiConhecimento != null){
-   		    		for (TopicoConhecimento conhecimento : listaConhecimento) {
-   						if (conhecimento.getNome().equals(paiConhecimento.getNome())) {
-   							pai = conhecimento;
+   		    		for (TopicoConhecimento topicoConhecimento : listaConhecimento) {
+   						if (topicoConhecimento.getNome().equals(paiConhecimento.getNome())) {
+   							pai = topicoConhecimento;
    							break;
    						}
    					}
    				}
    				
-				dominio.getViewComunication().adicionaConhecimento(filho,pai);
+   				conhecimento.setConhecimento(filho);
+   				conhecimento.criarConhecimento();
+   				conhecimento.associaConhecimentos(pai);
 			}
 
     	   

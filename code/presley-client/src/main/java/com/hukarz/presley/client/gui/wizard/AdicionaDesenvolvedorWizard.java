@@ -2,6 +2,7 @@ package com.hukarz.presley.client.gui.wizard;
 
 
 import java.lang.reflect.InvocationTargetException;
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -19,6 +20,10 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
 import com.hukarz.presley.beans.TopicoConhecimento;
 import com.hukarz.presley.beans.Desenvolvedor;
 import com.hukarz.presley.client.gui.view.MensagemAba;
+import com.hukarz.presley.excessao.DesenvolvedorExisteException;
+import com.hukarz.presley.excessao.DesenvolvedorInexistenteException;
+import com.hukarz.presley.excessao.ListagemDeConhecimentoInexistenteException;
+import com.hukarz.presley.excessao.SenhaInvalidaException;
 
 
 public class AdicionaDesenvolvedorWizard extends Wizard implements INewWizard {
@@ -52,7 +57,6 @@ public class AdicionaDesenvolvedorWizard extends Wizard implements INewWizard {
 
 	@Override
 	public boolean performFinish() {
-		// TODO Auto-generated method stub
         //First save all the page data as variables.
     	  
 		String nome = page.getNomeDesenvolvedor();
@@ -61,28 +65,40 @@ public class AdicionaDesenvolvedorWizard extends Wizard implements INewWizard {
 		String senha = page.getSenhaDesenvolvedor();
 		ArrayList<Double> graus = page2.pegaGraus();
 		ArrayList<String> conhecimentos = page2.pegaConhecimentos();
-		ArrayList<TopicoConhecimento> listaConhecimentos = this.mensagemAba.getViewComunication().getListaConhecimentos();
-		HashMap<TopicoConhecimento,Double> mapConhecimentoGrau = new HashMap<TopicoConhecimento, Double>();
-		for (String nomeConhecimento : conhecimentos) {
-			for (TopicoConhecimento conhecimento : listaConhecimentos) {
-				if(conhecimento.getNome().equals(nomeConhecimento)){
-					mapConhecimentoGrau.put(conhecimento, graus.get(conhecimentos.indexOf(nomeConhecimento)));
+
+		ArrayList<TopicoConhecimento> listaConhecimentos;
+		try {
+			listaConhecimentos = this.mensagemAba.getConhecimento().getListaConhecimento();
+
+			HashMap<TopicoConhecimento,Double> mapConhecimentoGrau = new HashMap<TopicoConhecimento, Double>();
+			for (String nomeConhecimento : conhecimentos) {
+				for (TopicoConhecimento conhecimento : listaConhecimentos) {
+					if(conhecimento.getNome().equals(nomeConhecimento)){
+						mapConhecimentoGrau.put(conhecimento, graus.get(conhecimentos.indexOf(nomeConhecimento)));
+					}
 				}
 			}
-		}
-		
-		Desenvolvedor novoDesenvolvedor = new Desenvolvedor();
-		novoDesenvolvedor.setEmail(email);
-		novoDesenvolvedor.setListaConhecimento(mapConhecimentoGrau);
-		novoDesenvolvedor.setCVSNome(cvsNome);
-		novoDesenvolvedor.setNome(nome);
-		novoDesenvolvedor.setSenha(senha);
-		try {
-			this.mensagemAba.getViewComunication().adicionaDesenvolvedor(novoDesenvolvedor);
-		} catch (Exception e1) {
 
-			MessageDialog.openError(this.getShell(), "ERROR", e1.getMessage());
-			e1.printStackTrace();
+			Desenvolvedor novoDesenvolvedor = new Desenvolvedor();
+			novoDesenvolvedor.setEmail(email);
+			novoDesenvolvedor.setListaConhecimento(mapConhecimentoGrau);
+			novoDesenvolvedor.setCVSNome(cvsNome);
+			novoDesenvolvedor.setNome(nome);
+			novoDesenvolvedor.setSenha(senha);
+
+			mensagemAba.getUsuario().setDesenvolvedor(novoDesenvolvedor);
+			mensagemAba.getUsuario().criarDesenvolvedor();
+		} catch (RemoteException e2) {
+			e2.printStackTrace();
+		} catch (DesenvolvedorExisteException e) {
+			MessageDialog.openError(this.getShell(), "ERROR", e.getMessage());
+			e.printStackTrace();
+		} catch (SenhaInvalidaException e) {
+			e.printStackTrace();
+		} catch (ListagemDeConhecimentoInexistenteException e) {
+			e.printStackTrace();
+		} catch (DesenvolvedorInexistenteException e) {
+			e.printStackTrace();
 		}
 		
 		try {

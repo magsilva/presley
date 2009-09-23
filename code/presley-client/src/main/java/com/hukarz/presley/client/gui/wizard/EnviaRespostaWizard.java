@@ -66,11 +66,14 @@ public class EnviaRespostaWizard extends Wizard implements INewWizard {
     		solucao.setData( new Date(System.currentTimeMillis()) ) ;
     		
     		//Colocando no banco
-    		solucao = viewMensagem.getViewComunication().adicionaSolucao(solucao);
+    		
+    		viewMensagem.getMensagemSolucao().setSolucao(solucao);
+    		solucao = viewMensagem.getMensagemSolucao().cadastrarSolucao();
     		
     		if (solucaoOrigem != null){
     			solucaoOrigem.setSolucaoResposta(solucao);
-    			viewMensagem.getViewComunication().atualizarSolucao(solucaoOrigem);
+    			viewMensagem.getMensagemSolucao().setSolucao(solucaoOrigem);
+    			viewMensagem.getMensagemSolucao().atualizarSolucao();
     		}
 
     	}catch (Exception e) {

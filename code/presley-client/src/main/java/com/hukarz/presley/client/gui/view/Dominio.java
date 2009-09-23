@@ -11,6 +11,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.net.MalformedURLException;
+import java.rmi.Naming;
+import java.rmi.NotBoundException;
+import java.rmi.RMISecurityManager;
+import java.rmi.RemoteException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -27,7 +32,6 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.DirectoryDialog;
-import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Shell;
@@ -41,20 +45,23 @@ import ca.mcgill.cs.swevo.jayfx.ConversionException;
 import ca.mcgill.cs.swevo.jayfx.JayFXException;
 
 import com.hukarz.presley.beans.Arquivo;
-import com.hukarz.presley.beans.TopicoConhecimento;
-import com.hukarz.presley.beans.Desenvolvedor;
+import com.hukarz.presley.beans.DadosAutenticacao;
 import com.hukarz.presley.beans.Problema;
 import com.hukarz.presley.beans.Projeto;
-import com.hukarz.presley.client.gui.view.comunication.ViewComunication;
+import com.hukarz.presley.beans.TopicoConhecimento;
+import com.hukarz.presley.client.gui.component.ArvoreGraficaDeConhecimentos;
 import com.hukarz.presley.excessao.ConhecimentoInexistenteException;
 import com.hukarz.presley.excessao.DesenvolvedorInexistenteException;
+import com.hukarz.presley.interfaces.CadastroProjeto;
+import com.hukarz.presley.interfaces.Conhecimento;
+import com.hukarz.presley.interfaces.MensagemProblema;
+import com.hukarz.presley.interfaces.Usuario;
 
 
 public class Dominio extends ViewPart {
 
 	private Composite parentComposite;
-	private ViewComunication viewComunication;
-	private String ipServidor = "127.0.0.1";
+	private String ipServidor = "localhost";
 	
 	private Button incluirTopico, executarExperimento, incluirDocumentoBase;
 	
@@ -84,15 +91,40 @@ public class Dominio extends ViewPart {
 	private Projeto projetoAtivo;
 	
 	private Logger logger = Logger.getLogger(this.getClass());
+
+	private Conhecimento conhecimento;
+	private CadastroProjeto cadastroProjeto;
+	private Usuario usuario ; 
+	private MensagemProblema mensagemProblema ; 
 	
-	public Dominio() {
-		this.viewComunication = new ViewComunication(ipServidor);
+	
+	public Dominio() throws MalformedURLException, RemoteException, NotBoundException {
+		// ipServidor
+		try {
+			System.setSecurityManager(new RMISecurityManager());
+			conhecimento = (Conhecimento) Naming.lookup( "rmi://"+ipServidor+"/Conhecimento" );
+			cadastroProjeto = (CadastroProjeto) Naming.lookup( "rmi://"+ipServidor+"/CadastroProjeto" );
+			usuario = (Usuario) Naming.lookup( "rmi://"+ipServidor+"/Usuario" );
+			mensagemProblema = (MensagemProblema) Naming.lookup( "rmi://"+ipServidor+"/MensagemProblema" );
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
+
+	public Conhecimento getConhecimento() {
+		return conhecimento;
+	}
+
+
 
 	@Override
 	public void createPartControl(Composite parent) {
 		parent.setLayout(null);
-		initComponents(parent);
+		try {
+			initComponents(parent);
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override
@@ -100,12 +132,13 @@ public class Dominio extends ViewPart {
 		// TODO Auto-generated method stub
 
 	}
-	private void initComponents(Composite parent)
+	private void initComponents(Composite parent) throws RemoteException
 	{
 		this.parentComposite = parent;
 		
+		ArvoreGraficaDeConhecimentos arGraficaDeConhecimentos = new ArvoreGraficaDeConhecimentos();
     	try {
-			treeConhecimentos = getViewComunication().getArvoreGraficaDeConhecimentos(parentComposite, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
+			treeConhecimentos = arGraficaDeConhecimentos.getArvoreGraficaDeConhecimentos(conhecimento.getArvoreDeConhecimentos(), parentComposite, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
 		} catch (ConhecimentoInexistenteException e2) {
 			e2.printStackTrace();
 		}
@@ -143,12 +176,13 @@ public class Dominio extends ViewPart {
 			public void mouseDown(MouseEvent e) {
 
 				// exibe o wizard para adicao de novo conhecimento
+				ArvoreGraficaDeConhecimentos arGraficaDeConhecimentos = new ArvoreGraficaDeConhecimentos();
 				runAdicionaConhecimentoWizardAction();
 				
 		    	treeConhecimentos.removeAll();
 				try {
 			    	TreeItem[] itemCadatrado;
-					itemCadatrado = getViewComunication().getArvoreGraficaDeConhecimentos(parentComposite, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL).getItems();
+					itemCadatrado = arGraficaDeConhecimentos.getArvoreGraficaDeConhecimentos(conhecimento.getArvoreDeConhecimentos(), parentComposite, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL).getItems();
 					TreeItem[] item = new TreeItem[itemCadatrado.length];
 					for (int i = 0; i < item.length; i++) {
 						item[i] = new TreeItem(treeConhecimentos, SWT.NONE);
@@ -156,6 +190,8 @@ public class Dominio extends ViewPart {
 						item[i].setData(itemCadatrado[i].getData());
 					}
 				} catch (ConhecimentoInexistenteException e1) {
+					e1.printStackTrace();
+				} catch (RemoteException e1) {
 					e1.printStackTrace();
 				}
 
@@ -184,7 +220,11 @@ public class Dominio extends ViewPart {
 				
 				this.logger.debug("clique duplo");
 
-				projetoAtivo = viewComunication.getProjetoAtivo();
+				try {
+					projetoAtivo = cadastroProjeto.getProjetoAtivo();
+				} catch (RemoteException e1) {
+					e1.printStackTrace();
+				}
 				
 				// Objeto para o JayFX
 				try {
@@ -262,7 +302,12 @@ public class Dominio extends ViewPart {
 				if ((treeConhecimentos.getSelection()[0].getData() instanceof TopicoConhecimento) &&
 					(treeConhecimentos.indexOf(treeConhecimentos.getSelection()[0]) != 0) ){
 
-					Projeto projeto = viewComunication.getProjetoAtivo();
+					Projeto projeto = new Projeto();
+					try {
+						projeto = cadastroProjeto.getProjetoAtivo();
+					} catch (RemoteException e1) {
+						e1.printStackTrace();
+					}
 					
 					Shell shell = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
 					/*
@@ -297,8 +342,12 @@ public class Dominio extends ViewPart {
 						arquivo.setEnderecoServidor( projeto.getEndereco_Servidor_Gravacao()+ arquivoSelecionado.getName() ) ;
 						
 						try {
-							TopicoConhecimento conhecimento = (TopicoConhecimento) treeConhecimentos.getSelection()[0].getData();
-							viewComunication.associaArquivo(conhecimento, arquivo);
+							TopicoConhecimento topicoConhecimento = (TopicoConhecimento) treeConhecimentos.getSelection()[0].getData();
+							
+							topicoConhecimento.adcionaArquivo(arquivo);
+							conhecimento.setConhecimento(topicoConhecimento);
+							conhecimento.associaArquivo();
+							
 							preencherListaDocumentosBase();
 						} catch (Exception e) {
 							e.printStackTrace();
@@ -318,10 +367,6 @@ public class Dominio extends ViewPart {
 
 	}
 	
-	public ViewComunication getViewComunication(){
-		return this.viewComunication;
-	}
-
 	private void preencherListaDocumentosBase() {
 		listaDocumentosBase.removeAll();
 		if (treeConhecimentos.getSelection()[0].getData() instanceof TopicoConhecimento){
@@ -399,12 +444,17 @@ public class Dominio extends ViewPart {
 			
 				if (linha.contains("jira@apache.org")) {
 					String nome = extractNomeJira( linha );
-					
-					problema.setDesenvolvedorOrigem( viewComunication.getDesenvolvedorPorNome(nome) ) ;
+
+					problema.setDesenvolvedorOrigem( usuario.getDesenvolvedorPorNome(nome) ) ;
 				}
 				else {
 					String email = extractEmail(linha);
-					problema.setDesenvolvedorOrigem( viewComunication.login(email, "1") ) ;
+					
+					DadosAutenticacao dadosAutenticacao = new DadosAutenticacao();
+					dadosAutenticacao.setPasswd("1");
+					dadosAutenticacao.setUser(email);
+					
+					problema.setDesenvolvedorOrigem( usuario.autenticaDesenvolvedor( dadosAutenticacao ) ) ;
 				}	
 				
         		// Data do envio
@@ -432,7 +482,8 @@ public class Dominio extends ViewPart {
         		
         		//Adciona problema ao banco
         		//System.out.println("Classes relacionadas obtidas");
-        		viewComunication.adicionaProblema(problema);
+        		mensagemProblema.setProblema(problema);
+        		mensagemProblema.cadastrarProblema();
 				saidaTempoProcessamento.println( "Fim    >>>> " + formataHora.format(System.currentTimeMillis()) );
         		
 			}

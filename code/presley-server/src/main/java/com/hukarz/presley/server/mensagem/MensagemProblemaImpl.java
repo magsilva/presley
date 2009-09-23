@@ -1,6 +1,8 @@
 package com.hukarz.presley.server.mensagem;
 
 import java.io.IOException;
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Map;
@@ -15,6 +17,7 @@ import com.hukarz.presley.excessao.ConhecimentoNaoEncontradoException;
 import com.hukarz.presley.excessao.DescricaoInvalidaException;
 import com.hukarz.presley.excessao.ProblemaInexistenteException;
 import com.hukarz.presley.excessao.ProjetoInexistenteException;
+import com.hukarz.presley.interfaces.MensagemProblema;
 import com.hukarz.presley.server.inferencia.identificador.Identificador;
 import com.hukarz.presley.server.inferencia.recomendador.Recomendador;
 import com.hukarz.presley.server.persistencia.implementacao.ServicoArquivoImplDAO;
@@ -38,7 +41,7 @@ import com.hukarz.presley.server.util.Util;
  * ltima modificacao: 09/09/2008 por RodrigoCMD
  */
 
-public class MensagemProblema {
+public class MensagemProblemaImpl extends UnicastRemoteObject implements MensagemProblema{
 	
 	ServicoSolucao  servicoSolucao;
 	ServicoProblema servicoProblema;
@@ -46,29 +49,30 @@ public class MensagemProblema {
 	ServicoMensagem servicoMensagem;
 	ServicoProjeto  servicoProjeto;
 	
-	MensagemArquivo validacaoArquivo ;
+	MensagemArquivoImpl validacaoArquivo ;
 	
 	Problema problema ;
 	Desenvolvedor desenvolvedor;
 	
 	private Logger logger = Logger.getLogger(this.getClass());
 	
-	public MensagemProblema() {
+	public MensagemProblemaImpl() throws RemoteException {
+		super();
 		servicoProblema = new ServicoProblemaImplDAO();
 		servicoSolucao  = new ServicoSolucaoImplDAO();
 		servicoArquivo  = new ServicoArquivoImplDAO();
 		servicoMensagem = new ServicoMensagemImplDAO();
 		servicoProjeto	= new ServicoProjetoImplDAO();
 		
-		validacaoArquivo = new MensagemArquivo();
+		validacaoArquivo = new MensagemArquivoImpl();
 	}
 	
-	public void setProblema(Problema problema) {
+	public void setProblema(Problema problema) throws RemoteException{
 		this.problema = problema;
 	}
 
 	
-	public void setDesenvolvedor(Desenvolvedor desenvolvedor) {
+	public void setDesenvolvedor(Desenvolvedor desenvolvedor) throws RemoteException{
 		this.desenvolvedor = desenvolvedor;
 	}
 
@@ -79,7 +83,7 @@ public class MensagemProblema {
 	 * @param status Situacao do problema.
 	 * @return true se a atualizacao foi concluida com sucesso.
 	 */
-	public boolean atualizarStatusDoProblema() throws ProblemaInexistenteException{
+	public boolean atualizarStatusDoProblema() throws RemoteException, ProblemaInexistenteException{
 		
 		if (problema == null) throw new ProblemaInexistenteException();
 		if (!servicoProblema.problemaExiste(problema.getId())) throw new ProblemaInexistenteException();
@@ -100,7 +104,7 @@ public class MensagemProblema {
 	 * @throws ProblemaInexistenteException 
 	 */
 	public Problema cadastrarProblema() 
-		throws DescricaoInvalidaException, IOException, ProjetoInexistenteException, 
+		throws RemoteException, DescricaoInvalidaException, IOException, ProjetoInexistenteException, 
 		ConhecimentoNaoEncontradoException, ProblemaInexistenteException {
 
 		if (problema == null) throw new ProblemaInexistenteException();
@@ -163,7 +167,7 @@ public class MensagemProblema {
 	 * @param id Identificador do problema.
 	 * @return <Problema>
 	 */	
-	public Problema getProblema(int id) throws ProblemaInexistenteException {
+	public Problema getProblema(int id) throws RemoteException, ProblemaInexistenteException {
 		if (problema == null) throw new ProblemaInexistenteException();
 		if (!servicoProblema.problemaExiste(id)) throw new ProblemaInexistenteException();
 		
@@ -178,7 +182,7 @@ public class MensagemProblema {
 	 * @return true se o problema existir na base de dados.
 	 * @throws ProblemaInexistenteException 
 	 */
-	public boolean problemaExiste() throws ProblemaInexistenteException {
+	public boolean problemaExiste() throws RemoteException, ProblemaInexistenteException {
 		if (problema == null) throw new ProblemaInexistenteException();
 		return servicoProblema.problemaExiste(problema.getId());
 	}
@@ -189,7 +193,7 @@ public class MensagemProblema {
 	 * @return true se o problema foi removido da base de dados.
 	 * @throws ProblemaInexistenteException 
 	 */
-	public boolean removerProblema() throws ProblemaInexistenteException {
+	public boolean removerProblema() throws RemoteException, ProblemaInexistenteException {
 		if (problema == null) throw new ProblemaInexistenteException();
 		if (!servicoProblema.problemaExiste(problema.getId())) throw new ProblemaInexistenteException();
 		
@@ -205,12 +209,12 @@ public class MensagemProblema {
 		return servicoProblema.removerProblema(problema);
 	}
 
-	public ArrayList<Problema> getListaProblema() {
+	public ArrayList<Problema> getListaProblema() throws RemoteException{
 		ArrayList<Problema> problemas = servicoProblema.getListaProblemas(desenvolvedor);
 		return problemas;
 	}
 	
-	public ArrayList<String> getConhecimentosAssociados() throws ProblemaInexistenteException {		
+	public ArrayList<String> getConhecimentosAssociados() throws RemoteException, ProblemaInexistenteException {		
 		if (problema == null) throw new ProblemaInexistenteException();
 		ArrayList<String> problemas = servicoProblema.getConhecimentosAssociados(problema.getDescricao());
 		return problemas;

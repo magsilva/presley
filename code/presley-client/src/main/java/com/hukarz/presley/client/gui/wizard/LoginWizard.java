@@ -15,6 +15,7 @@ import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 
+import com.hukarz.presley.beans.DadosAutenticacao;
 import com.hukarz.presley.beans.Desenvolvedor;
 import com.hukarz.presley.client.gui.view.MensagemAba;
 
@@ -52,11 +53,13 @@ public class LoginWizard extends Wizard implements INewWizard {
 		//First save all the page data as variables.
 
 		try{
-			String login = page.getLogin();
-			String senha = page.getSenha();
 			String ip = page.getIP();
-
-			Desenvolvedor des = this.mensagem.getViewComunication().login(login, senha);
+			
+			DadosAutenticacao dadosAutenticacao = new DadosAutenticacao();
+			dadosAutenticacao.setPasswd(page.getLogin());
+			dadosAutenticacao.setUser(page.getSenha());
+			
+			Desenvolvedor des = this.mensagem.getUsuario().autenticaDesenvolvedor(dadosAutenticacao);
 
 			if (des== null) {
 				return false;

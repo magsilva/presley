@@ -1,5 +1,10 @@
 package com.hukarz.presley.client.gui.view;
 
+import java.net.MalformedURLException;
+import java.rmi.Naming;
+import java.rmi.NotBoundException;
+import java.rmi.RMISecurityManager;
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Timer;
@@ -32,18 +37,24 @@ import com.hukarz.presley.beans.Solucao;
 import com.hukarz.presley.client.gui.action.RunAdcionaProblemaWizardAction;
 import com.hukarz.presley.client.gui.action.RunEnviaRespostaWizardAction;
 import com.hukarz.presley.client.gui.action.RunEnviaRetornoSolucaoWizardAction;
-import com.hukarz.presley.client.gui.view.comunication.ViewComunication;
+import com.hukarz.presley.excessao.ProblemaInexistenteException;
+import com.hukarz.presley.excessao.SolucaoIniexistenteException;
+import com.hukarz.presley.interfaces.CadastroProjeto;
+import com.hukarz.presley.interfaces.Conhecimento;
+import com.hukarz.presley.interfaces.MensagemProblema;
+import com.hukarz.presley.interfaces.MensagemSolucao;
+import com.hukarz.presley.interfaces.Usuario;
+import com.hukarz.presley.interfaces.ValidacaoMensagem;
 
 public class MensagemAba extends ViewPart {
 	private Composite parentComposite;
-	private ViewComunication viewComunication;
 	private String ipServidor = "127.0.0.1";
 
 	private static Desenvolvedor desenvolvedorLogado = null;
 
 	private boolean bLogin;
 
-	private Button cadastroProjeto, login, logout, addUser, removeUser, 
+	private Button cadastrarProjeto, login, logout, addUser, removeUser, 
 			incluirProblema, excluirProblema, validarSolucao, encerrarProblema;
 
 	private final int larguraBotao = 20;
@@ -85,11 +96,68 @@ public class MensagemAba extends ViewPart {
 
 	private Projeto projetoAtivo;
 	private PresleyJayFX aDB;
-	
-	public MensagemAba() {
-		this.viewComunication = new ViewComunication(ipServidor);
-		bLogin = false;
+	private CadastroProjeto cadastroProjeto;
+	private MensagemProblema mensagemProblema ; 
+	private MensagemSolucao mensagemSolucao  ; 
+	private ValidacaoMensagem validacaoMensagem  ; 
+	private Conhecimento conhecimento;
+	private Usuario usuario ; 
+
+	public MensagemAba() throws MalformedURLException, RemoteException, NotBoundException {
+		//  ipServidor
+		try {
+			System.setSecurityManager(new RMISecurityManager());
+
+			cadastroProjeto = (CadastroProjeto) Naming.lookup( "rmi://"+ipServidor+"/CadastroProjeto" );
+			mensagemProblema = (MensagemProblema) Naming.lookup( "rmi://"+ipServidor+"/MensagemProblema" );
+			mensagemSolucao = (MensagemSolucao) Naming.lookup( "rmi://"+ipServidor+"/MensagemSolucao" );
+			validacaoMensagem = (ValidacaoMensagem) Naming.lookup( "rmi://"+ipServidor+"/ValidacaoMensagem" );
+			conhecimento = (Conhecimento) Naming.lookup( "rmi://"+ipServidor+"/Conhecimento" );
+			usuario = (Usuario) Naming.lookup( "rmi://"+ipServidor+"/Usuario" );
+
+			bLogin = false;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
+
+	
+	
+	public Usuario getUsuario() {
+		return usuario;
+	}
+
+
+
+	public CadastroProjeto getCadastroProjeto() {
+		return cadastroProjeto;
+	}
+
+
+
+	public MensagemProblema getMensagemProblema() {
+		return mensagemProblema;
+	}
+
+
+
+	public MensagemSolucao getMensagemSolucao() {
+		return mensagemSolucao;
+	}
+
+
+
+	public ValidacaoMensagem getValidacaoMensagem() {
+		return validacaoMensagem;
+	}
+
+
+
+	public Conhecimento getConhecimento() {
+		return conhecimento;
+	}
+
+
 
 	@Override
 	public void createPartControl(Composite parent) {
@@ -101,23 +169,20 @@ public class MensagemAba extends ViewPart {
 		return aDB;
 	}
 	
-	public ViewComunication getViewComunication() {
-		return this.viewComunication;
-	}
 
 	private void initComponents(Composite parent) {
 		
 		this.parentComposite = parent;
 
-		cadastroProjeto = new Button(parentComposite, SWT.NONE);
-		Image log = new Image(cadastroProjeto.getDisplay(), this.getClass()
+		cadastrarProjeto = new Button(parentComposite, SWT.NONE);
+		Image log = new Image(cadastrarProjeto.getDisplay(), this.getClass()
 				.getResourceAsStream("/src/main/resources/icons/projeto.gif"));
-		cadastroProjeto.setLocation(posHorBotaoNivel1, posVerBotaoNivel1);
-		cadastroProjeto.setSize(larguraBotao, alturaBotao);
-		cadastroProjeto.setImage(log);
-		cadastroProjeto.setToolTipText("Projetos");
-		cadastroProjeto.setEnabled(true);
-		cadastroProjeto.addMouseListener(new MouseListener() {
+		cadastrarProjeto.setLocation(posHorBotaoNivel1, posVerBotaoNivel1);
+		cadastrarProjeto.setSize(larguraBotao, alturaBotao);
+		cadastrarProjeto.setImage(log);
+		cadastrarProjeto.setToolTipText("Projetos");
+		cadastrarProjeto.setEnabled(true);
+		cadastrarProjeto.addMouseListener(new MouseListener() {
 			public void mouseDoubleClick(MouseEvent e) {
 				// TODO Auto-generated method stub
 
@@ -185,20 +250,29 @@ public class MensagemAba extends ViewPart {
 
 			public void mouseDown(MouseEvent e) {
 				if (aDB == null){
-					projetoAtivo = viewComunication.getProjetoAtivo(); 
 					// Objeto para o JayFX
 					try {
+						projetoAtivo = cadastroProjeto.getProjetoAtivo();
+						
 						aDB = new PresleyJayFX( projetoAtivo );
 					} catch (JayFXException e1) {
 						e1.printStackTrace();
+					} catch (RemoteException e2) {
+						e2.printStackTrace();
 					}	
 				}	
 				
 				// Exibe o wizard de login
 				runLoginWizardAction();
 				if (desenvolvedorLogado != null) {
-					preenchelistaProblemasEnviados();
-					preenchelistaProblemasRecebidos();
+					try {
+						preenchelistaProblemasEnviados();
+						preenchelistaProblemasRecebidos();
+					} catch (RemoteException e1) {
+						e1.printStackTrace();
+					} catch (ProblemaInexistenteException e1) {
+						e1.printStackTrace();
+					}
 				}
 			}
 
@@ -301,7 +375,13 @@ public class MensagemAba extends ViewPart {
 					Solucao solucao = (Solucao) treeProblemasEnviados
 							.getSelection()[0].getData();
 					runEnviaRetornoSolucaoWizardAction(solucao);
-					preenchelistaProblemasEnviados();
+					try {
+						preenchelistaProblemasEnviados();
+					} catch (RemoteException e1) {
+						e1.printStackTrace();
+					} catch (ProblemaInexistenteException e1) {
+						e1.printStackTrace();
+					}
 				}
 			}
 
@@ -331,7 +411,13 @@ public class MensagemAba extends ViewPart {
 
 			public void mouseDown(MouseEvent e) {
 				runAdcionaProblema();
-				preenchelistaProblemasEnviados();
+				try {
+					preenchelistaProblemasEnviados();
+				} catch (RemoteException e1) {
+					e1.printStackTrace();
+				} catch (ProblemaInexistenteException e1) {
+					e1.printStackTrace();
+				}
 			}
 
 			public void mouseUp(MouseEvent e) {
@@ -378,8 +464,16 @@ public class MensagemAba extends ViewPart {
 							.getSelection()[0].getData();
 
 					// realiza a remocao do Problema no servidor
-					viewComunication.removerProblema(problemaSelecionado);
-					preenchelistaProblemasEnviados();
+					
+					try {
+						mensagemProblema.setProblema(problemaSelecionado);
+						mensagemProblema.removerProblema();
+						preenchelistaProblemasEnviados();
+					} catch (RemoteException e1) {
+						e1.printStackTrace();
+					} catch (ProblemaInexistenteException e1) {
+						e1.printStackTrace();
+					}
 				}
 			}
 
@@ -414,7 +508,15 @@ public class MensagemAba extends ViewPart {
 					Solucao solucao = (Solucao) treeProblemasEnviados
 							.getSelection()[0].getData();
 					solucao.setAjudou(true);
-					viewComunication.atualizarStatusSolucao(solucao);
+					
+					try {
+						mensagemSolucao.setSolucao(solucao);
+						mensagemSolucao.atualizarSolucao();
+					} catch (RemoteException e1) {
+						e1.printStackTrace();
+					} catch (SolucaoIniexistenteException e1) {
+						e1.printStackTrace();
+					}
 
 					MessageDialog.openInformation(validarSolucao.getShell(),
 							"Informação", "Solução aprovada com sucesso.");
@@ -450,9 +552,18 @@ public class MensagemAba extends ViewPart {
 					Problema problema = (Problema) treeProblemasEnviados
 							.getSelection()[0].getData();
 					problema.setResolvido(true);
-					viewComunication.atualizarStatusProblema(problema);
+					
 
-					preenchelistaProblemasEnviados();
+					try {
+						mensagemProblema.setProblema(problema);
+						mensagemProblema.atualizarStatusDoProblema();
+						preenchelistaProblemasEnviados();
+					} catch (RemoteException e1) {
+						e1.printStackTrace();
+					} catch (ProblemaInexistenteException e1) {
+						e1.printStackTrace();
+					}
+					
 					MessageDialog.openInformation(validarSolucao.getShell(),
 							"Informação", "Problema concluido com sucesso.");
 				}
@@ -519,7 +630,14 @@ public class MensagemAba extends ViewPart {
 								.getSelection()[0].getData();
 						runEnviaRespostaWizardAction(problema, null);
 					}
-					preenchelistaProblemasRecebidos();
+					
+					try {
+						preenchelistaProblemasRecebidos();
+					} catch (RemoteException e1) {
+						e1.printStackTrace();
+					} catch (ProblemaInexistenteException e1) {
+						e1.printStackTrace();
+					}
 				}
 			}
 
@@ -572,8 +690,16 @@ public class MensagemAba extends ViewPart {
 						public void run() {
 							if (bLogin) {
 								treeProblemasEnviados.removeAll();
-								preenchelistaProblemasEnviados();
-								preenchelistaProblemasRecebidos();
+								try {
+									preenchelistaProblemasEnviados();
+									preenchelistaProblemasRecebidos();
+								} catch (RemoteException e) {
+									// TODO Auto-generated catch block
+									e.printStackTrace();
+								} catch (ProblemaInexistenteException e) {
+									// TODO Auto-generated catch block
+									e.printStackTrace();
+								}
 							}
 						}
 					};
@@ -585,14 +711,15 @@ public class MensagemAba extends ViewPart {
 
 	}
 
-	private void preenchelistaProblemasEnviados() {
+	private void preenchelistaProblemasEnviados() throws RemoteException, ProblemaInexistenteException {
 		treeProblemasEnviados.removeAll();
 		Image imgProblema = new Image(addUser.getDisplay(), this.getClass()
 				.getResourceAsStream("/src/main/resources/icons/problema.gif"));
 
-		ArrayList<Problema> problemasEncontrados = getViewComunication()
-				.getProblemas(this.getDesenvolvedorLogado());
+		mensagemProblema.setDesenvolvedor(desenvolvedorLogado);
+		ArrayList<Problema> problemasEncontrados = mensagemProblema.getListaProblema();
 
+		
 		TreeItem[] item = new TreeItem[problemasEncontrados.size()];
 
 		int num = 0;
@@ -603,19 +730,21 @@ public class MensagemAba extends ViewPart {
 			item[num].setData(problema);
 			item[num].setImage(imgProblema);
 
-			preecheTreeItemSolucao(getViewComunication()
-					.listarSolucoesDoProblema(problema), item[num], true);
+			mensagemSolucao.setProblema(problema);
+			
+			preecheTreeItemSolucao(mensagemSolucao.listarSolucoesDoProblema(), item[num], true);
 
 			num++;
 		}
 
 	}
 
-	private void preenchelistaProblemasRecebidos() {
+	private void preenchelistaProblemasRecebidos() throws RemoteException, ProblemaInexistenteException {
 		treeProblemasRecebidos.removeAll();
 		Image imgProblema = new Image(addUser.getDisplay(), this.getClass()
 				.getResourceAsStream("/src/main/resources/icons/problema.gif"));
-		mensagensExibidas = viewComunication.obterMensagens(getDesenvolvedorLogado());
+		
+		mensagensExibidas = validacaoMensagem.getMensagens( getDesenvolvedorLogado().getEmail() );
 
 		if (mensagensExibidas != null) {
 			TreeItem[] item = new TreeItem[mensagensExibidas.size()];
@@ -632,8 +761,9 @@ public class MensagemAba extends ViewPart {
 				item[num].setData(problema);
 				item[num].setImage(imgProblema);
 
-				preecheTreeItemSolucao(getViewComunication()
-						.listarSolucoesDoProblema(problema), item[num], false);
+				mensagemSolucao.setProblema(problema);
+				
+				preecheTreeItemSolucao(mensagemSolucao.listarSolucoesDoProblema(), item[num], false);
 
 				num++;
 			}

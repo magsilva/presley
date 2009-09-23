@@ -1,5 +1,7 @@
 package com.hukarz.presley.client.gui.wizard;
 
+import java.rmi.RemoteException;
+
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.ISelection;
@@ -42,19 +44,27 @@ public class AdicionaProjetoWizard extends Wizard implements INewWizard {
 			projeto = page.cadastrarProjeto();
 			
 			try {
-				mensagemAba.getViewComunication().criarProjeto(projeto);
+				mensagemAba.getCadastroProjeto().setProjeto(projeto);
+				mensagemAba.getCadastroProjeto().criarProjeto();
 			} catch (NomeInvalidoException e1) {
 				MessageDialog.openError(this.getShell(), "ERROR", e1.getMessage());
 				e1.printStackTrace();
+			} catch (RemoteException e) {
+				e.printStackTrace();
+			} catch (ProjetoInexistenteException e) {
+				e.printStackTrace();
 			}
 		} else {
 			projeto = page.ativarProjeto();
 			
 			try {
-				mensagemAba.getViewComunication().atualizarStatusProjeto(projeto);
+				mensagemAba.getCadastroProjeto().setProjeto(projeto);
+				mensagemAba.getCadastroProjeto().atualizarStatusProjeto();
 			} catch (ProjetoInexistenteException e1) {
 				MessageDialog.openError(this.getShell(), "ERROR", e1.getMessage());
 				e1.printStackTrace();
+			} catch (RemoteException e) {
+				e.printStackTrace();
 			}
 		}
 		

@@ -45,7 +45,8 @@ public class EnviaRetornoSolucaoWizard extends Wizard implements INewWizard {
     		String resposta = page.getMensagemResposta();
     		solucao.setRetornoSolucao(resposta);
     		//Colocando no banco
-    		viewMensagem.getViewComunication().atualizarSolucao(solucao);
+    		viewMensagem.getMensagemSolucao().setSolucao(solucao);
+    		viewMensagem.getMensagemSolucao().atualizarSolucao();
     	}catch (Exception e) {
     		MessageDialog.openError(this.getShell(), "ERRO", e.getMessage());
     		logger.error(e.getMessage());

@@ -1,6 +1,8 @@
 package com.hukarz.presley.server.mensagem;
 
 
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 
 import com.hukarz.presley.beans.Desenvolvedor;
@@ -10,6 +12,7 @@ import com.hukarz.presley.excessao.DescricaoInvalidaException;
 import com.hukarz.presley.excessao.DesenvolvedorInexistenteException;
 import com.hukarz.presley.excessao.ProblemaInexistenteException;
 import com.hukarz.presley.excessao.SolucaoIniexistenteException;
+import com.hukarz.presley.interfaces.MensagemSolucao;
 import com.hukarz.presley.server.persistencia.implementacao.ServicoDesenvolvedorImplDAO;
 import com.hukarz.presley.server.persistencia.implementacao.ServicoProblemaImplDAO;
 import com.hukarz.presley.server.persistencia.implementacao.ServicoSolucaoImplDAO;
@@ -26,7 +29,7 @@ import com.hukarz.presley.server.persistencia.interfaces.ServicoSolucao;
  * ltima modificacao: 09/09/2008 por RodrigoCMD
  */
 
-public class MensagemSolucao {
+public class MensagemSolucaoImpl extends UnicastRemoteObject implements MensagemSolucao {
 	
 	ServicoSolucao servicoSolucao;
 	ServicoProblema servicoProblema;
@@ -35,22 +38,22 @@ public class MensagemSolucao {
 	Desenvolvedor desenvolvedor;
 	Problema problema;
 	
-	public MensagemSolucao( ) {
+	public MensagemSolucaoImpl( ) throws RemoteException{
 		servicoSolucao = new ServicoSolucaoImplDAO();
 		servicoProblema = new ServicoProblemaImplDAO();
 		servicoDesenvolvedor = new ServicoDesenvolvedorImplDAO();
 	}
 	
-	public void setSolucao(Solucao solucao) {
+	public void setSolucao(Solucao solucao) throws RemoteException{
 		this.solucao = solucao;
 	}
 
 	
-	public void setDesenvolvedor(Desenvolvedor desenvolvedor) {
+	public void setDesenvolvedor(Desenvolvedor desenvolvedor) throws RemoteException{
 		this.desenvolvedor = desenvolvedor;
 	}
 
-	public void setProblema(Problema problema) {
+	public void setProblema(Problema problema) throws RemoteException{
 		this.problema = problema;
 	}
 
@@ -62,7 +65,7 @@ public class MensagemSolucao {
 	 * @return true se a atualizacao foi realizada com sucesso.
 	 * @throws SolucaoIniexistenteException 
 	 */
-	public boolean atualizarStatusDaSolucao(boolean status) throws SolucaoIniexistenteException {
+	public boolean atualizarStatusDaSolucao(boolean status) throws RemoteException, SolucaoIniexistenteException {
 
 		if (solucao == null) throw new SolucaoIniexistenteException(); 
 		if (!servicoSolucao.solucaoExiste( solucao.getId() )) throw new SolucaoIniexistenteException();
@@ -76,7 +79,7 @@ public class MensagemSolucao {
 	 * @return true se a atualizacao foi realizada com sucesso.
 	 * @throws SolucaoIniexistenteException 
 	 */
-	public boolean atualizarSolucao() throws SolucaoIniexistenteException {
+	public boolean atualizarSolucao() throws RemoteException, SolucaoIniexistenteException {
 		if (solucao == null) throw new SolucaoIniexistenteException(); 
 		if (!servicoSolucao.solucaoExiste(solucao.getId())) throw new SolucaoIniexistenteException();
 		
@@ -94,7 +97,7 @@ public class MensagemSolucao {
 	 * @throws ProblemaInexistenteException 
 	 * @throws SolucaoIniexistenteException 
 	 */
-	public Solucao cadastrarSolucao() throws ProblemaInexistenteException, DesenvolvedorInexistenteException, SolucaoIniexistenteException {
+	public Solucao cadastrarSolucao() throws RemoteException, ProblemaInexistenteException, DesenvolvedorInexistenteException, SolucaoIniexistenteException {
 		
 		if (solucao == null) throw new SolucaoIniexistenteException();
 		
@@ -114,7 +117,7 @@ public class MensagemSolucao {
 	 * @throws ProblemaInexistenteException, DesenvolvedorInexistenteException 
 	 * @throws SolucaoIniexistenteException 
 	 */
-	public boolean atualizarStatusDaSolucao() throws ProblemaInexistenteException, DesenvolvedorInexistenteException, SolucaoIniexistenteException {
+	public boolean atualizarStatusDaSolucao() throws RemoteException, ProblemaInexistenteException, DesenvolvedorInexistenteException, SolucaoIniexistenteException {
 		
 		if (solucao == null) throw new SolucaoIniexistenteException(); 
 		if (!servicoProblema.problemaExiste( solucao.getProblema().getId() )) 
@@ -133,7 +136,7 @@ public class MensagemSolucao {
 	 * @return <Solucao>
 	 * @throws SolucaoIniexistenteException 
 	 */
-	public Solucao getSolucao(int id) throws SolucaoIniexistenteException {
+	public Solucao getSolucao(int id) throws RemoteException, SolucaoIniexistenteException {
 		
 		solucao = servicoSolucao.getSolucao(id);
 		
@@ -152,7 +155,7 @@ public class MensagemSolucao {
 	 * @throws DescricaoInvalidaException 
 	 * @throws DesenvolvedorInexistenteException 
 	 */
-	public ArrayList<Solucao> listarSolucoesAceitasDoDesenvolvedor() throws DescricaoInvalidaException, DesenvolvedorInexistenteException {
+	public ArrayList<Solucao> listarSolucoesAceitasDoDesenvolvedor() throws RemoteException, DescricaoInvalidaException, DesenvolvedorInexistenteException {
 		
 		if (desenvolvedor == null) throw new DesenvolvedorInexistenteException();
 		if (!servicoDesenvolvedor.desenvolvedorExiste(desenvolvedor.getEmail())) throw new DescricaoInvalidaException();
@@ -168,7 +171,7 @@ public class MensagemSolucao {
 	 * @throws DescricaoInvalidaException 
 	 * @throws DesenvolvedorInexistenteException 
 	 */
-	public ArrayList<Solucao> listarSolucoesDoDesenvolvedor() throws DescricaoInvalidaException, DesenvolvedorInexistenteException {
+	public ArrayList<Solucao> listarSolucoesDoDesenvolvedor() throws RemoteException, DescricaoInvalidaException, DesenvolvedorInexistenteException {
 		
 		if (desenvolvedor == null) throw new DesenvolvedorInexistenteException();
 		if (!servicoDesenvolvedor.desenvolvedorExiste(desenvolvedor.getEmail())) throw new DescricaoInvalidaException();
@@ -184,7 +187,7 @@ public class MensagemSolucao {
 	 * @throws DescricaoInvalidaException 
 	 * @throws DesenvolvedorInexistenteException 
 	 */
-	public ArrayList<Solucao> listarSolucoesRejeitadasDoDesenvolvedor() throws DescricaoInvalidaException, DesenvolvedorInexistenteException {
+	public ArrayList<Solucao> listarSolucoesRejeitadasDoDesenvolvedor() throws RemoteException, DescricaoInvalidaException, DesenvolvedorInexistenteException {
 		
 		if (desenvolvedor == null) throw new DesenvolvedorInexistenteException();
 		if (!servicoDesenvolvedor.desenvolvedorExiste(desenvolvedor.getEmail())) throw new DescricaoInvalidaException();
@@ -198,7 +201,7 @@ public class MensagemSolucao {
 	 * @return true se a solução foi removida com sucesso.
 	 * @throws SolucaoIniexistenteException 
 	 */
-	public boolean removerSolucao() throws SolucaoIniexistenteException {
+	public boolean removerSolucao() throws RemoteException, SolucaoIniexistenteException {
 		if (solucao == null) throw new SolucaoIniexistenteException(); 
 		if (!servicoSolucao.solucaoExiste(solucao.getId())) throw new SolucaoIniexistenteException();
 		
@@ -211,7 +214,7 @@ public class MensagemSolucao {
 	 * @return true se a solucao existe.
 	 * @throws SolucaoIniexistenteException 
 	 */
-	public boolean solucaoExiste() throws SolucaoIniexistenteException {
+	public boolean solucaoExiste() throws RemoteException, SolucaoIniexistenteException {
 		if (solucao == null) throw new SolucaoIniexistenteException(); 
 		return servicoSolucao.solucaoExiste(solucao.getId());
 	}
@@ -223,7 +226,7 @@ public class MensagemSolucao {
 	 * @return ArrayList<Solucao>
 	 * @throws DescricaoInvalidaException 
 	 */
-	public ArrayList<Solucao> listarSolucoesDoProblema() throws ProblemaInexistenteException {		
+	public ArrayList<Solucao> listarSolucoesDoProblema() throws RemoteException, ProblemaInexistenteException {		
 		if (problema == null) throw new ProblemaInexistenteException();
 		if (!servicoProblema.problemaExiste( problema.getId() )) throw new ProblemaInexistenteException();
 
@@ -237,7 +240,7 @@ public class MensagemSolucao {
 	 * @return ArrayList<Solucao>
 	 * @throws DesenvolvedorInexistenteException 
 	 */
-	public ArrayList<Solucao> listarSolucoesRetornadasDoDesenvolvedor() throws DesenvolvedorInexistenteException  {
+	public ArrayList<Solucao> listarSolucoesRetornadasDoDesenvolvedor() throws RemoteException, DesenvolvedorInexistenteException  {
 		if (!servicoDesenvolvedor.desenvolvedorExiste(desenvolvedor.getEmail())) throw new DesenvolvedorInexistenteException();
 
 		return servicoSolucao.listarSolucoesRetornadasDoDesenvolvedor(desenvolvedor);
