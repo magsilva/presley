@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.hukarz.presley.beans.Arquivo;
-import com.hukarz.presley.beans.TopicoConhecimento;
+import com.hukarz.presley.beans.Conhecimento;
 import com.hukarz.presley.beans.Desenvolvedor;
 import com.hukarz.presley.excessao.ConhecimentoInexistenteException;
 import com.hukarz.presley.server.persistencia.MySQLConnectionFactory;
@@ -175,7 +175,7 @@ public class ServicoConhecimentoComRedeContatoImplDAO implements ServicoConhecim
 
 	}
 
-	public TopicoConhecimento getConhecimento(String nome) {
+	public Conhecimento getConhecimento(String nome) {
 
 		Connection conn = MySQLConnectionFactory.open();
 		
@@ -197,7 +197,7 @@ public class ServicoConhecimentoComRedeContatoImplDAO implements ServicoConhecim
 
 			if (rs.next()){
 
-				TopicoConhecimento conhecimento = new TopicoConhecimento();
+				Conhecimento conhecimento = new Conhecimento();
 
 				conhecimento.setNome(rs.getString("nome"));
 				conhecimento.setDescricao(rs.getString("descricao"));
@@ -305,7 +305,7 @@ public class ServicoConhecimentoComRedeContatoImplDAO implements ServicoConhecim
 		return true;
 	}
 
-	public ArrayList<TopicoConhecimento> getFilhos(String nomeConhecimentoPai)
+	public ArrayList<Conhecimento> getFilhos(String nomeConhecimentoPai)
 	throws ConhecimentoInexistenteException {
 
 		//Connection conn = MySQLConnectionFactory.getConnection();
@@ -313,7 +313,7 @@ public class ServicoConhecimentoComRedeContatoImplDAO implements ServicoConhecim
 		
 		Statement stm = null;
 
-		ArrayList<TopicoConhecimento> list = new ArrayList<TopicoConhecimento>();
+		ArrayList<Conhecimento> list = new ArrayList<Conhecimento>();
 
 		try {
 
@@ -329,7 +329,7 @@ public class ServicoConhecimentoComRedeContatoImplDAO implements ServicoConhecim
 			while (rs.next()){
 
 				String nomeConhecimentoFilho = rs.getString(2);
-				TopicoConhecimento conhecimento = getConhecimento(nomeConhecimentoFilho);
+				Conhecimento conhecimento = getConhecimento(nomeConhecimentoFilho);
 
 				list.add(conhecimento);
 			}
@@ -350,7 +350,7 @@ public class ServicoConhecimentoComRedeContatoImplDAO implements ServicoConhecim
 		return list;
 	}
 
-	public ArrayList<TopicoConhecimento> getPais(String nomeConhecimentoFilho)
+	public ArrayList<Conhecimento> getPais(String nomeConhecimentoFilho)
 	throws ConhecimentoInexistenteException {
 
 		//Connection conn = MySQLConnectionFactory.getConnection();
@@ -358,7 +358,7 @@ public class ServicoConhecimentoComRedeContatoImplDAO implements ServicoConhecim
 		
 		Statement stm = null;
 
-		ArrayList<TopicoConhecimento> list = new ArrayList<TopicoConhecimento>();
+		ArrayList<Conhecimento> list = new ArrayList<Conhecimento>();
 
 		try {
 
@@ -374,7 +374,7 @@ public class ServicoConhecimentoComRedeContatoImplDAO implements ServicoConhecim
 			while (rs.next()){
 
 				String nomeConhecimentoPai = rs.getString(1);
-				TopicoConhecimento conhecimento = getConhecimento(nomeConhecimentoPai);
+				Conhecimento conhecimento = getConhecimento(nomeConhecimentoPai);
 
 				list.add(conhecimento);
 			}
@@ -395,13 +395,13 @@ public class ServicoConhecimentoComRedeContatoImplDAO implements ServicoConhecim
 		return list;
 	}
 
-	public ArrayList<TopicoConhecimento> getListaConhecimento() {
+	public ArrayList<Conhecimento> getListaConhecimento() {
 		//Connection conn = MySQLConnectionFactory.getConnection();
 		Connection conn = MySQLConnectionFactory.open();
 		
 		Statement stm = null;
 
-		ArrayList<TopicoConhecimento> list = new ArrayList<TopicoConhecimento>();
+		ArrayList<Conhecimento> list = new ArrayList<Conhecimento>();
 
 		try {
 
@@ -416,7 +416,7 @@ public class ServicoConhecimentoComRedeContatoImplDAO implements ServicoConhecim
 			while (rs.next()){
 
 				String nomeConhecimentoPai = rs.getString("nome");
-				TopicoConhecimento conhecimento = getConhecimento(nomeConhecimentoPai);
+				Conhecimento conhecimento = getConhecimento(nomeConhecimentoPai);
 				
 				//System.out.println("Adicionando novo conhecimento a lista");
 				
@@ -442,7 +442,7 @@ public class ServicoConhecimentoComRedeContatoImplDAO implements ServicoConhecim
 		return list;
 	}
 
-	public boolean associaArquivo(TopicoConhecimento conhecimento, Arquivo arquivo) {
+	public boolean associaArquivo(Conhecimento conhecimento, Arquivo arquivo) {
 
 		//Connection conn = MySQLConnectionFactory.getConnection();
 		Connection conn = MySQLConnectionFactory.open();
@@ -474,7 +474,7 @@ public class ServicoConhecimentoComRedeContatoImplDAO implements ServicoConhecim
 	}
 
 	
-	public Map<Desenvolvedor, Integer> getContribuintesConhecimento(TopicoConhecimento conhecimento, Desenvolvedor desenvolvedor){
+	public Map<Desenvolvedor, Integer> getContribuintesConhecimento(Conhecimento conhecimento, Desenvolvedor desenvolvedor){
 		// O ArrayList tem que permitir repetições
 		Map<Desenvolvedor, Integer> retorno = new HashMap<Desenvolvedor, Integer>();
 		
@@ -564,7 +564,7 @@ public class ServicoConhecimentoComRedeContatoImplDAO implements ServicoConhecim
 	}
 
 	@Override
-	public TopicoConhecimento getConhecimentoAssociado(Arquivo arquivo) {
+	public Conhecimento getConhecimentoAssociado(Arquivo arquivo) {
 		Connection conn = MySQLConnectionFactory.open();
 		
 		Statement stm = null;

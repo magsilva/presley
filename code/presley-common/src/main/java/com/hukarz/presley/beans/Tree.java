@@ -17,7 +17,7 @@ public class Tree implements Serializable{
 	 * Construtor que inicializa uma arvore com uma raiz com nome do parametro
 	 * @param raizConhecimento é o nome da raiz da arvore
 	 */
-	public Tree(TopicoConhecimento raizConhecimento){
+	public Tree(Conhecimento raizConhecimento){
 		raiz = new Item(null,raizConhecimento);
 	}
 	
@@ -44,7 +44,7 @@ public class Tree implements Serializable{
 	 * @param nome é o nome do nó filho
 	 * @return Item é o nó filho. É null se não existir nó com o nome indicado
 	 */
-	public Item getFilho(TopicoConhecimento conhecimento){
+	public Item getFilho(Conhecimento conhecimento){
 		Item filho = null;
 		if (raiz.temFilhos()) {
 			for (Item item : raiz.getFilhos()) {
@@ -63,7 +63,7 @@ public class Tree implements Serializable{
 	 * @param nome é o nome deste nó da árvore
 	 * @return true se foi adicionado com sucesso e false caso contrário
 	 */
-	public boolean adicionaFilho(TopicoConhecimento conhecimento){
+	public boolean adicionaFilho(Conhecimento conhecimento){
 		try{
 			if (raiz.temFilhos()) {
 				for (Item item : raiz.getFilhos()) {
@@ -85,7 +85,7 @@ public class Tree implements Serializable{
 	 * @param nome é o nome do nó da árvore
 	 * @return true se foi removido com sucesso e false caso contrário
 	 */
-	public boolean removeFilho(TopicoConhecimento conhecimento){
+	public boolean removeFilho(Conhecimento conhecimento){
 		int index = 0;
 		if (raiz.temFilhos()) {
 			for (Item item : raiz.getFilhos()) {
@@ -106,7 +106,7 @@ public class Tree implements Serializable{
 	 * @param nome é o nome do filho que se deseja localizar
 	 * @return a lista de filhos com o nome indicado que foram localizados ou null caso não encontre nenhum.
 	 */
-	public ArrayList<Item> localizaFilho(final TopicoConhecimento conhecimento){
+	public ArrayList<Item> localizaFilho(final Conhecimento conhecimento){
 		ArrayList<Item> filhosLocalizados = new ArrayList<Item>();
 		
 		if (raiz.getConhecimento().getNome().equals( conhecimento.getNome() ))  {
@@ -132,7 +132,7 @@ public class Tree implements Serializable{
 	 * @param localizados é a lista de nós já localizados
 	 * @param nome é o nome do nó que se deseja localizar
 	 */
-	private void localizaFilhoHelper(Item item, ArrayList<Item> localizados, final TopicoConhecimento conhecimento){
+	private void localizaFilhoHelper(Item item, ArrayList<Item> localizados, final Conhecimento conhecimento){
 		if (item==null) {
 			return;
 		}

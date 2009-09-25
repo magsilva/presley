@@ -25,10 +25,8 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 
-import com.hukarz.presley.beans.TopicoConhecimento;
-import com.hukarz.presley.client.gui.component.ArvoreGraficaDeConhecimentos;
+import com.hukarz.presley.beans.Conhecimento;
 import com.hukarz.presley.client.gui.view.Dominio;
-import com.hukarz.presley.interfaces.Conhecimento;
 
 
 public class AdicionaConhecimentoWizardPage extends WizardPage {
@@ -41,7 +39,7 @@ public class AdicionaConhecimentoWizardPage extends WizardPage {
 	private Tree arvoreConhecimento;
 	private ArrayList<TreeItem> conhecimentosSelecionados;
 	private ArrayList<String> nomesNosAdicionado;
-	private Map<TopicoConhecimento, TopicoConhecimento> conhecimentoFilhoPai;
+	private Map<Conhecimento, Conhecimento> conhecimentoFilhoPai;
 
     public AdicionaConhecimentoWizardPage(ISelection selection, Dominio dominio) {
         super("wizardPage");
@@ -51,7 +49,7 @@ public class AdicionaConhecimentoWizardPage extends WizardPage {
         conhecimentosSelecionados = new ArrayList<TreeItem>();
         nomesNosAdicionado = new ArrayList<String>();
         
-        conhecimentoFilhoPai = new HashMap<TopicoConhecimento, TopicoConhecimento>();
+        conhecimentoFilhoPai = new HashMap<Conhecimento, Conhecimento>();
     }
 
     private void updateStatus(String message) {
@@ -71,7 +69,7 @@ public class AdicionaConhecimentoWizardPage extends WizardPage {
     	return nomesNosAdicionado;
     }
     
-    public Map<TopicoConhecimento, TopicoConhecimento> conhecimentoFilhoPai(){
+    public Map<Conhecimento, Conhecimento> conhecimentoFilhoPai(){
     	return conhecimentoFilhoPai;
     }
 
@@ -122,17 +120,17 @@ public class AdicionaConhecimentoWizardPage extends WizardPage {
 			public void mouseDown(MouseEvent e) {
 				// TODO Auto-generated method stub
 				//Adiciona novo nó na arvore gráfica
-				TopicoConhecimento conhecimentoPai=null, conhecimentoFilho=null;
+				Conhecimento conhecimentoPai=null, conhecimentoFilho=null;
 				TreeItem[] treeItem = arvoreConhecimento.getSelection();
 				treeItem[0].setChecked(true);
 				if (treeItem[0]!=null) {
-					conhecimentoPai = new TopicoConhecimento();
+					conhecimentoPai = new Conhecimento();
 					conhecimentoPai.setNome( treeItem[0].getText() ) ;
 				}
 				
 				if (treeItem!=null && treeItem[0]!=null) {
 					TreeItem novoItem = new TreeItem(treeItem[0],treeItem[0].getStyle());
-					conhecimentoFilho = new TopicoConhecimento();
+					conhecimentoFilho = new Conhecimento();
 					conhecimentoFilho.setNome( nomeConhecimentoText.getText() );
 					if (null != conhecimentoFilho.getNome() 
 							&& !conhecimentoFilho.getNome().equals("")) {
@@ -154,10 +152,7 @@ public class AdicionaConhecimentoWizardPage extends WizardPage {
         });
         
         try{
-			Conhecimento conhecimento = dominio.getConhecimento();
-			ArvoreGraficaDeConhecimentos arGraficaDeConhecimentos = new ArvoreGraficaDeConhecimentos();
-
-        	arvoreConhecimento = arGraficaDeConhecimentos.getArvoreGraficaDeConhecimentos(conhecimento.getArvoreDeConhecimentos(), controls, SWT.BORDER | SWT.CHECK);
+        	arvoreConhecimento = dominio.getViewComunication().getArvoreGraficaDeConhecimentos(controls, SWT.BORDER | SWT.CHECK);
         	arvoreConhecimento.addListener(SWT.Selection, new Listener() {
 			
 				public void handleEvent(Event e) {

@@ -92,6 +92,10 @@ public class LoginWizardPage extends WizardPage {
      	    GridData dataIP = new GridData(GridData.FILL_HORIZONTAL);
      	    ipField.setLayoutData(dataIP);
      	    ipField.setText("150.165.130.2");
+
+     	    ipField.setVisible(false);
+     	    ipLabel.setVisible(false);
+     	    
             setControl(controls);
     	}catch(Exception e ){
     		e.printStackTrace();

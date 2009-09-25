@@ -1,6 +1,5 @@
 package com.hukarz.presley.client.gui.wizard;
 
-import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Hashtable;
 
@@ -22,8 +21,7 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 
-import com.hukarz.presley.beans.TopicoConhecimento;
-import com.hukarz.presley.client.gui.component.ArvoreGraficaDeConhecimentos;
+import com.hukarz.presley.beans.Conhecimento;
 import com.hukarz.presley.client.gui.view.MensagemAba;
 
 public class AdicionaDesenvolvedorWizardPage2 extends WizardPage {
@@ -32,7 +30,7 @@ public class AdicionaDesenvolvedorWizardPage2 extends WizardPage {
 	private Tree arvoreConhecimento;
 	private MensagemAba mensagemAba;
 	private Hashtable<String,TreeItem> conhecimentosSelecionados;
-	private ArrayList<TopicoConhecimento> conhecimentos;
+	private ArrayList<Conhecimento> conhecimentos;
 	private Combo grauConhecimento;
 	private Button addConhecimentoButton;
 	private ArrayList<String> itensConhecimentos;
@@ -69,7 +67,7 @@ public class AdicionaDesenvolvedorWizardPage2 extends WizardPage {
     }
     
     
-    public ArrayList<TopicoConhecimento> getConhecimentos() throws RemoteException{
+    public ArrayList<Conhecimento> getConhecimentos(){
     	ArrayList<String> conhecimentosNomes = new ArrayList<String>();
     	//Atualiza a lista de Conhecimetos existentes
     	//Armazena os nomes dos conheciementos selecionados na arvore gráfica
@@ -82,18 +80,18 @@ public class AdicionaDesenvolvedorWizardPage2 extends WizardPage {
 		}
     	//Fazendo um mapeamento entre o nome dos conhecimentos e o conhecimento
     	//para agilizar a recuperação mais a frente
-    	Hashtable<String,TopicoConhecimento> tabelaConhecimentos = new Hashtable<String, TopicoConhecimento>();
+    	Hashtable<String,Conhecimento> tabelaConhecimentos = new Hashtable<String, Conhecimento>();
     	
     	//Fazendo um mapeamento entre o nome dos conhecimentos e o conhecimento
     	//para agilizar a recuperação mais a frente
-    	for (TopicoConhecimento conh : this.mensagemAba.getConhecimento().getListaConhecimento()) {
+    	for (Conhecimento conh : this.mensagemAba.getViewComunication().getListaConhecimentos()) {
 			tabelaConhecimentos.put(conh.getNome(), conh);
 		}
     	
-    	conhecimentos = new ArrayList<TopicoConhecimento>();
+    	conhecimentos = new ArrayList<Conhecimento>();
     	//Preenche a lista de conhecimentos para resposta
     	for (String nome : conhecimentosNomes) {
-    		TopicoConhecimento conh1 = tabelaConhecimentos.get(nome);
+			Conhecimento conh1 = tabelaConhecimentos.get(nome);
 			if (conh1!=null) {
 				conhecimentos.add(conh1);
 			}
@@ -142,8 +140,8 @@ public class AdicionaDesenvolvedorWizardPage2 extends WizardPage {
         label.setText("Selecione os conhecimentos que serão validados:");
         
         try{
-        	ArvoreGraficaDeConhecimentos arvGraficaDeConhecimentos = new ArvoreGraficaDeConhecimentos();
-        	arvoreConhecimento = arvGraficaDeConhecimentos.getArvoreGraficaDeConhecimentos( mensagemAba.getConhecimento().getArvoreDeConhecimentos(), controls, SWT.BORDER );
+        	
+        	arvoreConhecimento = mensagemAba.getViewComunication().getArvoreGraficaDeConhecimentos(controls, SWT.BORDER );
 
         	arvoreConhecimento.addListener(SWT.Selection, new Listener() {
 			
@@ -168,10 +166,11 @@ public class AdicionaDesenvolvedorWizardPage2 extends WizardPage {
         	addConhecimentoButton.addMouseListener(new MouseListener(){
             	
             	public void mouseDoubleClick(MouseEvent arg0) {
-
+    				// TODO Auto-generated method stub
     				
     			}
     			public void mouseDown(MouseEvent e) {
+    				// TODO Auto-generated method stub
     				//Adiciona novo nó na arvore gráfica
     				
     				TreeItem atual=null;
@@ -187,6 +186,7 @@ public class AdicionaDesenvolvedorWizardPage2 extends WizardPage {
     				
     			}
     			public void mouseUp(MouseEvent arg0) {
+    				// TODO Auto-generated method stub
     				
     			}
     			
@@ -195,6 +195,7 @@ public class AdicionaDesenvolvedorWizardPage2 extends WizardPage {
         	
             	
         }catch (Exception e) {
+			// TODO: handle exception
         	logger.error(e.getMessage());
         	e.printStackTrace();
 		}

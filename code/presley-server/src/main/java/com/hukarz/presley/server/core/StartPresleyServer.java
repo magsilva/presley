@@ -1,20 +1,11 @@
 package com.hukarz.presley.server.core;
 
 
-import java.rmi.Naming;
-import java.rmi.registry.LocateRegistry;
-import java.rmi.registry.Registry;
-import java.security.Permission;
-
 import org.apache.log4j.Logger;
 
-import com.hukarz.presley.server.conhecimento.ConhecimentoImpl;
-import com.hukarz.presley.server.mensagem.MensagemProblemaImpl;
-import com.hukarz.presley.server.mensagem.MensagemSolucaoImpl;
-import com.hukarz.presley.server.mensagem.ValidacaoMensagemImpl;
-import com.hukarz.presley.server.usuario.RegistroLogControleVersaoImpl;
-import com.hukarz.presley.server.usuario.UsuarioImpl;
-import com.hukarz.presley.server.util.CadastroProjetoImpl;
+import com.hukarz.presley.communication.facade.PrincipalSUBJECT;
+import com.hukarz.presley.communication.server.ServerBridge;
+import com.hukarz.presley.server.validacao.implementacao.ValidacaoLogControleVersaoImpl;
 
 
 /**
@@ -28,42 +19,28 @@ public class StartPresleyServer {
 	
 	private Logger logger = Logger.getLogger(this.getClass());
 	
-	private ConhecimentoImpl		validacaoConhecimento;
-	private MensagemProblemaImpl	validacaoProblema; 
-	private ValidacaoMensagemImpl	validacaoMensagem;
-	private MensagemSolucaoImpl		validacaoSolucao;
-	private CadastroProjetoImpl		validacaoProjeto ;
-	private UsuarioImpl				validacaoDesenvolvedor ;
-	
-	private RegistroLogControleVersaoImpl validacaoLogControleVersao ;
+	private ValidacaoLogControleVersaoImpl validacaoLogControleVersao = new ValidacaoLogControleVersaoImpl();
 	
 	public StartPresleyServer() {
 		
 		this.logger.info("Iniciando Servidor Presley...\n");
 		try {
 			this.logger.info("Criando Instancia do Servidor...");
-			validacaoProblema		= new MensagemProblemaImpl();
-			validacaoMensagem		= new ValidacaoMensagemImpl();
-			validacaoSolucao		= new MensagemSolucaoImpl();
-			validacaoConhecimento	= new ConhecimentoImpl();
-			validacaoProjeto		= new CadastroProjetoImpl();
-			validacaoDesenvolvedor	= new UsuarioImpl();
-
-			Registry r = LocateRegistry.getRegistry();
-			r.bind("MensagemProblema", validacaoProblema);
-			r.bind("ValidacaoMensagem", validacaoMensagem);
-			r.bind("MensagemSolucao", validacaoSolucao);
-			r.bind("Conhecimento", validacaoConhecimento);
-			r.bind("CadastroProjeto", validacaoProjeto);
-			r.bind("Usuario", validacaoDesenvolvedor);
-            
+			PrincipalSUBJECT.getInstance("server", null, 1099);
 			this.logger.info("Instancia Criada com Sucesso!");
-			validacaoLogControleVersao = new RegistroLogControleVersaoImpl();
 			validacaoLogControleVersao.registrarLogDoArquivo();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		
+		/* instanciando server bridge para comunicação do servidor com classe externa. */
+		this.logger.info("Instanciando do Bridge...");
+		ServerBridge trocaMsg = new ServerBridgeImp();
+		this.logger.info("Bridge Criada!");
+
+		/* setando serverBridge no servidor. */ 
+		PrincipalSUBJECT.facade(1099, trocaMsg);
+		this.logger.info("Servidor Iniciado Com Sucesso!");
 	}
 	public static void main(String [] args){
 		StartPresleyServer server = new StartPresleyServer();

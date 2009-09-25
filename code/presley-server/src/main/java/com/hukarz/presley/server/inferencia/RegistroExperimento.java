@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import com.hukarz.presley.beans.TopicoConhecimento;
+import com.hukarz.presley.beans.Conhecimento;
 import com.hukarz.presley.beans.Desenvolvedor;
 import com.hukarz.presley.beans.Problema;
 import com.hukarz.presley.beans.Projeto;
@@ -19,8 +19,8 @@ public class RegistroExperimento {
 	private Map<Desenvolvedor, Integer> participacaoDesenvolvedorConhecimento;
 	private Problema problema;
 	private ArrayList<Desenvolvedor> listaDesenvolvedores;
-	private Map<TopicoConhecimento, Double> grauSimilaridadeConhecimento;
-	private Map<Integer, TopicoConhecimento> idArquivoPorConhecimento;
+	private Map<Conhecimento, Double> grauSimilaridadeConhecimento;
+	private Map<Integer, Conhecimento> idArquivoPorConhecimento;
 	
 	/**
 	 * Singleton instance 
@@ -46,17 +46,17 @@ public class RegistroExperimento {
 		participacaoDesenvolvedorConhecimento = null;
 		problema = null;
 		listaDesenvolvedores = null;		
-		grauSimilaridadeConhecimento = new HashMap<TopicoConhecimento, Double>();
+		grauSimilaridadeConhecimento = new HashMap<Conhecimento, Double>();
 		idArquivoPorConhecimento = null;
 	}
 	
 	public void addSimilaridadeConhecimento(Integer idArquivo, double valor) {
-		TopicoConhecimento conhecimentoArquivo = idArquivoPorConhecimento.get(idArquivo);
+		Conhecimento conhecimentoArquivo = idArquivoPorConhecimento.get(idArquivo);
 		
 		Double valorAtual = null;
 		
-		TopicoConhecimento conhecimento = new TopicoConhecimento();
-		for (Iterator<TopicoConhecimento> it = grauSimilaridadeConhecimento.keySet().iterator(); it.hasNext();) {
+		Conhecimento conhecimento = new Conhecimento();
+		for (Iterator<Conhecimento> it = grauSimilaridadeConhecimento.keySet().iterator(); it.hasNext();) {
 			conhecimento = it.next();
 			if (conhecimentoArquivo.getNome().equals(conhecimento.getNome())){
 				valorAtual = grauSimilaridadeConhecimento.get(conhecimento);
@@ -88,7 +88,7 @@ public class RegistroExperimento {
 	}
 
 	public void setIdArquivoPorConhecimento(
-			Map<Integer, TopicoConhecimento> arquivoPorConhecimento) {
+			Map<Integer, Conhecimento> arquivoPorConhecimento) {
 		this.idArquivoPorConhecimento = arquivoPorConhecimento;
 	}
 
@@ -155,8 +155,8 @@ public class RegistroExperimento {
 		PrintWriter saida = new PrintWriter(new 
 				FileOutputStream(projeto.getEndereco_Servidor_Gravacao() + problema.getNumeroArquivoExperimento() + ".conhecimentos"));
 
-		for (Iterator<TopicoConhecimento> it = grauSimilaridadeConhecimento.keySet().iterator(); it.hasNext();) {
-			TopicoConhecimento conhecimento = it.next();
+		for (Iterator<Conhecimento> it = grauSimilaridadeConhecimento.keySet().iterator(); it.hasNext();) {
+			Conhecimento conhecimento = it.next();
 			double grau = grauSimilaridadeConhecimento.get(conhecimento);
 			saida.println( String.valueOf( grau ).replace('.', ',') + "\t" + 
 							conhecimento.getNome());

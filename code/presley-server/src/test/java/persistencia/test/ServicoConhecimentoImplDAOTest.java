@@ -2,7 +2,7 @@ package persistencia.test;
 
 import junit.framework.TestCase;
 
-import com.hukarz.presley.beans.TopicoConhecimento;
+import com.hukarz.presley.beans.Conhecimento;
 import com.hukarz.presley.server.persistencia.implementacao.ServicoConhecimentoImplDAO;
 import com.hukarz.presley.server.persistencia.interfaces.ServicoConhecimento;
 
@@ -40,7 +40,7 @@ public class ServicoConhecimentoImplDAOTest extends TestCase {
 		assertTrue(sc.atualizarConhecimento("SQL","Statement Query Language", "Linguagem de consulta"));
 			
 		
-		TopicoConhecimento c = sc.getConhecimento("Statement Query Language");
+		Conhecimento c = sc.getConhecimento("Statement Query Language");
 		
 		if(c.getDescricao().equals("Linguagem de consultar"))
 			fail("houve erro na atualizacao!");
@@ -59,8 +59,8 @@ public class ServicoConhecimentoImplDAOTest extends TestCase {
 	}
 
 	public void testGetConhecimento() {
-		TopicoConhecimento c = sc.getConhecimento("BD");
-		TopicoConhecimento c2 = sc.getConhecimento("MySQL");
+		Conhecimento c = sc.getConhecimento("BD");
+		Conhecimento c2 = sc.getConhecimento("MySQL");
 		
 		assertTrue(c.getNome().equals("BD"));
 		assertTrue(c2.getDescricao().equals("SGBD MySQL"));

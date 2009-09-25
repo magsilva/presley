@@ -13,7 +13,6 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.rmi.RemoteException;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -43,10 +42,9 @@ import com.hukarz.presley.excessao.DescricaoInvalidaException;
 import com.hukarz.presley.excessao.DesenvolvedorInexistenteException;
 import com.hukarz.presley.excessao.ProblemaInexistenteException;
 import com.hukarz.presley.excessao.ProjetoInexistenteException;
-import com.hukarz.presley.excessao.SolucaoIniexistenteException;
-import com.hukarz.presley.server.mensagem.MensagemProblemaImpl;
-import com.hukarz.presley.server.mensagem.MensagemSolucaoImpl;
 import com.hukarz.presley.server.persistencia.MySQLConnectionFactory;
+import com.hukarz.presley.server.validacao.implementacao.ValidacaoProblemaImpl;
+import com.hukarz.presley.server.validacao.implementacao.ValidacaoSolucaoImpl;
 
 
 public class ArvoreEmail extends JFrame implements ActionListener {
@@ -56,13 +54,11 @@ public class ArvoreEmail extends JFrame implements ActionListener {
 	private JPanel      painelCima;  
 	private JPanel      painelBaixo;  
 	private JTree       ArvoreEmail;
-	private MensagemSolucaoImpl  validacaoSolucao;   
-	
-	public ArvoreEmail() throws RemoteException {  	        
+	private ValidacaoSolucaoImpl  validacaoSolucao = new ValidacaoSolucaoImpl();
+
+	public ArvoreEmail() {  	        
 		super("Browser");  
 
-		validacaoSolucao = new MensagemSolucaoImpl();
-		
 		getContentPane().setLayout(new BorderLayout());  
 
 		campo      = new JTextField(); 
@@ -231,10 +227,10 @@ public class ArvoreEmail extends JFrame implements ActionListener {
 	}
 
 
-	public void cadastrarProblemas(ArrayList<Email> emails) throws RemoteException {
+	public void cadastrarProblemas(ArrayList<Email> emails) {
 		Projeto projeto = new Projeto();
 		projeto.setNome("math");
-		MensagemProblemaImpl validacaoProblema = new MensagemProblemaImpl();
+		ValidacaoProblemaImpl validacaoProblema = new ValidacaoProblemaImpl();
 		
 		for (Email email : emails) {
 			if (email.getFrom().isEmpty())
@@ -255,8 +251,7 @@ public class ArvoreEmail extends JFrame implements ActionListener {
 			problema.setTemResposta(false);
 			
 			try {
-				validacaoProblema.setProblema(problema);
-				problema = validacaoProblema.cadastrarProblema();
+				problema = validacaoProblema.cadastrarProblema(problema);
 			} catch (DescricaoInvalidaException e) {
 				e.printStackTrace();
 			} catch (IOException e) {
@@ -264,8 +259,6 @@ public class ArvoreEmail extends JFrame implements ActionListener {
 			} catch (ProjetoInexistenteException e) {
 				e.printStackTrace();
 			} catch (ConhecimentoNaoEncontradoException e) {
-				e.printStackTrace();
-			} catch (ProblemaInexistenteException e) {
 				e.printStackTrace();
 			}
 			
@@ -276,7 +269,7 @@ public class ArvoreEmail extends JFrame implements ActionListener {
 		
 	}
 
-	private void cadastrarSolucoes(ArrayList<Email> emails, Problema problema ) throws RemoteException {
+	private void cadastrarSolucoes(ArrayList<Email> emails, Problema problema ) {
 		for (Email email : emails) {
 			if (email.getFrom().isEmpty())
 				continue;
@@ -292,18 +285,15 @@ public class ArvoreEmail extends JFrame implements ActionListener {
 			solucao.setDesenvolvedor(desenvolvedor);
 
 			try {
-				validacaoSolucao.setSolucao(solucao);
 				if (email.getEmailsFilho().size()==0){
-					validacaoSolucao.cadastrarSolucao();
+					validacaoSolucao.cadastrarSolucao(solucao);
 				} else {
 					cadastrarSolucoes(email.getEmailsFilho(), problema);
-					validacaoSolucao.cadastrarSolucao();
+					validacaoSolucao.cadastrarSolucao(solucao);
 				}
 			} catch (ProblemaInexistenteException e) {
 				e.printStackTrace();
 			} catch (DesenvolvedorInexistenteException e) {
-				e.printStackTrace();
-			} catch (SolucaoIniexistenteException e) {
 				e.printStackTrace();
 			}
 			
@@ -519,7 +509,7 @@ public class ArvoreEmail extends JFrame implements ActionListener {
 		return palavra;
 	}
 
-	public static void main(String args[]) throws RemoteException {  
+	public static void main(String args[]) {  
 		new ArvoreEmail();
 	}  
 

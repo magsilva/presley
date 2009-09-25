@@ -12,7 +12,7 @@ import java.util.ArrayList;
  * 
  */
 
-public class TopicoConhecimento implements Serializable {
+public class Conhecimento implements Serializable {
 	
 	/**
 	 * 
@@ -24,7 +24,7 @@ public class TopicoConhecimento implements Serializable {
 	private String descricao;
 	private ArrayList<Arquivo> arquivos ;
 	
-	public TopicoConhecimento() {
+	public Conhecimento() {
 		id = idConhecimentoGeral ; 
 		arquivos = new ArrayList<Arquivo>();
 		
