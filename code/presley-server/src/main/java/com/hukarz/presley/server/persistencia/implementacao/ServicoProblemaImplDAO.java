@@ -87,7 +87,11 @@ public class ServicoProblemaImplDAO implements ServicoProblema{
 			pstmt.setDate(2,	problema.getData());
 			pstmt.setString(3,	problema.getMensagem());
 			pstmt.setString(4,	problema.getDesenvolvedorOrigem().getEmail());
-			pstmt.setInt(5,		1);
+			if (problema.isResolvido())
+				pstmt.setInt(5,	1);
+			else
+				pstmt.setInt(5,	0);
+				
 			pstmt.setString(6,	problema.getConhecimento().getNome());
 			pstmt.setString(7,	problema.getProjeto().getNome());
 			pstmt.setString(8, problema.getNumeroArquivoExperimento());
