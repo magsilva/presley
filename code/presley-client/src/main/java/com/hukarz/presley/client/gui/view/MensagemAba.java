@@ -581,7 +581,7 @@ public class MensagemAba extends ViewPart {
 				return updateAction;
 			}
 
-		}, 0, 500 * 1000); // 1000 Representa 1 segundo
+		}, 0, 30 * 1000); // 1000 Representa 1 segundo
 
 	}
 
