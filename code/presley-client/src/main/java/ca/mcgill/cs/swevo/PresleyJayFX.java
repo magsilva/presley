@@ -61,34 +61,46 @@ public class PresleyJayFX extends JayFX {
 	 * @throws ConversionException 
 	 */
 	public Map<ClasseJava, ArquivoJava> getElementoRelacionamento( IElement element ) throws ConversionException {
-		Map<ClasseJava, ArquivoJava> retorno = new HashMap<ClasseJava, ArquivoJava>();
-		if ( element.getCategory() == ICategories.METHOD ){
+    	Map<ClasseJava, ArquivoJava> retorno = new HashMap<ClasseJava, ArquivoJava>();
+    	if ( element.getCategory() == ICategories.METHOD ){
 			retorno.putAll( getRelacionamentosMetodo( (MethodElement) element ) );
-		} else if ( element.getCategory() == ICategories.CLASS ){
+    	} else if ( element.getCategory() == ICategories.CLASS ){
+//			Set<IElement> lRange = aDB.getRange( element, Relation.DECLARES );
 			Set<IElement> lRange = getRange( element, Relation.DECLARES );
-
+			
 			for (Iterator<IElement> elementoClasse = lRange.iterator(); elementoClasse.hasNext();) {
 				IElement elemento = elementoClasse.next();
 				if (elemento.getCategory() == ICategories.METHOD)
 					retorno.putAll( getRelacionamentosMetodo( (MethodElement) elemento ) );
 			}
-			
-			lRange = getRange( element, Relation.T_EXTENDS_CLASS ); 
-			retorno.putAll( getListaClasseArquivo( lRange )  );
-
-			lRange = getRange( element, Relation.T_EXTENDS_INTERFACES );
-			retorno.putAll( getListaClasseArquivo( lRange )  );
-		}
-
-		return retorno;
+    	}
+    	
+    	return retorno;
 	}
 
 	private Map<ClasseJava, ArquivoJava> getRelacionamentosMetodo( MethodElement methodElement ) throws ConversionException {
-		
-		Set<IElement> lRange = getRange( methodElement, Relation.T_ACCESSES) ;
-		lRange.addAll( getRange( methodElement, Relation.T_CALLS ) ) ;
+    	Map<ClasseJava, ArquivoJava> retorno = new HashMap<ClasseJava, ArquivoJava>();
 
-		return getListaClasseArquivo(lRange);    	
+    	Set<IElement> lRange = getRange( methodElement, Relation.ACCESSES) ;
+    	lRange.addAll( getRange( methodElement, Relation.CALLS ) ) ;
+//    	lRange.addAll( getRange( methodElement, Relation.T_CALLS ) );
+
+    	for (Iterator<IElement> iterator = lRange.iterator(); iterator.hasNext();) {
+    		IElement element = iterator.next();
+    		try{
+    			if (isProjectElement(element)){
+    				ClasseJava classe   = new ClasseJava( element.getDeclaringClass().getId() ) ;
+
+    				ArquivoJava arquivo = new ArquivoJava( convertToJavaElement(element).getResource().getName(), getProjetoSelecionado());
+    				arquivo.setEnderecoServidor( convertToJavaElement(element).getResource().getLocation().toFile().getAbsolutePath() ) ;
+    				retorno.put(classe, arquivo);
+    			}
+    		} catch (ConversionException e) {
+    			
+    		}
+   		}
+
+   		return retorno;	
 	}
 
 	private Map<ClasseJava, ArquivoJava> getListaClasseArquivo(Set<IElement> elements) {
@@ -171,7 +183,7 @@ public class PresleyJayFX extends JayFX {
 			//				elemento = element.getPackageName() +"."+ element.getShortName();
 
 			if (!elemento.equals("")){
-				listaElementos.put(elemento.toLowerCase(), element.getId());
+				listaElementos.put(elemento, element.getId());
 				//System.out.println(elemento +"\t" + element.getId());
 			}
 		}
@@ -193,9 +205,11 @@ public class PresleyJayFX extends JayFX {
 		StringTokenizer st = new StringTokenizer(texto, separadorPalavras);
 
 		while (st.hasMoreTokens()){   
-			String palavra = st.nextToken().toLowerCase().toLowerCase();
-
-			if (!Character.isLetter(palavra.charAt(0))) {
+			String palavra = st.nextToken();  //.toLowerCase().toLowerCase();
+			palavra = palavra.replace("(", "").replace(")", "").replace("?", "");
+			
+			
+			if ( palavra.equals("") || (!Character.isLetter(palavra.charAt(0))) ) {
 				continue;
 			}
 
