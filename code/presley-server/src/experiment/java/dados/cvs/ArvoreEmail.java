@@ -54,28 +54,31 @@ public class ArvoreEmail extends JFrame {
 
 	private ArrayList<Email> emails; 
 	private ValidacaoSolucaoImpl  validacaoSolucao;
+	private Connection dbConnection;
+
 	private Logger logger;
-	
+
 	// GUI
-	
+
 	private JTextField  pathToMboxFilesTextField;
-	
+
 	private JPanel      topPannel;  
 	private JPanel      bottomPanel;  
-	
+
 	private JButton addDevelopersButton;
 	private JButton saveThreadsButton;
 	private JButton buildThreadsButton;
 	private JButton createQuestionFilesButton;
-	
-	
+
+
 	public ArvoreEmail() {  	  
 		super("Browser");  
-		
+
 		emails = null;
 		validacaoSolucao = new ValidacaoSolucaoImpl();
+		dbConnection = MySQLConnectionFactory.open();
 		logger = Logger.getLogger(this.getClass());
-		
+
 
 		getContentPane().setLayout(new BorderLayout());  
 
@@ -92,7 +95,7 @@ public class ArvoreEmail extends JFrame {
 				addDevelopersButtonActionPerformed(evt);
 			}
 		});
-		
+
 
 		buildThreadsButton = new JButton("Build Threads");
 		buildThreadsButton.addActionListener(new ActionListener() {
@@ -100,7 +103,7 @@ public class ArvoreEmail extends JFrame {
 				buildThreadsButtonActionPerformed(event);
 			}
 		});
-		
+
 		saveThreadsButton = new JButton("Save Threads");
 		saveThreadsButton.setEnabled(false);
 		saveThreadsButton.addActionListener(new ActionListener() {
@@ -108,42 +111,38 @@ public class ArvoreEmail extends JFrame {
 				saveThreadsButtonActionPerformed(event);
 			}
 		});
-		
+
 		createQuestionFilesButton = new JButton("Create .question");
 		createQuestionFilesButton.setEnabled(false);
-		saveThreadsButton.addActionListener(new ActionListener() {
+		createQuestionFilesButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
 				createQuestionFilesButtonActionPerformed(event);
 			}
 		});
-		
-		
+
+
 		topPannel.add(pathToMboxFilesTextField, BorderLayout.CENTER);
 
 		bottomPanel.add(addDevelopersButton);
 		bottomPanel.add(buildThreadsButton);
 		bottomPanel.add(saveThreadsButton);
 		bottomPanel.add(createQuestionFilesButton);
-		
+
 		getContentPane().add(topPannel,  BorderLayout.NORTH);  
 		getContentPane().add(bottomPanel, BorderLayout.CENTER);  
 
-		this.setSize(500, 150);  
+		this.setSize(600, 150);  
 		this.setVisible(true);  
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);  
 
 	}  
 
 	protected void createQuestionFilesButtonActionPerformed(ActionEvent event) {
-		String pathToMboxFiles = pathToMboxFilesTextField.getText();
-		buildThreads(pathToMboxFiles);
 		try {
-			gerarArquivos(pathToMboxFiles, this.emails);
+			gerarArquivos(pathToMboxFilesTextField.getText(), this.emails);
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
 	}
 
 	protected void buildThreadsButtonActionPerformed(ActionEvent event) {
@@ -157,274 +156,136 @@ public class ArvoreEmail extends JFrame {
 	}
 
 	protected void saveThreadsButtonActionPerformed(ActionEvent event) {
-		String pathToMboxFiles = pathToMboxFilesTextField.getText();
-		buildThreads(pathToMboxFiles);
 		saveThreads(this.emails);
-		
 	}
 
-	public void buildThreads(String basePath) {
-		Connection conn = MySQLConnectionFactory.open();
-
-		File directory = new File(basePath);  
+	/**
+	 * Builds all the threads from mbox files
+	 * @param directoryPath The path to mbox files
+	 */
+	public void buildThreads(String directoryPath) {
+		File directory = new File(directoryPath);  
 		File[] files = directory.listFiles();
-		emails = new ArrayList<Email>();
-
-		try {
-			// (28	88)					Arquivos de 01/2004 até 12/2008
-			// (89  conteudo.length)	Arquivos de 01/2009 até o ultimo
-			for (int i=0; i < files.length; i++) {    
-
-				File file = new File( files[i].getAbsolutePath() );
-				FileReader fileReader = new FileReader(file);
-				BufferedReader reader = new BufferedReader(fileReader);
-
-
-				logger.debug(file.toString());
-				String linha = "";
-
-				Email email = new Email();
-
-				boolean encontrouMessageID	= false,
-				encontrouSubject	= false,
-				maisReferencias		= false,
-				encontrouMensagem	= false,
-				encontrouData		= false,
-				proximaLinhaSubject = false;
-
-				while( (linha = reader.readLine()) != null ){
-
-					if ( linha.trim().equals("---------------------------------------------------------------------") ||
-							linha.trim().equals("To unsubscribe, e-mail: dev-unsubscribe@commons.apache.org") ||
-							linha.trim().equals("For additional commands, e-mail: dev-help@commons.apache.org"))
-						continue;
-
-					linha = linha.toLowerCase();
-					linha = linha.replace('\t', ' ');
-
-					if ( !email.getReferences().isEmpty() && maisReferencias )
-						maisReferencias = !linha.contains(":"); 
-
-					if (linha.startsWith("from ") && (linha.contains("@")) ){
-						if (encontrouMessageID && encontrouSubject){
-							if (!Email.adcionarEmail(emails, email)) 
-								emails.add(email);
-						}
-
-						encontrouMessageID	= false;
-						encontrouSubject	= false;
-						encontrouMensagem	= false;
-						maisReferencias		= false;
-						encontrouData		= false;
-						proximaLinhaSubject	= false;
-
-						email = new Email();						   
-					} else if ( (!encontrouMessageID && linha.startsWith("message-id: ")) ||
-							(encontrouMessageID && email.getMessageID().isEmpty() ) ){ 
-						encontrouMessageID = true;
-
-						linha = linha.replaceAll("message-id: ", "");
-						linha = retirarCaracteresExtras(linha);
-						email.setMessageID(linha);
-					} else if (linha.startsWith("in-reply-to: ")){ 
-						linha = linha.replaceAll("in-reply-to: ", "");
-						linha = retirarCaracteresExtras(linha);
-						email.setInReplyTo(linha);
-					} else if (linha.startsWith("from: ")){ 
-						linha = linha.replaceAll("from:", "");
-						linha = retirarCaracteresExtras(linha);
-						StringTokenizer st = new StringTokenizer(linha);
-						String emailFrom = "";
-						while (st.hasMoreTokens())
-							emailFrom = st.nextToken();
-
-						if (!emailFrom.equals("jira@apache.org"))
-							email.setFrom(emailFrom, conn);
-						else{
-							email.setFromPorNome( linha.substring(0, linha.indexOf("jira")), conn );
-						}							   
-
-					} else if (linha.startsWith("date: ") && !encontrouData){ 
-						linha = linha.replaceAll("date: ", "");
-						linha = retirarCaracteresExtras(linha);
-						email.setData(linha);
-						encontrouData = true;
-					} else if (linha.startsWith("references: ") || (maisReferencias) ){ 
-						linha = linha.replaceAll("references: ", "");
-						linha = retirarCaracteresExtras(linha);
-						email.setReferences( email.getReferences() + " " + linha);
-
-						maisReferencias = true;
-					} else if ((!encontrouSubject && linha.startsWith("subject: ")) ||
-							(proximaLinhaSubject && linha.startsWith(" "))){
-						encontrouSubject = true;
-						proximaLinhaSubject = true;
-
-						linha = linha.replaceAll("subject: ", "");
-						email.setSubject( email.getSubject() + " " +linha);
-					} else if (encontrouMessageID && encontrouSubject && linha.isEmpty() ){
-						encontrouMensagem  = true;
-					}
-
-					if (encontrouSubject && proximaLinhaSubject && 
-							!email.getSubject().isEmpty() && linha.contains(":") )
-						proximaLinhaSubject = false;
-
-					// Encontra a mensagem e a primeira linha da mensagem anterior
-					if (encontrouMensagem && !linha.startsWith(">") ){
-						email.setMensagem( email.getMensagem() + " " + linha );
-					}
-				}
-
-				if (encontrouMessageID && encontrouSubject){
-					if (!Email.adcionarEmail(emails, email)) 
-						emails.add(email);
-
-					encontrouMessageID	= false;
-					encontrouSubject	= false;
-					encontrouMensagem	= false;
-					maisReferencias		= false;
-					proximaLinhaSubject = false;
-				}
+		for (File file : files) {
+			try {
+				processMbox(file);
+			}
+			catch (IOException e) {
+				e.printStackTrace();
 			}
 		} 
-		catch (IOException e) {
-			e.printStackTrace();
-		}
-		
 	}
 
+	private void processMbox(File file) throws FileNotFoundException, IOException {
+		FileReader fileReader = new FileReader(file);
+		BufferedReader reader = new BufferedReader(fileReader);
 
 
-	public void buildGraphicalTree(String base, DefaultMutableTreeNode no) {
-		Connection conn = MySQLConnectionFactory.open();
+		logger.debug(file.toString());
+		String linha = "";
 
-		File diretorio = new File(base);  
-		File[] conteudo = diretorio.listFiles();
-		ArrayList<Email> emails = new ArrayList<Email>(); 
+		Email email = new Email();
 
-		try {
-			// (28	88)					Arquivos de 01/2004 até 12/2008
-			// (89  conteudo.length)	Arquivos de 01/2009 até o ultimo
-			for (int i=0; i < conteudo.length; i++) {    
+		boolean encontrouMessageID	= false,
+		encontrouSubject	= false,
+		maisReferencias		= false,
+		encontrouMensagem	= false,
+		encontrouData		= false,
+		proximaLinhaSubject = false;
 
-				File file = new File( conteudo[i].getAbsolutePath() );
-				FileReader fileReader = new FileReader(file);
-				BufferedReader reader = new BufferedReader(fileReader);
+		while( (linha = reader.readLine()) != null ){
 
-				System.out.println( file );
-				String linha = "";
+			if ( linha.trim().equals("---------------------------------------------------------------------") ||
+					linha.trim().equals("To unsubscribe, e-mail: dev-unsubscribe@commons.apache.org") ||
+					linha.trim().equals("For additional commands, e-mail: dev-help@commons.apache.org"))
+				continue;
 
-				Email email = new Email();
+			linha = linha.toLowerCase();
+			linha = linha.replace('\t', ' ');
 
-				boolean encontrouMessageID	= false,
-				encontrouSubject	= false,
-				maisReferencias		= false,
-				encontrouMensagem	= false,
-				encontrouData		= false,
-				proximaLinhaSubject = false;
+			if ( !email.getReferences().isEmpty() && maisReferencias )
+				maisReferencias = !linha.contains(":"); 
 
-				while( (linha = reader.readLine()) != null ){
-
-					if ( linha.trim().equals("---------------------------------------------------------------------") ||
-							linha.trim().equals("To unsubscribe, e-mail: dev-unsubscribe@commons.apache.org") ||
-							linha.trim().equals("For additional commands, e-mail: dev-help@commons.apache.org"))
-						continue;
-
-					linha = linha.toLowerCase();
-					linha = linha.replace('\t', ' ');
-
-					if ( !email.getReferences().isEmpty() && maisReferencias )
-						maisReferencias = !linha.contains(":"); 
-
-					if (linha.startsWith("from ") && (linha.contains("@")) ){
-						if (encontrouMessageID && encontrouSubject){
-							if (!Email.adcionarEmail(emails, email)) 
-								emails.add(email);
-						}
-
-						encontrouMessageID	= false;
-						encontrouSubject	= false;
-						encontrouMensagem	= false;
-						maisReferencias		= false;
-						encontrouData		= false;
-						proximaLinhaSubject	= false;
-
-						email = new Email();						   
-					} else if ( (!encontrouMessageID && linha.startsWith("message-id: ")) ||
-							(encontrouMessageID && email.getMessageID().isEmpty() ) ){ 
-						encontrouMessageID = true;
-
-						linha = linha.replaceAll("message-id: ", "");
-						linha = retirarCaracteresExtras(linha);
-						email.setMessageID(linha);
-					} else if (linha.startsWith("in-reply-to: ")){ 
-						linha = linha.replaceAll("in-reply-to: ", "");
-						linha = retirarCaracteresExtras(linha);
-						email.setInReplyTo(linha);
-					} else if (linha.startsWith("from: ")){ 
-						linha = linha.replaceAll("from:", "");
-						linha = retirarCaracteresExtras(linha);
-						StringTokenizer st = new StringTokenizer(linha);
-						String emailFrom = "";
-						while (st.hasMoreTokens())
-							emailFrom = st.nextToken();
-
-						if (!emailFrom.equals("jira@apache.org"))
-							email.setFrom(emailFrom, conn);
-						else{
-							email.setFromPorNome( linha.substring(0, linha.indexOf("jira")), conn );
-						}							   
-
-					} else if (linha.startsWith("date: ") && !encontrouData){ 
-						linha = linha.replaceAll("date: ", "");
-						linha = retirarCaracteresExtras(linha);
-						email.setData(linha);
-						encontrouData = true;
-					} else if (linha.startsWith("references: ") || (maisReferencias) ){ 
-						linha = linha.replaceAll("references: ", "");
-						linha = retirarCaracteresExtras(linha);
-						email.setReferences( email.getReferences() + " " + linha);
-
-						maisReferencias = true;
-					} else if ((!encontrouSubject && linha.startsWith("subject: ")) ||
-							(proximaLinhaSubject && linha.startsWith(" "))){
-						encontrouSubject = true;
-						proximaLinhaSubject = true;
-
-						linha = linha.replaceAll("subject: ", "");
-						email.setSubject( email.getSubject() + " " +linha);
-					} else if (encontrouMessageID && encontrouSubject && linha.isEmpty() ){
-						encontrouMensagem  = true;
-					}
-
-					if (encontrouSubject && proximaLinhaSubject && 
-							!email.getSubject().isEmpty() && linha.contains(":") )
-						proximaLinhaSubject = false;
-
-					// Encontra a mensagem e a primeira linha da mensagem anterior
-					if (encontrouMensagem && !linha.startsWith(">") ){
-						email.setMensagem( email.getMensagem() + " " + linha );
-					}
-				}
-
+			if (linha.startsWith("from ") && (linha.contains("@")) ){
 				if (encontrouMessageID && encontrouSubject){
 					if (!Email.adcionarEmail(emails, email)) 
 						emails.add(email);
-
-					encontrouMessageID	= false;
-					encontrouSubject	= false;
-					encontrouMensagem	= false;
-					maisReferencias		= false;
-					proximaLinhaSubject = false;
 				}
+
+				encontrouMessageID	= false;
+				encontrouSubject	= false;
+				encontrouMensagem	= false;
+				maisReferencias		= false;
+				encontrouData		= false;
+				proximaLinhaSubject	= false;
+
+				email = new Email();						   
+			} else if ( (!encontrouMessageID && linha.startsWith("message-id: ")) ||
+					(encontrouMessageID && email.getMessageID().isEmpty() ) ){ 
+				encontrouMessageID = true;
+
+				linha = linha.replaceAll("message-id: ", "");
+				linha = retirarCaracteresExtras(linha);
+				email.setMessageID(linha);
+			} else if (linha.startsWith("in-reply-to: ")){ 
+				linha = linha.replaceAll("in-reply-to: ", "");
+				linha = retirarCaracteresExtras(linha);
+				email.setInReplyTo(linha);
+			} else if (linha.startsWith("from: ")){ 
+				linha = linha.replaceAll("from:", "");
+				linha = retirarCaracteresExtras(linha);
+				StringTokenizer st = new StringTokenizer(linha);
+				String emailFrom = "";
+				while (st.hasMoreTokens())
+					emailFrom = st.nextToken();
+
+				if (!emailFrom.equals("jira@apache.org"))
+					email.setFrom(emailFrom, dbConnection);
+				else{
+					email.setFromPorNome( linha.substring(0, linha.indexOf("jira")), dbConnection );
+				}							   
+
+			} else if (linha.startsWith("date: ") && !encontrouData){ 
+				linha = linha.replaceAll("date: ", "");
+				linha = retirarCaracteresExtras(linha);
+				email.setData(linha);
+				encontrouData = true;
+			} else if (linha.startsWith("references: ") || (maisReferencias) ){ 
+				linha = linha.replaceAll("references: ", "");
+				linha = retirarCaracteresExtras(linha);
+				email.setReferences( email.getReferences() + " " + linha);
+
+				maisReferencias = true;
+			} else if ((!encontrouSubject && linha.startsWith("subject: ")) ||
+					(proximaLinhaSubject && linha.startsWith(" "))){
+				encontrouSubject = true;
+				proximaLinhaSubject = true;
+
+				linha = linha.replaceAll("subject: ", "");
+				email.setSubject( email.getSubject() + " " +linha);
+			} else if (encontrouMessageID && encontrouSubject && linha.isEmpty() ){
+				encontrouMensagem  = true;
 			}
 
-			//cadastrarProblemas(emails);
-			gerarArquivos(base, emails);
-			preencherArvore(emails, no);
-		} catch (IOException e) {
-			e.printStackTrace();
+			if (encontrouSubject && proximaLinhaSubject && 
+					!email.getSubject().isEmpty() && linha.contains(":") )
+				proximaLinhaSubject = false;
+
+			// Encontra a mensagem e a primeira linha da mensagem anterior
+			if (encontrouMensagem && !linha.startsWith(">") ){
+				email.setMensagem( email.getMensagem() + " " + linha );
+			}
+		}
+
+		if (encontrouMessageID && encontrouSubject){
+			if (!Email.adcionarEmail(emails, email)) 
+				emails.add(email);
+
+			encontrouMessageID	= false;
+			encontrouSubject	= false;
+			encontrouMensagem	= false;
+			maisReferencias		= false;
+			proximaLinhaSubject = false;
 		}
 	}
 
@@ -454,13 +315,8 @@ public class ArvoreEmail extends JFrame {
 
 			try {
 				problema = validacaoProblema.cadastrarProblema(problema);
-			} catch (DescricaoInvalidaException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
-			} catch (ProjetoInexistenteException e) {
-				e.printStackTrace();
-			} catch (ConhecimentoNaoEncontradoException e) {
+			} 
+			catch (Exception e) {
 				e.printStackTrace();
 			}
 
@@ -633,12 +489,10 @@ public class ArvoreEmail extends JFrame {
 			} 
 
 
-			// Mostra na Janela e cadastra no banco
-			Connection conn = MySQLConnectionFactory.open();
 			Statement stm = null;
 
 			try {
-				stm = conn.createStatement();
+				stm = dbConnection.createStatement();
 
 				Set<String> listaEmail = emails.keySet();
 				for (Iterator<String> iterator = listaEmail.iterator(); iterator.hasNext();) {
@@ -687,7 +541,7 @@ public class ArvoreEmail extends JFrame {
 			} finally {
 				try {
 					stm.close();
-					conn.close();
+					dbConnection.close();
 				} catch (SQLException onConClose) {
 					System.out.println(" Houve erro no fechamento da conexão ");
 					onConClose.printStackTrace();	             
