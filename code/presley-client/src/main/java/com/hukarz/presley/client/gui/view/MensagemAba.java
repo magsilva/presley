@@ -78,7 +78,7 @@ public class MensagemAba extends ViewPart {
 
 	private RunAdcionaProblemaWizardAction runAdcionaProblema;
 	private RunEnviaRespostaWizardAction runEnviaResposta;
-	private RunEnviaRetornoSolucaoWizardAction RunEnviaRetornoSolucao;
+	private RunEnviaRetornoSolucaoWizardAction runEnviaRetornoSolucao;
 
 	private ArrayList<Mensagem> mensagensExibidas;
 	private Timer timer;
@@ -724,9 +724,9 @@ public class MensagemAba extends ViewPart {
 	}
 
 	private void runEnviaRetornoSolucaoWizardAction(Solucao solucao) {
-		this.RunEnviaRetornoSolucao = new RunEnviaRetornoSolucaoWizardAction(
+		this.runEnviaRetornoSolucao = new RunEnviaRetornoSolucaoWizardAction(
 				this, solucao);
-		this.RunEnviaRetornoSolucao.run(null);
+		this.runEnviaRetornoSolucao.run(null);
 	}
 
 	public Mensagem getMensagem() {

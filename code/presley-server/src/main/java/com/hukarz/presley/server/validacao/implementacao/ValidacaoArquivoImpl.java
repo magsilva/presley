@@ -14,20 +14,16 @@ import com.hukarz.presley.beans.Problema;
 import com.hukarz.presley.excessao.ArquivoInexistenteException;
 import com.hukarz.presley.excessao.NomeInvalidoException;
 import com.hukarz.presley.server.persistencia.implementacao.ServicoArquivoImplDAO;
-import com.hukarz.presley.server.persistencia.implementacao.ServicoDesenvolvedorImplDAO;
 import com.hukarz.presley.server.persistencia.implementacao.ServicoLogControleVersaoImplDAO;
 import com.hukarz.presley.server.persistencia.interfaces.ServicoArquivo;
-import com.hukarz.presley.server.persistencia.interfaces.ServicoDesenvolvedor;
 import com.hukarz.presley.server.persistencia.interfaces.ServicoLogControleVersao;
 
 
 public class ValidacaoArquivoImpl {
 	ServicoArquivo servicoArquivo;
-	ServicoDesenvolvedor servicoDesenvolvedor;
 
 	public ValidacaoArquivoImpl() {
 		servicoArquivo = new ServicoArquivoImplDAO();
-		servicoDesenvolvedor = new ServicoDesenvolvedorImplDAO();
 	}
 
 	/**

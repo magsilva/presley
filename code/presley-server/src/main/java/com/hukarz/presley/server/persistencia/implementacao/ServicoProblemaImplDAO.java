@@ -6,7 +6,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -70,8 +69,7 @@ public class ServicoProblemaImplDAO implements ServicoProblema{
 		//Connection conn = MySQLConnectionFactory.getConnection();
 		Connection conn = MySQLConnectionFactory.open();
 
-		Map<ClasseJava, ArquivoJava> arquivosAssociados = new HashMap<ClasseJava, ArquivoJava>();
-		arquivosAssociados = problema.getClassesRelacionadas();
+		Map<ClasseJava, ArquivoJava> arquivosAssociados = problema.getClassesRelacionadas();
 
 		Statement stm = null;
 

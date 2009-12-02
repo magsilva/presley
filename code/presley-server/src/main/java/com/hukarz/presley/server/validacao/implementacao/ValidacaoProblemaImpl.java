@@ -16,12 +16,10 @@ import com.hukarz.presley.excessao.DescricaoInvalidaException;
 import com.hukarz.presley.excessao.ProblemaInexistenteException;
 import com.hukarz.presley.excessao.ProjetoInexistenteException;
 import com.hukarz.presley.server.inferencia.Inferencia;
-import com.hukarz.presley.server.persistencia.implementacao.ServicoArquivoImplDAO;
 import com.hukarz.presley.server.persistencia.implementacao.ServicoMensagemImplDAO;
 import com.hukarz.presley.server.persistencia.implementacao.ServicoProblemaImplDAO;
 import com.hukarz.presley.server.persistencia.implementacao.ServicoProjetoImplDAO;
 import com.hukarz.presley.server.persistencia.implementacao.ServicoSolucaoImplDAO;
-import com.hukarz.presley.server.persistencia.interfaces.ServicoArquivo;
 import com.hukarz.presley.server.persistencia.interfaces.ServicoMensagem;
 import com.hukarz.presley.server.persistencia.interfaces.ServicoProblema;
 import com.hukarz.presley.server.persistencia.interfaces.ServicoProjeto;
@@ -41,7 +39,6 @@ public class ValidacaoProblemaImpl {
 	
 	ServicoSolucao  servicoSolucao;
 	ServicoProblema servicoProblema;
-	ServicoArquivo  servicoArquivo;
 	ServicoMensagem servicoMensagem;
 	ServicoProjeto  servicoProjeto;
 	
@@ -51,7 +48,6 @@ public class ValidacaoProblemaImpl {
 	public ValidacaoProblemaImpl() {
 		servicoProblema = new ServicoProblemaImplDAO();
 		servicoSolucao  = new ServicoSolucaoImplDAO();
-		servicoArquivo  = new ServicoArquivoImplDAO();
 		servicoMensagem = new ServicoMensagemImplDAO();
 		servicoProjeto	= new ServicoProjetoImplDAO();
 		

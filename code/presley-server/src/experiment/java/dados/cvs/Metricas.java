@@ -14,7 +14,7 @@ public class Metricas {
 	private int[] qtdeRecomendacoesCorretas;
 	private int[] qtdeRecomendacoesFeitas;
 	private int[] qtdeRespostas;
-	static String PATH = "C:/java/lucene/Experimento_Final/emails/";
+	private static final String PATH = "C:/java/lucene/Experimento_Final/emails/";
 		
 	
 	public Metricas() throws IOException {
@@ -42,8 +42,9 @@ public class Metricas {
 
 		int qtdeRegistros = 0 ;
 
-		while( reader.readLine() != null )
-			qtdeRegistros += 1;
+		while(reader.readLine() != null) {
+			qtdeRegistros++;
+		}
 
 		return qtdeRegistros;
 	}
@@ -71,8 +72,9 @@ public class Metricas {
 			FileReader fileReader = new FileReader(arquivo);
 			BufferedReader reader = new BufferedReader(fileReader);
 			
-			while( reader.readLine() != null )
-				qtdeRegistros += 1;
+			while(reader.readLine() != null) {
+				qtdeRegistros++;
+			}
 			
 			if (qtdeRegistros == 0)
 				continue;

@@ -65,14 +65,13 @@ public class ServicoMensagemImplDAO implements ServicoMensagem{
 						
 			while(rs.next()) {
 				Mensagem msg = new Mensagem();
-				Problema pro = new Problema();
 				
 				int id = rs.getInt(1);
-				pro = servicoProblema.getProblema(id);
+				Problema problem = servicoProblema.getProblema(id);
 				
-				Desenvolvedor des = pro.getDesenvolvedorOrigem();
+				Desenvolvedor des = problem.getDesenvolvedorOrigem();
 				msg.setDesenvolvedorOrigem(des);
-				msg.setProblema(pro);
+				msg.setProblema(problem);
 				
 				// msg.setTexto(rs.getString(3)); *************
 				

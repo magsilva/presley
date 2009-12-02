@@ -20,11 +20,9 @@ public class ProcessaSimilaridade {
 	ProcessaDocumento processaDocumento = new ProcessaDocumento();
 	ServicoConhecimento servicoConhecimento = new ServicoConhecimentoImplDAO();
 	ServicoArquivo servicoArquivo = new ServicoArquivoImplDAO();
-	int qtdeArquivos = 0;
 	
 	public Conhecimento verificaConhecimentoDoTexto(String texto) throws IOException, ConhecimentoNaoEncontradoException{
 		ArrayList<Arquivo> arquivos = servicoArquivo.getListaArquivo();
-		qtdeArquivos = arquivos.size();
 		
 		Arquivo arquivoTexto = processaDocumento.transformaTextoEmArquivo(texto);
 		Arquivo arquivoMaisSimilar = null; 

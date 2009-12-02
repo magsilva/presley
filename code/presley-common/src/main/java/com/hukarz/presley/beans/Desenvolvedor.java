@@ -77,6 +77,9 @@ public class Desenvolvedor implements Serializable {
 	
 	@Override
 	public boolean equals(Object arg){
+		if (null == arg) {
+			return false;
+		}
 		return this.nome.equals(((Desenvolvedor)arg).nome);
 	}
 	

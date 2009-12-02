@@ -15,7 +15,7 @@ public class TesteVtdXml {
 
 	public static void main(String args[]) {  
 		try {
-			File f = new File("C:/java/runtime-EclipseApplication/lucene/log/log-20083112.xml");
+			File f = new File(args[0]);
 			// counting child elements of parlist
 			int count = 0;
 			// counting child elements of parlist named "par"

@@ -33,15 +33,16 @@ public class Projeto implements Serializable {
 	}
 	
 	private String ajustar_Endereco( String enderecoAtual ){
-    	String endereco = "";
+		
+		StringBuilder endereco = new StringBuilder();
         for(int x=0; x< enderecoAtual.length();x++){
         	if (enderecoAtual.charAt(x)=='\\' )
-        		endereco += "/";
+        		endereco.append("/");
         	else
-        		endereco += enderecoAtual.charAt(x);
+        		endereco.append(enderecoAtual.charAt(x));
         }
 		
-		return endereco;
+		return endereco.toString();
 	}
 	
 	public void setDiretorio_Subversion(String diretorio_Subversion) {

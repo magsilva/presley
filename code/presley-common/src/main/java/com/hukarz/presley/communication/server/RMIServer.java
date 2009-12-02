@@ -11,9 +11,6 @@ import com.hukarz.presley.communication.facade.StubInterface;
 
 public class RMIServer {
 
-	@SuppressWarnings("unused")
-	private StubInterface stub;
-
 	private int port;
 	
 	private ServerBridge bridge;

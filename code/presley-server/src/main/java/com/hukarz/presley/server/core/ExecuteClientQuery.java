@@ -78,7 +78,8 @@ public class ExecuteClientQuery implements CorePresleyOperations{
 	@SuppressWarnings("unchecked")
 	public boolean adicionaConhecimento(PacketStruct packet) throws DescricaoInvalidaException, ConhecimentoInexistenteException, Exception {
 		ArrayList<Conhecimento> conhecimento = (ArrayList<Conhecimento>) packet.getData();
-		if (conhecimento==null) {
+		if (conhecimento == null) {
+			// FIXME: tratar possível NullPonterException 
 			this.adicionaConhecimento(null, null);
 		}
 		Conhecimento pai = conhecimento.get(1);
@@ -337,11 +338,7 @@ public class ExecuteClientQuery implements CorePresleyOperations{
 	public ArrayList<Solucao> listarSolucoesRetornadasDoDesenvolvedor(PacketStruct packet)
 	throws DesenvolvedorInexistenteException{
 		Desenvolvedor desenvolvedor = (Desenvolvedor) packet.getData();
-		ArrayList<Solucao> listaDeSolucoes = new ArrayList<Solucao>();
-		
-		listaDeSolucoes = listarSolucoesRetornadasDoDesenvolvedor( desenvolvedor );
-		
-		return listaDeSolucoes;
+		return listarSolucoesRetornadasDoDesenvolvedor(desenvolvedor);
 	}
 	
 	public ArrayList<Solucao> listarSolucoesRetornadasDoDesenvolvedor(Desenvolvedor desenvolvedor)

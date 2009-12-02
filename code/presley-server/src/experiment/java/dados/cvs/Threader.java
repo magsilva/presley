@@ -14,13 +14,9 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.StringTokenizer;
 
-import org.apache.log4j.Logger;
-
 public class Threader {
 	private DB db;
 	private Set<String> developers;
-
-	Logger logger = Logger.getLogger("ArvoreEmail");
 
 	private ArrayList<Email> threads;
 	public Threader() {

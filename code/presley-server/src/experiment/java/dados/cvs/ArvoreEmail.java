@@ -153,14 +153,14 @@ public class ArvoreEmail extends JFrame {
 	 * @param level Identation level
 	 */
 	private void showChildren(ArrayList<Email> children, int level) {
-		String identation = "";
+		StringBuilder identation = new StringBuilder();
 		for (int i = 0; i < level; i++) {
-			identation += "\t";
+			identation.append("\t");
 		}
 
 		for (Email email : children) {
-			System.out.println(identation + email.getSubject());
-			System.out.println(identation + email.getFrom());
+			System.out.println(identation.toString() + email.getSubject());
+			System.out.println(identation.toString() + email.getFrom());
 			if (email.getEmailsFilho().size() > 0) {
 				showChildren(email.getEmailsFilho(), level + 1);
 			}

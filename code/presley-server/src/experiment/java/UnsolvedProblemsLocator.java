@@ -8,12 +8,10 @@ public class UnsolvedProblemsLocator extends Metrics {
 	}
 
 	public void listUnsolvedProblems() {
-		int counter = 0;
 		for (int i = 0; i < this.recommendationsFiles.length; i++) {
 			if (0 == this.precisions[i]) {
 				String filename = this.recommendationsFiles[i].getName().replace(".recomendations", ".question");
 				System.out.print(filename + " ");
-				counter++;
 			}
 		}
 	}

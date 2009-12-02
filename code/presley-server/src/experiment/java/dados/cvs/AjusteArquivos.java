@@ -38,7 +38,7 @@ public class AjusteArquivos {
 			linha = reader.readLine();
 			String email = "";
 			System.out.println( linha ) ;
-			if (linha.contains("jira@apache.org")){
+			if (linha != null && linha.contains("jira@apache.org")){
 				String nome = extractNomeJira(linha);
 
 				Desenvolvedor desenvolvedor ;
@@ -46,6 +46,7 @@ public class AjusteArquivos {
 
 				email = desenvolvedor.getEmail();
 			} else {
+				// FIXME: tratar null
 				email = extractEmail(linha);
 				servicoDesenvolvedor.autenticaDesenvolvedor(email, "1") ;
 			}

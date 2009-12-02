@@ -12,9 +12,13 @@ public class ClasseJava implements Serializable{
 		return nomeClasse.hashCode();
 	}
 
+	// TODO: implementar equals corretamente
 	@Override
 	public boolean equals(Object arg0) {
-		return this.nomeClasse == ((ClasseJava) arg0).getNomeClasse() ; 
+		if (arg0 == null) {
+			return false;
+		}
+		return this.nomeClasse.equals(((ClasseJava) arg0).getNomeClasse()); 
 	}
 
 	public ClasseJava(String nomeClasse) {
