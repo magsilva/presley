@@ -181,13 +181,11 @@ public class Metrics {
 	}	
 	
 	
-	// FIXME
 	public void detailedReport() throws FileNotFoundException {
 		reportBy();
 		reportUntil();
 	}
 	
-	// FIXME
 	private void reportUntil() throws FileNotFoundException {
 		double precision;
 		double recall;
@@ -219,7 +217,6 @@ public class Metrics {
 		}
 	}
 
-	// FIXME
 	private void printReport(double precision, double recall,
 			int total, int totalPositive, int n) {
 		System.out.println("N = " + n + "\t\tTotal = " + total + "\t\tTotal+ = " + totalPositive);
@@ -229,7 +226,6 @@ public class Metrics {
 		System.out.println("recall+\t\t" + recall/totalPositive);
 	}
 
-	// FIXME
 	private void reportBy() throws FileNotFoundException {
 		double precision;
 		double recall;

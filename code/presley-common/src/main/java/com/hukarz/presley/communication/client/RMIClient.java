@@ -18,10 +18,8 @@ public class RMIClient {
 	private StubInterface stub;
 	public static final String NOME_STUB = "stub";
 	
-	public RMIClient(String ipserver, int port) {
-		this.ipserver = ipserver;
+	public RMIClient(int port) {
 		try {
-			//this.stub = (StubInterface) Naming.lookup("rmi://" + this.ipserver + "/" + NOME_STUB);
 			Registry registry = LocateRegistry.getRegistry(this.ipserver);
             this.stub= (StubInterface) registry.lookup("stub");
 		} catch (RemoteException e) {
@@ -31,14 +29,6 @@ public class RMIClient {
 		}
 	}
 	
-	public String getIpserver() {
-		return ipserver;
-	}
-
-	public void setIpserver(String ipserver) {
-		this.ipserver = ipserver;
-	}
-
 	private void requestFromServer(PacketStruct departurePack){
 		try {
 			this.backPack = stub.sendReceivePacketStruct(departurePack);

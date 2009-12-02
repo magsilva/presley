@@ -12,7 +12,7 @@ public class ClasseJava implements Serializable{
 		return nomeClasse.hashCode();
 	}
 
-	// TODO: implementar equals corretamente
+	// FIXME: implementar equals corretamente
 	@Override
 	public boolean equals(Object arg0) {
 		if (arg0 == null) {

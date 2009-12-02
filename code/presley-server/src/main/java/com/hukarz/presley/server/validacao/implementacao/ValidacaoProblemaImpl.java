@@ -15,6 +15,8 @@ import com.hukarz.presley.excessao.ConhecimentoNaoEncontradoException;
 import com.hukarz.presley.excessao.DescricaoInvalidaException;
 import com.hukarz.presley.excessao.ProblemaInexistenteException;
 import com.hukarz.presley.excessao.ProjetoInexistenteException;
+import com.hukarz.presley.server.inferencia.Inference;
+import com.hukarz.presley.server.inferencia.InferenceFactory;
 import com.hukarz.presley.server.inferencia.Inferencia;
 import com.hukarz.presley.server.persistencia.implementacao.ServicoMensagemImplDAO;
 import com.hukarz.presley.server.persistencia.implementacao.ServicoProblemaImplDAO;
@@ -79,7 +81,7 @@ public class ValidacaoProblemaImpl {
 	 * @throws ProjetoInexistenteException 
 	 * @throws ConhecimentoNaoEncontradoException 
 	 */
-	// TODO: não recomendar enquanto estiver cadastrando
+	// FIXME: não recomendar enquanto estiver cadastrando
 	public Problema cadastrarProblema(Problema problema) 
 	throws DescricaoInvalidaException, IOException, ProjetoInexistenteException, ConhecimentoNaoEncontradoException {
 
@@ -108,24 +110,18 @@ public class ValidacaoProblemaImpl {
 			}			
 		}
 				
-		problema.setConhecimento( processaSimilaridade.verificaConhecimentoDoTexto( problema.getDescricao() + "  " + 
-				problema.getMensagem() + " " + comentariosCodigo ) ) ;
-		
-/*
-		Conhecimento conhecimento = new Conhecimento();
-		conhecimento.setNome("Core");
-		problema.setConhecimento( conhecimento );
-*/
+		String texto = problema.getDescricao() + "  " + problema.getMensagem() + " " + comentariosCodigo;
+		problema.setConhecimento(processaSimilaridade.verificaConhecimentoDoTexto(texto)) ;
+	
+
 		this.logger.debug("Conhecimeto do problema");
 	
-		problema = servicoProblema.cadastrarProblema(problema) ;
+		problema = servicoProblema.cadastrarProblema(problema);
 
 		this.logger.debug("Cadastro do Problema");
 		
-		if (problema.isTemResposta()){
-			// Retorna os desenvolvedores que receberão o problema
-			// TODO: adicionar fábrica
-			Inferencia inferencia = new Inferencia();
+		if (problema.isTemResposta()) {
+			Inference inferencia = InferenceFactory.createInstance();
 			ArrayList<Desenvolvedor> desenvolvedores = inferencia.getDesenvolvedores(arquivoDesenvolvedores, 
 					problema);
 			

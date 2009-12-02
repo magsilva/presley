@@ -24,10 +24,10 @@ public class Threader {
 		this.threads = null;
 		this.developers = null;
 	}
+	
 	/**
-	 * Builds all the email threads from mbox files
-	 * @param arvoreEmail TODO
-	 * @param directoryPath The path to mbox files
+	 * Builds threads in memory
+	 * @param directoryPath Path to directory containing the mbox files
 	 */
 	public void buildThreads(String directoryPath) {
 		this.threads = new ArrayList<Email>();
@@ -46,12 +46,7 @@ public class Threader {
 	
 	/**
 	 * Create .question files
-	 * @param threads
-	 * @param arvoreEmail TODO
-	 * @param base
-	 * @throws FileNotFoundException
 	 */
-	// TODO: escrever teste para o método
 	public void createDotQuestionFiles(String base) throws FileNotFoundException {
 		int count = 1;
 	
@@ -61,7 +56,6 @@ public class Threader {
 				continue;
 			}
 	
-			// TODO: remover parâmetro?
 			ArrayList<Email> emailsExperimento = thread.retornarFilhosSemRepeticao();
 	
 			if (emailsExperimento.size() > 0){
@@ -117,7 +111,7 @@ public class Threader {
 		return threads;
 	}
 	
-	// TODO: trocar a implementação deste método.
+	// XXX: trocar a implementação deste método.
 	protected void processMbox(File file) throws FileNotFoundException, IOException {
 		FileReader fileReader = new FileReader(file);
 		BufferedReader reader = new BufferedReader(fileReader);
@@ -182,23 +176,21 @@ public class Threader {
 				linha = retirarCaracteresExtras(linha);
 				StringTokenizer st = new StringTokenizer(linha);
 				String emailFrom = "";
-				// TODO: não deveria ser concatenação? 
+				// XXX: não deveria ser concatenação? 
 				while (st.hasMoreTokens()) {
 					emailFrom = st.nextToken();
 				}
 	
 				email.setFrom(emailFrom);
 	
-				// TODO: Fazer esta troca depois de processar todo o arquivo
+				// FIXME: Fazer esta troca depois de processar todo o arquivo
 				try {
 					// FIXME: tornar jira@apache.org uma variável para cada projeto
 					if (emailFrom.equals("jira@apache.org")) {
-						// TODO: revisar
 						String name = linha.substring(0, linha.indexOf("jira"));
 						email.setFrom(this.db.getDeveloperEmail(name));
 					}
 					else {
-						// TODO: revisar
 						email.setFrom(this.db.getDeveloperEmailInTheListaEmail(emailFrom));
 					}	
 				}
@@ -250,7 +242,7 @@ public class Threader {
 		}
 	}
 
-	// TODO: não deve alterar a referência de um parâmetro de entrada
+	// FIXME: não deve alterar a referência de um parâmetro de entrada
 	String retirarCaracteresExtras(String palavra) {
 		palavra = palavra.replace("JIRA", "");
 		palavra = palavra.replace("<", "");

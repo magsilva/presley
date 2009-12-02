@@ -37,7 +37,6 @@ public class RMIServer {
             Registry registry = LocateRegistry.createRegistry(this.port);
 
             registry.bind("stub", packetSTUB);
-           // Naming.rebind("rmi://localhost:1099/stub", packetSTUB);
 
 		} catch (RemoteException e) {
 			e.printStackTrace();

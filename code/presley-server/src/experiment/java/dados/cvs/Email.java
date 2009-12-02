@@ -189,8 +189,8 @@ public class Email {
 	public void setEmailsFilho(ArrayList<Email> emailsFilho) {
 		this.emailsFilho = emailsFilho;
 	}
-
-	// TODO: revisar
+	
+	// XXX: o comportamento deve ser este mesmo?
 	public void setFrom(final String from) {
 		if (null != from) {
 			this.from = from;

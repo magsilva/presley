@@ -35,7 +35,6 @@ public class DB {
 		validacaoProblema = new ValidacaoProblemaImpl();
 	}
 
-	// TODO: escrever teste para o método
 	void cadastrarSolucoes(ArrayList<Email> children, Problema problema ) {
 		for (Email email : children) {
 			if (email.getFrom().isEmpty())
@@ -68,7 +67,6 @@ public class DB {
 		return connection;
 	}
 
-	// TODO: revisar
 	public String getDeveloperEmail(String name) throws SQLException {
 		Statement statement = null;
 		statement = connection.createStatement();
@@ -83,7 +81,6 @@ public class DB {
 		}
 	}
 
-	// TODO: verificar este método
 	public String getDeveloperEmailInTheListaEmail(String email) throws SQLException {
 		Statement statement = connection.createStatement();
 		String query = "SELECT email FROM desenvolvedor WHERE listaEmail LIKE '%" + email + "%'";
@@ -159,7 +156,7 @@ public class DB {
 	
 	public void saveThreads(Threader threader) {
 		Projeto projeto = new Projeto();
-		// FIXME: math?
+		// XXX: math?
 		projeto.setNome("math");
 	
 		for (Email email : threader.getThreads()) {
@@ -169,7 +166,7 @@ public class DB {
 	
 			Desenvolvedor desenvolvedor = new Desenvolvedor(email.getFrom());
 	
-			// TODO: criar construtor em Problema para evitar este estilo de programação
+			// FIXME: criar construtor adequado em Problema para evitar este estilo de programação
 			Problema problema = new Problema();
 			problema.setDesenvolvedorOrigem(desenvolvedor);
 			problema.setProjeto(projeto);

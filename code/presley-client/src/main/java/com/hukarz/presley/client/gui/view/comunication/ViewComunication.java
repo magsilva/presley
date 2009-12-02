@@ -4,6 +4,8 @@ package com.hukarz.presley.client.gui.view.comunication;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import javax.swing.JTable.PrintMode;
+
 import org.apache.log4j.Logger;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.TreeItem;
@@ -41,14 +43,11 @@ public class ViewComunication implements CorePresleyOperations{
 	
 	/**
 	 * Construtor da classe ViewCommunication. Instancia a comunicacao como cliente, passando o ip do
-	 * servidor e a porta para acesso remoto (1099 padrao RMI)
+	 * servidor e a porta para acesso remoto
 	 */
 	public ViewComunication() {
 		try {
-			logger.info("instanciando cliente");
-			PrincipalSUBJECT.getInstance("client", "150.165.130.196", 1099);
-			
-			logger.info("Passou do getInstance");
+			PrincipalSUBJECT.getInstance(PrincipalSUBJECT.Mode.client, PrincipalSUBJECT.RMI_PORT);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -57,10 +56,9 @@ public class ViewComunication implements CorePresleyOperations{
 	
 	/**
 	 * Construtor da classe ViewCommunication. Instancia a comunicacao como cliente, passando o ip do
-	 * servidor e a porta para acesso remoto (1099 padrao RMI) e usa o ip passado como parametro.
+	 * servidor e a porta para acesso remoto e usa o ip passado como parametro.
 	 */
 	public ViewComunication(String ip) {
-		///*
 		try {
 
 			//Criando objetos contendo listas de desenvolvedores, etc
@@ -70,17 +68,14 @@ public class ViewComunication implements CorePresleyOperations{
 			arvoreConhecimentos = null;//Armazena a ontologia
 			
 			logger.info("instanciando cliente");
-			PrincipalSUBJECT.getInstance("client", ip, 1099);
+			PrincipalSUBJECT.getInstance(PrincipalSUBJECT.Mode.client, PrincipalSUBJECT.RMI_PORT);
 			
 			logger.info("Passou do getInstance");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		//*/
 		
 		this.listaDesenvolvedores = getListaDesenvolvedores();
-		
-	//	teste();//TESTE
 	}
 
 	

@@ -22,7 +22,7 @@ public class nomeDesenvolvedoresCVS {
 		
 		try {
 			// open a file and read the content into a byte array
-			File f = new File("C:/Java/Math/Inicial/trunk_20_08_2009/log_20_08_2009.xml");
+			File f = new File(args[0]);
 
 			FileInputStream fis =  new FileInputStream(f);
 			byte[] b = new byte[(int) f.length()];

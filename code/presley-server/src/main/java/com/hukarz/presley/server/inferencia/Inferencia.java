@@ -15,27 +15,50 @@ import com.hukarz.presley.server.persistencia.interfaces.ServicoConhecimento;
 
 
 /*
+ * 
  * Created on 09/09/2008
  */
 
-/**
- * @author Presley
- */
-public class Inferencia {
+public class Inferencia implements Inference {
+	
+	private boolean useCodeHistory;
+	private boolean useCommunicationHistory;
 
+	public Inferencia(boolean useCommunicationHistory, boolean useCodeHistory) {
+		this.useCommunicationHistory = useCommunicationHistory;
+		this.useCodeHistory = useCodeHistory;
+	}
+
+	/* (non-Javadoc)
+	 * @see com.hukarz.presley.server.inferencia.Inference#getDesenvolvedores(java.util.Map, com.hukarz.presley.beans.Problema)
+	 */
 	public ArrayList<Desenvolvedor> getDesenvolvedores(Map<ArquivoJava, ArrayList<Desenvolvedor>> arquivoDesenvolvedores,
 			Problema problema) throws FileNotFoundException {
 
 		// para desabilitar a participação nos arquivos ou no conhecimento, basta deixar o Map vazio.
 		
-		Map<Desenvolvedor, Integer> participacaoDesenvolvedorArquivo = 
-			getParticipacaoDesenvolvedores(arquivoDesenvolvedores);
-		Map<Desenvolvedor, Integer> participacaoDesenvolvedorConhecimento = 
-			getParticipacaoDesenvolvedores(problema.getConhecimento(), problema.getDesenvolvedorOrigem());
-		//Map<Desenvolvedor, Integer> participacaoDesenvolvedorConhecimento = 
-			//new HashMap<Desenvolvedor, Integer>();
-
-		Map<Desenvolvedor, Integer> participacaoDesenvolvedor = somarParticipacaoDosDesenvolvedores(problema, participacaoDesenvolvedorArquivo, participacaoDesenvolvedorConhecimento);
+		Map<Desenvolvedor, Integer> participacaoDesenvolvedorArquivo = null;
+		Map<Desenvolvedor, Integer> participacaoDesenvolvedorConhecimento = null;
+		
+		if (this.useCodeHistory) {
+			participacaoDesenvolvedorArquivo = getParticipacaoDesenvolvedores(arquivoDesenvolvedores);
+		}
+		else {
+			participacaoDesenvolvedorArquivo = new HashMap<Desenvolvedor, Integer>();
+		}
+		
+		if (this.useCommunicationHistory) {
+			participacaoDesenvolvedorConhecimento = 
+				getParticipacaoDesenvolvedores(problema.getConhecimento(), problema.getDesenvolvedorOrigem());
+		}
+		else {
+			participacaoDesenvolvedorConhecimento = new HashMap<Desenvolvedor, Integer>();
+		}
+		
+		 
+		Map<Desenvolvedor, Integer> participacaoDesenvolvedor 
+			= somarParticipacaoDosDesenvolvedores(problema, participacaoDesenvolvedorArquivo, 
+					participacaoDesenvolvedorConhecimento);
 
 		participacaoDesenvolvedor.remove(problema.getDesenvolvedorOrigem());
 		ArrayList<Desenvolvedor> desenvolvedoresRecomendados = retornarMelhoresDesenvolvedores(problema, participacaoDesenvolvedor, 5);		
@@ -128,49 +151,6 @@ public class Inferencia {
 		return pontuacaoParticipacao;
 	}
 
-	/*	3º Passo 
-	(Aplica a formula F1 nos vetores de participação dos Desenvolvedor nos Arquivos e nas mensagens)
-	
-		  2 * (C * A)
-	F1 = -------------
-  		    C + A
-	 */
-	protected Map<Desenvolvedor, Double> calcularF1_DaParticipacaoDosDesenvolvedores(Problema problema, Map<Desenvolvedor, Integer> participacaoDesenvolvedorArquivo, 
-			Map<Desenvolvedor, Integer> participacaoDesenvolvedorConhecimento ){
-		Map<Desenvolvedor, Double> pontuacaoParticipacao = new HashMap<Desenvolvedor, Double>();
-		
-		RegistroExperimento registroExperimento = RegistroExperimento.getInstance();
-		
-		registroExperimento.setParticipacaoDesenvolvedorArquivo(participacaoDesenvolvedorArquivo);
-		registroExperimento.setParticipacaoDesenvolvedorConhecimento(participacaoDesenvolvedorConhecimento);
-		registroExperimento.setProblema(problema);
-		
-		ArrayList<Desenvolvedor> listaDesenvolvedores = new ArrayList<Desenvolvedor>();
-		listaDesenvolvedores.addAll( participacaoDesenvolvedorConhecimento.keySet() );
-		listaDesenvolvedores.addAll( participacaoDesenvolvedorArquivo.keySet() );
-		
-		for (Desenvolvedor desenvolvedor : listaDesenvolvedores) {
-			if (!pontuacaoParticipacao.keySet().contains(desenvolvedor)){
-				double resultadoF1 = 0;
-				double participacaoConhecimento = 1;
-				double participacaoArquivo = 1;
-				
-				if (participacaoDesenvolvedorConhecimento.keySet().contains(desenvolvedor)) 
-					participacaoConhecimento = participacaoDesenvolvedorConhecimento.get(desenvolvedor) + 1;
-				
-				if (participacaoDesenvolvedorArquivo.keySet().contains(desenvolvedor)) 
-					participacaoArquivo = participacaoDesenvolvedorArquivo.get(desenvolvedor) + 1 ;
-				
-				resultadoF1 = (2 * participacaoConhecimento * participacaoArquivo)/ 
-								(participacaoConhecimento + participacaoArquivo);
-				
-				pontuacaoParticipacao.put(desenvolvedor, resultadoF1);			
-			}
-		}
-		
-		return pontuacaoParticipacao;
-	}
-	
 	// Metodo para classificar os desenvolvedores por participação
 	protected Map<Desenvolvedor, Integer> classificacarDesenvolvedores( Map<Desenvolvedor, Integer> participacaoDesenvolvedor,
 			Integer pontuacaoMax) {
@@ -218,16 +198,6 @@ public class Inferencia {
 				}				
 			}
 		}
-		/*
-		int qtde = 10;
-		if (qtde > classificacaoDesenvolvedores.length)
-			qtde = classificacaoDesenvolvedores.length;
-		
-		Desenvolvedor[] classificacaoMelhoresDesenvolvedores = new Desenvolvedor[ qtde ];
-		System.arraycopy(classificacaoDesenvolvedores, 0, classificacaoMelhoresDesenvolvedores, 0, qtde);
-		return pontuarClassificacao(classificacaoMelhoresDesenvolvedores, participacaoDesenvolvedor, pontuacaoMax);
-		*/
-		
 		return pontuarClassificacao(classificacaoDesenvolvedores, participacaoDesenvolvedor, pontuacaoMax);
 	}
 	

@@ -341,7 +341,7 @@ public class Dominio extends ViewPart {
 	    out.close();
 	}	
 	
-	// TODO: analisar este método
+	// TODO@alan: analisar este método
 	private void executarExperimento(String diretorioArquivos, Projeto projetoAtivo) throws FileNotFoundException{
 		
 		File diretorioCD = new File( diretorioArquivos );

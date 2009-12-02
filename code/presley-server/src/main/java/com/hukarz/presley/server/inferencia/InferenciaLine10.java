@@ -10,10 +10,9 @@ import com.hukarz.presley.beans.ArquivoJava;
 import com.hukarz.presley.beans.Desenvolvedor;
 import com.hukarz.presley.beans.Problema;
 
-public class InferenciaLine10 extends Inferencia {
+public class InferenciaLine10 implements Inference {
 
-	@Override
-	public ArrayList<Desenvolvedor> getDesenvolvedores(
+	public ArrayList<Desenvolvedor> getDesenvolvedores (
 			Map<ArquivoJava, ArrayList<Desenvolvedor>> arquivoDesenvolvedores,
 			Problema problema) throws FileNotFoundException {
 		Map<Desenvolvedor, Integer> participacaoDesenvolvedorArquivo = 
@@ -35,7 +34,6 @@ public class InferenciaLine10 extends Inferencia {
 
 	
 	
-	@Override
 	protected Map<Desenvolvedor, Integer> getParticipacaoDesenvolvedores(
 			Map<ArquivoJava, ArrayList<Desenvolvedor>> arquivoDesenvolvedores) {
 		Map<Desenvolvedor, Integer> desenvolvedorPorArquivo = new HashMap<Desenvolvedor, Integer>();
@@ -89,9 +87,8 @@ public class InferenciaLine10 extends Inferencia {
 		return desenvolvedoresArquivo;		
 	}
 
-	@Override
-	protected ArrayList<Desenvolvedor> retornarMelhoresDesenvolvedores(
-			Problema problema, Map<Desenvolvedor, Integer> participacaoDesenvolvedor, int qtde) {
+	protected ArrayList<Desenvolvedor> retornarMelhoresDesenvolvedores (Problema problema, 
+			Map<Desenvolvedor, Integer> participacaoDesenvolvedor, int qtde) {
 		
 		ArrayList<Desenvolvedor> listaDesenvolvedores = new ArrayList<Desenvolvedor>();
 		for (Iterator<Desenvolvedor> it = participacaoDesenvolvedor.keySet().iterator(); it.hasNext();) {
