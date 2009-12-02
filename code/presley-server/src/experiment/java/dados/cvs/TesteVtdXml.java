@@ -19,7 +19,6 @@ public class TesteVtdXml {
 			// counting child elements of parlist
 			int count = 0;
 			// counting child elements of parlist named "par"
-			int par_count = 0;
 			
 			FileInputStream fis =  new FileInputStream(f);
 			byte[] b = new byte[(int) f.length()];

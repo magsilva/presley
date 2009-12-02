@@ -32,7 +32,11 @@ public class StartPresleyServer {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
+	}
+	
+	
+	public void start() {
 		/* instanciando server bridge para comunicação do servidor com classe externa. */
 		this.logger.info("Instanciando do Bridge...");
 		ServerBridge trocaMsg = new ServerBridgeImp();
@@ -42,8 +46,11 @@ public class StartPresleyServer {
 		PrincipalSUBJECT.facade(1099, trocaMsg);
 		this.logger.info("Servidor Iniciado Com Sucesso!");
 	}
+
+
 	public static void main(String [] args){
 		StartPresleyServer server = new StartPresleyServer();
+		server.start();
 	}
 	
 

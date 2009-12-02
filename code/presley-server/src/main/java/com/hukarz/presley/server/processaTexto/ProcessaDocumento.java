@@ -221,12 +221,13 @@ public class ProcessaDocumento {
 	private Map<String, Integer> retirarPalavrasMenosFrequente(Map<String, Integer> tabelaPalavras, int frequenciaMinima){
 		Map<String, Integer> retorno = new HashMap<String, Integer>();
 		 
-		for (Iterator it = tabelaPalavras.keySet().iterator(); it.hasNext();) {
-			Object key = it.next();  
-			Object item = tabelaPalavras.get(key); 			
+		for (Iterator<String> it = tabelaPalavras.keySet().iterator(); it.hasNext();) {
+			String key = it.next();  
+			Integer item = tabelaPalavras.get(key); 			
 			
-			if ( Integer.parseInt(item.toString()) >= frequenciaMinima )
+			if (item >= frequenciaMinima) {
 				retorno.put(key.toString(), Integer.parseInt(item.toString()));
+			}
 		}
 		
 		return retorno;

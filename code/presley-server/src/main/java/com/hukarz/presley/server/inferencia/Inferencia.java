@@ -78,8 +78,6 @@ public class Inferencia {
 	 */
 	protected Map<Desenvolvedor, Integer> getParticipacaoDesenvolvedores(Conhecimento conhecimento, Desenvolvedor desenvolvedor){
 		ServicoConhecimento servicoConhecimento = new ServicoConhecimentoImplDAO();
-		ServicoMensagem servicoMensagem = new ServicoMensagemImplDAO();
-		
 		Map<Desenvolvedor, Integer> desenvolvedorPorConhecimento = servicoConhecimento.getContribuintesConhecimento(conhecimento, desenvolvedor);
 		
 		return desenvolvedorPorConhecimento;
