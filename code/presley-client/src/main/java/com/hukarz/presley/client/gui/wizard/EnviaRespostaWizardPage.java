@@ -27,11 +27,6 @@ public class EnviaRespostaWizardPage extends WizardPage {
         	setDescription("Envia uma SOLUÇÃO para o usuario.");
     }
 
-    private void updateStatus(String message) {
-        setErrorMessage(message);
-        setPageComplete(message == null);
-    }
-
     public String getDescricao() {
         return descricaoProblemaText.getText();
     }

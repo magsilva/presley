@@ -21,7 +21,6 @@ import com.hukarz.presley.client.gui.view.MensagemAba;
 
 public class AdicionaDesenvolvedorWizardPage extends WizardPage {
 
-	private MensagemAba mensagemAba;
 	private Text nomeDesenvolvedorText;
 	private Text emailText;
 	private Text senhaText;
@@ -35,12 +34,6 @@ public class AdicionaDesenvolvedorWizardPage extends WizardPage {
         super("wizardPage");
         setTitle("Adiciona Desenvolvedor Wizard");
         setDescription("Adiciona um novo Desenvolvedor.");
-        this.mensagemAba = m;
-    }
-
-    private void updateStatus(String message) {
-        setErrorMessage(message);
-        setPageComplete(message == null);
     }
 
     public String getNomeDesenvolvedor() {

@@ -17,21 +17,14 @@ public class AdicionaProblemaWizardPage extends WizardPage {
 	private Text mensagemText, descricaoText;
 	private int minimumWidth = 200;
 	private int minimumHeight = 100;
-	private MensagemAba mensagemAba;
 	private String diretorio;
 	
 	public AdicionaProblemaWizardPage(MensagemAba mensagem) {
 		super("wizardPage");
         setTitle("Adiciona Problema Wizard");
         setDescription("Adiciona um novo Problema");
-        this.mensagemAba = mensagem;
 	}
 	
-    private void updateStatus(String message) {
-        setErrorMessage(message);
-        setPageComplete(message == null);
-    }
-
     public String getMensagem() {
         return mensagemText.getText();
     }

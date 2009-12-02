@@ -566,8 +566,8 @@ public class MensagemAba extends ViewPart {
 		Image imgProblema = new Image(addUser.getDisplay(), this.getClass()
 				.getResourceAsStream("/src/main/resources/icons/problema.gif"));
 
-		ArrayList<Problema> problemasEncontrados = getViewComunication()
-				.getProblemas(this.getDesenvolvedorLogado());
+		ArrayList<Problema> problemasEncontrados = 
+			getViewComunication().getProblemas(MensagemAba.getDesenvolvedorLogado());
 
 		TreeItem[] item = new TreeItem[problemasEncontrados.size()];
 
@@ -680,7 +680,7 @@ public class MensagemAba extends ViewPart {
 	}
 
 	public void setDesenvolvedorLogado(Desenvolvedor des) {
-		this.desenvolvedorLogado = des;
+		MensagemAba.desenvolvedorLogado = des;
 	}
 
 	public static Desenvolvedor getDesenvolvedorLogado() {

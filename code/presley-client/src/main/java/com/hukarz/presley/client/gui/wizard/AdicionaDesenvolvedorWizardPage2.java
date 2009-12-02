@@ -47,11 +47,6 @@ public class AdicionaDesenvolvedorWizardPage2 extends WizardPage {
         listaGraus = new ArrayList<Double>();
     }
 
-    private void updateStatus(String message) {
-        setErrorMessage(message);
-        setPageComplete(message == null);
-    }
-    
     public int getGrauConhecimento() {
         return grauConhecimento.getSelectionIndex()+1;
     }

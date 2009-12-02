@@ -52,11 +52,6 @@ public class AdicionaConhecimentoWizardPage extends WizardPage {
         conhecimentoFilhoPai = new HashMap<Conhecimento, Conhecimento>();
     }
 
-    private void updateStatus(String message) {
-        setErrorMessage(message);
-        setPageComplete(message == null);
-    }
-
     public String getNomeConhecimento() {
         return nomeConhecimentoText.getText();
     }

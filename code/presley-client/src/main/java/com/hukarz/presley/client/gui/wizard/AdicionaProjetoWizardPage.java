@@ -39,11 +39,6 @@ public class AdicionaProjetoWizardPage extends WizardPage {
         this.mensagem = mensagem;
 	}
 
-    private void updateStatus(String message) {
-        setErrorMessage(message);
-        setPageComplete(message == null);
-    }
-    
     private void dialogChanged() {
     }
 

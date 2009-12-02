@@ -70,8 +70,6 @@ public class PrincipalSUBJECT {
 	public static void facade(int portserver, ServerBridge bridge){
 		if(instance instanceof RMIServer){
 			serverSide(portserver, bridge);
-		}else{
-			;
 		}
 	}
 

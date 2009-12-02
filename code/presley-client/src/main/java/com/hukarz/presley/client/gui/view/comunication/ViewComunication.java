@@ -2,7 +2,6 @@ package com.hukarz.presley.client.gui.view.comunication;
 
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 
 import org.apache.log4j.Logger;
@@ -37,7 +36,6 @@ public class ViewComunication implements CorePresleyOperations{
 	private ArrayList<Desenvolvedor> listaDesenvolvedores = new ArrayList<Desenvolvedor>();//Lista de todos os desenvolvedores
 	private ArrayList<Conhecimento> listaConhecimentos = new ArrayList<Conhecimento>();//Lista de todos os conhecimentos
 	private ArrayList<Problema> listaProblemas = new ArrayList<Problema>();//Lista de todos os problemas
-	private HashMap<String,ArrayList<Conhecimento>> conhecimentos = new HashMap<String,ArrayList<Conhecimento>>();//mapeamento nome de atividade e seus conhecimentos associados
 	private com.hukarz.presley.beans.Tree arvoreConhecimentos; //Armazena arvore de conhecimentos
 
 	
@@ -69,7 +67,6 @@ public class ViewComunication implements CorePresleyOperations{
 			listaDesenvolvedores = new ArrayList<Desenvolvedor>();//Lista de todos os desenvolvedores
 			listaConhecimentos = new ArrayList<Conhecimento>();//Lista de todos os conhecimentos
 			listaProblemas = new ArrayList<Problema>();//Lista de todos os problemas
-			conhecimentos = new HashMap<String,ArrayList<Conhecimento>>();//mapeamento nome de atividade e seus conhecimentos associados
 			arvoreConhecimentos = null;//Armazena a ontologia
 			
 			logger.info("instanciando cliente");
@@ -168,6 +165,7 @@ public class ViewComunication implements CorePresleyOperations{
 		
 	}
 	
+	@SuppressWarnings("unchecked")
 	public ArrayList<Mensagem> obterMensagens(Desenvolvedor des) {
 		ArrayList<Mensagem> mensagens = null;
 		PacketStruct respostaPacket = sendPack(des.getEmail(),CorePresleyOperations.OBTER_MENSAGENS);
@@ -181,6 +179,7 @@ public class ViewComunication implements CorePresleyOperations{
 	 * @param atividade é o nome da atividade
 	 * @return ArrayList<String> é a lista de problemas
 	 */
+	@SuppressWarnings("unchecked")
 	public ArrayList<Problema> getProblemas(Desenvolvedor desenvolvedor)
 	{
 		PacketStruct respostaPacket = sendPack(desenvolvedor,CorePresleyOperations.GET_LISTA_PROBLEMAS);
@@ -333,6 +332,7 @@ public class ViewComunication implements CorePresleyOperations{
 		return false;
 	}
 	
+	@SuppressWarnings("unchecked")
 	public final ArrayList<Desenvolvedor> getListaDesenvolvedores() {
 		PacketStruct respostaPacket = sendPack(null,CorePresleyOperations.GET_LISTA_DESENVOLVEDORES);
     	ArrayList<Desenvolvedor> resposta = (ArrayList<Desenvolvedor>)respostaPacket.getData();
@@ -343,9 +343,9 @@ public class ViewComunication implements CorePresleyOperations{
     		return new ArrayList<Desenvolvedor>();
     	}
     	
-    	Iterator it = resposta.iterator();
+    	Iterator<Desenvolvedor> it = resposta.iterator();
     	while (it.hasNext()) {
-    		Desenvolvedor des = (Desenvolvedor)it.next();
+    		Desenvolvedor des = it.next();
     		logger.info(des.getNome());
     	}
     	
@@ -372,12 +372,14 @@ public class ViewComunication implements CorePresleyOperations{
 		//return false;
 	}
 
+	@SuppressWarnings("unchecked")
 	public ArrayList<Conhecimento> getListaConhecimentos() {
 		PacketStruct respostaPacket = sendPack(null,CorePresleyOperations.GET_LISTA_CONHECIMENTO);
 		ArrayList<Conhecimento> resposta = (ArrayList<Conhecimento>)respostaPacket.getData();
 		return resposta;
 	}
 	
+	@SuppressWarnings("unchecked")
 	public ArrayList<Problema> getListaProblemas() {
 		PacketStruct respostaPacket = sendPack(null,GET_LISTA_PROBLEMAS);
     	ArrayList<Problema> resposta = (ArrayList<Problema>)respostaPacket.getData();
@@ -466,6 +468,7 @@ public class ViewComunication implements CorePresleyOperations{
 
 	}
 	
+	@SuppressWarnings("unchecked")
 	public ArrayList<String> getConhecimentosAssociados(String problema) {
 		PacketStruct respostaPacket = sendPack(problema,CorePresleyOperations.BUSCA_CONHECIMENTOS_PROBLEMA);
 		
@@ -481,6 +484,7 @@ public class ViewComunication implements CorePresleyOperations{
 		return retorno;
 	}
 	
+	@SuppressWarnings("unchecked")
 	public ArrayList<Solucao> listarSolucoesDoProblema(Problema problema) {
 		PacketStruct respostaPacket = sendPack(problema,CorePresleyOperations.GET_LISTA_SOLUCOES_PROBLEMA);
 		
@@ -514,6 +518,7 @@ public class ViewComunication implements CorePresleyOperations{
 		return retorno;
 	}
 
+	@SuppressWarnings("unchecked")
 	public ArrayList<Solucao> listarSolucoesRetornadasDoDesenvolvedor(
 			Desenvolvedor desenvolvedor){
 		PacketStruct respostaPacket = sendPack(desenvolvedor,CorePresleyOperations.GET_LISTA_SOLUCOES_RETORNADAS);
@@ -575,6 +580,7 @@ public class ViewComunication implements CorePresleyOperations{
 		return (Boolean)respostaPacket.getData();
 	}
 
+	@SuppressWarnings("unchecked")
 	public ArrayList<Projeto> getListaProjetos(PacketStruct packet) {
 		PacketStruct respostaPacket = sendPack(null,CorePresleyOperations.GET_PROJETOS);
 		return (ArrayList<Projeto>) respostaPacket.getData();

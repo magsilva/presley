@@ -53,8 +53,6 @@ public class LoginWizard extends Wizard implements INewWizard {
 		try{
 			String login = page.getLogin();
 			String senha = page.getSenha();
-			String ip = page.getIP();
-
 			Desenvolvedor des = this.mensagem.getViewComunication().login(login, senha);
 
 			if (des== null) {

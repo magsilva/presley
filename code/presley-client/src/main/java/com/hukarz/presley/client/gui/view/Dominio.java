@@ -27,7 +27,6 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.DirectoryDialog;
-import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Shell;
@@ -42,7 +41,6 @@ import ca.mcgill.cs.swevo.jayfx.JayFXException;
 
 import com.hukarz.presley.beans.Arquivo;
 import com.hukarz.presley.beans.Conhecimento;
-import com.hukarz.presley.beans.Desenvolvedor;
 import com.hukarz.presley.beans.Problema;
 import com.hukarz.presley.beans.Projeto;
 import com.hukarz.presley.client.gui.view.comunication.ViewComunication;
@@ -82,8 +80,6 @@ public class Dominio extends ViewPart {
 	private List listaDocumentosBase; 
 	private PresleyJayFX aDB;
 	private Projeto projetoAtivo;
-	
-	private Logger logger = Logger.getLogger(this.getClass());
 	
 	public Dominio() {
 		this.viewComunication = new ViewComunication(ipServidor);

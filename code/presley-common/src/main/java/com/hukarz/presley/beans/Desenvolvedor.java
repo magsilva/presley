@@ -19,6 +19,11 @@ public class Desenvolvedor implements Serializable {
 	/**
 	 * 
 	 */
+	private static final long serialVersionUID = -3338357327771483149L;
+
+	/**
+	 * 
+	 */
 	public Desenvolvedor() {
 		super();
 	}

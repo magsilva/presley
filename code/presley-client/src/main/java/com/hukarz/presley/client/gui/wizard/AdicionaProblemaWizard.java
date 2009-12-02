@@ -8,7 +8,6 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.ui.INewWizard;
@@ -23,7 +22,6 @@ public class AdicionaProblemaWizard extends Wizard implements INewWizard {
 	private static final Logger logger = Logger.getLogger(AdicionaProblemaWizard.class);
 	
 	private AdicionaProblemaWizardPage page;
-    private ISelection selection;
     private MensagemAba mensagemAba;
 
 	public AdicionaProblemaWizard(MensagemAba m) {
@@ -84,7 +82,6 @@ public class AdicionaProblemaWizard extends Wizard implements INewWizard {
     }
 	
 	public void init(IWorkbench workbench, IStructuredSelection selection) {
-		this.selection = selection;
 	}
 
 	public void addPages() {

@@ -75,6 +75,7 @@ public class ExecuteClientQuery implements CorePresleyOperations{
 	 * @throws ConhecimentoInexistenteException 
 	 * @throws DescricaoInvalidaException 
 	 */
+	@SuppressWarnings("unchecked")
 	public boolean adicionaConhecimento(PacketStruct packet) throws DescricaoInvalidaException, ConhecimentoInexistenteException, Exception {
 		ArrayList<Conhecimento> conhecimento = (ArrayList<Conhecimento>) packet.getData();
 		if (conhecimento==null) {

@@ -1,9 +1,6 @@
 package com.hukarz.presley.client.gui.wizard;
 
 
-import java.util.ArrayList;
-
-import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
@@ -13,32 +10,21 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
-import com.hukarz.presley.beans.Desenvolvedor;
 import com.hukarz.presley.client.gui.view.MensagemAba;
 
 
 public class LoginWizardPage extends WizardPage {
 
-	private static final int RESET_ID = IDialogConstants.NO_TO_ALL_ID + 1;
 	private Text usernameField;
 	private Text passwordField;
 	private Text ipField;
 	
-	private MensagemAba mensagem;
 	
 	
-	private ArrayList<Desenvolvedor> desenvolvedores;
-
     public LoginWizardPage(ISelection selection, MensagemAba m) {
         super("wizardPage");
         setTitle("LOGIN");
         setDescription("Forneca Login e Senhas.");
-        this.mensagem = m;
-    }
-
-    private void updateStatus(String message) {
-        setErrorMessage(message);
-        setPageComplete(message == null);
     }
 
     public String getLogin(){
@@ -52,10 +38,6 @@ public class LoginWizardPage extends WizardPage {
     public String getIP(){
     	return ipField.getText();
     }
-    
-    private void dialogChanged() {
-    }
-
     
     public void createControl(Composite parent) {
  

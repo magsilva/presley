@@ -18,6 +18,11 @@ import javax.swing.JTextField;
 public class ArvoreEmail extends JFrame {
 
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -5277651149925453613L;
+
 	private Threader threader;
 	
 	 static final int MAX_NAME_SIZE = 99;

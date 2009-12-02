@@ -11,9 +11,7 @@ import com.hukarz.presley.beans.Conhecimento;
 import com.hukarz.presley.beans.Desenvolvedor;
 import com.hukarz.presley.beans.Problema;
 import com.hukarz.presley.server.persistencia.implementacao.ServicoConhecimentoImplDAO;
-import com.hukarz.presley.server.persistencia.implementacao.ServicoMensagemImplDAO;
 import com.hukarz.presley.server.persistencia.interfaces.ServicoConhecimento;
-import com.hukarz.presley.server.persistencia.interfaces.ServicoMensagem;
 
 
 /*

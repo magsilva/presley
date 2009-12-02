@@ -6,8 +6,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
-
 import com.hukarz.presley.beans.Arquivo;
 import com.hukarz.presley.beans.ArquivoJava;
 import com.hukarz.presley.beans.ClasseJava;
@@ -26,7 +24,6 @@ import com.hukarz.presley.server.persistencia.interfaces.ServicoLogControleVersa
 public class ValidacaoArquivoImpl {
 	ServicoArquivo servicoArquivo;
 	ServicoDesenvolvedor servicoDesenvolvedor;
-	private Logger logger = Logger.getLogger(this.getClass());
 
 	public ValidacaoArquivoImpl() {
 		servicoArquivo = new ServicoArquivoImplDAO();

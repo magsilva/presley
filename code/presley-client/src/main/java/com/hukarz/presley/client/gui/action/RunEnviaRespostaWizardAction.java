@@ -51,7 +51,7 @@ public class RunEnviaRespostaWizardAction extends Action implements
 	}
 
 	public void run(IAction arg0) {
-		EnviaRespostaWizard wizard = new EnviaRespostaWizard(this.viewMensagem, viewMensagem.getDesenvolvedorLogado(), problema, solucaoOrigem);
+		EnviaRespostaWizard wizard = new EnviaRespostaWizard(this.viewMensagem, MensagemAba.getDesenvolvedorLogado(), problema, solucaoOrigem);
 		Shell shell = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
 		WizardDialog dialog = new WizardDialog(shell,wizard);
 		dialog.create();
