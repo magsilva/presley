@@ -129,6 +129,7 @@ public class ValidacaoProblemaImpl {
 		
 		if (problema.isTemResposta()){
 			// Retorna os desenvolvedores que receberão o problema
+			// TODO: adicionar fábrica
 			Inferencia inferencia = new Inferencia();
 			ArrayList<Desenvolvedor> desenvolvedores = inferencia.getDesenvolvedores(arquivoDesenvolvedores, 
 					problema);

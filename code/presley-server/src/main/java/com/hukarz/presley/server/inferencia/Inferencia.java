@@ -25,18 +25,20 @@ import com.hukarz.presley.server.persistencia.interfaces.ServicoMensagem;
 
 /**
  * @author Presley
- *
- * TODO To change the template for this generated type comment go to
- * Window - Preferences - Java - Code Style - Code Templates
  */
 public class Inferencia {
 
 	public ArrayList<Desenvolvedor> getDesenvolvedores(Map<ArquivoJava, ArrayList<Desenvolvedor>> arquivoDesenvolvedores,
 			Problema problema) throws FileNotFoundException {
 
-		Map<Desenvolvedor, Integer> participacaoDesenvolvedorArquivo = getParticipacaoDesenvolvedores(arquivoDesenvolvedores);
-		Map<Desenvolvedor, Integer> participacaoDesenvolvedorConhecimento = getParticipacaoDesenvolvedores(problema.getConhecimento(), problema.getDesenvolvedorOrigem());
-		//Map<Desenvolvedor, Integer> participacaoDesenvolvedorConhecimento = new HashMap<Desenvolvedor, Integer>();
+		// para desabilitar a participação nos arquivos ou no conhecimento, basta deixar o Map vazio.
+		
+		Map<Desenvolvedor, Integer> participacaoDesenvolvedorArquivo = 
+			getParticipacaoDesenvolvedores(arquivoDesenvolvedores);
+		Map<Desenvolvedor, Integer> participacaoDesenvolvedorConhecimento = 
+			getParticipacaoDesenvolvedores(problema.getConhecimento(), problema.getDesenvolvedorOrigem());
+		//Map<Desenvolvedor, Integer> participacaoDesenvolvedorConhecimento = 
+			//new HashMap<Desenvolvedor, Integer>();
 
 		Map<Desenvolvedor, Integer> participacaoDesenvolvedor = somarParticipacaoDosDesenvolvedores(problema, participacaoDesenvolvedorArquivo, participacaoDesenvolvedorConhecimento);
 
@@ -105,11 +107,16 @@ public class Inferencia {
 		} else if (participacaoDesenvolvedorConhecimento.size() == 0){
 			pontuacaoParticipacao = participacaoDesenvolvedorArq;
 		} else {
-			/*
-			participacaoDesenvolvedorConhecimento	= classificacarDesenvolvedores(participacaoDesenvolvedorConhecimento, 20);
-			participacaoDesenvolvedorArq			= classificacarDesenvolvedores(participacaoDesenvolvedorArq, 20);
-			*/
-			pontuacaoParticipacao.putAll( participacaoDesenvolvedorArq );
+			int pontuacaoMax = 0;
+			if (participacaoDesenvolvedorArq.size() > participacaoDesenvolvedorConhecimento.size())
+				pontuacaoMax = participacaoDesenvolvedorArq.size();
+			else 
+				pontuacaoMax = participacaoDesenvolvedorConhecimento.size();
+			
+			participacaoDesenvolvedorConhecimento	= classificacarDesenvolvedores(participacaoDesenvolvedorConhecimento, pontuacaoMax);
+			participacaoDesenvolvedorArq		= classificacarDesenvolvedores(participacaoDesenvolvedorArq, pontuacaoMax);
+			
+			pontuacaoParticipacao = participacaoDesenvolvedorArq ;
 			
 			for (Iterator<Desenvolvedor> it = participacaoDesenvolvedorConhecimento.keySet().iterator(); it.hasNext();) {
 				Desenvolvedor desenvolvedor = it.next();
@@ -218,7 +225,7 @@ public class Inferencia {
 				}				
 			}
 		}
-		
+		/*
 		int qtde = 10;
 		if (qtde > classificacaoDesenvolvedores.length)
 			qtde = classificacaoDesenvolvedores.length;
@@ -226,6 +233,9 @@ public class Inferencia {
 		Desenvolvedor[] classificacaoMelhoresDesenvolvedores = new Desenvolvedor[ qtde ];
 		System.arraycopy(classificacaoDesenvolvedores, 0, classificacaoMelhoresDesenvolvedores, 0, qtde);
 		return pontuarClassificacao(classificacaoMelhoresDesenvolvedores, participacaoDesenvolvedor, pontuacaoMax);
+		*/
+		
+		return pontuarClassificacao(classificacaoDesenvolvedores, participacaoDesenvolvedor, pontuacaoMax);
 	}
 	
 	protected Map<Desenvolvedor, Integer> pontuarClassificacao(Desenvolvedor[] desenvolvedores, 
@@ -255,26 +265,39 @@ public class Inferencia {
 	 */
 	protected ArrayList<Desenvolvedor> retornarMelhoresDesenvolvedores(Problema problema, Map<Desenvolvedor, Integer> participacaoDesenvolvedor, int qtde ){
 		ArrayList<Desenvolvedor> listaDesenvolvedores = new ArrayList<Desenvolvedor>();
+		Desenvolvedor desenvolvedorMenor = new Desenvolvedor();
+		
 		for (Iterator<Desenvolvedor> it = participacaoDesenvolvedor.keySet().iterator(); it.hasNext();) {
 			Desenvolvedor desenvolvedor = it.next();
 			double porcentagem = participacaoDesenvolvedor.get(desenvolvedor) ;
-	
-			int posicao = 0;
-			for (Desenvolvedor desenvolvedorLista : listaDesenvolvedores) {
-				if (porcentagem > participacaoDesenvolvedor.get(desenvolvedorLista) ){
-					break;
+			
+			if ( listaDesenvolvedores.size() < qtde )
+				listaDesenvolvedores.add( desenvolvedor );
+			else {
+				double porcentagemRetorno = participacaoDesenvolvedor.get(desenvolvedorMenor) ;
+				if (porcentagem > porcentagemRetorno){
+					listaDesenvolvedores.remove(desenvolvedorMenor);
+					listaDesenvolvedores.add(desenvolvedor);
 				}
-				posicao++;
 			}
-			listaDesenvolvedores.add(posicao, desenvolvedor);
+				
+			
+			// Seleciona o Desenvolvedor com menor porcentagem
+			if ( listaDesenvolvedores.size() == qtde ){
+				for (int i = 0; i < qtde; i++) {
+					if (i==0)
+						desenvolvedorMenor = listaDesenvolvedores.get(i);
+					else{
+						double porcentagemDesenvolvedor = participacaoDesenvolvedor.get(listaDesenvolvedores.get(i)) ;
+						double porcentagemDesenvolvedorMenor = participacaoDesenvolvedor.get(desenvolvedorMenor) ;
+						
+						if (porcentagemDesenvolvedor < porcentagemDesenvolvedorMenor)
+							desenvolvedorMenor = listaDesenvolvedores.get(i);
+					}
+				}
+			}
 		}
 		
-		RegistroExperimento registroExperimento = RegistroExperimento.getInstance();
-		registroExperimento.setListaDesenvolvedores(listaDesenvolvedores);
-	
-		while (listaDesenvolvedores.size() > qtde) {
-			listaDesenvolvedores.remove(qtde-1);
-		}
 		
 		return listaDesenvolvedores;
 	}

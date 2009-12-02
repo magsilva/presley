@@ -46,35 +46,49 @@ import com.hukarz.presley.server.persistencia.MySQLConnectionFactory;
 import com.hukarz.presley.server.validacao.implementacao.ValidacaoProblemaImpl;
 import com.hukarz.presley.server.validacao.implementacao.ValidacaoSolucaoImpl;
 
+// TODO: Refatorar
 
-public class ArvoreEmail extends JFrame implements ActionListener {
+public class ArvoreEmail extends JFrame {
 
-	private JTextField  campo;
-	private JButton     botao;
+	private JTextField  path;
 	private JPanel      painelCima;  
 	private JPanel      painelBaixo;  
-	private JTree       ArvoreEmail;
-	private ValidacaoSolucaoImpl  validacaoSolucao = new ValidacaoSolucaoImpl();
+	private ValidacaoSolucaoImpl  validacaoSolucao;
+	private JButton addDevelopersButton;
+	private JButton addThreadsButton;
 
-	public ArvoreEmail() {  	        
+	public ArvoreEmail() {  	  
 		super("Browser");  
+		validacaoSolucao = new ValidacaoSolucaoImpl();
 
 		getContentPane().setLayout(new BorderLayout());  
 
-		campo      = new JTextField(); 
+		path      = new JTextField(); 
 	
-		campo.setText("C:/Java/Math/Experimento/mbox_experimento/");
+		path.setText("C:/Java/Math/Experimento/mbox_experimento/");
 
-		botao      = new JButton("Procurar");  
 		painelCima = new JPanel(new BorderLayout());  
-		painelBaixo= new JPanel(new GridLayout(1,1));  
-		ArvoreEmail= new JTree();  
-
-		botao.addActionListener(this);  
-		campo.addActionListener(this);  
-
-		painelCima.add(campo, BorderLayout.CENTER);  
-		painelCima.add(botao, BorderLayout.EAST);  
+		painelBaixo = new JPanel(new GridLayout(1,1));
+		
+		addDevelopersButton = new JButton("Add Developers");
+		addDevelopersButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+            	addDevelopersButtonActionPerformed(evt);
+            }
+        });
+		
+		addThreadsButton = new JButton("Add Threads");
+		addThreadsButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent event) {
+            	addThreadsButtonActionPerformed(event);
+            }
+        });
+		
+		painelBaixo.add(addDevelopersButton);
+		painelBaixo.add(addThreadsButton);
+		
+		
+		painelCima.add(path, BorderLayout.CENTER);  
 
 		getContentPane().add(painelCima,  BorderLayout.NORTH);  
 		getContentPane().add(painelBaixo, BorderLayout.CENTER);  
@@ -83,18 +97,157 @@ public class ArvoreEmail extends JFrame implements ActionListener {
 		this.setVisible(true);  
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);  
 	}  
-
-	public void actionPerformed(ActionEvent e) {  	        
-		DefaultMutableTreeNode pai = new DefaultMutableTreeNode(campo.getText());  
-		varreArvoreEmail(campo.getText(), pai);
-		//varreEmailDesenvolvedoresFrom(campo.getText(), pai);
-		ArvoreEmail = new JTree(pai);  
-		painelBaixo.removeAll();  
-		painelBaixo.add(new JScrollPane(ArvoreEmail));  
-		getContentPane().validate();  
+	
+	private void addDevelopersButtonActionPerformed(java.awt.event.ActionEvent evt) {
+		varreEmailDesenvolvedoresFrom(path.getText());
+	}
+	
+	private void addThreadsButtonActionPerformed(ActionEvent event) {
+		varreArvoreEmail(path.getText());
+	}
+	
+	private void updatePanel(DefaultMutableTreeNode parent) {
+		JTree threads = new JTree(parent);  
+		painelBaixo.removeAll();
+		JScrollPane scrollPane = new JScrollPane(threads);
+		painelBaixo.add(scrollPane);  
+		getContentPane().validate();
 	}  
 
-	public void varreArvoreEmail(String base, DefaultMutableTreeNode no) {
+	public void varreArvoreEmail(String base) {
+		Connection conn = MySQLConnectionFactory.open();
+		
+		File diretorio = new File(base);  
+		File[] conteudo = diretorio.listFiles();
+		ArrayList<Email> emails = new ArrayList<Email>(); 
+
+		try {
+			// (28	88)					Arquivos de 01/2004 até 12/2008
+			// (89  conteudo.length)	Arquivos de 01/2009 até o ultimo
+			for (int i=0; i < conteudo.length; i++) {    
+
+				File file = new File( conteudo[i].getAbsolutePath() );
+				FileReader fileReader = new FileReader(file);
+				BufferedReader reader = new BufferedReader(fileReader);
+
+				System.out.println( file );
+				String linha = "";
+
+				Email email = new Email();
+
+				boolean encontrouMessageID	= false,
+				encontrouSubject	= false,
+				maisReferencias		= false,
+				encontrouMensagem	= false,
+				encontrouData		= false,
+				proximaLinhaSubject = false;
+
+				while( (linha = reader.readLine()) != null ){
+					
+					if ( linha.trim().equals("---------------------------------------------------------------------") ||
+							linha.trim().equals("To unsubscribe, e-mail: dev-unsubscribe@commons.apache.org") ||
+							linha.trim().equals("For additional commands, e-mail: dev-help@commons.apache.org"))
+						continue;
+										
+					linha = linha.toLowerCase();
+					linha = linha.replace('\t', ' ');
+					
+					if ( !email.getReferences().isEmpty() && maisReferencias )
+						maisReferencias = !linha.contains(":"); 
+
+					if (linha.startsWith("from ") && (linha.contains("@")) ){
+						if (encontrouMessageID && encontrouSubject){
+							if (!Email.adcionarEmail(emails, email)) 
+								emails.add(email);
+						}
+
+						encontrouMessageID	= false;
+						encontrouSubject	= false;
+						encontrouMensagem	= false;
+						maisReferencias		= false;
+						encontrouData		= false;
+						proximaLinhaSubject	= false;
+						
+						email = new Email();						   
+					} else if ( (!encontrouMessageID && linha.startsWith("message-id: ")) ||
+								(encontrouMessageID && email.getMessageID().isEmpty() ) ){ 
+						encontrouMessageID = true;
+
+						linha = linha.replaceAll("message-id: ", "");
+						linha = retirarCaracteresExtras(linha);
+						email.setMessageID(linha);
+					} else if (linha.startsWith("in-reply-to: ")){ 
+						linha = linha.replaceAll("in-reply-to: ", "");
+						linha = retirarCaracteresExtras(linha);
+						email.setInReplyTo(linha);
+					} else if (linha.startsWith("from: ")){ 
+						linha = linha.replaceAll("from:", "");
+						linha = retirarCaracteresExtras(linha);
+						StringTokenizer st = new StringTokenizer(linha);
+						String emailFrom = "";
+						while (st.hasMoreTokens())
+							emailFrom = st.nextToken();
+
+						if (!emailFrom.equals("jira@apache.org"))
+							email.setFrom(emailFrom, conn);
+						else{
+							email.setFromPorNome( linha.substring(0, linha.indexOf("jira")), conn );
+						}							   
+
+					} else if (linha.startsWith("date: ") && !encontrouData){ 
+						linha = linha.replaceAll("date: ", "");
+						linha = retirarCaracteresExtras(linha);
+						email.setData(linha);
+						encontrouData = true;
+					} else if (linha.startsWith("references: ") || (maisReferencias) ){ 
+						linha = linha.replaceAll("references: ", "");
+						linha = retirarCaracteresExtras(linha);
+						email.setReferences( email.getReferences() + " " + linha);
+
+						maisReferencias = true;
+					} else if ((!encontrouSubject && linha.startsWith("subject: ")) ||
+								(proximaLinhaSubject && linha.startsWith(" "))){
+						encontrouSubject = true;
+						proximaLinhaSubject = true;
+						
+						linha = linha.replaceAll("subject: ", "");
+						email.setSubject( email.getSubject() + " " +linha);
+					} else if (encontrouMessageID && encontrouSubject && linha.isEmpty() ){
+						encontrouMensagem  = true;
+					}
+
+					if (encontrouSubject && proximaLinhaSubject && 
+							!email.getSubject().isEmpty() && linha.contains(":") )
+						proximaLinhaSubject = false;
+					
+					// Encontra a mensagem e a primeira linha da mensagem anterior
+					if (encontrouMensagem && !linha.startsWith(">") ){
+						email.setMensagem( email.getMensagem() + " " + linha );
+					}
+				}
+
+				if (encontrouMessageID && encontrouSubject){
+					if (!Email.adcionarEmail(emails, email)) 
+						emails.add(email);
+
+					encontrouMessageID	= false;
+					encontrouSubject	= false;
+					encontrouMensagem	= false;
+					maisReferencias		= false;
+					proximaLinhaSubject = false;
+				}
+			}
+
+			//cadastrarProblemas(emails);
+			gerarArquivos(base, emails);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+
+	
+	public void varreArvoreEmailGUI(String base, DefaultMutableTreeNode no) {
 		Connection conn = MySQLConnectionFactory.open();
 		
 		File diretorio = new File(base);  
@@ -366,7 +519,7 @@ public class ArvoreEmail extends JFrame implements ActionListener {
 		}
 	}
 
-	public void varreEmailDesenvolvedoresFrom(String base, DefaultMutableTreeNode no)  {  	        
+	public void varreEmailDesenvolvedoresFrom(String base)  {  	        
 		File diretorio = new File(base);  
 		File[] conteudo = diretorio.listFiles();
 		Map<String, String> emails = new HashMap<String, String>(); 
@@ -473,7 +626,6 @@ public class ArvoreEmail extends JFrame implements ActionListener {
 					}
 
 					DefaultMutableTreeNode arquivo = new DefaultMutableTreeNode( email + " - " + nome );
-					no.add(arquivo);  
 				}
 			} catch (SQLException e) {
 				e.printStackTrace();
