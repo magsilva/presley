@@ -85,6 +85,7 @@ public class ValidacaoProblemaImpl {
 	 * @throws ProjetoInexistenteException 
 	 * @throws ConhecimentoNaoEncontradoException 
 	 */
+	// TODO: não recomendar enquanto estiver cadastrando
 	public Problema cadastrarProblema(Problema problema) 
 	throws DescricaoInvalidaException, IOException, ProjetoInexistenteException, ConhecimentoNaoEncontradoException {
 

@@ -33,6 +33,8 @@ import javax.swing.JTextField;
 import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 
+import org.apache.log4j.Logger;
+
 import com.hukarz.presley.beans.Desenvolvedor;
 import com.hukarz.presley.beans.Problema;
 import com.hukarz.presley.beans.Projeto;
@@ -50,87 +52,135 @@ import com.hukarz.presley.server.validacao.implementacao.ValidacaoSolucaoImpl;
 
 public class ArvoreEmail extends JFrame {
 
-	private JTextField  path;
-	private JPanel      painelCima;  
-	private JPanel      painelBaixo;  
+	private ArrayList<Email> emails; 
 	private ValidacaoSolucaoImpl  validacaoSolucao;
+	private Logger logger;
+	
+	// GUI
+	
+	private JTextField  pathToMboxFilesTextField;
+	
+	private JPanel      topPannel;  
+	private JPanel      bottomPanel;  
+	
 	private JButton addDevelopersButton;
-	private JButton addThreadsButton;
-
+	private JButton saveThreadsButton;
+	private JButton buildThreadsButton;
+	private JButton createQuestionFilesButton;
+	
+	
 	public ArvoreEmail() {  	  
 		super("Browser");  
+		
+		emails = null;
 		validacaoSolucao = new ValidacaoSolucaoImpl();
+		logger = Logger.getLogger(this.getClass());
+		
 
 		getContentPane().setLayout(new BorderLayout());  
 
-		path      = new JTextField(); 
-	
-		path.setText("C:/Java/Math/Experimento/mbox_experimento/");
+		pathToMboxFilesTextField      = new JTextField(); 
 
-		painelCima = new JPanel(new BorderLayout());  
-		painelBaixo = new JPanel(new GridLayout(1,1));
-		
+		pathToMboxFilesTextField.setText("C:/Java/Math/Experimento/mbox_experimento/");
+
+		topPannel = new JPanel(new BorderLayout());  
+		bottomPanel = new JPanel(new GridLayout(1,1));
+
 		addDevelopersButton = new JButton("Add Developers");
 		addDevelopersButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-            	addDevelopersButtonActionPerformed(evt);
-            }
-        });
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				addDevelopersButtonActionPerformed(evt);
+			}
+		});
 		
-		addThreadsButton = new JButton("Add Threads");
-		addThreadsButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent event) {
-            	addThreadsButtonActionPerformed(event);
-            }
-        });
-		
-		painelBaixo.add(addDevelopersButton);
-		painelBaixo.add(addThreadsButton);
-		
-		
-		painelCima.add(path, BorderLayout.CENTER);  
 
-		getContentPane().add(painelCima,  BorderLayout.NORTH);  
-		getContentPane().add(painelBaixo, BorderLayout.CENTER);  
+		buildThreadsButton = new JButton("Build Threads");
+		buildThreadsButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent event) {
+				buildThreadsButtonActionPerformed(event);
+			}
+		});
+		
+		saveThreadsButton = new JButton("Save Threads");
+		saveThreadsButton.setEnabled(false);
+		saveThreadsButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent event) {
+				saveThreadsButtonActionPerformed(event);
+			}
+		});
+		
+		createQuestionFilesButton = new JButton("Create .question");
+		createQuestionFilesButton.setEnabled(false);
+		saveThreadsButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent event) {
+				createQuestionFilesButtonActionPerformed(event);
+			}
+		});
+		
+		
+		topPannel.add(pathToMboxFilesTextField, BorderLayout.CENTER);
 
-		this.setSize(250,350);  
+		bottomPanel.add(addDevelopersButton);
+		bottomPanel.add(buildThreadsButton);
+		bottomPanel.add(saveThreadsButton);
+		bottomPanel.add(createQuestionFilesButton);
+		
+		getContentPane().add(topPannel,  BorderLayout.NORTH);  
+		getContentPane().add(bottomPanel, BorderLayout.CENTER);  
+
+		this.setSize(500, 150);  
 		this.setVisible(true);  
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);  
-	}  
-	
-	private void addDevelopersButtonActionPerformed(java.awt.event.ActionEvent evt) {
-		varreEmailDesenvolvedoresFrom(path.getText());
-	}
-	
-	private void addThreadsButtonActionPerformed(ActionEvent event) {
-		varreArvoreEmail(path.getText());
-	}
-	
-	private void updatePanel(DefaultMutableTreeNode parent) {
-		JTree threads = new JTree(parent);  
-		painelBaixo.removeAll();
-		JScrollPane scrollPane = new JScrollPane(threads);
-		painelBaixo.add(scrollPane);  
-		getContentPane().validate();
+
 	}  
 
-	public void varreArvoreEmail(String base) {
-		Connection conn = MySQLConnectionFactory.open();
+	protected void createQuestionFilesButtonActionPerformed(ActionEvent event) {
+		String pathToMboxFiles = pathToMboxFilesTextField.getText();
+		buildThreads(pathToMboxFiles);
+		try {
+			gerarArquivos(pathToMboxFiles, this.emails);
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
-		File diretorio = new File(base);  
-		File[] conteudo = diretorio.listFiles();
-		ArrayList<Email> emails = new ArrayList<Email>(); 
+	}
+
+	protected void buildThreadsButtonActionPerformed(ActionEvent event) {
+		buildThreads(pathToMboxFilesTextField.getText());
+		saveThreadsButton.setEnabled(true);
+		createQuestionFilesButton.setEnabled(true);
+	}
+
+	protected void addDevelopersButtonActionPerformed(java.awt.event.ActionEvent evt) {
+		varreEmailDesenvolvedoresFrom(pathToMboxFilesTextField.getText());
+	}
+
+	protected void saveThreadsButtonActionPerformed(ActionEvent event) {
+		String pathToMboxFiles = pathToMboxFilesTextField.getText();
+		buildThreads(pathToMboxFiles);
+		saveThreads(this.emails);
+		
+	}
+
+	public void buildThreads(String basePath) {
+		Connection conn = MySQLConnectionFactory.open();
+
+		File directory = new File(basePath);  
+		File[] files = directory.listFiles();
+		emails = new ArrayList<Email>();
 
 		try {
 			// (28	88)					Arquivos de 01/2004 até 12/2008
 			// (89  conteudo.length)	Arquivos de 01/2009 até o ultimo
-			for (int i=0; i < conteudo.length; i++) {    
+			for (int i=0; i < files.length; i++) {    
 
-				File file = new File( conteudo[i].getAbsolutePath() );
+				File file = new File( files[i].getAbsolutePath() );
 				FileReader fileReader = new FileReader(file);
 				BufferedReader reader = new BufferedReader(fileReader);
 
-				System.out.println( file );
+
+				logger.debug(file.toString());
 				String linha = "";
 
 				Email email = new Email();
@@ -143,15 +193,15 @@ public class ArvoreEmail extends JFrame {
 				proximaLinhaSubject = false;
 
 				while( (linha = reader.readLine()) != null ){
-					
+
 					if ( linha.trim().equals("---------------------------------------------------------------------") ||
 							linha.trim().equals("To unsubscribe, e-mail: dev-unsubscribe@commons.apache.org") ||
 							linha.trim().equals("For additional commands, e-mail: dev-help@commons.apache.org"))
 						continue;
-										
+
 					linha = linha.toLowerCase();
 					linha = linha.replace('\t', ' ');
-					
+
 					if ( !email.getReferences().isEmpty() && maisReferencias )
 						maisReferencias = !linha.contains(":"); 
 
@@ -167,10 +217,10 @@ public class ArvoreEmail extends JFrame {
 						maisReferencias		= false;
 						encontrouData		= false;
 						proximaLinhaSubject	= false;
-						
+
 						email = new Email();						   
 					} else if ( (!encontrouMessageID && linha.startsWith("message-id: ")) ||
-								(encontrouMessageID && email.getMessageID().isEmpty() ) ){ 
+							(encontrouMessageID && email.getMessageID().isEmpty() ) ){ 
 						encontrouMessageID = true;
 
 						linha = linha.replaceAll("message-id: ", "");
@@ -206,10 +256,10 @@ public class ArvoreEmail extends JFrame {
 
 						maisReferencias = true;
 					} else if ((!encontrouSubject && linha.startsWith("subject: ")) ||
-								(proximaLinhaSubject && linha.startsWith(" "))){
+							(proximaLinhaSubject && linha.startsWith(" "))){
 						encontrouSubject = true;
 						proximaLinhaSubject = true;
-						
+
 						linha = linha.replaceAll("subject: ", "");
 						email.setSubject( email.getSubject() + " " +linha);
 					} else if (encontrouMessageID && encontrouSubject && linha.isEmpty() ){
@@ -219,7 +269,7 @@ public class ArvoreEmail extends JFrame {
 					if (encontrouSubject && proximaLinhaSubject && 
 							!email.getSubject().isEmpty() && linha.contains(":") )
 						proximaLinhaSubject = false;
-					
+
 					// Encontra a mensagem e a primeira linha da mensagem anterior
 					if (encontrouMensagem && !linha.startsWith(">") ){
 						email.setMensagem( email.getMensagem() + " " + linha );
@@ -237,19 +287,18 @@ public class ArvoreEmail extends JFrame {
 					proximaLinhaSubject = false;
 				}
 			}
-
-			//cadastrarProblemas(emails);
-			gerarArquivos(base, emails);
-		} catch (IOException e) {
+		} 
+		catch (IOException e) {
 			e.printStackTrace();
 		}
+		
 	}
 
 
-	
-	public void varreArvoreEmailGUI(String base, DefaultMutableTreeNode no) {
+
+	public void buildGraphicalTree(String base, DefaultMutableTreeNode no) {
 		Connection conn = MySQLConnectionFactory.open();
-		
+
 		File diretorio = new File(base);  
 		File[] conteudo = diretorio.listFiles();
 		ArrayList<Email> emails = new ArrayList<Email>(); 
@@ -276,15 +325,15 @@ public class ArvoreEmail extends JFrame {
 				proximaLinhaSubject = false;
 
 				while( (linha = reader.readLine()) != null ){
-					
+
 					if ( linha.trim().equals("---------------------------------------------------------------------") ||
 							linha.trim().equals("To unsubscribe, e-mail: dev-unsubscribe@commons.apache.org") ||
 							linha.trim().equals("For additional commands, e-mail: dev-help@commons.apache.org"))
 						continue;
-										
+
 					linha = linha.toLowerCase();
 					linha = linha.replace('\t', ' ');
-					
+
 					if ( !email.getReferences().isEmpty() && maisReferencias )
 						maisReferencias = !linha.contains(":"); 
 
@@ -300,10 +349,10 @@ public class ArvoreEmail extends JFrame {
 						maisReferencias		= false;
 						encontrouData		= false;
 						proximaLinhaSubject	= false;
-						
+
 						email = new Email();						   
 					} else if ( (!encontrouMessageID && linha.startsWith("message-id: ")) ||
-								(encontrouMessageID && email.getMessageID().isEmpty() ) ){ 
+							(encontrouMessageID && email.getMessageID().isEmpty() ) ){ 
 						encontrouMessageID = true;
 
 						linha = linha.replaceAll("message-id: ", "");
@@ -339,10 +388,10 @@ public class ArvoreEmail extends JFrame {
 
 						maisReferencias = true;
 					} else if ((!encontrouSubject && linha.startsWith("subject: ")) ||
-								(proximaLinhaSubject && linha.startsWith(" "))){
+							(proximaLinhaSubject && linha.startsWith(" "))){
 						encontrouSubject = true;
 						proximaLinhaSubject = true;
-						
+
 						linha = linha.replaceAll("subject: ", "");
 						email.setSubject( email.getSubject() + " " +linha);
 					} else if (encontrouMessageID && encontrouSubject && linha.isEmpty() ){
@@ -352,7 +401,7 @@ public class ArvoreEmail extends JFrame {
 					if (encontrouSubject && proximaLinhaSubject && 
 							!email.getSubject().isEmpty() && linha.contains(":") )
 						proximaLinhaSubject = false;
-					
+
 					// Encontra a mensagem e a primeira linha da mensagem anterior
 					if (encontrouMensagem && !linha.startsWith(">") ){
 						email.setMensagem( email.getMensagem() + " " + linha );
@@ -380,20 +429,20 @@ public class ArvoreEmail extends JFrame {
 	}
 
 
-	public void cadastrarProblemas(ArrayList<Email> emails) {
+	public void saveThreads(ArrayList<Email> emails) {
 		Projeto projeto = new Projeto();
 		projeto.setNome("math");
 		ValidacaoProblemaImpl validacaoProblema = new ValidacaoProblemaImpl();
-		
+
 		for (Email email : emails) {
 			if (email.getFrom().isEmpty())
 				continue;
-			
+
 			System.out.println( email.getMessageID() );
-			
+
 			Desenvolvedor desenvolvedor = new Desenvolvedor();
 			desenvolvedor.setEmail(email.getFrom());
-			
+
 			Problema problema = new Problema();
 			problema.setDesenvolvedorOrigem(desenvolvedor);
 			problema.setProjeto(projeto);
@@ -402,7 +451,7 @@ public class ArvoreEmail extends JFrame {
 			problema.setMensagem(email.getMensagem());
 			problema.setResolvido(true);
 			problema.setTemResposta(false);
-			
+
 			try {
 				problema = validacaoProblema.cadastrarProblema(problema);
 			} catch (DescricaoInvalidaException e) {
@@ -414,19 +463,19 @@ public class ArvoreEmail extends JFrame {
 			} catch (ConhecimentoNaoEncontradoException e) {
 				e.printStackTrace();
 			}
-			
+
 			if (email.getEmailsFilho().size() > 0)
 				cadastrarSolucoes(email.getEmailsFilho(), problema);
-			
+
 		}
-		
+
 	}
 
 	private void cadastrarSolucoes(ArrayList<Email> emails, Problema problema ) {
 		for (Email email : emails) {
 			if (email.getFrom().isEmpty())
 				continue;
-			
+
 			Desenvolvedor desenvolvedor = new Desenvolvedor();
 			desenvolvedor.setEmail(email.getFrom());
 
@@ -449,7 +498,7 @@ public class ArvoreEmail extends JFrame {
 			} catch (DesenvolvedorInexistenteException e) {
 				e.printStackTrace();
 			}
-			
+
 		}
 	}
 
@@ -473,40 +522,46 @@ public class ArvoreEmail extends JFrame {
 
 		return emailsExperimento;
 	}
-	
-	public void gerarArquivos(String base, ArrayList<Email> emails) throws FileNotFoundException{
+
+	/**
+	 * Gera .question
+	 * @param base
+	 * @param emails
+	 * @throws FileNotFoundException
+	 */
+	public void gerarArquivos(String base, ArrayList<Email> emails) throws FileNotFoundException {
 		int count = 1;
-		
+
 		for (Email email : emails) {
-			
+
 			if (email.getFrom().isEmpty() || email.getSubject().contains("re:"))
 				continue;
 
 			ArrayList<Email> emailsExperimento = retornarFilhosSemRepeticao(email, email.getFrom());
-			
+
 			if (emailsExperimento.size() > 0){
 				String nomeArquivo = base + System.currentTimeMillis()+ "_" + count ;
-				
+
 				PrintWriter arquivoQuestion = new PrintWriter(new 
 						FileOutputStream( nomeArquivo + ".question"));
-				
+
 				arquivoQuestion.println( email.getFrom() );
 				arquivoQuestion.println( (new SimpleDateFormat("dd/MM/yyyy").format(email.getData()))  );
 				arquivoQuestion.println( email.getSubject() );
 				arquivoQuestion.println( email.getMensagem() );
 
 				arquivoQuestion.close();
-				
+
 				PrintWriter arquivoEmails = new PrintWriter(new FileOutputStream( nomeArquivo + ".emails"));
 				for (Email emailArquivo : emailsExperimento)
 					arquivoEmails.println( emailArquivo.getFrom() );
 				arquivoEmails.close();
-				
+
 				count += 1;
 			}
 		}
 	}
-	
+
 	public void preencherArvore(ArrayList<Email> emails, DefaultMutableTreeNode no){
 		for (Email email : emails) {
 			DefaultMutableTreeNode assunto = new DefaultMutableTreeNode( email.getSubject() + " - " + email.getMessageID());
@@ -557,7 +612,7 @@ public class ArvoreEmail extends JFrame {
 								if (email.contains("jira@apache.org")){
 									email = email.replace("jira@apache.org", nome.trim() + "@presley" );
 								}
-								
+
 								if (emails.get(nome)==null){
 									emails.put(nome, email) ;
 								} else {
@@ -594,13 +649,13 @@ public class ArvoreEmail extends JFrame {
 
 					if (email == null)
 						continue;
-							
+
 					StringTokenizer st = new StringTokenizer(email);
 
 					while (st.hasMoreTokens()){   
 						String emailPrincipal = st.nextToken();
 						String SQL = "SELECT email FROM desenvolvedor WHERE listaEmail LIKE '%"+ emailPrincipal +"%' or " +
-								" nome = '"+ nome +"'"; 
+						" nome = '"+ nome +"'"; 
 						ResultSet rs = stm.executeQuery(SQL);
 
 						if (emailPrincipal.length() > 50)
@@ -608,7 +663,7 @@ public class ArvoreEmail extends JFrame {
 
 						if (!rs.next()){
 							// Se o nome não estiver vazio (Os grupos estão formados por nome)
-							
+
 							if (!nome.isEmpty()){
 								SQL = "INSERT INTO desenvolvedor (senha, cvsNome, nome, email, listaEmail) " +
 								" VALUES ('9', '', '"+ nome +"', '"+ emailPrincipal +"', '"+ email +"')";
