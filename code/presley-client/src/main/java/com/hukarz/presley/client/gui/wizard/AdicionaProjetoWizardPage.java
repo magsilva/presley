@@ -45,7 +45,6 @@ public class AdicionaProjetoWizardPage extends WizardPage {
     }
     
     private void dialogChanged() {
-		// TODO Auto-generated method stub
     }
 
     public boolean acionarCadastrarProjeto(){

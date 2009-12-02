@@ -450,10 +450,9 @@ public class ViewComunication implements CorePresleyOperations{
 	}
 	
 	
-	//TODO
+	// FIXME: por que está retornando null?
 	public ArrayList<Desenvolvedor> buscaDesenvolvedores(Problema problema)
 			throws DesenvolvedorInexistenteException {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

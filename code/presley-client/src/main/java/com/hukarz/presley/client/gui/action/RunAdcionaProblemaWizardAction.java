@@ -19,7 +19,6 @@ public class RunAdcionaProblemaWizardAction extends Action implements
 	private MensagemAba mensagem;
 
 	public RunAdcionaProblemaWizardAction() {
-		// TODO Auto-generated constructor stub
 	}
 
 	public RunAdcionaProblemaWizardAction(MensagemAba m) {
@@ -28,31 +27,23 @@ public class RunAdcionaProblemaWizardAction extends Action implements
 
 	public RunAdcionaProblemaWizardAction(String text) {
 		super(text);
-		// TODO Auto-generated constructor stub
 	}
 
 	public RunAdcionaProblemaWizardAction(String text, ImageDescriptor image) {
 		super(text, image);
-		// TODO Auto-generated constructor stub
 	}
 
 	public RunAdcionaProblemaWizardAction(String text, int style) {
 		super(text, style);
-		// TODO Auto-generated constructor stub
 	}
 
 	public void dispose() {
-		// TODO Auto-generated method stub
-
 	}
 
 	public void init(IWorkbenchWindow window) {
-		// TODO Auto-generated method stub
-
 	}
 
 	public void run(IAction action) {
-		// TODO Auto-generated method stub
 		AdicionaProblemaWizard wizard = new AdicionaProblemaWizard(mensagem);
 		Shell shell = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
 		WizardDialog dialog = new WizardDialog(shell,wizard);
@@ -63,7 +54,6 @@ public class RunAdcionaProblemaWizardAction extends Action implements
 	}
 
 	public void selectionChanged(IAction action, ISelection selection) {
-		// TODO Auto-generated method stub
 
 	}
 

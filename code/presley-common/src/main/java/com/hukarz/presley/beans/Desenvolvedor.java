@@ -14,10 +14,24 @@ import java.util.HashMap;
 
 public class Desenvolvedor implements Serializable {
 	
+	
+	
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+	public Desenvolvedor() {
+		super();
+	}
+	/**
+	 * @param email
+	 */
+	public Desenvolvedor(String email) {
+		super();
+		this.email = email;
+	}
+	/**
+	 * 
+	 */
 	private String email;
 	private String nome;
 	private String cvsNome;

@@ -119,8 +119,6 @@ public class MensagemAba extends ViewPart {
 		cadastroProjeto.setEnabled(true);
 		cadastroProjeto.addMouseListener(new MouseListener() {
 			public void mouseDoubleClick(MouseEvent e) {
-				// TODO Auto-generated method stub
-
 			}
 
 			public void mouseDown(MouseEvent e) {
@@ -128,7 +126,6 @@ public class MensagemAba extends ViewPart {
 			}
 
 			public void mouseUp(MouseEvent e) {
-				// TODO Auto-generated method stub
 
 			}
 
@@ -147,8 +144,6 @@ public class MensagemAba extends ViewPart {
 		logout.addMouseListener(new MouseListener() {
 
 			public void mouseDoubleClick(MouseEvent e) {
-				// TODO Auto-generated method stub
-
 			}
 
 			public void mouseDown(MouseEvent e) {
@@ -165,7 +160,6 @@ public class MensagemAba extends ViewPart {
 			}
 
 			public void mouseUp(MouseEvent e) {
-				// TODO Auto-generated method stub
 
 			}
 
@@ -219,8 +213,6 @@ public class MensagemAba extends ViewPart {
 		addUser.addMouseListener(new MouseListener() {
 
 			public void mouseDoubleClick(MouseEvent arg0) {
-				// TODO Auto-generated method stub
-
 			}
 
 			public void mouseDown(MouseEvent arg0) {
@@ -229,8 +221,6 @@ public class MensagemAba extends ViewPart {
 			}
 
 			public void mouseUp(MouseEvent arg0) {
-				// TODO Auto-generated method stub
-
 			}
 
 		});
@@ -247,18 +237,12 @@ public class MensagemAba extends ViewPart {
 		removeUser.addMouseListener(new MouseListener() {
 
 			public void mouseDoubleClick(MouseEvent arg0) {
-				// TODO Auto-generated method stub
-
 			}
 
 			public void mouseDown(MouseEvent arg0) {
-				// TODO Auto-generated method stub
-
 			}
 
 			public void mouseUp(MouseEvent arg0) {
-				// TODO Auto-generated method stub
-
 			}
 
 		});
@@ -325,7 +309,6 @@ public class MensagemAba extends ViewPart {
 		incluirProblema.addMouseListener(new MouseListener() {
 
 			public void mouseDoubleClick(MouseEvent e) {
-				// TODO Auto-generated method stub
 
 			}
 
@@ -335,8 +318,6 @@ public class MensagemAba extends ViewPart {
 			}
 
 			public void mouseUp(MouseEvent e) {
-				// TODO Auto-generated method stub
-
 			}
 
 		});
@@ -354,7 +335,6 @@ public class MensagemAba extends ViewPart {
 		excluirProblema.addMouseListener(new MouseListener() {
 
 			public void mouseDoubleClick(MouseEvent e) {
-				// TODO Auto-generated method stub
 
 			}
 
@@ -384,8 +364,6 @@ public class MensagemAba extends ViewPart {
 			}
 
 			public void mouseUp(MouseEvent e) {
-				// TODO Auto-generated method stub
-
 			}
 
 		});
@@ -480,8 +458,6 @@ public class MensagemAba extends ViewPart {
 		treeProblemasRecebidos.addSelectionListener(new SelectionListener() {
 
 			public void widgetDefaultSelected(SelectionEvent e) {
-				// TODO Auto-generated method stub
-
 			}
 
 			public void widgetSelected(SelectionEvent e) {
@@ -759,8 +735,6 @@ public class MensagemAba extends ViewPart {
 
 	@Override
 	public void setFocus() {
-		// TODO Auto-generated method stub
-		
 	}
 
 }

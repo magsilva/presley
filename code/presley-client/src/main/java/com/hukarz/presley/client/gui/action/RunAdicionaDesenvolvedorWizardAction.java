@@ -18,7 +18,6 @@ public class RunAdicionaDesenvolvedorWizardAction extends Action implements
 	private MensagemAba mensagemAba;
 
 	public RunAdicionaDesenvolvedorWizardAction() {
-		// TODO Auto-generated constructor stub
 	}
 	
 	public RunAdicionaDesenvolvedorWizardAction(MensagemAba m) {
@@ -27,27 +26,20 @@ public class RunAdicionaDesenvolvedorWizardAction extends Action implements
 
 	public RunAdicionaDesenvolvedorWizardAction(String text) {
 		super(text);
-		// TODO Auto-generated constructor stub
 	}
 
 	public RunAdicionaDesenvolvedorWizardAction(String text, ImageDescriptor image) {
 		super(text, image);
-		// TODO Auto-generated constructor stub
 	}
 
 	public RunAdicionaDesenvolvedorWizardAction(String text, int style) {
 		super(text, style);
-		// TODO Auto-generated constructor stub
 	}
 
 	public void dispose() {
-		// TODO Auto-generated method stub
-
 	}
 
 	public void init(IWorkbenchWindow arg0) {
-		// TODO Auto-generated method stub
-
 	}
 
 	public void run(IAction arg0) {
@@ -63,7 +55,6 @@ public class RunAdicionaDesenvolvedorWizardAction extends Action implements
 	}
 
 	public void selectionChanged(IAction arg0, ISelection arg1) {
-		// TODO Auto-generated method stub
 
 	}
 

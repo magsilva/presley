@@ -17,64 +17,6 @@ public class AjusteArquivos {
 	private String PATH = "C:/java/lucene/Experimento_Final/";
 	private ServicoDesenvolvedor servicoDesenvolvedor = new ServicoDesenvolvedorImplDAO();
 	
-	/**
-	 * @param args
-	 * @throws Exception 
-	 * @throws IOException 
-	 */
-	public static void main(String[] args) throws IOException, Exception {
-		AjusteArquivos ajusteArquivos = new AjusteArquivos();
-		ajusteArquivos.ajustarArquivos();
-	}
-
-	private void ajustarArquivosEmails(String EmailQuestion, File arquivoQuestion) throws IOException, Exception {
-		File arquivoEmail = new File( arquivoQuestion.toString().replace(".question", ".emails") );
-
-		String linha = "";
-		ArrayList<String> emails = new ArrayList<String>();
-
-		FileReader fileReader = new FileReader(arquivoEmail);
-		BufferedReader reader = new BufferedReader(fileReader);
-
-		System.out.println( arquivoEmail.getAbsolutePath()  );
-		if (arquivoEmail.getAbsolutePath().contains("1249165530156000.emails"))
-			System.out.println();
-			
-		// - Busca pelos e-mails dos desenvolvedores -
-		while( (linha = reader.readLine()) != null ){
-			System.out.println( linha ) ;
-			String email = "";
-			if (linha.contains("jira@apache.org")){
-				String nome = extractNomeJira(linha);
-
-				Desenvolvedor desenvolvedor ;
-				try {
-					desenvolvedor = servicoDesenvolvedor.getDesenvolvedorPorNome(nome);
-				} catch (Exception e) {
-					desenvolvedor = servicoDesenvolvedor.autenticaDesenvolvedor(nome, "1");
-				}
-
-				email = desenvolvedor.getEmail();
-			} else {
-				email = servicoDesenvolvedor.getDesenvolvedorNaListaEmail(email).getEmail();
-			}
-
-			if (emails.indexOf(email)==-1 && !EmailQuestion.equals(email))
-				emails.add(email);
-		}
-
-
-		// - Atualiza o arquivo -
-		PrintWriter saidaPontuacao = new PrintWriter(new FileOutputStream(arquivoEmail));
-
-		for (String email : emails) {
-			saidaPontuacao.println( email );
-		}
-
-		saidaPontuacao.close();
-		
-	}
-	
 	private void ajustarArquivos() throws IOException, Exception {
 		File diretorioCD = new File( PATH+"/question/" );
 
@@ -125,6 +67,54 @@ public class AjusteArquivos {
 
 	}
 
+	private void ajustarArquivosEmails(String EmailQuestion, File arquivoQuestion) throws IOException, Exception {
+		File arquivoEmail = new File( arquivoQuestion.toString().replace(".question", ".emails") );
+
+		String linha = "";
+		ArrayList<String> emails = new ArrayList<String>();
+
+		FileReader fileReader = new FileReader(arquivoEmail);
+		BufferedReader reader = new BufferedReader(fileReader);
+
+		System.out.println( arquivoEmail.getAbsolutePath()  );
+		if (arquivoEmail.getAbsolutePath().contains("1249165530156000.emails"))
+			System.out.println();
+			
+		// - Busca pelos e-mails dos desenvolvedores -
+		while( (linha = reader.readLine()) != null ){
+			System.out.println( linha ) ;
+			String email = "";
+			if (linha.contains("jira@apache.org")){
+				String nome = extractNomeJira(linha);
+
+				Desenvolvedor desenvolvedor ;
+				try {
+					desenvolvedor = servicoDesenvolvedor.getDesenvolvedorPorNome(nome);
+				} catch (Exception e) {
+					desenvolvedor = servicoDesenvolvedor.autenticaDesenvolvedor(nome, "1");
+				}
+
+				email = desenvolvedor.getEmail();
+			} else {
+				email = servicoDesenvolvedor.getDesenvolvedorNaListaEmail(email).getEmail();
+			}
+
+			if (emails.indexOf(email)==-1 && !EmailQuestion.equals(email))
+				emails.add(email);
+		}
+
+
+		// - Atualiza o arquivo -
+		PrintWriter saidaPontuacao = new PrintWriter(new FileOutputStream(arquivoEmail));
+
+		for (String email : emails) {
+			saidaPontuacao.println( email );
+		}
+
+		saidaPontuacao.close();
+		
+	}
+	
 	private String extractEmail(String fromHeader) {
 		
 		if (fromHeader.contains("<")) {
@@ -136,7 +126,7 @@ public class AjusteArquivos {
 			return fromHeader;
 		}
 	}
-	
+
 	private String extractNomeJira(String fromHeader){
 		int endIndex = fromHeader.indexOf("jira@apache.org");
 		String nome = fromHeader.substring(0, endIndex);
@@ -146,6 +136,16 @@ public class AjusteArquivos {
 		nome = nome.replace("JIRA", "").trim();
 		
 		return nome;
+	}
+	
+	/**
+	 * @param args
+	 * @throws Exception 
+	 * @throws IOException 
+	 */
+	public static void main(String[] args) throws IOException, Exception {
+		AjusteArquivos ajusteArquivos = new AjusteArquivos();
+		ajusteArquivos.ajustarArquivos();
 	}
 	
 }

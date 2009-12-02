@@ -81,7 +81,6 @@ public class AdicionaConhecimentoWizard extends Wizard implements INewWizard {
 
     	   
     	}catch (Exception e) {
-			// TODO: handle exception
     		MessageDialog.openError(this.getShell(), "ERRO", e.getMessage());
     		logger.error(e.getMessage());
     		e.printStackTrace();
@@ -105,7 +104,6 @@ public class AdicionaConhecimentoWizard extends Wizard implements INewWizard {
 	}
 
 	public void init(IWorkbench workbench, IStructuredSelection selection) {
-		// TODO Auto-generated method stub
 		this.selection = selection;
 	}
 	

@@ -19,7 +19,6 @@ public class RunAdicionaConhecimentoWizard extends Action implements
 	private Dominio dominio;
 
 	public RunAdicionaConhecimentoWizard() {
-		// TODO Auto-generated constructor stub
 	}
 	
 	public RunAdicionaConhecimentoWizard(Dominio dominio) {
@@ -28,27 +27,20 @@ public class RunAdicionaConhecimentoWizard extends Action implements
 
 	public RunAdicionaConhecimentoWizard(String text) {
 		super(text);
-		// TODO Auto-generated constructor stub
 	}
 
 	public RunAdicionaConhecimentoWizard(String text, ImageDescriptor image) {
 		super(text, image);
-		// TODO Auto-generated constructor stub
 	}
 
 	public RunAdicionaConhecimentoWizard(String text, int style) {
 		super(text, style);
-		// TODO Auto-generated constructor stub
 	}
 
 	public void dispose() {
-		// TODO Auto-generated method stub
-
 	}
 
 	public void init(IWorkbenchWindow arg0) {
-		// TODO Auto-generated method stub
-
 	}
 
 	public void run(IAction arg0) {
@@ -63,8 +55,6 @@ public class RunAdicionaConhecimentoWizard extends Action implements
 	}
 
 	public void selectionChanged(IAction arg0, ISelection arg1) {
-		// TODO Auto-generated method stub
-
 	}
 
 }

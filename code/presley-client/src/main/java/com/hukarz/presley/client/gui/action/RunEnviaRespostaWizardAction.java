@@ -24,7 +24,6 @@ public class RunEnviaRespostaWizardAction extends Action implements
     private Solucao solucaoOrigem;
 
 	public RunEnviaRespostaWizardAction() {
-		// TODO Auto-generated constructor stub
 	}
 	
 	public RunEnviaRespostaWizardAction(MensagemAba viewMensagem, Problema problema, Solucao solucaoOrigem) {
@@ -35,27 +34,20 @@ public class RunEnviaRespostaWizardAction extends Action implements
 
 	public RunEnviaRespostaWizardAction(String text) {
 		super(text);
-		// TODO Auto-generated constructor stub
 	}
 
 	public RunEnviaRespostaWizardAction(String text, ImageDescriptor image) {
 		super(text, image);
-		// TODO Auto-generated constructor stub
 	}
 
 	public RunEnviaRespostaWizardAction(String text, int style) {
 		super(text, style);
-		// TODO Auto-generated constructor stub
 	}
 
 	public void dispose() {
-		// TODO Auto-generated method stub
-
 	}
 
 	public void init(IWorkbenchWindow arg0) {
-		// TODO Auto-generated method stub
-
 	}
 
 	public void run(IAction arg0) {
@@ -69,8 +61,6 @@ public class RunEnviaRespostaWizardAction extends Action implements
 	}
 
 	public void selectionChanged(IAction arg0, ISelection arg1) {
-		// TODO Auto-generated method stub
-
 	}
 
 }

@@ -25,10 +25,8 @@ public class RMIClient {
 			Registry registry = LocateRegistry.getRegistry(this.ipserver);
             this.stub= (StubInterface) registry.lookup("stub");
 		} catch (RemoteException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (NotBoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -45,7 +43,6 @@ public class RMIClient {
 		try {
 			this.backPack = stub.sendReceivePacketStruct(departurePack);
 		} catch (RemoteException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

@@ -20,7 +20,6 @@ public class PacketSTUB extends UnicastRemoteObject implements StubInterface {
 	protected PacketSTUB(ServerBridge bridge) throws RemoteException {
 		super();
 		this.bridge = bridge;
-		// TODO Auto-generated constructor stub
 	}
 	
 	public PacketStruct sendReceivePacketStruct(PacketStruct pack) throws RemoteException {	

@@ -166,13 +166,10 @@ public class AdicionaDesenvolvedorWizardPage2 extends WizardPage {
         	addConhecimentoButton.addMouseListener(new MouseListener(){
             	
             	public void mouseDoubleClick(MouseEvent arg0) {
-    				// TODO Auto-generated method stub
     				
     			}
     			public void mouseDown(MouseEvent e) {
-    				// TODO Auto-generated method stub
     				//Adiciona novo nó na arvore gráfica
-    				
     				TreeItem atual=null;
     				TreeItem[] selecoes=null;
 					selecoes = arvoreConhecimento.getSelection();
@@ -186,8 +183,6 @@ public class AdicionaDesenvolvedorWizardPage2 extends WizardPage {
     				
     			}
     			public void mouseUp(MouseEvent arg0) {
-    				// TODO Auto-generated method stub
-    				
     			}
     			
             });
@@ -195,7 +190,6 @@ public class AdicionaDesenvolvedorWizardPage2 extends WizardPage {
         	
             	
         }catch (Exception e) {
-			// TODO: handle exception
         	logger.error(e.getMessage());
         	e.printStackTrace();
 		}

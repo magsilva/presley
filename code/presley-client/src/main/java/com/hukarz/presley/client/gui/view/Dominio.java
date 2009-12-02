@@ -97,9 +97,8 @@ public class Dominio extends ViewPart {
 
 	@Override
 	public void setFocus() {
-		// TODO Auto-generated method stub
-
 	}
+	
 	private void initComponents(Composite parent)
 	{
 		this.parentComposite = parent;
@@ -116,7 +115,6 @@ public class Dominio extends ViewPart {
 		treeConhecimentos.addSelectionListener(new SelectionListener(){
 
 			public void widgetDefaultSelected(SelectionEvent e) {
-				// TODO Auto-generated method stub
 				
 			}
 
@@ -136,8 +134,6 @@ public class Dominio extends ViewPart {
 		incluirTopico.addMouseListener(new MouseListener() {
 
 			public void mouseDoubleClick(MouseEvent e) {
-				// TODO Auto-generated method stub
-				
 			}
 
 			public void mouseDown(MouseEvent e) {
@@ -162,7 +158,6 @@ public class Dominio extends ViewPart {
 			}
 
 			public void mouseUp(MouseEvent e) {
-				// TODO Auto-generated method stub
 				
 			}
 			
@@ -223,7 +218,6 @@ public class Dominio extends ViewPart {
 			}
 
 			public void mouseUp(MouseEvent e) {
-				// TODO Auto-generated method stub
 				
 			}
 			
@@ -253,8 +247,6 @@ public class Dominio extends ViewPart {
 		incluirDocumentoBase.addMouseListener(new MouseListener(){
 
 			public void mouseDoubleClick(MouseEvent arg0) {
-				// TODO Auto-generated method stub
-
 			}
 
 			public void mouseDown(MouseEvent arg0) {
@@ -310,8 +302,6 @@ public class Dominio extends ViewPart {
 			}
 			
 			public void mouseUp(MouseEvent arg0) {
-				// TODO Auto-generated method stub
-
 			}
 
 		});
@@ -355,7 +345,7 @@ public class Dominio extends ViewPart {
 	    out.close();
 	}	
 	
-	
+	// TODO: analisar este método
 	private void executarExperimento(String diretorioArquivos, Projeto projetoAtivo) throws FileNotFoundException{
 		
 		File diretorioCD = new File( diretorioArquivos );

@@ -36,7 +36,6 @@ public class AdicionaProjetoWizard extends Wizard implements INewWizard {
 
 	@Override
 	public boolean performFinish() {
-		// TODO Auto-generated method stub
 		Projeto projeto;
 		if ( page.acionarCadastrarProjeto() ){
 			projeto = page.cadastrarProjeto();
@@ -63,7 +62,6 @@ public class AdicionaProjetoWizard extends Wizard implements INewWizard {
 
 	@Override
 	public void init(IWorkbench workbench, IStructuredSelection selection) {
-		// TODO Auto-generated method stub
 		this.selection = selection;
 	}
 

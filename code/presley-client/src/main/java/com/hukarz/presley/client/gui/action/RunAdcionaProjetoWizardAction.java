@@ -20,21 +20,15 @@ public class RunAdcionaProjetoWizardAction extends Action implements
 		this.mensagem = mensagem;
 	}
 
-	@Override
-	public void dispose() {
-		// TODO Auto-generated method stub
 
-	}
 
 	@Override
 	public void init(IWorkbenchWindow window) {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public void run(IAction action) {
-		// TODO Auto-generated method stub
 		AdicionaProjetoWizard wizard = new AdicionaProjetoWizard(mensagem);
 		Shell shell = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
 		WizardDialog dialog = new WizardDialog(shell,wizard);
@@ -45,8 +39,11 @@ public class RunAdcionaProjetoWizardAction extends Action implements
 	}
 
 	public void selectionChanged(IAction action, ISelection selection) {
-		// TODO Auto-generated method stub
 
+	}
+
+	@Override
+	public void dispose() {
 	}
 
 }

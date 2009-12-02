@@ -52,7 +52,6 @@ public class AdicionaDesenvolvedorWizard extends Wizard implements INewWizard {
 
 	@Override
 	public boolean performFinish() {
-		// TODO Auto-generated method stub
         //First save all the page data as variables.
     	  
 		String nome = page.getNomeDesenvolvedor();
@@ -103,7 +102,6 @@ public class AdicionaDesenvolvedorWizard extends Wizard implements INewWizard {
 	}
 
 	public void init(IWorkbench workbench, IStructuredSelection selection) {
-		// TODO Auto-generated method stub
 		this.selection = selection;
 	}
 	

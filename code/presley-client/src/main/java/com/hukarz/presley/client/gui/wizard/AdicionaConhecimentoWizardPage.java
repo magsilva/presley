@@ -75,7 +75,6 @@ public class AdicionaConhecimentoWizardPage extends WizardPage {
 
     
     private void dialogChanged() {
-		// TODO Auto-generated method stub
     }
 
     
@@ -114,11 +113,9 @@ public class AdicionaConhecimentoWizardPage extends WizardPage {
         addConhecimentoButton.addMouseListener(new MouseListener(){
         	
         	public void mouseDoubleClick(MouseEvent arg0) {
-				// TODO Auto-generated method stub
 				
 			}
 			public void mouseDown(MouseEvent e) {
-				// TODO Auto-generated method stub
 				//Adiciona novo nó na arvore gráfica
 				Conhecimento conhecimentoPai=null, conhecimentoFilho=null;
 				TreeItem[] treeItem = arvoreConhecimento.getSelection();
@@ -141,12 +138,9 @@ public class AdicionaConhecimentoWizardPage extends WizardPage {
 						return;	
 					}
 				}
-				
-				 
 			}
+			
 			public void mouseUp(MouseEvent arg0) {
-				// TODO Auto-generated method stub
-				
 			}
 			
         });

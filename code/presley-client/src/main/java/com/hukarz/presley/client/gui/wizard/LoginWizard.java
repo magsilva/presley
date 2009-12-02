@@ -48,7 +48,6 @@ public class LoginWizard extends Wizard implements INewWizard {
 
 	@Override
 	public boolean performFinish() {
-		// TODO Auto-generated method stub
 		//First save all the page data as variables.
 
 		try{
@@ -93,7 +92,6 @@ public class LoginWizard extends Wizard implements INewWizard {
 
 
 	public void init(IWorkbench workbench, IStructuredSelection selection) {
-		// TODO Auto-generated method stub
 		this.selection = selection;
 	}
 

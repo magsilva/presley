@@ -19,7 +19,6 @@ public class RunLoginWizardAction extends Action implements
 	private MensagemAba mensagem;
 
 	public RunLoginWizardAction() {
-		// TODO Auto-generated constructor stub
 	}
 	
 	public RunLoginWizardAction(MensagemAba m) {
@@ -28,26 +27,21 @@ public class RunLoginWizardAction extends Action implements
 
 	public RunLoginWizardAction(String text) {
 		super(text);
-		// TODO Auto-generated constructor stub
 	}
 
 	public RunLoginWizardAction(String text, ImageDescriptor image) {
 		super(text, image);
-		// TODO Auto-generated constructor stub
 	}
 
 	public RunLoginWizardAction(String text, int style) {
 		super(text, style);
-		// TODO Auto-generated constructor stub
 	}
 
 	public void dispose() {
-		// TODO Auto-generated method stub
 
 	}
 
 	public void init(IWorkbenchWindow arg0) {
-		// TODO Auto-generated method stub
 
 	}
 
@@ -64,7 +58,6 @@ public class RunLoginWizardAction extends Action implements
 	}
 
 	public void selectionChanged(IAction arg0, ISelection arg1) {
-		// TODO Auto-generated method stub
 
 	}
 

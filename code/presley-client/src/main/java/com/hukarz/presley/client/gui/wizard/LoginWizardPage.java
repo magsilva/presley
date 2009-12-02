@@ -54,7 +54,6 @@ public class LoginWizardPage extends WizardPage {
     }
     
     private void dialogChanged() {
-		// TODO Auto-generated method stub
     }
 
     

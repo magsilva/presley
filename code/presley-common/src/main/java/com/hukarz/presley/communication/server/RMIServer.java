@@ -43,10 +43,8 @@ public class RMIServer {
            // Naming.rebind("rmi://localhost:1099/stub", packetSTUB);
 
 		} catch (RemoteException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (AlreadyBoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}			
 	}

@@ -87,7 +87,6 @@ public class AdicionaProblemaWizardPage extends WizardPage {
 	}
 	
     private void dialogChanged( ) {
-		// TODO Auto-generated method stub
     }
 
 }

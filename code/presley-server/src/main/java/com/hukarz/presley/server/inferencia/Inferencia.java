@@ -18,9 +18,6 @@ import com.hukarz.presley.server.persistencia.interfaces.ServicoMensagem;
 
 /*
  * Created on 09/09/2008
- *
- * TODO To change the template for this generated file go to
- * Window - Preferences - Java - Code Style - Code Templates
  */
 
 /**

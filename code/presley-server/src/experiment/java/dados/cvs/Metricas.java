@@ -10,33 +10,13 @@ import com.hukarz.presley.excessao.DesenvolvedorInexistenteException;
 
 public class Metricas {
 
-	static String PATH = "C:/java/lucene/Experimento_Final/emails/";
 	private File[] arquivosEmail;
 	private int[] qtdeRecomendacoesCorretas;
 	private int[] qtdeRecomendacoesFeitas;
 	private int[] qtdeRespostas;
+	static String PATH = "C:/java/lucene/Experimento_Final/emails/";
 		
 	
-	/**
-	 * 		
-	 * @param args
-	 * @throws DesenvolvedorInexistenteException 
-	 * @throws IOException 
-	 */
-	public static void main(String[] args) throws DesenvolvedorInexistenteException, IOException {
-		Metricas metricas = new Metricas();
-
-		System.out.println("Precisão Total		= " + metricas.precisao(0));
-		System.out.println("Abrangência Total	= " + metricas.abrangencia(0));
-		
-		for (int i = 1; i < 6; i++) {
-//			System.out.println("Quantidade  ("+ i +") = " + metricas.getQtdeRespostas(i));
-			System.out.println("Precisão    ("+ i +") = " + metricas.precisao(i));
-			System.out.println("Abrangência ("+ i +") = " + metricas.abrangencia(i));
-		}
-
-	}
-
 	public Metricas() throws IOException {
 		File diretorio = new File(PATH);
 		qtdeRecomendacoesCorretas	= new int[6] ;
@@ -52,12 +32,35 @@ public class Metricas {
 		calcularValores();
 	}
 
-	public double precisao(int posicao) {
-		return (double) qtdeRecomendacoesCorretas[posicao] / qtdeRecomendacoesFeitas[posicao];
-	}
-
 	public double abrangencia(int posicao) {
 		return (double) qtdeRecomendacoesCorretas[posicao] / qtdeRespostas[posicao];
+	}
+
+	private int calcularQtdeRecomendacoes(File arquivoEmail) throws IOException{
+		FileReader fileReader = new FileReader( arquivoEmail.toString().replace(".emails", ".recomendations"));
+		BufferedReader reader = new BufferedReader(fileReader);
+
+		int qtdeRegistros = 0 ;
+
+		while( reader.readLine() != null )
+			qtdeRegistros += 1;
+
+		return qtdeRegistros;
+	}
+
+	private int calcularQtdeRecomendacoesCorretas(File arquivoEmail) throws IOException {
+		int qtde = 0;
+		FileReader fileReader = new FileReader( arquivoEmail.toString().replace(".emails", ".recomendations"));
+		BufferedReader reader = new BufferedReader(fileReader);
+
+		String emailRecomendado = "";
+		while( (emailRecomendado = reader.readLine()) != null ){
+			if (contemEmail(emailRecomendado, arquivoEmail)) {
+				qtde += 1;
+			}
+		}
+
+		return qtde;
 	}
 
 	
@@ -103,33 +106,6 @@ public class Metricas {
 	}
 
 
-	private int calcularQtdeRecomendacoes(File arquivoEmail) throws IOException{
-		FileReader fileReader = new FileReader( arquivoEmail.toString().replace(".emails", ".recomendations"));
-		BufferedReader reader = new BufferedReader(fileReader);
-
-		int qtdeRegistros = 0 ;
-
-		while( reader.readLine() != null )
-			qtdeRegistros += 1;
-
-		return qtdeRegistros;
-	}	
-	
-	private int calcularQtdeRecomendacoesCorretas(File arquivoEmail) throws IOException {
-		int qtde = 0;
-		FileReader fileReader = new FileReader( arquivoEmail.toString().replace(".emails", ".recomendations"));
-		BufferedReader reader = new BufferedReader(fileReader);
-
-		String emailRecomendado = "";
-		while( (emailRecomendado = reader.readLine()) != null ){
-			if (contemEmail(emailRecomendado, arquivoEmail)) {
-				qtde += 1;
-			}
-		}
-
-		return qtde;
-	}
-	
 	private boolean contemEmail( String emailRecomendado, File enderecoArquivoExtra ) throws IOException{
 		FileReader fileReader = new FileReader( enderecoArquivoExtra );
 		BufferedReader reader = new BufferedReader(fileReader);
@@ -142,10 +118,34 @@ public class Metricas {
 		}
 		
 		return false;
-	}
+	}	
 	
 	public int getQtdeRespostas(int posicao) {
 		return qtdeRespostas[posicao];
+	}
+	
+	public double precisao(int posicao) {
+		return (double) qtdeRecomendacoesCorretas[posicao] / qtdeRecomendacoesFeitas[posicao];
+	}
+	
+	/**
+	 * 		
+	 * @param args
+	 * @throws DesenvolvedorInexistenteException 
+	 * @throws IOException 
+	 */
+	public static void main(String[] args) throws DesenvolvedorInexistenteException, IOException {
+		Metricas metricas = new Metricas();
+
+		System.out.println("Precisão Total		= " + metricas.precisao(0));
+		System.out.println("Abrangência Total	= " + metricas.abrangencia(0));
+		
+		for (int i = 1; i < 6; i++) {
+//			System.out.println("Quantidade  ("+ i +") = " + metricas.getQtdeRespostas(i));
+			System.out.println("Precisão    ("+ i +") = " + metricas.precisao(i));
+			System.out.println("Abrangência ("+ i +") = " + metricas.abrangencia(i));
+		}
+
 	}
 
 }

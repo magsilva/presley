@@ -75,8 +75,8 @@ public class AdicionaDesenvolvedorWizardPage extends WizardPage {
     
        
    private void dialogChanged() {
-		// TODO Auto-generated method stub
-    }
+	   
+   }
 
     
     public void createControl(Composite parent) {

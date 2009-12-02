@@ -1,10 +1,6 @@
 package dados.cvs;
 
-import java.sql.Connection;
 import java.sql.Date;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -12,13 +8,14 @@ import java.util.ArrayList;
 import java.util.StringTokenizer;
 
 public class Email {
-	private String messageID;
-	private String inReplyTo, references;
-	private String subject;
-	private String mensagem;
+	private Date data;
 	private ArrayList<Email> emailsFilho;
 	private String from;
-	private Date data;
+	private String inReplyTo, references;
+	private String mensagem;
+	private String messageID;
+	
+	private String subject;
 	
 	public Email() {
 		emailsFilho = new ArrayList<Email>();
@@ -30,75 +27,113 @@ public class Email {
 		from		= "";
 	}
 
-	public String getMessageID() {
-		return messageID;
+	public boolean adicionar(ArrayList<Email> emails) {
+		boolean retorno = false;
+		String assuntoRespostaIncluir 	= "";
+		String assuntoRespostaEmail 	= "";
+
+		for (Email email : emails) {
+			
+			assuntoRespostaIncluir	= retornarAssuntoResposta(this.subject) ;
+			assuntoRespostaEmail	= retornarAssuntoResposta(email.getSubject()) ;
+			
+			// -> No caso normal quando a resposta vem depois do 1º e-mail
+			if ( this.getInReplyTo().equals( email.messageID ) ||
+					this.getReferences().contains( email.messageID ) ||
+					assuntoRespostaEmail.equals( assuntoRespostaIncluir )) {
+				email.emailsFilho.add(this);
+				retorno = true;
+				break;
+			// Casos onde o e-mail inicial está vindo depois da resposta	
+			} 
+			else if (email.getInReplyTo().equals( this.messageID ) ||
+					email.getReferences().contains( this.messageID ) ||
+					this.subject.equals(assuntoRespostaEmail)) {
+				this.emailsFilho.add(email);
+				emails.remove( emails.indexOf(email) );
+				
+				// -> Inicio da gabiarra
+				ArrayList<Email> emailsExcluir = new ArrayList<Email>(); 
+				for (Email email2 : emails) {
+					assuntoRespostaEmail	= retornarAssuntoResposta( email2.getSubject() ) ;
+					if ( email2.getInReplyTo().equals( this.messageID ) ||
+							email2.getReferences().contains( this.messageID ) ||
+							this.getSubject().equals( assuntoRespostaEmail )) {
+						this.emailsFilho.add(email2);
+						emailsExcluir.add( email2 );
+					}	
+				}
+				
+				for (Email email2 : emailsExcluir) {
+					emails.remove( emails.indexOf(email2) );
+				}
+				// -> Fim
+				
+				emails.add(this);
+				
+				retorno = true;
+				break;
+			} 
+			else {
+				retorno = adicionar(email.getEmailsFilho());
+				if (retorno)
+					break;
+			}
+			
+		}
+		
+		return retorno;
 	}
 
-	public void setMessageID(String messageID) {
-		this.messageID = messageID.toLowerCase();
+	public Date getData() {
+		return data;
 	}
 
-	public String getInReplyTo() {
-		return inReplyTo;
-	}
-
-	public void setInReplyTo(String inReplyTo) {
-		this.inReplyTo = inReplyTo.toLowerCase();
-	}
-
-	public String getReferences() {
-		return references;
-	}
-
-	public void setReferences(String references) {
-		this.references = references.toLowerCase();
-	}
-
-	public String getSubject() {
-		return subject;
-	}
-
-	public void setSubject(String subject) {
-		this.subject = subject.toLowerCase();
-	}	
-	
 	public ArrayList<Email> getEmailsFilho() {
 		return emailsFilho;
-	}
-	
-	public void setEmailsFilho(ArrayList<Email> emailsFilho) {
-		this.emailsFilho = emailsFilho;
-	}
-
-	public String getMensagem() {
-		return mensagem;
-	}
-
-	public void setMensagem(String mensagem) {
-		this.mensagem = mensagem.toLowerCase();
 	}
 
 	public String getFrom() {
 		return from;
 	}
 
-	public void setFrom(String from, Connection conn) {
-		
-		String SQL = "SELECT email FROM desenvolvedor WHERE listaEmail LIKE '%" + from + "%'";
-
-		Statement stm = null;
-		try {
-			stm = conn.createStatement();
-			ResultSet rs = stm.executeQuery(SQL);
-			if (rs.next())
-				this.from = rs.getString("email");	
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}		
+	public String getInReplyTo() {
+		return inReplyTo;
 	}
 
-	public Date getData() {
-		return data;
+	public String getMensagem() {
+		return mensagem;
+	}
+
+	public String getMessageID() {
+		return messageID;
+	}
+
+	public String getReferences() {
+		return references;
+	}	
+	
+	public String getSubject() {
+		return subject;
+	}
+	
+	public ArrayList<Email> retornarFilhosSemRepeticao() {
+		ArrayList<Email> emailsResposta = getEmailsFilho();
+		ArrayList<Email> emailsExperimento = new ArrayList<Email>();
+		for (Email emailResposta : emailsResposta) {
+			if ( !emailResposta.getFrom().equals(getFrom()) ){
+				boolean achei = false;
+				for (Email emailExperimento : emailsExperimento) {
+					if ( emailResposta.getFrom().equals(emailExperimento.getFrom())){
+						achei = true;
+						break;						
+					}
+				}
+				if (!achei)
+					emailsExperimento.add(emailResposta);
+			}
+		}
+		return emailsExperimento;
 	}
 
 	public void setData(String linhaData) {
@@ -151,22 +186,37 @@ public class Email {
 		}
 	}
 
-	public void setFromPorNome(String nome, Connection conn) {
+	public void setEmailsFilho(ArrayList<Email> emailsFilho) {
+		this.emailsFilho = emailsFilho;
+	}
 
-		String SQL = "SELECT email FROM desenvolvedor WHERE nome ='" + nome.trim() + "'";
+	// TODO: revisar
+	public void setFrom(final String from) {
+		if (null != from) {
+			this.from = from;
+		}				
+	}
 
-		Statement stm = null;
-		try {
-			stm = conn.createStatement();
-			ResultSet rs = stm.executeQuery(SQL);
-			if (rs.next())
-				from = rs.getString("email");	
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+	public void setInReplyTo(String inReplyTo) {
+		this.inReplyTo = inReplyTo.toLowerCase();
+	}
 
+	public void setMensagem(String mensagem) {
+		this.mensagem = mensagem.toLowerCase();
+	}
+
+	public void setMessageID(String messageID) {
+		this.messageID = messageID.toLowerCase();
 	}
 	
+	public void setReferences(String references) {
+		this.references = references.toLowerCase();
+	}
+	
+	public void setSubject(String subject) {
+		this.subject = subject.toLowerCase();
+	}
+
 	private static String retornarAssuntoResposta( String assuntoResposta ) {
 		assuntoResposta = assuntoResposta.trim();
 		if (assuntoResposta.startsWith("re") && assuntoResposta.indexOf(":") > -1 )
@@ -174,61 +224,6 @@ public class Email {
 			//assuntoResposta = assuntoResposta.substring( assuntoResposta.indexOf(":") +1 ).trim() ;
 		
 		return assuntoResposta;		
-	}
-	
-	public static boolean adcionarEmail(ArrayList<Email> emails, Email emailIncluir){
-		boolean retorno = false;
-		String assuntoRespostaIncluir 	= "";
-		String assuntoRespostaEmail 	= "";
-
-		for (Email email : emails) {
-			
-			assuntoRespostaIncluir	= retornarAssuntoResposta( emailIncluir.getSubject() ) ;
-			assuntoRespostaEmail	= retornarAssuntoResposta( email.getSubject() ) ;
-			
-			// -> No caso normal quando a resposta vem depois do 1º e-mail
-			if ( emailIncluir.getInReplyTo().equals( email.messageID ) ||
-					emailIncluir.getReferences().contains( email.messageID ) ||
-					assuntoRespostaEmail.equals( assuntoRespostaIncluir )) {
-				email.emailsFilho.add(emailIncluir);
-				retorno = true;
-				break;
-			// Casos onde o e-mail inicial está vindo depois da resposta	
-			} else if ( email.getInReplyTo().equals( emailIncluir.messageID ) ||
-					email.getReferences().contains( emailIncluir.messageID ) ||
-					emailIncluir.getSubject().equals( assuntoRespostaEmail )) {
-				emailIncluir.emailsFilho.add(email);
-				emails.remove( emails.indexOf(email) );
-				
-				// -> Inicio da gabiarra
-				ArrayList<Email> emailsExcluir = new ArrayList<Email>(); 
-				for (Email email2 : emails) {
-					assuntoRespostaEmail	= retornarAssuntoResposta( email2.getSubject() ) ;
-					if ( email2.getInReplyTo().equals( emailIncluir.messageID ) ||
-							email2.getReferences().contains( emailIncluir.messageID ) ||
-							emailIncluir.getSubject().equals( assuntoRespostaEmail )) {
-						emailIncluir.emailsFilho.add(email2);
-						emailsExcluir.add( email2 );
-					}	
-				}
-				
-				for (Email email2 : emailsExcluir)
-					emails.remove( emails.indexOf(email2) );
-				// -> Fim
-				
-				emails.add(emailIncluir);
-				
-				retorno = true;
-				break;
-			} else {
-				retorno = adcionarEmail(email.getEmailsFilho(), emailIncluir);
-				if (retorno)
-					break;
-			}
-			
-		}
-		
-		return retorno;
 	}
 	
 }
