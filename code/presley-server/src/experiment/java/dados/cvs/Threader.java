@@ -180,8 +180,6 @@ public class Threader {
 					emailFrom = st.nextToken();
 				}
 	
-				email.setFrom(emailFrom);
-	
 				// FIXME: Fazer esta troca depois de processar todo o arquivo
 				try {
 					// FIXME: tornar jira@apache.org uma variável para cada projeto
