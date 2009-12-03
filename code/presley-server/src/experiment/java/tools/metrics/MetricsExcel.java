@@ -1,4 +1,4 @@
-package tools;
+package tools.metrics;
 
 import java.io.FileNotFoundException;
 
