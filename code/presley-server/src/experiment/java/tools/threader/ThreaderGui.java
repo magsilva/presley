@@ -1,4 +1,4 @@
-package dados.cvs;
+package tools.threader;
 
 
 import java.awt.BorderLayout;
@@ -14,7 +14,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-public class ArvoreEmail extends JFrame {
+public class ThreaderGui extends JFrame {
 
 	private Threader threader;
 	
@@ -34,7 +34,7 @@ public class ArvoreEmail extends JFrame {
 	
 	
 
-	public ArvoreEmail() {  	  
+	public ThreaderGui() {  	  
 		super("Browser");  
 
 		this.threader = new Threader();
@@ -178,7 +178,7 @@ public class ArvoreEmail extends JFrame {
 	}
 
 	public static void main(String args[]) {  
-		ArvoreEmail arvoreEmail = new ArvoreEmail();
+		ThreaderGui arvoreEmail = new ThreaderGui();
 		arvoreEmail.display();
 	}  
 

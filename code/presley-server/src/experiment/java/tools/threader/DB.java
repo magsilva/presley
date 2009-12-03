@@ -1,4 +1,4 @@
-package dados.cvs;
+package tools.threader;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -102,8 +102,8 @@ public class DB {
 			Set<String> listaEmail = emails.keySet();
 
 			for (String nome : listaEmail) {
-				if (nome.length() > ArvoreEmail.MAX_NAME_SIZE) {
-					nome = nome.substring(0, ArvoreEmail.MAX_NAME_SIZE);
+				if (nome.length() > ThreaderGui.MAX_NAME_SIZE) {
+					nome = nome.substring(0, ThreaderGui.MAX_NAME_SIZE);
 				}
 
 				String email  = emails.get(nome);
