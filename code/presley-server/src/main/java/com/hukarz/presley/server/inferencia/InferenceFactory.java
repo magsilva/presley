@@ -4,7 +4,6 @@
 package com.hukarz.presley.server.inferencia;
 
 import com.hukarz.presley.server.core.PresleyProperties;
-import com.hukarz.presley.server.core.StartPresleyServer;
 
 /**
  * @author Alan Kelon Oliveira de Moraes <alan@di.ufpb.br>

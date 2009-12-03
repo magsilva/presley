@@ -4,38 +4,31 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-import org.apache.log4j.Logger;
+import com.hukarz.presley.server.core.PresleyProperties;
 
 
 public class MySQLConnectionFactory {
 
-	private static String user = "root";
-	private static String pwd = "";
 	private static Connection connection = null;
-	private static Logger logger = Logger.getLogger(MySQLConnectionFactory.class);
-	
-	private MySQLConnectionFactory(){
-		
+	private MySQLConnectionFactory() {
 	}
-	
+
 	public static Connection open() {
-		
-		if (connection == null){
+		if (connection == null) {
 			try {
-				
-	            Class.forName("com.mysql.jdbc.Driver");
-	            connection = DriverManager.getConnection(
-	            		"jdbc:mysql://localhost/presley", user, pwd);
-	            
-	            logger.info("\n-------------- Nova Conexao Criada!-----------\n");
-	            
-	        } catch (ClassNotFoundException e) {
-	            e.printStackTrace();
-	        } catch (SQLException e) {
+				PresleyProperties properties = PresleyProperties.getInstance();
+				connection = DriverManager.getConnection(properties.getProperty("jdbc.url"), 
+						properties.getProperty("jdbc.user"), properties.getProperty("jdbc.password"));
+			} catch (SQLException e) {
 				e.printStackTrace();
 			}
 		}
-        
-        return connection;
+		return connection;
 	}
+	
+	public static void main(String arg[]) {
+		Connection connection = MySQLConnectionFactory.open();
+		System.out.println(connection.toString());
+	}
+	
 }

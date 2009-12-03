@@ -26,14 +26,6 @@ public class ValidacaoArquivoImpl {
 		servicoArquivo = new ServicoArquivoImplDAO();
 	}
 
-	/**
-	 * Este metodo atualiza um conhecimento previamente cadastrado na base da dados 
-	 * @param nome Nome do conhecimento a ser atualizado.
-	 * @param novoNome Novo nome do conhecimento.
-	 * @param descricao Nova descricao do conhecimento.
-	 * @return true se o conhecimento foi atualizado.
-	 * @throws NomeInvalidoException 
-	 */
 	public boolean atualizarArquivo(Arquivo arquivoAnterior, Arquivo arquivoNovo) throws ArquivoInexistenteException {
 		if (!servicoArquivo.arquivoExiste(arquivoAnterior)) throw new ArquivoInexistenteException();
 		

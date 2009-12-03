@@ -1,11 +1,7 @@
 package com.hukarz.presley.server.core;
 
 
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.Properties;
-
-import org.apache.log4j.Logger;
 
 import com.hukarz.presley.communication.facade.PrincipalSUBJECT;
 import com.hukarz.presley.communication.server.ServerBridge;
@@ -15,7 +11,6 @@ import com.hukarz.presley.server.validacao.implementacao.ValidacaoLogControleVer
 public class StartPresleyServer {
 	
 	private ValidacaoLogControleVersaoImpl validacaoLogControleVersao = new ValidacaoLogControleVersaoImpl();
-	private static Properties presleyProperties;
 	
 	public StartPresleyServer(PresleyProperties properties) {
 		
@@ -35,6 +30,10 @@ public class StartPresleyServer {
 	public static void main(String [] args) throws IOException {
 		PresleyProperties properties = PresleyProperties.getInstance();
 		StartPresleyServer server = new StartPresleyServer(properties);
+		server.start();
+	}
+
+	private void start() {
 	}
 	
 

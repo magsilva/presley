@@ -48,8 +48,12 @@ public class ValidacaoUtil {
 	}
 
 	public static boolean validaSenha(String senha) {
-		if (senha.length() < 6) return false;
-		else return true;
+		if (senha.length() < 6) { 
+			return false;
+		}
+		else { 
+			return true;
+		}
 	}
 	
 }

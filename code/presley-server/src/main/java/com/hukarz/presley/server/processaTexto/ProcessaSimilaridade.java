@@ -68,11 +68,9 @@ public class ProcessaSimilaridade {
 			double frqTF2 = (double) (Double.parseDouble(texto2.get(termo).toString()) / documento2.getQtdPalavrasTotal());
 			
 			double frqTF_IDF = 1;
-			//Math.log( qtdeArquivos / servicoArquivo.getQuantidadeArquivosComTermo(termo) );
 			somatorioGrauIgualdade += calculaGrauDeIgualdade( frqTF1 * frqTF_IDF, frqTF2 * frqTF_IDF) ;
 		}
 		
-		//return somatorioGrauIgualdade/( texto1.size() + texto2.size() - listTermosComuns.size());
 		return somatorioGrauIgualdade;
 	}
 
@@ -93,7 +91,7 @@ public class ProcessaSimilaridade {
 	/*                               _    _     _    _
 	gi(a,b)= [(a -> b) ^ (b -> a) + (a -> b) ^ (b -> a)] / 2
 	*/		
-	private static double calculaGrauDeIgualdade(double frqRelativa1, double frqRelativa2){
+	private double calculaGrauDeIgualdade(double frqRelativa1, double frqRelativa2){
 		double primeiroMin, segundoMin  = 0;
 		
 		// [(a -> b) ^ (b -> a) 			a->b pode ser calculado tb por b/a
@@ -121,7 +119,7 @@ public class ProcessaSimilaridade {
 	}
 	
 
-	private static double calculaIntervalo(double valor){
+	private double calculaIntervalo(double valor){
 		
 		if (valor > 1)
 			valor = 1;

@@ -32,11 +32,10 @@ public class Inferencia implements Inference {
 	/* (non-Javadoc)
 	 * @see com.hukarz.presley.server.inferencia.Inference#getDesenvolvedores(java.util.Map, com.hukarz.presley.beans.Problema)
 	 */
-	public ArrayList<Desenvolvedor> getDesenvolvedores(Map<ArquivoJava, ArrayList<Desenvolvedor>> arquivoDesenvolvedores,
-			Problema problema) throws FileNotFoundException {
+	public ArrayList<Desenvolvedor> getDesenvolvedores(Map<ArquivoJava, 
+			ArrayList<Desenvolvedor>> arquivoDesenvolvedores, Problema problema) 
+			throws FileNotFoundException {
 
-		// para desabilitar a participação nos arquivos ou no conhecimento, basta deixar o Map vazio.
-		
 		Map<Desenvolvedor, Integer> participacaoDesenvolvedorArquivo = null;
 		Map<Desenvolvedor, Integer> participacaoDesenvolvedorConhecimento = null;
 		
@@ -55,7 +54,6 @@ public class Inferencia implements Inference {
 			participacaoDesenvolvedorConhecimento = new HashMap<Desenvolvedor, Integer>();
 		}
 		
-		 
 		Map<Desenvolvedor, Integer> participacaoDesenvolvedor 
 			= somarParticipacaoDosDesenvolvedores(problema, participacaoDesenvolvedorArquivo, 
 					participacaoDesenvolvedorConhecimento);

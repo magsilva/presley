@@ -19,6 +19,7 @@ import com.hukarz.presley.excessao.DescricaoInvalidaException;
 import com.hukarz.presley.excessao.DesenvolvedorInexistenteException;
 import com.hukarz.presley.excessao.ProblemaInexistenteException;
 import com.hukarz.presley.excessao.ProjetoInexistenteException;
+import com.hukarz.presley.server.core.PresleyProperties;
 import com.hukarz.presley.server.persistencia.MySQLConnectionFactory;
 import com.hukarz.presley.server.validacao.implementacao.ValidacaoProblemaImpl;
 import com.hukarz.presley.server.validacao.implementacao.ValidacaoSolucaoImpl;
@@ -156,8 +157,8 @@ public class DB {
 	
 	public void saveThreads(Threader threader) {
 		Projeto projeto = new Projeto();
-		// XXX: math?
-		projeto.setNome("math");
+		PresleyProperties properties = PresleyProperties.getInstance();
+		projeto.setNome(properties.getProperty("experiment.projectName"));
 	
 		for (Email email : threader.getThreads()) {
 			if (email.getFrom().isEmpty()) {

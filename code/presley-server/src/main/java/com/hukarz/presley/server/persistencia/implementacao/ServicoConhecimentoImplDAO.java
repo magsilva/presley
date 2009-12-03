@@ -475,7 +475,6 @@ public class ServicoConhecimentoImplDAO implements ServicoConhecimento{
 
 	
 	public Map<Desenvolvedor, Integer> getContribuintesConhecimento(Conhecimento conhecimento, Desenvolvedor desenvolvedor){
-		// O ArrayList tem que permitir repetições
 		Map<Desenvolvedor, Integer> retorno = new HashMap<Desenvolvedor, Integer>();
 		
 		Connection conn = MySQLConnectionFactory.open();

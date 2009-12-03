@@ -190,7 +190,6 @@ public class Email {
 		this.emailsFilho = emailsFilho;
 	}
 	
-	// XXX: o comportamento deve ser este mesmo?
 	public void setFrom(final String from) {
 		if (null != from) {
 			this.from = from;

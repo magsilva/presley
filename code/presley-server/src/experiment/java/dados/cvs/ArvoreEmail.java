@@ -24,9 +24,8 @@ public class ArvoreEmail extends JFrame {
 
 	private Threader threader;
 	
-	 static final int MAX_NAME_SIZE = 99;
+	static final int MAX_NAME_SIZE = 99;
 	
-
 	// GUI
 
 	private JButton buildThreadsButton;

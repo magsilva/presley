@@ -44,7 +44,7 @@ import com.hukarz.presley.server.validacao.implementacao.ValidacaoSolucaoImpl;
  * @author Adm Cleyton
  *
  */
-public class ExecuteClientQuery implements CorePresleyOperations{
+public class ExecuteClientQuery implements CorePresleyOperations {
 
 
 	/**

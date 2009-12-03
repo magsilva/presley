@@ -17,7 +17,6 @@ import com.hukarz.presley.excessao.ProblemaInexistenteException;
 import com.hukarz.presley.excessao.ProjetoInexistenteException;
 import com.hukarz.presley.server.inferencia.Inference;
 import com.hukarz.presley.server.inferencia.InferenceFactory;
-import com.hukarz.presley.server.inferencia.Inferencia;
 import com.hukarz.presley.server.persistencia.implementacao.ServicoMensagemImplDAO;
 import com.hukarz.presley.server.persistencia.implementacao.ServicoProblemaImplDAO;
 import com.hukarz.presley.server.persistencia.implementacao.ServicoProjetoImplDAO;
@@ -45,7 +44,6 @@ public class ValidacaoProblemaImpl {
 	ServicoProjeto  servicoProjeto;
 	
 	ValidacaoArquivoImpl validacaoArquivo ;
-	private Logger logger = Logger.getLogger(this.getClass());
 	
 	public ValidacaoProblemaImpl() {
 		servicoProblema = new ServicoProblemaImplDAO();
@@ -70,17 +68,6 @@ public class ValidacaoProblemaImpl {
 		return servicoProblema.atualizarStatusDoProblema(id, status);
 	}
 	
-	/**
-	 * Esse método cadastra um novo problema na base de dados.
-	 * @param idAtividade Identificador da atividade.
-	 * @param descricao Descricao do problema relatado.
-	 * @param dataDoRelato Data em que o problema foi encontrado.
-	 * @param mensagem Mensagem a ser exibida a respeito do tipo do problema.
-	 * @return true se o problema foi cadastrado com sucesso.
-	 * @throws IOException 
-	 * @throws ProjetoInexistenteException 
-	 * @throws ConhecimentoNaoEncontradoException 
-	 */
 	// FIXME: não recomendar enquanto estiver cadastrando
 	public Problema cadastrarProblema(Problema problema) 
 	throws DescricaoInvalidaException, IOException, ProjetoInexistenteException, ConhecimentoNaoEncontradoException {
@@ -89,12 +76,10 @@ public class ValidacaoProblemaImpl {
 
 		if (!servicoProjeto.projetoExiste( problema.getProjeto() )) throw new ProjetoInexistenteException();
 
-		this.logger.debug("Validação");
 
 		// Cria uma lista com os Desenvolvedores de cada arquivo java		 
 		Map<ArquivoJava, ArrayList<Desenvolvedor>> arquivoDesenvolvedores = validacaoArquivo.getDesenvolvedoresArquivos(problema);
 		
-		this.logger.debug("Lista com os Desenvolvedores de cada arquivo"); 
 
 		// Identifica o conhecimeto do problema a se cadastrar
 		ProcessaSimilaridade processaSimilaridade = new ProcessaSimilaridade();
@@ -112,22 +97,13 @@ public class ValidacaoProblemaImpl {
 				
 		String texto = problema.getDescricao() + "  " + problema.getMensagem() + " " + comentariosCodigo;
 		problema.setConhecimento(processaSimilaridade.verificaConhecimentoDoTexto(texto)) ;
-	
-
-		this.logger.debug("Conhecimeto do problema");
-	
 		problema = servicoProblema.cadastrarProblema(problema);
-
-		this.logger.debug("Cadastro do Problema");
 		
 		if (problema.isTemResposta()) {
 			Inference inferencia = InferenceFactory.createInstance();
 			ArrayList<Desenvolvedor> desenvolvedores = inferencia.getDesenvolvedores(arquivoDesenvolvedores, 
 					problema);
-			
 			servicoMensagem.adicionarMensagem(desenvolvedores, problema);
-			
-			this.logger.debug("Mensagem Adcionada");
 		}
 
 		return problema;

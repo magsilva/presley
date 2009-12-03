@@ -37,26 +37,16 @@ import com.hukarz.presley.excessao.SenhaInvalidaException;
 public interface CorePresleyOperations {
 	
 	public static final int ERRO = -1;
-//	public static final int ADICIONA_ATIVIDADE = 1;
-//	public static final int REMOVE_ATIVIDADE = 2;
-//	public static final int BUSCA_ATIVIDADE = 3;
 	public static final int ADICIONA_CONHECIMENTO = 4;
 	public static final int LOG_IN = 5;
 	public static final int LOG_OUT = 6;
-//	public static final int ENCERRAR_ATIVIDADE = 7;
-//	public static final int ASSOCIAR_CONHECIMENTO_ATIVIDADE = 8;
-//	public static final int DESSASOCIAR_CONHECIMENTO_ATIVIDADE = 9;
-//	public static final int ASSOCIAR_PROBLEMA_ATIVIDADE = 10;
-//	public static final int DESSASOCIAR_PROBLEMA_ATIVIDADE = 11;
 	public static final int BUSCA_DESENVOLVEDORES = 12;
-//	public static final int QUALIFICA_DESENVOLVEDOR = 13;
 	public static final int ENVIAR_MENSAGEM = 14;
 	public static final int GET_LISTA_DESENVOLVEDORES = 15;
 	public static final int GET_LISTA_CONHECIMENTO = 16;
 	public static final int ADICIONA_DESENVOLVEDOR = 17;
 	public static final int GET_ARVORECONHECIMENTOS = 18;
 	public static final int GET_LISTA_PROBLEMAS = 19;
-//	public static final int BUSCA_CONHECIMENTOS_RELACIONADOS = 20;
 	public static final int REMOVER_CONHECIMENTO = 21;
 	public static final int CONHECIMENTO_POSSUI_FILHOS = 22;
 	public static final int REMOVER_DESENVOLVEDOR = 23;

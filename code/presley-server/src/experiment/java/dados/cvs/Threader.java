@@ -176,7 +176,6 @@ public class Threader {
 				linha = retirarCaracteresExtras(linha);
 				StringTokenizer st = new StringTokenizer(linha);
 				String emailFrom = "";
-				// XXX: não deveria ser concatenação? 
 				while (st.hasMoreTokens()) {
 					emailFrom = st.nextToken();
 				}

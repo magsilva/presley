@@ -46,15 +46,16 @@ public class ValidacaoDesenvolvedorImpl {
 	}
 	
 	/**
-	 * Esse mtodo adiciona um conhecimento previamente cadastrado a um desenvolvedor.
+	 * Adiciona um conhecimento previamente cadastrado a um desenvolvedor.
 	 * @param emailDesenvolvedor Email do desenvolvedor.
 	 * @param nomeConhecimento Nome do conhecimento a ser adicionado.
 	 * @return true se o conhecimento foi adicionado ao desenvolvedor.
 	 * @throws DescricaoInvalidaException 
 	 * @throws ConhecimentoInexistenteException 
 	 */
-	public boolean adicionarConhecimentoAoDesenvolvedor(
-			String emailDesenvolvedor, String nomeConhecimento, int grau, int qntResposta) throws DescricaoInvalidaException, ConhecimentoInexistenteException {
+	public boolean adicionarConhecimentoAoDesenvolvedor(String emailDesenvolvedor, 
+			String nomeConhecimento, int grau, int qntResposta) throws DescricaoInvalidaException, 
+			ConhecimentoInexistenteException {
 		
 		if (!servicoDesenvolvedor.desenvolvedorExiste(emailDesenvolvedor)) throw new DescricaoInvalidaException();
 		if (!servicoConhecimento.conhecimentoExiste(nomeConhecimento)) throw new ConhecimentoInexistenteException();
@@ -64,7 +65,7 @@ public class ValidacaoDesenvolvedorImpl {
 	}
 	
 	/**
-	 * Esse mtodo atualiza os dados de um desenvolvedor previamente cadastrado na
+	 * Atualiza os dados de um desenvolvedor previamente cadastrado na
 	 * base de dados.
 	 * @param email Email do novo desenvolvedor.
 	 * @param novoEmail novo email do desenvolvedor.

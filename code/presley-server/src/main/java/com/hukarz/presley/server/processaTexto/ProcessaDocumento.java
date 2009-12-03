@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.StringTokenizer;
 
 import com.hukarz.presley.beans.Arquivo;
+import com.hukarz.presley.server.core.PresleyProperties;
 
 public class ProcessaDocumento {
 	
@@ -179,10 +180,12 @@ public class ProcessaDocumento {
 
 	private String remocaoDePalavrasNegativas(String texto){
 		
-		// C:/JAVA/presley/code/presley-server/src/main/java/com/hukarz/presley/server/processaTexto/Stopwords
-		File diretorioCD = new File("./src/main/java/com/hukarz/presley/server/processaTexto/Stopwords");   
+		String result = texto;
+		// FIXME: colocar valor em arquivo de propriedades
+		PresleyProperties properties = PresleyProperties.getInstance();
+		File diretorioCD = new File(properties.getProperty("stowords.directory"));   
 		File[] listagemDiretorio = diretorioCD.listFiles(); 
-		texto = " " + texto + " ";
+		result = " " + result + " ";
 
 		try {
 			for (int i = 0; i < listagemDiretorio.length; i++) {  
@@ -194,7 +197,7 @@ public class ProcessaDocumento {
 					String palavra = "";
 
 					while( (palavra = reader.readLine()) != null ){
-						texto = texto.replaceAll(" " + palavra + " ", " ");
+						result = result.replaceAll(" " + palavra + " ", " ");
 					}
 				}
 			}
@@ -202,7 +205,7 @@ public class ProcessaDocumento {
 			e.printStackTrace();
 		}
 
-		return texto;
+		return result;
 	}
 	
 	private Map<String, Integer> calculaFrequencia(Arquivo arquivo) throws IOException{

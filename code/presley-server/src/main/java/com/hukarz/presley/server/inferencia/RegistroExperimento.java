@@ -13,6 +13,7 @@ import com.hukarz.presley.beans.Desenvolvedor;
 import com.hukarz.presley.beans.Problema;
 import com.hukarz.presley.beans.Projeto;
 
+// TODO: mover esta classe pra outro pacote
 public class RegistroExperimento {
 
 	private Map<Desenvolvedor, Integer> participacaoDesenvolvedorArquivo;
