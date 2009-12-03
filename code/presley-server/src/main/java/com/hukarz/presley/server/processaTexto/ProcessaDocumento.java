@@ -181,7 +181,6 @@ public class ProcessaDocumento {
 	private String remocaoDePalavrasNegativas(String texto){
 		
 		String result = texto;
-		// FIXME: colocar valor em arquivo de propriedades
 		PresleyProperties properties = PresleyProperties.getInstance();
 		File diretorioCD = new File(properties.getProperty("stowords.directory"));   
 		File[] listagemDiretorio = diretorioCD.listFiles(); 

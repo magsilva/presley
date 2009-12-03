@@ -111,7 +111,7 @@ public class Threader {
 		return threads;
 	}
 	
-	// XXX: trocar a implementação deste método.
+	// TODO: trocar a implementação deste método.
 	protected void processMbox(File file) throws FileNotFoundException, IOException {
 		FileReader fileReader = new FileReader(file);
 		BufferedReader reader = new BufferedReader(fileReader);
@@ -241,21 +241,20 @@ public class Threader {
 		}
 	}
 
-	// FIXME: não deve alterar a referência de um parâmetro de entrada
 	String retirarCaracteresExtras(String palavra) {
-		palavra = palavra.replace("JIRA", "");
-		palavra = palavra.replace("<", "");
-		palavra = palavra.replace(">", "");
-		palavra = palavra.replace("(", "");
-		palavra = palavra.replace(")", "");
-		palavra = palavra.replace("[", "");
-		palavra = palavra.replace("]", "");
-		palavra = palavra.replace(",", "");
-		palavra = palavra.replace(";", "");
-		palavra = palavra.replace("'", "");
-		palavra = palavra.replace("\"", "");
-	
-		return palavra;
+		String result = palavra;
+		result = result.replace("JIRA", "");
+		result = result.replace("<", "");
+		result = result.replace(">", "");
+		result = result.replace("(", "");
+		result = result.replace(")", "");
+		result = result.replace("[", "");
+		result = result.replace("]", "");
+		result = result.replace(",", "");
+		result = result.replace(";", "");
+		result = result.replace("'", "");
+		result = result.replace("\"", "");
+		return result;
 	}
 
 	public void saveThreads() {

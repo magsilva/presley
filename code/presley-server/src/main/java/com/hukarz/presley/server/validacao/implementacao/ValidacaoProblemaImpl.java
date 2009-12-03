@@ -68,7 +68,6 @@ public class ValidacaoProblemaImpl {
 		return servicoProblema.atualizarStatusDoProblema(id, status);
 	}
 	
-	// FIXME: não recomendar enquanto estiver cadastrando
 	public Problema cadastrarProblema(Problema problema) 
 	throws DescricaoInvalidaException, IOException, ProjetoInexistenteException, ConhecimentoNaoEncontradoException {
 
