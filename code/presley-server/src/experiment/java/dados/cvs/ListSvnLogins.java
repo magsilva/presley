@@ -2,6 +2,7 @@ package dados.cvs;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.util.ArrayList;
 
 import com.ximpleware.AutoPilot;
 import com.ximpleware.NavException;
@@ -11,51 +12,60 @@ import com.ximpleware.VTDNav;
 import com.ximpleware.XPathEvalException;
 import com.ximpleware.XPathParseException;
 
-public class TesteVtdXml {
+public class ListSvnLogins {
 
-	public static void main(String args[]) {  
+	/**
+	 * @param args
+	 */
+	public static void main(String[] args) {
+		ArrayList<String> nomesCVS = new ArrayList<String>();
+		
 		try {
+			// open a file and read the content into a byte array
 			File f = new File(args[0]);
-			// counting child elements of parlist
-			int count = 0;
-			// counting child elements of parlist named "par"
-			
+
 			FileInputStream fis =  new FileInputStream(f);
 			byte[] b = new byte[(int) f.length()];
 			fis.read(b);
-			
+
 			VTDGen vg = new VTDGen();
 			vg.setDoc(b);
-			vg.parse(true);
+			vg.parse(true);  // set namespace awareness to true
 			VTDNav vn = vg.getNav();
-			
+
 			AutoPilot ap0 = new AutoPilot();
-	        AutoPilot ap1 = new AutoPilot();
-			
-	        ap0.selectXPath("/log/logentry [paths/path='/lucene/java/trunk/src/test/org/apache/lucene/queryParser/TestQueryParser.java']");
+			AutoPilot ap1 = new AutoPilot();
+
+			ap0.selectXPath("/log/logentry");
 			ap1.selectXPath("author");
 
 			ap0.bind(vn);
 			ap1.bind(vn);
-			while(ap0.evalXPath()!=-1){
-				count++;
-	            System.out.println( ap1.evalXPathToString() );
+			while(ap0.evalXPath()!=-1) {
+				String author = ap1.evalXPathToString();
+				if (nomesCVS.indexOf(author) == -1)
+					nomesCVS.add( author );
 			}
 
 			ap0.resetXPath();
-			System.out.println(" Qtde "+count);
+			
+			for (String nome : nomesCVS) {
+				System.out.println(nome);
+			}
+			
+
 		} catch (ParseException e) {
-			System.out.println(" XML file parsing error \n"+e);
+			e.printStackTrace();
 		} catch (NavException e) {
-			System.out.println(" Exception during navigation "+e);
+			e.printStackTrace();
 		} catch (XPathParseException e) {
-
+			e.printStackTrace();
 		} catch (XPathEvalException e) {
-
+			e.printStackTrace();
 		} catch (java.io.IOException e)	{
-			System.out.println(" IO exception condition"+e);
-		}   
+			e.printStackTrace();
+		}
 
-	}  
+	}
 
 }

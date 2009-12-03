@@ -1,7 +1,6 @@
 import java.io.FileNotFoundException;
 
 
-
 public class MetricsExcel extends Metrics {
 
 	public MetricsExcel(String path, int maxNumberOfRecommendations) {

@@ -12,7 +12,6 @@ import com.hukarz.presley.beans.ClasseJava;
 import com.hukarz.presley.beans.Desenvolvedor;
 import com.hukarz.presley.beans.Problema;
 import com.hukarz.presley.excessao.ArquivoInexistenteException;
-import com.hukarz.presley.excessao.NomeInvalidoException;
 import com.hukarz.presley.server.persistencia.implementacao.ServicoArquivoImplDAO;
 import com.hukarz.presley.server.persistencia.implementacao.ServicoLogControleVersaoImplDAO;
 import com.hukarz.presley.server.persistencia.interfaces.ServicoArquivo;

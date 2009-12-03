@@ -252,7 +252,6 @@ public class Metrics {
 					}
 				}
 			}
-
 			printReport(precision, recall, totalPositive, total, n);
 		}
 	}
