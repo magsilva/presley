@@ -7,7 +7,6 @@ package com.hukarz.presley.server.core;
  */
 
 
-
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -39,11 +38,6 @@ import com.hukarz.presley.server.validacao.implementacao.ValidacaoProblemaImpl;
 import com.hukarz.presley.server.validacao.implementacao.ValidacaoProjetoImpl;
 import com.hukarz.presley.server.validacao.implementacao.ValidacaoSolucaoImpl;
 
-
-/**
- * @author Adm Cleyton
- *
- */
 public class ExecuteClientQuery implements CorePresleyOperations {
 
 

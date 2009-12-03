@@ -86,7 +86,7 @@ public class Threader {
 	 * Show each child from the thread
 	 * @param children Emails within a thread
 	 */
-	void findChildrenDevelopers(ArrayList<Email> children) {
+	private void findChildrenDevelopers(ArrayList<Email> children) {
 		for (Email email : children) {
 			this.developers.add(email.getFrom());
 			if (email.getEmailsFilho().size() > 0) {

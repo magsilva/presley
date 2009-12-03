@@ -32,8 +32,6 @@ public class ThreaderGui extends JFrame {
 	private JPanel topPannel;
 	private JPanel bottomPanel;
 	
-	
-
 	public ThreaderGui() {  	  
 		super("Browser");  
 
@@ -90,7 +88,7 @@ public class ThreaderGui extends JFrame {
 		getContentPane().add(topPannel,  BorderLayout.NORTH);  
 		getContentPane().add(bottomPanel, BorderLayout.CENTER);  
 
-		this.setSize(500, 95);  
+		this.setSize(550, 95);  
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 	}
 

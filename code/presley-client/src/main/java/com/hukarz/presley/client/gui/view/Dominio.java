@@ -315,7 +315,7 @@ public class Dominio extends ViewPart {
 			ArrayList<Arquivo> arquivosDoConhecimento = conhecimentoSelecionado.getArquivos();
 			for (Iterator<Arquivo> iterator = arquivosDoConhecimento.iterator(); iterator.hasNext();) {
 				Arquivo arquivo = iterator.next();
-				listaDocumentosBase.add( arquivo.getNome() ) ;
+				listaDocumentosBase.add(arquivo.getNome()) ;
 			}
 		}
 	}

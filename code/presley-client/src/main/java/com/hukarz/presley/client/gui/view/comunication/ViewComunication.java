@@ -4,8 +4,6 @@ package com.hukarz.presley.client.gui.view.comunication;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import javax.swing.JTable.PrintMode;
-
 import org.apache.log4j.Logger;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.TreeItem;
@@ -299,7 +297,6 @@ public class ViewComunication implements CorePresleyOperations{
 		
 		PacketStruct pack = new PacketStruct(data, id);
 		PacketStruct packet = PrincipalSUBJECT.facade(pack);
-		logger.info(packet.getData());
 		return packet;
 	}
 
@@ -446,13 +443,6 @@ public class ViewComunication implements CorePresleyOperations{
 		return retorno;
 	}
 	
-	
-	// FIXME: por que está retornando null?
-	public ArrayList<Desenvolvedor> buscaDesenvolvedores(Problema problema)
-			throws DesenvolvedorInexistenteException {
-		return null;
-	}
-
 	public boolean removerDesenvolvedor(Desenvolvedor desenvolvedor) {
 		PacketStruct respostaPacket = sendPack(desenvolvedor, CorePresleyOperations.REMOVER_DESENVOLVEDOR);
 		boolean retorno = false;
@@ -521,20 +511,21 @@ public class ViewComunication implements CorePresleyOperations{
 		return (ArrayList<Solucao>) respostaPacket.getData();
 	}
 	
-	public Conhecimento associaArquivo(Conhecimento conhecimento, Arquivo arquivo) throws Exception{
-		
+	// TODO: conhecimento.associar(arquivo) 
+	public Conhecimento associaArquivo(Conhecimento conhecimento, Arquivo arquivo) throws Exception {
+
+		// FIXME: gambiarra
 		ArrayList<Arquivo> arquivosConhecimento = conhecimento.getArquivos();
 		arquivosConhecimento.add(arquivo);
-		
 		ArrayList<Arquivo> arquivoCadastrar = new ArrayList<Arquivo>();
 		arquivoCadastrar.add(arquivo);
-		
 		conhecimento.setArquivos(arquivoCadastrar);
+		
 		PacketStruct respostaPacket = sendPack(conhecimento, CorePresleyOperations.ASSOCIA_ARQUIVO_CONHECIMENTO);
 		conhecimento.setArquivos(arquivosConhecimento);
 		
-		if(respostaPacket.getId() == CorePresleyOperations.ERRO) {
-			throw new Exception((String)  respostaPacket.getData());
+		if (respostaPacket.getId() == CorePresleyOperations.ERRO) {
+			throw new Exception((String) respostaPacket.getData());
 		}
 
 		if(respostaPacket.getData() != null){

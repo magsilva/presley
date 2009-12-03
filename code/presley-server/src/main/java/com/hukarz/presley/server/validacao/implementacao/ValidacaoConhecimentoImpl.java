@@ -239,15 +239,15 @@ public class ValidacaoConhecimentoImpl {
 	 * @throws ConhecimentoInexistenteException
 	 * @throws IOException
 	 */
+	// TODO @alan analisar
+	// XXX: associação de arquivos a um conhecimento 
 	public Conhecimento associaArquivo(Conhecimento conhecimento) throws ConhecimentoInexistenteException, IOException {
 		
-		if (!servicoConhecimento.conhecimentoExiste(conhecimento.getNome())) 
+		if (!servicoConhecimento.conhecimentoExiste(conhecimento.getNome())) {
 			throw new ConhecimentoInexistenteException();
+		}
 
-		ArrayList<Arquivo> arquivos = conhecimento.getArquivos();
-		
-		for (Iterator<Arquivo> iterator = arquivos.iterator(); iterator.hasNext();) {
-			Arquivo arquivo = iterator.next();
+		for (Arquivo arquivo : conhecimento.getArquivos()) {
 			ProcessaDocumento processaDocumento = new ProcessaDocumento() ;
 			arquivo = processaDocumento.getDocumentoProcessado(arquivo) ;
 			

@@ -37,7 +37,7 @@ public class RMIClient {
 		}
 	}
 	
-	public PacketStruct getPacketFromServer(PacketStruct departurePack) throws Exception{
+	public PacketStruct getPacketFromServer(PacketStruct departurePack) throws Exception {
 		requestFromServer(departurePack);
 		if (this.backPack != null)
 			return this.backPack;

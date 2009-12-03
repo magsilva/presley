@@ -19,7 +19,7 @@ public class PrincipalSUBJECT {
 	private PrincipalSUBJECT() {
 	}
 	
-	private static PacketStruct clientSide(PacketStruct departurePack){
+	private static PacketStruct clientSide(PacketStruct departurePack) {
 		RMIClient client = (RMIClient)instance;
 		PacketStruct backPack = null;
 		try {
@@ -49,10 +49,10 @@ public class PrincipalSUBJECT {
 	public static PacketStruct facade(PacketStruct pack){
 		if(instance instanceof RMIClient){
 			return clientSide(pack);
-		}else{
-			;
+		} 
+		else {
+			return null;
 		}
-		return null;
 	}
 
 	public static Object getInstance(Mode mode, int port) throws Exception {
