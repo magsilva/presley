@@ -38,11 +38,11 @@ public class DB {
 
 	void cadastrarSolucoes(ArrayList<Email> children, Problema problema ) {
 		for (Email email : children) {
-			if (email.getFrom().isEmpty())
+			if (email.getDesenvolvedor().getEmail().isEmpty())
 				continue;
 
 			Desenvolvedor desenvolvedor = new Desenvolvedor();
-			desenvolvedor.setEmail(email.getFrom());
+			desenvolvedor.setEmail(email.getDesenvolvedor().getEmail());
 
 			Solucao solucao = new Solucao();
 			solucao.setAjudou(true);
@@ -161,11 +161,11 @@ public class DB {
 		projeto.setNome(properties.getProperty("experiment.projectName"));
 	
 		for (Email email : threader.getThreads()) {
-			if (email.getFrom().isEmpty()) {
+			if (email.getDesenvolvedor().getEmail().isEmpty()) {
 				continue;
 			}
 	
-			Desenvolvedor desenvolvedor = new Desenvolvedor(email.getFrom());
+			Desenvolvedor desenvolvedor = new Desenvolvedor(email.getDesenvolvedor().getEmail());
 	
 			// FIXME: criar construtor adequado em Problema para evitar este estilo de programação
 			Problema problema = new Problema();

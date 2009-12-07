@@ -7,12 +7,16 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Set;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+
+import com.hukarz.presley.beans.Desenvolvedor;
 
 public class ThreaderGui extends JFrame {
 
@@ -149,7 +153,7 @@ public class ThreaderGui extends JFrame {
 
 		for (Email email : children) {
 			System.out.println(identation.toString() + email.getSubject());
-			System.out.println(identation.toString() + email.getFrom());
+			System.out.println(identation.toString() + email.getDesenvolvedor().getEmail());
 			if (email.getEmailsFilho().size() > 0) {
 				showChildren(email.getEmailsFilho(), level + 1);
 			}
@@ -160,7 +164,11 @@ public class ThreaderGui extends JFrame {
 	 * Show all developers in the console 
 	 */
 	void showDevelopers() {
-		System.out.println(threader.getDevelopers().toString());
+		Collection<Desenvolvedor> developers = threader.getDevelopers();
+		for (Desenvolvedor desenvolvedor : developers) {
+			System.out.println("E-mail: " + desenvolvedor.getEmail() + 
+					" Nome: " + desenvolvedor.getNome());
+		}
 	}
 
 	/**
@@ -170,7 +178,7 @@ public class ThreaderGui extends JFrame {
 		ArrayList<Email> threads = threader.getThreads();
 		for (Email email : threads) {
 			System.out.println(email.getSubject());
-			System.out.println(email.getFrom());
+			System.out.println(email.getDesenvolvedor().getEmail());
 			showChildren(email.getEmailsFilho(), 1);
 		}
 	}

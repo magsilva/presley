@@ -7,10 +7,12 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
+import com.hukarz.presley.beans.Desenvolvedor;
+
 public class Email {
 	private Date data;
 	private ArrayList<Email> emailsFilho;
-	private String from;
+	private Desenvolvedor desenvolvedor;
 	private String inReplyTo, references;
 	private String mensagem;
 	private String messageID;
@@ -24,7 +26,7 @@ public class Email {
 		references	= "";
 		subject		= "";
 		mensagem	= "";
-		from		= "";
+		desenvolvedor = new Desenvolvedor();
 	}
 
 	public boolean adicionar(ArrayList<Email> emails) {
@@ -93,8 +95,8 @@ public class Email {
 		return emailsFilho;
 	}
 
-	public String getFrom() {
-		return from;
+	public Desenvolvedor getDesenvolvedor() {
+		return desenvolvedor;
 	}
 
 	public String getInReplyTo() {
@@ -121,10 +123,12 @@ public class Email {
 		ArrayList<Email> emailsResposta = getEmailsFilho();
 		ArrayList<Email> emailsExperimento = new ArrayList<Email>();
 		for (Email emailResposta : emailsResposta) {
-			if ( !emailResposta.getFrom().equals(getFrom()) ){
+			if ( !emailResposta.getDesenvolvedor().getEmail().equals( desenvolvedor.getEmail() ) ){
 				boolean achei = false;
+				
 				for (Email emailExperimento : emailsExperimento) {
-					if ( emailResposta.getFrom().equals(emailExperimento.getFrom())){
+					if ( emailResposta.getDesenvolvedor().getEmail().equals(
+							emailExperimento.getDesenvolvedor().getEmail())){
 						achei = true;
 						break;						
 					}
@@ -190,9 +194,10 @@ public class Email {
 		this.emailsFilho = emailsFilho;
 	}
 	
-	public void setFrom(final String from) {
+	public void setDesenvolvedor(final String from, final String nome) {
 		if (null != from) {
-			this.from = from;
+			this.desenvolvedor.setEmail( from );
+			this.desenvolvedor.setNome( nome );
 		}				
 	}
 

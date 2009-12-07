@@ -10,14 +10,18 @@ import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 import java.util.StringTokenizer;
 
+import com.hukarz.presley.beans.Desenvolvedor;
+
 public class Threader {
 	private DB db;
-	private Set<String> developers;
-
+	private Set<Desenvolvedor> developers;
 	private ArrayList<Email> threads;
 	public Threader() {
 		this.db = new DB();
@@ -52,7 +56,7 @@ public class Threader {
 	
 		for (Email thread : this.threads) {
 	
-			if (thread.getFrom().isEmpty() || thread.getSubject().contains("re:")) {
+			if (thread.getDesenvolvedor().getEmail().isEmpty() || thread.getSubject().contains("re:")) {
 				continue;
 			}
 	
@@ -64,7 +68,7 @@ public class Threader {
 				PrintWriter arquivoQuestion = new PrintWriter(new 
 						FileOutputStream(nomeArquivo + ".question"));
 	
-				arquivoQuestion.println(thread.getFrom());
+				arquivoQuestion.println(thread.getDesenvolvedor().getEmail());
 				arquivoQuestion.println((new SimpleDateFormat("dd/MM/yyyy").format(thread.getData()))  );
 				arquivoQuestion.println(thread.getSubject());
 				arquivoQuestion.println(thread.getMensagem());
@@ -73,7 +77,7 @@ public class Threader {
 	
 				PrintWriter arquivoEmails = new PrintWriter(new FileOutputStream( nomeArquivo + ".emails"));
 				for (Email emailArquivo : emailsExperimento) {
-					arquivoEmails.println( emailArquivo.getFrom() );
+					arquivoEmails.println( emailArquivo.getDesenvolvedor().getEmail() );
 				}
 				arquivoEmails.close();
 	
@@ -88,7 +92,7 @@ public class Threader {
 	 */
 	private void findChildrenDevelopers(ArrayList<Email> children) {
 		for (Email email : children) {
-			this.developers.add(email.getFrom());
+			this.developers.add( email.getDesenvolvedor() );
 			if (email.getEmailsFilho().size() > 0) {
 				findChildrenDevelopers(email.getEmailsFilho());
 			}
@@ -96,15 +100,39 @@ public class Threader {
 	}
 	
 	public void findDevelopers() {
-		this.developers = new HashSet<String>();
+		this.developers = new HashSet<Desenvolvedor>();
 		for (Email thread : this.threads) {
-			this.developers.add(thread.getFrom());
+			this.developers.add( thread.getDesenvolvedor() );
 			findChildrenDevelopers(thread.getEmailsFilho());
 		}
 	}
 
-	public Set<String> getDevelopers() {
-		return developers;
+	public Collection<Desenvolvedor> getDevelopers() {
+		Map<String, Desenvolvedor> emails = new HashMap<String, Desenvolvedor>();
+
+		for (Email thread : this.threads) {
+			String emailFrom = thread.getDesenvolvedor().getEmail();
+			String nomeFrom  = thread.getDesenvolvedor().getNome();
+			
+			Desenvolvedor desenvolvedor = new Desenvolvedor();
+			
+			if (emails.get(nomeFrom)==null){
+				desenvolvedor.setEmail(emailFrom);
+				desenvolvedor.setNome(nomeFrom);
+				desenvolvedor.setListaEmail("");
+				emails.put(nomeFrom, desenvolvedor) ;
+			} else {
+				desenvolvedor = emails.get(nomeFrom);
+				desenvolvedor.setListaEmail( emails.get(nomeFrom).getListaEmail() );
+				if (!desenvolvedor.getListaEmail().contains(emailFrom)){
+					desenvolvedor.setListaEmail( desenvolvedor.getListaEmail() + 
+							" " + emailFrom);
+					emails.put(nomeFrom, desenvolvedor) ;
+				}
+			}		
+		}
+		
+		return emails.values();
 	}
 
 	public ArrayList<Email> getThreads() {
@@ -128,7 +156,8 @@ public class Threader {
 		boolean encontrouMensagem	= false;
 		boolean encontrouData		= false;
 		boolean proximaLinhaSubject = false;
-	
+		boolean encontrouFrom		= false;
+		
 		while( (linha = reader.readLine()) != null ){
 			linha = linha.trim();
 	
@@ -136,7 +165,7 @@ public class Threader {
 					|| linha.equals(LINE_ADDITIONAL_COMMANDS)) {
 				continue;
 			}
-	
+
 			linha = linha.toLowerCase();
 			linha = linha.replace('\t', ' ');
 	
@@ -156,7 +185,8 @@ public class Threader {
 				maisReferencias		= false;
 				encontrouData		= false;
 				proximaLinhaSubject	= false;
-	
+				encontrouFrom 		= false;
+				
 				email = new Email();						   
 			} 
 			else if ((!encontrouMessageID && linha.startsWith("message-id: ")) 
@@ -171,30 +201,36 @@ public class Threader {
 				linha = retirarCaracteresExtras(linha);
 				email.setInReplyTo(linha);
 			} 
-			else if (linha.startsWith("from: ")){ 
+			else if ((!encontrouFrom) && linha.startsWith("from: ")){
+				encontrouFrom = true;
+				
+				if (!linha.contains("@")){
+					linha = linha + " "+ reader.readLine();					
+				}
 				linha = linha.replaceAll("from:", "");
 				linha = retirarCaracteresExtras(linha);
-				StringTokenizer st = new StringTokenizer(linha);
+				
+				if (linha.contains("jira@apache.org")){
+					linha = linha.replace("jira@apache.org", linha.trim() + "@presley" );
+				}
+				
 				String emailFrom = "";
+				String nomeFrom  = "";				
+				
+				StringTokenizer st = new StringTokenizer(linha);
 				while (st.hasMoreTokens()) {
-					emailFrom = st.nextToken();
+					String token = st.nextToken();
+
+					if (token.contains("@")){
+						emailFrom = retirarCaracteresExtras(token);
+						nomeFrom  = retirarCaracteresExtras(nomeFrom);
+					} else if (emailFrom.contains(","))
+						nomeFrom = "";
+					else 
+						nomeFrom = nomeFrom + token + " ";
 				}
 	
-				// FIXME: Fazer esta troca depois de processar todo o arquivo
-				try {
-					// FIXME: tornar jira@apache.org uma variável para cada projeto
-					if (emailFrom.equals("jira@apache.org")) {
-						String name = linha.substring(0, linha.indexOf("jira"));
-						email.setFrom(this.db.getDeveloperEmail(name));
-					}
-					else {
-						email.setFrom(this.db.getDeveloperEmailInTheListaEmail(emailFrom));
-					}	
-				}
-				catch (SQLException sqlException) {
-					sqlException.printStackTrace();
-				}
-	
+				email.setDesenvolvedor(emailFrom, nomeFrom);	
 			} 
 			else if (linha.startsWith("date: ") && !encontrouData){ 
 				linha = linha.replaceAll("date: ", "");
