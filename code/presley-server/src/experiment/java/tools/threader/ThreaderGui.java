@@ -6,6 +6,7 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.FileNotFoundException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Set;
@@ -133,6 +134,8 @@ public class ThreaderGui extends JFrame {
 	
 		if (JOptionPane.YES_OPTION == userOption) {
 			this.showDevelopers();
+		} else {
+			this.saveDevelopers();
 		}
 	}
 
@@ -171,6 +174,16 @@ public class ThreaderGui extends JFrame {
 		}
 	}
 
+	/**
+	 * Save all developers in the Database 
+	 * @throws SQLException 
+	 */
+	void saveDevelopers() {
+		Collection<Desenvolvedor> developers = threader.getDevelopers();
+		for (Desenvolvedor desenvolvedor : developers)
+			threader.saveDeveloper(desenvolvedor);
+	}
+	
 	/**
 	 * Show all threads in the console 
 	 */

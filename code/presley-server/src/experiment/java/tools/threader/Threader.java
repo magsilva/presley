@@ -107,34 +107,52 @@ public class Threader {
 		}
 	}
 
-	public Collection<Desenvolvedor> getDevelopers() {
-		Map<String, Desenvolvedor> emails = new HashMap<String, Desenvolvedor>();
+	public ArrayList<Desenvolvedor> getDevelopers() {
+		ArrayList<Desenvolvedor> desenvolvedores = new ArrayList<Desenvolvedor>();
 
 		for (Email thread : this.threads) {
 			String emailFrom = thread.getDesenvolvedor().getEmail();
 			String nomeFrom  = thread.getDesenvolvedor().getNome();
 			
-			Desenvolvedor desenvolvedor = new Desenvolvedor();
+			int position = getPositionDeveloper(desenvolvedores, nomeFrom, emailFrom);
+			Desenvolvedor desenvolvedor ;
 			
-			if (emails.get(nomeFrom)==null){
+			if (position == -1){
+				desenvolvedor = new Desenvolvedor();
 				desenvolvedor.setEmail(emailFrom);
 				desenvolvedor.setNome(nomeFrom);
-				desenvolvedor.setListaEmail("");
-				emails.put(nomeFrom, desenvolvedor) ;
+				desenvolvedor.setListaEmail(emailFrom);
+				desenvolvedores.add(desenvolvedor) ;
 			} else {
-				desenvolvedor = emails.get(nomeFrom);
-				desenvolvedor.setListaEmail( emails.get(nomeFrom).getListaEmail() );
-				if (!desenvolvedor.getListaEmail().contains(emailFrom)){
-					desenvolvedor.setListaEmail( desenvolvedor.getListaEmail() + 
-							" " + emailFrom);
-					emails.put(nomeFrom, desenvolvedor) ;
-				}
+				desenvolvedor = desenvolvedores.get(position); 
+				desenvolvedores.remove(position);
+				String listaEmail = desenvolvedor.getListaEmail().replaceAll(" " + emailFrom, "") ;
+
+				desenvolvedor.setListaEmail( listaEmail	+ " " + emailFrom);
+				desenvolvedores.add(desenvolvedor) ;
 			}		
 		}
 		
-		return emails.values();
+		return desenvolvedores;
 	}
 
+	private int getPositionDeveloper( ArrayList<Desenvolvedor> desenvovedores, String nome, String email){
+		int cont = 0;
+		for (Desenvolvedor desenvolvedor : desenvovedores) {
+			if (desenvolvedor.getEmail().equals("bugzilla@apache.org"))
+				System.out.println();			
+			
+			if (desenvolvedor.getEmail().equals(email) || 
+					(!nome.equals("") && desenvolvedor.getNome().equals(nome))){
+				return cont ;
+			}
+			
+			cont++;
+		}
+		
+		return -1; 
+	}
+	
 	public ArrayList<Email> getThreads() {
 		return threads;
 	}
@@ -295,4 +313,7 @@ public class Threader {
 		this.db.saveThreads(this);
 	}
 	
+	public void saveDeveloper(Desenvolvedor desenvolvedor) {
+		this.db.saveDeveloper(desenvolvedor);
+	}
 }

@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.StringTokenizer;
@@ -94,7 +95,26 @@ public class DB {
 		}
 	}
 
-	void saveDeveloper(Map<String, String> emails) {
+	void saveDeveloper( Desenvolvedor desenvolvedor ) {  
+		if (desenvolvedor.getNome().length() > ThreaderGui.MAX_NAME_SIZE) 
+			desenvolvedor.setNome( desenvolvedor.getNome().substring(0, ThreaderGui.MAX_NAME_SIZE) );
+		
+		Statement statement = null;
+		try {
+			statement = this.connection.createStatement();
+
+			String SQL = "INSERT INTO desenvolvedor (senha, cvsNome, nome, email, listaEmail) " +
+			" VALUES ('9', '', '"+ desenvolvedor.getNome() +"', '"+ desenvolvedor.getEmail() +"', '"+ desenvolvedor.getListaEmail() +"')";
+			
+			statement.execute(SQL);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		
+		/*
+		Map<String, String> emails = new HashMap<String, String>();		
+		
 		Statement statement = null;
 		try {
 			statement = this.connection.createStatement();
@@ -144,7 +164,9 @@ public class DB {
 		} 
 		catch (SQLException e) {
 			e.printStackTrace();
-		} 
+		}
+		
+		 */
 	}
 
 	public Problema saveProblem(Problema problem) throws DescricaoInvalidaException, IOException, ProjetoInexistenteException, ConhecimentoNaoEncontradoException {
