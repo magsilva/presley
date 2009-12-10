@@ -110,9 +110,9 @@ public class Threader {
 	public ArrayList<Desenvolvedor> getDevelopers() {
 		ArrayList<Desenvolvedor> desenvolvedores = new ArrayList<Desenvolvedor>();
 
-		for (Email thread : this.threads) {
-			String emailFrom = thread.getDesenvolvedor().getEmail();
-			String nomeFrom  = thread.getDesenvolvedor().getNome();
+		for (Desenvolvedor developer : this.developers) {
+			String emailFrom = developer.getEmail();
+			String nomeFrom  = developer.getNome();
 			
 			int position = getPositionDeveloper(desenvolvedores, nomeFrom, emailFrom);
 			Desenvolvedor desenvolvedor ;
@@ -139,11 +139,9 @@ public class Threader {
 	private int getPositionDeveloper( ArrayList<Desenvolvedor> desenvovedores, String nome, String email){
 		int cont = 0;
 		for (Desenvolvedor desenvolvedor : desenvovedores) {
-			if (desenvolvedor.getEmail().equals("bugzilla@apache.org"))
-				System.out.println();			
 			
-			if (desenvolvedor.getEmail().equals(email) || 
-					(!nome.equals("") && desenvolvedor.getNome().equals(nome))){
+			if (desenvolvedor.getEmail().toLowerCase().equals(email.toLowerCase()) || 
+					(!nome.equals("") && desenvolvedor.getNome().toLowerCase().equals(nome.toLowerCase()))){
 				return cont ;
 			}
 			

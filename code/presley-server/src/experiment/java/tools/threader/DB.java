@@ -42,24 +42,26 @@ public class DB {
 			if (email.getDesenvolvedor().getEmail().isEmpty())
 				continue;
 
-			Desenvolvedor desenvolvedor = new Desenvolvedor();
-			desenvolvedor.setEmail(email.getDesenvolvedor().getEmail());
-
-			Solucao solucao = new Solucao();
-			solucao.setAjudou(true);
-			solucao.setProblema(problema);
-			solucao.setData( email.getData() ) ;
-			solucao.setMensagem(email.getMensagem());
-			solucao.setDesenvolvedor(desenvolvedor);
-
 			try {
+				Desenvolvedor desenvolvedor = new Desenvolvedor();
+				desenvolvedor.setEmail(getDeveloperEmailInTheListaEmail( email.getDesenvolvedor().getEmail() ));
+
+				Solucao solucao = new Solucao();
+				solucao.setAjudou(true);
+				solucao.setProblema(problema);
+				solucao.setData( email.getData() ) ;
+				solucao.setMensagem(email.getMensagem());
+				solucao.setDesenvolvedor(desenvolvedor);
 				saveSolution(solucao);
+				
 				if (email.getEmailsFilho().size() > 0) {
 					cadastrarSolucoes(email.getEmailsFilho(), problema);
 				}
 			} catch (ProblemaInexistenteException e) {
 				e.printStackTrace();
 			} catch (DesenvolvedorInexistenteException e) {
+				e.printStackTrace();
+			} catch (SQLException e) {
 				e.printStackTrace();
 			}
 		}
@@ -98,75 +100,21 @@ public class DB {
 	void saveDeveloper( Desenvolvedor desenvolvedor ) {  
 		if (desenvolvedor.getNome().length() > ThreaderGui.MAX_NAME_SIZE) 
 			desenvolvedor.setNome( desenvolvedor.getNome().substring(0, ThreaderGui.MAX_NAME_SIZE) );
-		
-		Statement statement = null;
-		try {
-			statement = this.connection.createStatement();
 
-			String SQL = "INSERT INTO desenvolvedor (senha, cvsNome, nome, email, listaEmail) " +
-			" VALUES ('9', '', '"+ desenvolvedor.getNome() +"', '"+ desenvolvedor.getEmail() +"', '"+ desenvolvedor.getListaEmail() +"')";
-			
-			statement.execute(SQL);
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+		if (desenvolvedor.getEmail().length() < 50){
+			Statement statement = null;
+			try {
+				statement = this.connection.createStatement();
 
-		
-		/*
-		Map<String, String> emails = new HashMap<String, String>();		
-		
-		Statement statement = null;
-		try {
-			statement = this.connection.createStatement();
-
-			Set<String> listaEmail = emails.keySet();
-
-			for (String nome : listaEmail) {
-				if (nome.length() > ThreaderGui.MAX_NAME_SIZE) {
-					nome = nome.substring(0, ThreaderGui.MAX_NAME_SIZE);
-				}
-
-				String email  = emails.get(nome);
-
-				if (email == null) {
-					continue;
-				}
-
-				StringTokenizer st = new StringTokenizer(email);
-
-				while (st.hasMoreTokens()){   
-					String emailPrincipal = st.nextToken();
-					String SQL = "SELECT email FROM desenvolvedor WHERE listaEmail LIKE '%"+ emailPrincipal +"%' or " +
-					" nome = '"+ nome +"'"; 
-					ResultSet rs = statement.executeQuery(SQL);
-
-					if (emailPrincipal.length() > 50)
-						continue;
-
-					if (!rs.next()){
-						// Se o nome não estiver vazio (Os grupos estão formados por nome)
-						if (!nome.isEmpty()) {
-							SQL = "INSERT INTO desenvolvedor (senha, cvsNome, nome, email, listaEmail) " +
-							" VALUES ('9', '', '"+ nome +"', '"+ emailPrincipal +"', '"+ emailPrincipal +"')";
-							statement.execute(SQL);
-						} else {
-							SQL = "INSERT INTO desenvolvedor (senha, cvsNome, nome, email, listaEmail) " +
-							" VALUES ('9', '', '"+ nome +"', '"+ emailPrincipal +"', '"+ email +"')";
-							statement.execute(SQL);
-							break;
-						}
-					} 
-
-				}
+				String SQL = "INSERT INTO desenvolvedor (senha, cvsNome, nome, email, listaEmail) " +
+				" VALUES ('9', '', '"+ desenvolvedor.getNome() +"', '"+ desenvolvedor.getEmail() +"', '"+ desenvolvedor.getListaEmail() +"')";
+				
+				statement.execute(SQL);
+			} catch (SQLException e) {
+				e.printStackTrace();
 			}
-			statement.close();
-			this.connection.close();
-		} 
-		catch (SQLException e) {
-			e.printStackTrace();
-		}
-		
-		 */
+		}		
+
 	}
 
 	public Problema saveProblem(Problema problem) throws DescricaoInvalidaException, IOException, ProjetoInexistenteException, ConhecimentoNaoEncontradoException {
@@ -183,21 +131,29 @@ public class DB {
 		projeto.setNome(properties.getProperty("experiment.projectName"));
 	
 		for (Email email : threader.getThreads()) {
-			if (email.getDesenvolvedor().getEmail().isEmpty()) {
+			if (email.getDesenvolvedor().getEmail().isEmpty() ||
+					email.getDesenvolvedor().getEmail().length() >= 50) {
 				continue;
 			}
-	
-			Desenvolvedor desenvolvedor = new Desenvolvedor(email.getDesenvolvedor().getEmail());
-	
+			
+			Desenvolvedor desenvolvedor;
 			// FIXME: criar construtor adequado em Problema para evitar este estilo de programação
 			Problema problema = new Problema();
-			problema.setDesenvolvedorOrigem(desenvolvedor);
-			problema.setProjeto(projeto);
-			problema.setData(email.getData()) ;
-			problema.setDescricao(email.getSubject());
-			problema.setMensagem(email.getMensagem());
-			problema.setResolvido(true);
-			problema.setTemResposta(false);
+			try {
+				desenvolvedor = new Desenvolvedor( 
+						getDeveloperEmailInTheListaEmail( email.getDesenvolvedor().getEmail() ));
+
+				problema.setDesenvolvedorOrigem(desenvolvedor);
+				problema.setProjeto(projeto);
+				problema.setData(email.getData()) ;
+				problema.setDescricao(email.getSubject());
+				problema.setMensagem(email.getMensagem());
+				problema.setResolvido(true);
+				problema.setTemResposta(false);
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 	
 			try {
 				problema = saveProblem(problema);
