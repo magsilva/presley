@@ -23,7 +23,7 @@ import com.hukarz.presley.server.persistencia.interfaces.ServicoDesenvolvedor;
  * @author Amilcar Jr
  * Essa classe contem a implementacao das operacoes para administrar um conhecimento.
  *
- * Última modificacao: 16/09/2008 por RodrigoCMD
+ * ï¿½ltima modificacao: 16/09/2008 por RodrigoCMD
  */
 
 public class ServicoConhecimentoImplDAO implements ServicoConhecimento{
@@ -57,7 +57,7 @@ public class ServicoConhecimentoImplDAO implements ServicoConhecimento{
 				stm.close();
 				//conn.close();
 			} catch (SQLException onConClose) {
-				System.out.println(" Houve erro no fechamento da conexão ");
+				System.out.println(" Houve erro no fechamento da conexï¿½o ");
 				onConClose.printStackTrace();	             
 			}
 		}
@@ -97,7 +97,7 @@ public class ServicoConhecimentoImplDAO implements ServicoConhecimento{
 				stm.close();
 				//conn.close();
 			} catch (SQLException onConClose) {
-				System.out.println(" Houve erro no fechamento da conexão ");
+				System.out.println(" Houve erro no fechamento da conexï¿½o ");
 				onConClose.printStackTrace();	             
 			}
 		}
@@ -131,7 +131,7 @@ public class ServicoConhecimentoImplDAO implements ServicoConhecimento{
 				stm.close();
 				//conn.close();
 			} catch (SQLException onConClose) {
-				System.out.println(" Houve erro no fechamento da conexão ");
+				System.out.println(" Houve erro no fechamento da conexï¿½o ");
 				onConClose.printStackTrace();	             
 			}
 		}
@@ -168,7 +168,7 @@ public class ServicoConhecimentoImplDAO implements ServicoConhecimento{
 				stm.close();
 				//conn.close();
 			} catch (SQLException onConClose) {
-				System.out.println(" Houve erro no fechamento da conexão ");
+				System.out.println(" Houve erro no fechamento da conexï¿½o ");
 				onConClose.printStackTrace();	             
 			}
 		}
@@ -229,7 +229,7 @@ public class ServicoConhecimentoImplDAO implements ServicoConhecimento{
 				stm.close();
 				//conn.close();	            
 			} catch (SQLException onConClose) {
-				System.out.println(" Houve erro no fechamento da conexão ");
+				System.out.println(" Houve erro no fechamento da conexï¿½o ");
 				onConClose.printStackTrace();	             
 			}
 		}		
@@ -262,7 +262,7 @@ public class ServicoConhecimentoImplDAO implements ServicoConhecimento{
 				stm.close();
 				//conn.close();
 			} catch (SQLException onConClose) {
-				System.out.println(" Houve erro no fechamento da conexão ");
+				System.out.println(" Houve erro no fechamento da conexï¿½o ");
 				onConClose.printStackTrace();	             
 			}
 		}
@@ -297,7 +297,7 @@ public class ServicoConhecimentoImplDAO implements ServicoConhecimento{
 				stm.close();
 				//conn.close();
 			} catch (SQLException onConClose) {
-				System.out.println(" Houve erro no fechamento da conexão ");
+				System.out.println(" Houve erro no fechamento da conexï¿½o ");
 				onConClose.printStackTrace();	             
 			}
 		}
@@ -342,7 +342,7 @@ public class ServicoConhecimentoImplDAO implements ServicoConhecimento{
 				stm.close();
 				//conn.close();	            
 			} catch (SQLException onConClose) {
-				System.out.println(" Houve erro no fechamento da conexão ");
+				System.out.println(" Houve erro no fechamento da conexï¿½o ");
 				onConClose.printStackTrace();	             
 			}
 		}
@@ -387,7 +387,7 @@ public class ServicoConhecimentoImplDAO implements ServicoConhecimento{
 				stm.close();
 				//conn.close();	            
 			} catch (SQLException onConClose) {
-				System.out.println(" Houve erro no fechamento da conexão ");
+				System.out.println(" Houve erro no fechamento da conexï¿½o ");
 				onConClose.printStackTrace();	             
 			}
 		}
@@ -434,7 +434,7 @@ public class ServicoConhecimentoImplDAO implements ServicoConhecimento{
 				stm.close();
 				//conn.close();	            
 			} catch (SQLException onConClose) {
-				System.out.println(" Houve erro no fechamento da conexão ");
+				System.out.println(" Houve erro no fechamento da conexï¿½o ");
 				onConClose.printStackTrace();	             
 			}
 		}
@@ -465,7 +465,7 @@ public class ServicoConhecimentoImplDAO implements ServicoConhecimento{
 				stm.close();
 				//conn.close();
 			} catch (SQLException onConClose) {
-				System.out.println(" Houve erro no fechamento da conexão ");
+				System.out.println(" Houve erro no fechamento da conexï¿½o ");
 				onConClose.printStackTrace();	             
 			}
 		}
@@ -523,7 +523,7 @@ public class ServicoConhecimentoImplDAO implements ServicoConhecimento{
 				stm.close();
 				//conn.close();	            
 			} catch (SQLException onConClose) {
-				System.out.println(" Houve erro no fechamento da conexão ");
+				System.out.println(" Houve erro no fechamento da conexï¿½o ");
 				onConClose.printStackTrace();	             
 			}
 		}
@@ -531,7 +531,6 @@ public class ServicoConhecimentoImplDAO implements ServicoConhecimento{
 		return retorno;
 	}
 
-	@Override
 	public Conhecimento getConhecimentoAssociado(Arquivo arquivo) {
 		Connection conn = MySQLConnectionFactory.open();
 		
@@ -559,7 +558,7 @@ public class ServicoConhecimentoImplDAO implements ServicoConhecimento{
 				stm.close();
 				//conn.close();	            
 			} catch (SQLException onConClose) {
-				System.out.println(" Houve erro no fechamento da conexão ");
+				System.out.println(" Houve erro no fechamento da conexï¿½o ");
 				onConClose.printStackTrace();	             
 			}
 		}		

@@ -24,9 +24,9 @@ import com.hukarz.presley.excessao.SenhaInvalidaException;
 /**
  * 
  * @author Eduardo Serafim, Joao Paulo
- * Essa interface contem metodos básicos que o Cliente e Servidor Presley devem implementar.
+ * Essa interface contem metodos bï¿½sicos que o Cliente e Servidor Presley devem implementar.
  * 
- * Última modificacao: 15/09/2008 por EduardoPS
+ * ï¿½ltima modificacao: 15/09/2008 por EduardoPS
  */
 
 
@@ -37,16 +37,26 @@ import com.hukarz.presley.excessao.SenhaInvalidaException;
 public interface CorePresleyOperations {
 	
 	public static final int ERRO = -1;
+	//	public static final int ADICIONA_ATIVIDADE = 1;
+	//	public static final int REMOVE_ATIVIDADE = 2;
+	//	public static final int BUSCA_ATIVIDADE = 3;
 	public static final int ADICIONA_CONHECIMENTO = 4;
 	public static final int LOG_IN = 5;
 	public static final int LOG_OUT = 6;
+	//	public static final int ENCERRAR_ATIVIDADE = 7;
+	//	public static final int ASSOCIAR_CONHECIMENTO_ATIVIDADE = 8;
+	//	public static final int DESSASOCIAR_CONHECIMENTO_ATIVIDADE = 9;
+	//	public static final int ASSOCIAR_PROBLEMA_ATIVIDADE = 10;
+	//	public static final int DESSASOCIAR_PROBLEMA_ATIVIDADE = 11;
 	public static final int BUSCA_DESENVOLVEDORES = 12;
+	// public static final int QUALIFICA_DESENVOLVEDOR = 13;
 	public static final int ENVIAR_MENSAGEM = 14;
 	public static final int GET_LISTA_DESENVOLVEDORES = 15;
 	public static final int GET_LISTA_CONHECIMENTO = 16;
 	public static final int ADICIONA_DESENVOLVEDOR = 17;
 	public static final int GET_ARVORECONHECIMENTOS = 18;
 	public static final int GET_LISTA_PROBLEMAS = 19;
+	// public static final int BUSCA_CONHECIMENTOS_RELACIONADOS = 20;
 	public static final int REMOVER_CONHECIMENTO = 21;
 	public static final int CONHECIMENTO_POSSUI_FILHOS = 22;
 	public static final int REMOVER_DESENVOLVEDOR = 23;
@@ -71,8 +81,8 @@ public interface CorePresleyOperations {
 
 	public static final int GET_DESENVOLVEDOR_POR_NOME = 40;
 	/**
-	 * Este método solicita a arvore de ontologia
-	 * CÓDIGO DA OPERAÇÃO -> 04
+	 * Este mï¿½todo solicita a arvore de ontologia
+	 * Cï¿½DIGO DA OPERAï¿½ï¿½O -> 04
 	 * @param Conhecimento conhecimento
 	 * @return true se o conhecimento foi adicionado com sucesso.
 	 * @throws Exception 
@@ -82,8 +92,8 @@ public interface CorePresleyOperations {
 	public boolean adicionaConhecimento(Conhecimento novoConhecimento, Conhecimento pai) throws DescricaoInvalidaException, ConhecimentoInexistenteException, Exception;
 
 	/**
-	 * Este método executa autenticação no servidor
-	 * CÓDIGO DA OPERAÇÃO -> 05
+	 * Este mï¿½todo executa autenticaï¿½ï¿½o no servidor
+	 * Cï¿½DIGO DA OPERAï¿½ï¿½O -> 05
 	 * @param String user
 	 * @param String passwd  
 	 * @return Desenvolvedor 
@@ -95,16 +105,16 @@ public interface CorePresleyOperations {
 	public Desenvolvedor login(DadosAutenticacao authData) throws DesenvolvedorInexistenteException, EmailInvalidoException, SenhaInvalidaException, ErroDeAutenticacaoException;
 
 	/**
-	 * Este método solicita logout do servidor
-	 * CÓDIGO DA OPERAÇÃO -> 06
+	 * Este mï¿½todo solicita logout do servidor
+	 * Cï¿½DIGO DA OPERAï¿½ï¿½O -> 06
 	 * @param Conhecimento conhecimento
 	 * @return true se o conhecimento foi adicionado com sucesso.
 	 */
 	public boolean logout(Desenvolvedor desenvolvedor);
 
 	/**
-	 * Este método envia uma mensagem para os desenvolvedores selecionados
-	 * CÓDIGO DA OPERAÇÃO -> 14
+	 * Este mï¿½todo envia uma mensagem para os desenvolvedores selecionados
+	 * Cï¿½DIGO DA OPERAï¿½ï¿½O -> 14
 	 * @param ArrayList<Desenvolvedor> desenvolvedor
 	 * @param Problema problema
 	 * @return true se a mensagem foi realizada com sucesso.
@@ -113,24 +123,24 @@ public interface CorePresleyOperations {
 	public boolean enviarMensagem(ArrayList<Desenvolvedor> desenvolvedoresDestino, Problema problema) throws DesenvolvedorInexistenteException;
 	
 	/**
-	 * Este método retorna uma lista com todos os desenvolvedores cadastrados
-	 * CÓDIGO DA OPERAÇÃO -> 15
+	 * Este mï¿½todo retorna uma lista com todos os desenvolvedores cadastrados
+	 * Cï¿½DIGO DA OPERAï¿½ï¿½O -> 15
 	 * @return ArrayList<Desenvolvedor> lista de desenvolvedores existentes.
 	 */
 	public ArrayList<Desenvolvedor> getListaDesenvolvedores();
 	
 
 	/**
-	 * Este método retorna uma lista com todos os conhecimentos cadastrados
-	 * CÓDIGO DA OPERAÇÃO -> 16
+	 * Este mï¿½todo retorna uma lista com todos os conhecimentos cadastrados
+	 * Cï¿½DIGO DA OPERAï¿½ï¿½O -> 16
 	 * @return ArrayList<Conhecimento> lista de conhecimentos existentes.
 	 */
 	public ArrayList<Conhecimento> getListaConhecimentos();
 	
 
 	/**
-	 * Este método adiciona um desenvolvedor no banco de dados
-	 * CÓDIGO DA OPERAÇÃO -> 17
+	 * Este mï¿½todo adiciona um desenvolvedor no banco de dados
+	 * Cï¿½DIGO DA OPERAï¿½ï¿½O -> 17
 	 * @param Desenvolvedor desenvolvedor
 	 * @return true se o desenvolvedor foi adicionado com sucesso.
 	 * @throws Exception 
@@ -139,8 +149,8 @@ public interface CorePresleyOperations {
 
 
 	/**
-	 * Este método solicita a arvore de ontologia
-	 * CÓDIGO DA OPERAÇÃO -> 18
+	 * Este mï¿½todo solicita a arvore de ontologia
+	 * Cï¿½DIGO DA OPERAï¿½ï¿½O -> 18
 	 * @return Tree Arvore de conhecimentos do sistema.
 	 * @throws ConhecimentoInexistenteException 
 	 */
@@ -153,64 +163,64 @@ public interface CorePresleyOperations {
 	public boolean removerDesenvolvedor(Desenvolvedor desenvolvedor);
 
 	/**
-	 * Este método Adiciona um problema 
-	 * CÓDIGO DA OPERAÇÃO -> 26
+	 * Este mï¿½todo Adiciona um problema 
+	 * Cï¿½DIGO DA OPERAï¿½ï¿½O -> 26
 	 * @param Problema problema
 	 * @throws Exception 
 	 */
 	public boolean adicionaProblema(Problema problema) throws Exception;
 
 	/**
-	 * Este método remove um problema 
-	 * CÓDIGO DA OPERAÇÃO -> 27
+	 * Este mï¿½todo remove um problema 
+	 * Cï¿½DIGO DA OPERAï¿½ï¿½O -> 27
 	 * @param Problema problema
 	 * @throws Exception 
 	 */
 	public boolean removerProblema(Problema problema) throws ProblemaInexistenteException;
 	
 	/**
-	 * Este método Adiciona uma Solucao para um problema 
-	 * CÓDIGO DA OPERAÇÃO -> 28
+	 * Este mï¿½todo Adiciona uma Solucao para um problema 
+	 * Cï¿½DIGO DA OPERAï¿½ï¿½O -> 28
 	 * @param Problema problema
 	 * @throws Exception 
 	 */
 	public Solucao adicionaSolucao(Solucao solucao) throws Exception;
 	
 	/**
-	 * Este método Lista as Soluções fornceda a um problema 
-	 * CÓDIGO DA OPERAÇÃO -> 29
+	 * Este mï¿½todo Lista as Soluï¿½ï¿½es fornceda a um problema 
+	 * Cï¿½DIGO DA OPERAï¿½ï¿½O -> 29
 	 * @param Problema problema
 	 * @throws Exception 
 	 */
 	public ArrayList<Solucao> listarSolucoesDoProblema(Problema problema) throws Exception;
 	
 	/**
-	 * Este método atualiza o status de uma Solucao 
-	 * CÓDIGO DA OPERAÇÃO -> 30 	
+	 * Este mï¿½todo atualiza o status de uma Solucao 
+	 * Cï¿½DIGO DA OPERAï¿½ï¿½O -> 30 	
 	 * @param Solucao solucao
 	 * @throws Exception 
 	 */
 	public boolean atualizarStatusSolucao(Solucao solucao) throws Exception;
 	
 	/**
-	 * Este método atualiza o status de um Problema 
-	 * CÓDIGO DA OPERAÇÃO -> 31	
+	 * Este mï¿½todo atualiza o status de um Problema 
+	 * Cï¿½DIGO DA OPERAï¿½ï¿½O -> 31	
 	 * @param Problema problema
 	 * @throws Exception 
 	 */
 	public boolean atualizarStatusProblema(Problema problema) throws Exception;
 	
 	/**
-	 * Este método atualiza os dados de uma Solucao 
-	 * CÓDIGO DA OPERAÇÃO -> 32 	
+	 * Este mï¿½todo atualiza os dados de uma Solucao 
+	 * Cï¿½DIGO DA OPERAï¿½ï¿½O -> 32 	
 	 * @param Solucao solucao
 	 * @throws Exception 
 	 */
 	public boolean atualizarSolucao(Solucao solucao) throws Exception;
 	
 	/**
-	 * Este método Lista as Soluções de um desenvolvedor que foram retornadas 
-	 * CÓDIGO DA OPERAÇÃO -> 33
+	 * Este mï¿½todo Lista as Soluï¿½ï¿½es de um desenvolvedor que foram retornadas 
+	 * Cï¿½DIGO DA OPERAï¿½ï¿½O -> 33
 	 * @param ArrayList<Solucao>
 	 * @throws Exception 
 	 */
@@ -219,45 +229,45 @@ public interface CorePresleyOperations {
 	
 
 	/**
-	 * Este método retorna as informações necessarias sobre o projeto em execução no presley
-	 * CÓDIGO DA OPERAÇÃO -> 35
+	 * Este mï¿½todo retorna as informaï¿½ï¿½es necessarias sobre o projeto em execuï¿½ï¿½o no presley
+	 * Cï¿½DIGO DA OPERAï¿½ï¿½O -> 35
 	 * @return
 	 */
 	public Projeto getProjetoAtivo();
 	
 	/**
-	 * Este método cadastra as informações sobre o projeto em execução no presley
-	 * CÓDIGO DA OPERAÇÃO -> 36
+	 * Este mï¿½todo cadastra as informaï¿½ï¿½es sobre o projeto em execuï¿½ï¿½o no presley
+	 * Cï¿½DIGO DA OPERAï¿½ï¿½O -> 36
 	 * @return
 	 */
 	public boolean criarProjeto(Projeto projeto) throws NomeInvalidoException;
 	
 	
 	/**
-	 * Este método exclui um projeto em execução no presley
-	 * CÓDIGO DA OPERAÇÃO -> 37
+	 * Este mï¿½todo exclui um projeto em execuï¿½ï¿½o no presley
+	 * Cï¿½DIGO DA OPERAï¿½ï¿½O -> 37
 	 * @return
 	 */
 	public boolean removerProjeto(Projeto projeto) throws ProjetoInexistenteException;
 	
 
 	/**
-	 * Este método atualiza o status do projeto no presley (Ativado/Desativado)
-	 * CÓDIGO DA OPERAÇÃO -> 38
+	 * Este mï¿½todo atualiza o status do projeto no presley (Ativado/Desativado)
+	 * Cï¿½DIGO DA OPERAï¿½ï¿½O -> 38
 	 * @return
 	 */
 	public boolean atualizarStatusProjeto(Projeto projeto) throws ProjetoInexistenteException;
 
 	/**
-	 * Este método uma lista com todos os projetos cadastrados
-	 * CÓDIGO DA OPERAÇÃO -> 39
+	 * Este mï¿½todo uma lista com todos os projetos cadastrados
+	 * Cï¿½DIGO DA OPERAï¿½ï¿½O -> 39
 	 * @return ArrayList<Projeto> lista de projetos.
 	 */
 	public ArrayList<Projeto> getListaProjetos(PacketStruct packet);
 
 	/**
-	 * Este método retorna o desenvolvedor com o nome passado como paramentro
-	 * CÓDIGO DA OPERAÇÃO -> 40
+	 * Este mï¿½todo retorna o desenvolvedor com o nome passado como paramentro
+	 * Cï¿½DIGO DA OPERAï¿½ï¿½O -> 40
 	 * @return Desenvolvedor.
 	 */
 	public Desenvolvedor getDesenvolvedorPorNome(String nome) throws DesenvolvedorInexistenteException ;

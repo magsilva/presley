@@ -39,10 +39,10 @@ public class ValidacaoSolucaoImpl {
 	}
 	
 	/**
-	 * Esse método atualiza a situacao de uma solução, ou seja, se ela foi útil ou
-	 * não para a resolucao de um problema.
-	 * @param id Identificador da solução.
-	 * @param status Situacao da solução.
+	 * Esse mï¿½todo atualiza a situacao de uma soluï¿½ï¿½o, ou seja, se ela foi ï¿½til ou
+	 * nï¿½o para a resolucao de um problema.
+	 * @param id Identificador da soluï¿½ï¿½o.
+	 * @param status Situacao da soluï¿½ï¿½o.
 	 * @return true se a atualizacao foi realizada com sucesso.
 	 * @throws SolucaoIniexistenteException 
 	 */
@@ -54,8 +54,8 @@ public class ValidacaoSolucaoImpl {
 	}
 	
 	/**
-	 * Esse método atualiza os dados uma solução
-	 * @param solucao Solução a ser atualizada.
+	 * Esse mï¿½todo atualiza os dados uma soluï¿½ï¿½o
+	 * @param solucao Soluï¿½ï¿½o a ser atualizada.
 	 * @return true se a atualizacao foi realizada com sucesso.
 	 * @throws SolucaoIniexistenteException 
 	 */
@@ -66,12 +66,12 @@ public class ValidacaoSolucaoImpl {
 	}
 	
 	/**
-	 * Esse método cadastra uma nova solução proposta por um desenvolvedor para
+	 * Esse mï¿½todo cadastra uma nova soluï¿½ï¿½o proposta por um desenvolvedor para
 	 * um problema.
 	 * @param emailDesenvolvedor Email do desenvolvedor.
 	 * @param idProblema Identificador do problema
 	 * @param dataDaProposta Data em que a solucao foi proposta.
-	 * @param mensagem Mensagem da solução sugerida.
+	 * @param mensagem Mensagem da soluï¿½ï¿½o sugerida.
 	 * @return true se a solucao foi cadastrada na base de dados.
 	 * @throws ProblemaInexistenteException 
 	 */
@@ -87,7 +87,7 @@ public class ValidacaoSolucaoImpl {
 	}
 	
 	/**
-	 * Esse método atualiza uma solução com os dados fornecidos no paramentro.
+	 * Esse mï¿½todo atualiza uma soluï¿½ï¿½o com os dados fornecidos no paramentro.
 	 * @param solucao Solucao a ser atulizada 
 	 * @return true se a solucao foi cadastrada na base de dados.
 	 * @throws ProblemaInexistenteException, DesenvolvedorInexistenteException 
@@ -104,7 +104,7 @@ public class ValidacaoSolucaoImpl {
 	}
 	
 	/**
-	 * Esse método retorna um objeto do tipo Solucao que possui a id passada
+	 * Esse mï¿½todo retorna um objeto do tipo Solucao que possui a id passada
 	 * no parametro.
 	 * @param id Identificador da solucao
 	 * @return <Solucao>
@@ -122,7 +122,7 @@ public class ValidacaoSolucaoImpl {
 	}
 	
 	/**
-	 * Esse método retorna uma lista de soluções que foram aceitas de um desenvolvedor
+	 * Esse mï¿½todo retorna uma lista de soluï¿½ï¿½es que foram aceitas de um desenvolvedor
 	 * para uma todos os problemas cadastrados no banco.
 	 * @param emailDesenvolvedor Email do desenvolvedor.
 	 * @return ArrayList<Solucao>
@@ -137,8 +137,8 @@ public class ValidacaoSolucaoImpl {
 	}
 	
 	/**
-	 * Esse método retorna uma lista de soluções propostas por um desenvolvedor para uma
-	 * série de problemas.
+	 * Esse mï¿½todo retorna uma lista de soluï¿½ï¿½es propostas por um desenvolvedor para uma
+	 * sï¿½rie de problemas.
 	 * @param emailDesenvolvedor Email do desenvolvedor.
 	 * @return ArrayList<Solucao>
 	 * @throws DescricaoInvalidaException 
@@ -152,7 +152,7 @@ public class ValidacaoSolucaoImpl {
 	}
 	
 	/**
-	 * Esse método retorna uma lista de soluções que foram rejeitadas de um desenvolvedor
+	 * Esse mï¿½todo retorna uma lista de soluï¿½ï¿½es que foram rejeitadas de um desenvolvedor
 	 * para uma todos os problemas cadastrados no banco.
 	 * @param emailDesenvolvedor Email do desenvolvedor.
 	 * @return ArrayList<Solucao>
@@ -167,9 +167,9 @@ public class ValidacaoSolucaoImpl {
 	}
 	
 	/**
-	 * Esse método remove uma solução proposta por um desenvolvedor da base de dados.
-	 * @param id Identificador da solução.
-	 * @return true se a solução foi removida com sucesso.
+	 * Esse mï¿½todo remove uma soluï¿½ï¿½o proposta por um desenvolvedor da base de dados.
+	 * @param id Identificador da soluï¿½ï¿½o.
+	 * @return true se a soluï¿½ï¿½o foi removida com sucesso.
 	 * @throws SolucaoIniexistenteException 
 	 */
 	public boolean removerSolucao(int id) throws SolucaoIniexistenteException {
@@ -180,7 +180,7 @@ public class ValidacaoSolucaoImpl {
 	}
 	
 	/**
-	 * Esse método verifica se existe uma solucao com tal identificador.
+	 * Esse mï¿½todo verifica se existe uma solucao com tal identificador.
 	 * @param id Identificador da solucao.
 	 * @return true se a solucao existe.
 	 */
@@ -190,7 +190,7 @@ public class ValidacaoSolucaoImpl {
 	}
 
 	/**
-	 * Esse método retorna uma lista de soluções que foram rejeitadas de um desenvolvedor
+	 * Esse mï¿½todo retorna uma lista de soluï¿½ï¿½es que foram rejeitadas de um desenvolvedor
 	 * para uma todos os problemas cadastrados no banco.
 	 * @param emailDesenvolvedor Email do desenvolvedor.
 	 * @return ArrayList<Solucao>
@@ -205,7 +205,7 @@ public class ValidacaoSolucaoImpl {
 	
 
 	/**
-	 * Esse método retorna uma lista de soluções que foram retornadas de um desenvolvedor
+	 * Esse mï¿½todo retorna uma lista de soluï¿½ï¿½es que foram retornadas de um desenvolvedor
 	 * @param emailDesenvolvedor Email do desenvolvedor.
 	 * @return ArrayList<Solucao>
 	 * @throws DesenvolvedorInexistenteException 

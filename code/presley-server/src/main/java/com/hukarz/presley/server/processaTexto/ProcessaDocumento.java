@@ -124,17 +124,17 @@ public class ProcessaDocumento {
 	}
 
 	private char ss2Palavra(char caracter){
-		if	((caracter == 'À') || (caracter == 'Á') || 
-				(caracter == 'Â') || (caracter == 'Ã') ||
-				(caracter == 'Ä') ||
-				(caracter == 'É') || (caracter == 'Ê') ||
-				(caracter == 'Ë') ||
-				(caracter == 'Í') || (caracter == 'Î') ||
-				(caracter == 'Ï') ||
-				(caracter == 'Ô') || (caracter == 'Ó') ||
-				(caracter == 'Ö') || (caracter == 'Õ') ||
-				(caracter == 'Û') || (caracter == 'Ü') ||
-				(caracter == 'Ç')){
+		if	((caracter == 'ï¿½') || (caracter == 'ï¿½') || 
+				(caracter == 'ï¿½') || (caracter == 'ï¿½') ||
+				(caracter == 'ï¿½') ||
+				(caracter == 'ï¿½') || (caracter == 'ï¿½') ||
+				(caracter == 'ï¿½') ||
+				(caracter == 'ï¿½') || (caracter == 'ï¿½') ||
+				(caracter == 'ï¿½') ||
+				(caracter == 'ï¿½') || (caracter == 'ï¿½') ||
+				(caracter == 'ï¿½') || (caracter == 'ï¿½') ||
+				(caracter == 'ï¿½') || (caracter == 'ï¿½') ||
+				(caracter == 'ï¿½')){
 			return caracter;
 		} else {
 			return ' ';
@@ -180,11 +180,11 @@ public class ProcessaDocumento {
 
 	private String remocaoDePalavrasNegativas(String texto){
 		
-		String result = texto;
 		PresleyProperties properties = PresleyProperties.getInstance();
-		File diretorioCD = new File(properties.getProperty("stowords.directory"));   
+		File diretorioCD = new File(properties.getProperty("stowords.directory"));
+		//	File diretorioCD = new File("./src/main/java/com/hukarz/presley/server/processaTexto/Stopwords");   
 		File[] listagemDiretorio = diretorioCD.listFiles(); 
-		result = " " + result + " ";
+		texto = " " + texto + " ";
 
 		try {
 			for (int i = 0; i < listagemDiretorio.length; i++) {  
@@ -196,7 +196,7 @@ public class ProcessaDocumento {
 					String palavra = "";
 
 					while( (palavra = reader.readLine()) != null ){
-						result = result.replaceAll(" " + palavra + " ", " ");
+						texto = texto.replaceAll(" " + palavra + " ", " ");
 					}
 				}
 			}
@@ -204,7 +204,7 @@ public class ProcessaDocumento {
 			e.printStackTrace();
 		}
 
-		return result;
+		return texto;
 	}
 	
 	private Map<String, Integer> calculaFrequencia(Arquivo arquivo) throws IOException{

@@ -1,7 +1,7 @@
 package com.hukarz.presley.server.core;
 
 /**
- * Esta classe implementa as operações que são chamadas pelo
+ * Esta classe implementa as operaï¿½ï¿½es que sï¿½o chamadas pelo
  * @author EduardoPS, Bruno, Tatiane
  * @since 2008
  */
@@ -42,8 +42,8 @@ public class ExecuteClientQuery implements CorePresleyOperations {
 
 
 	/**
-	 * Variaveis instanciadas uma única vez para ter acesso aos servicos de 
-	 * persistência oferecidos pelas classes de validação
+	 * Variaveis instanciadas uma ï¿½nica vez para ter acesso aos servicos de 
+	 * persistï¿½ncia oferecidos pelas classes de validaï¿½ï¿½o
 	 */
 	ValidacaoConhecimentoImpl  validacaoConhecimento;
 	ValidacaoProblemaImpl 	   validacaoProblema; 
@@ -73,7 +73,7 @@ public class ExecuteClientQuery implements CorePresleyOperations {
 	public boolean adicionaConhecimento(PacketStruct packet) throws DescricaoInvalidaException, ConhecimentoInexistenteException, Exception {
 		ArrayList<Conhecimento> conhecimento = (ArrayList<Conhecimento>) packet.getData();
 		if (conhecimento == null) {
-			// FIXME: tratar possível NullPonterException 
+			// FIXME: tratar possï¿½vel NullPonterException 
 			this.adicionaConhecimento(null, null);
 		}
 		Conhecimento pai = conhecimento.get(1);
@@ -152,7 +152,7 @@ public class ExecuteClientQuery implements CorePresleyOperations {
 		return logout(authData);
 	}
 	public boolean logout(Desenvolvedor desenvolvedor) {
-		// Já que não existe sessão, a operação de log-out é "ficticia"
+		// Jï¿½ que nï¿½o existe sessï¿½o, a operaï¿½ï¿½o de log-out ï¿½ "ficticia"
 		return true;
 	}
 
@@ -397,7 +397,7 @@ public class ExecuteClientQuery implements CorePresleyOperations {
 		String nome = (String) packet.getData();
 		return getDesenvolvedorPorNome( nome );
 	}
-	@Override
+
 	public Desenvolvedor getDesenvolvedorPorNome(String nome)
 			throws DesenvolvedorInexistenteException {
 		return validacaoDesenvolvedor.getDesenvolvedorPorNome(nome);

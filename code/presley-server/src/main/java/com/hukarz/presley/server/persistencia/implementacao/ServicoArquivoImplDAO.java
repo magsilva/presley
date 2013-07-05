@@ -21,7 +21,6 @@ public class ServicoArquivoImplDAO implements ServicoArquivo {
 
 	private Logger logger = Logger.getLogger(this.getClass());
 	
-	@Override
 	public boolean arquivoExiste(Arquivo arquivo) {
 		Connection conn = MySQLConnectionFactory.open();
 		
@@ -47,13 +46,12 @@ public class ServicoArquivoImplDAO implements ServicoArquivo {
 			} catch (SQLException onConClose) {
 				
 				
-				System.out.println(" Houve erro no fechamento da conexão ");
+				System.out.println(" Houve erro no fechamento da conexï¿½o ");
 				onConClose.printStackTrace();	             
 			}
 		}
 	}
 
-	@Override
 	public boolean atualizarArquivo(Arquivo arquivoAnterior, Arquivo arquivoNovo) {
 		Connection conn = MySQLConnectionFactory.open();
 		
@@ -78,7 +76,7 @@ public class ServicoArquivoImplDAO implements ServicoArquivo {
 				stm.close();
 				//conn.close();
 			} catch (SQLException onConClose) {
-				System.out.println(" Houve erro no fechamento da conexão ");
+				System.out.println(" Houve erro no fechamento da conexï¿½o ");
 				onConClose.printStackTrace();	             
 			}
 		}
@@ -86,7 +84,6 @@ public class ServicoArquivoImplDAO implements ServicoArquivo {
 		return true;
 	}
 
-	@Override
 	public boolean criarArquivo(Arquivo arquivo) {
 		Connection conn = MySQLConnectionFactory.open();
 		
@@ -109,7 +106,7 @@ public class ServicoArquivoImplDAO implements ServicoArquivo {
 				stm.close();
 				//conn.close();
 			} catch (SQLException onConClose) {
-				this.logger.debug(" Houve erro no fechamento da conexão ");
+				this.logger.debug(" Houve erro no fechamento da conexï¿½o ");
 				onConClose.printStackTrace();	             
 			}
 		}
@@ -117,7 +114,7 @@ public class ServicoArquivoImplDAO implements ServicoArquivo {
 		return true;
 	}
 
-	@Override
+
 	public Arquivo getArquivo(Arquivo arquivo) {
 		Connection conn = MySQLConnectionFactory.open();
 		
@@ -167,13 +164,13 @@ public class ServicoArquivoImplDAO implements ServicoArquivo {
 				stm.close();
 				//conn.close();	            
 			} catch (SQLException onConClose) {
-				this.logger.trace(" Houve erro no fechamento da conexão ");
+				this.logger.trace(" Houve erro no fechamento da conexï¿½o ");
 				onConClose.printStackTrace();	             
 			}
 		}
 	}
 
-	@Override
+
 	public boolean removerArquivo(Arquivo arquivo) {
 		//Connection conn = MySQLConnectionFactory.getConnection();
 		Connection conn = MySQLConnectionFactory.open();
@@ -200,7 +197,7 @@ public class ServicoArquivoImplDAO implements ServicoArquivo {
 				stm.close();
 				//conn.close();
 			} catch (SQLException onConClose) {
-				this.logger.trace(" Houve erro no fechamento da conexão ");
+				this.logger.trace(" Houve erro no fechamento da conexï¿½o ");
 				onConClose.printStackTrace();	             
 			}
 		}
@@ -241,7 +238,7 @@ public class ServicoArquivoImplDAO implements ServicoArquivo {
 				stm.close();
 				//conn.close();
 			} catch (SQLException onConClose) {
-				this.logger.trace(" Houve erro no fechamento da conexão ");
+				this.logger.trace(" Houve erro no fechamento da conexï¿½o ");
 				onConClose.printStackTrace();	             
 			}
 		}
@@ -276,7 +273,7 @@ public class ServicoArquivoImplDAO implements ServicoArquivo {
 		return id;
 	}
 
-	@Override
+
 	public int getQuantidadeArquivosCadastrados() {
 		Connection conn = MySQLConnectionFactory.open();
 		Statement stm = null;
@@ -300,7 +297,7 @@ public class ServicoArquivoImplDAO implements ServicoArquivo {
 		return qtde;
 	}
 
-	@Override
+
 	public int getQuantidadeArquivosComTermo(String termo) {
 		Connection conn = MySQLConnectionFactory.open();
 		Statement stm = null;
@@ -328,7 +325,7 @@ public class ServicoArquivoImplDAO implements ServicoArquivo {
 		return qtde;
 	}
 
-	@Override
+
 	public ArrayList<Arquivo> getListaArquivo() {
 		ArrayList<Arquivo> listaRetorno = new ArrayList<Arquivo>();
 		Connection conn = MySQLConnectionFactory.open();
@@ -375,13 +372,13 @@ public class ServicoArquivoImplDAO implements ServicoArquivo {
 				stm.close();
 				//conn.close();	            
 			} catch (SQLException onConClose) {
-				this.logger.trace(" Houve erro no fechamento da conexão ");
+				this.logger.trace(" Houve erro no fechamento da conexï¿½o ");
 				onConClose.printStackTrace();	             
 			}
 		}
 	}
 
-	@Override
+
 	public Map<Integer, Conhecimento> getIdArquivosPorConhecimento() {
 		Map<Integer, Conhecimento> retorno = new HashMap<Integer, Conhecimento>();
 		

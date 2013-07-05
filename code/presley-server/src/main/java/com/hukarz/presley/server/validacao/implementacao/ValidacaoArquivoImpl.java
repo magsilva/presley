@@ -6,25 +6,45 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
+
 import com.hukarz.presley.beans.Arquivo;
 import com.hukarz.presley.beans.ArquivoJava;
 import com.hukarz.presley.beans.ClasseJava;
 import com.hukarz.presley.beans.Desenvolvedor;
 import com.hukarz.presley.beans.Problema;
 import com.hukarz.presley.excessao.ArquivoInexistenteException;
+import com.hukarz.presley.excessao.NomeInvalidoException;
 import com.hukarz.presley.server.persistencia.implementacao.ServicoArquivoImplDAO;
+import com.hukarz.presley.server.persistencia.implementacao.ServicoDesenvolvedorImplDAO;
 import com.hukarz.presley.server.persistencia.implementacao.ServicoLogControleVersaoImplDAO;
+import com.hukarz.presley.server.persistencia.implementacao.ServicoLogControleVersaoLine10ImplDAO;
 import com.hukarz.presley.server.persistencia.interfaces.ServicoArquivo;
+import com.hukarz.presley.server.persistencia.interfaces.ServicoDesenvolvedor;
 import com.hukarz.presley.server.persistencia.interfaces.ServicoLogControleVersao;
 
 
-public class ValidacaoArquivoImpl {
+public class ValidacaoArquivoImpl
+{
 	ServicoArquivo servicoArquivo;
+
+	ServicoDesenvolvedor servicoDesenvolvedor;
+
+	private Logger logger = Logger.getLogger(this.getClass());
 
 	public ValidacaoArquivoImpl() {
 		servicoArquivo = new ServicoArquivoImplDAO();
+		servicoDesenvolvedor = new ServicoDesenvolvedorImplDAO();
 	}
 
+	/**
+	 * Este metodo atualiza um conhecimento previamente cadastrado na base da dados 
+	 * @param nome Nome do conhecimento a ser atualizado.
+	 * @param novoNome Novo nome do conhecimento.
+	 * @param descricao Nova descricao do conhecimento.
+	 * @return true se o conhecimento foi atualizado.
+	 * @throws NomeInvalidoException 
+	 */
 	public boolean atualizarArquivo(Arquivo arquivoAnterior, Arquivo arquivoNovo) throws ArquivoInexistenteException {
 		if (!servicoArquivo.arquivoExiste(arquivoAnterior)) throw new ArquivoInexistenteException();
 		

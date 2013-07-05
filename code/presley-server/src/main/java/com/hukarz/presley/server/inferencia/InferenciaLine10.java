@@ -10,7 +10,7 @@ import com.hukarz.presley.beans.ArquivoJava;
 import com.hukarz.presley.beans.Desenvolvedor;
 import com.hukarz.presley.beans.Problema;
 
-public class InferenciaLine10 implements Inference {
+public class InferenciaLine10 extends Inferencia {
 
 	public ArrayList<Desenvolvedor> getDesenvolvedores (
 			Map<ArquivoJava, ArrayList<Desenvolvedor>> arquivoDesenvolvedores,
@@ -59,7 +59,7 @@ public class InferenciaLine10 implements Inference {
 	private ArrayList<Desenvolvedor> getDesenvolvedorEmTodosOsArquivos(Map<ArquivoJava, ArrayList<Desenvolvedor>> arquivoDesenvolvedores){
 		ArrayList<Desenvolvedor> desenvolvedoresArquivo = new ArrayList<Desenvolvedor>();
 		
-		// Os desenvolvedores retornados devem está em todos os arquivos
+		// Os desenvolvedores retornados devem estï¿½ em todos os arquivos
 		if (arquivoDesenvolvedores.size() > 0){
 			ArquivoJava primeiroArquivo = (ArquivoJava) arquivoDesenvolvedores.keySet().toArray()[0]; 
 			for (Desenvolvedor desenvolvedorArquivo : arquivoDesenvolvedores.get(primeiroArquivo)) {

@@ -18,7 +18,6 @@ import com.hukarz.presley.server.persistencia.interfaces.ServicoLogControleVersa
 public class ServicoLogControleVersaoImplDAO implements
 		ServicoLogControleVersao {
 	
-	@Override
 	public Date getDataHoraUltimoRegistro() {
 		Connection conn = MySQLConnectionFactory.open();
 		Statement stm = null;
@@ -43,14 +42,13 @@ public class ServicoLogControleVersaoImplDAO implements
 				stm.close();
 				//conn.close();	            
 			} catch (SQLException onConClose) {
-				System.out.println(" Houve erro no fechamento da conexão ");
+				System.out.println(" Houve erro no fechamento da conexï¿½o ");
 				onConClose.printStackTrace();	             
 			}
 		}		
 
 	}
 
-	@Override
 	public void registrarLogDeRevisao(Desenvolvedor desenvolvedor,
 			ArrayList<ArquivoJava> arquivosAcessados, Date data) {
 		Connection conn = MySQLConnectionFactory.open();
@@ -75,7 +73,6 @@ public class ServicoLogControleVersaoImplDAO implements
 
 	}
 
-	@Override
 	public ArrayList<Desenvolvedor> getDesenvolvedoresArquivo(
 			ArquivoJava arquivoJava, Date data) {
 		ArrayList<Desenvolvedor> retorno = new ArrayList<Desenvolvedor>();

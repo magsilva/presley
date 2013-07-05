@@ -20,9 +20,11 @@ public class ProcessaSimilaridade {
 	ProcessaDocumento processaDocumento = new ProcessaDocumento();
 	ServicoConhecimento servicoConhecimento = new ServicoConhecimentoImplDAO();
 	ServicoArquivo servicoArquivo = new ServicoArquivoImplDAO();
+	int qtdeArquivos = 0;
 	
 	public Conhecimento verificaConhecimentoDoTexto(String texto) throws IOException, ConhecimentoNaoEncontradoException{
 		ArrayList<Arquivo> arquivos = servicoArquivo.getListaArquivo();
+		qtdeArquivos = arquivos.size();
 		
 		Arquivo arquivoTexto = processaDocumento.transformaTextoEmArquivo(texto);
 		Arquivo arquivoMaisSimilar = null; 
@@ -68,9 +70,11 @@ public class ProcessaSimilaridade {
 			double frqTF2 = (double) (Double.parseDouble(texto2.get(termo).toString()) / documento2.getQtdPalavrasTotal());
 			
 			double frqTF_IDF = 1;
+			//Math.log( qtdeArquivos / servicoArquivo.getQuantidadeArquivosComTermo(termo) );
 			somatorioGrauIgualdade += calculaGrauDeIgualdade( frqTF1 * frqTF_IDF, frqTF2 * frqTF_IDF) ;
 		}
 		
+		//return somatorioGrauIgualdade/( texto1.size() + texto2.size() - listTermosComuns.size());
 		return somatorioGrauIgualdade;
 	}
 

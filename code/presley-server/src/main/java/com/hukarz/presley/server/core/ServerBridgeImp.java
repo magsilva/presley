@@ -49,19 +49,21 @@ public class ServerBridgeImp implements ServerBridge {
 		int typeRetorno = CorePresleyOperations.ERRO;
 
 		switch ( packet.getId() ) {
+		// Packet tipo 4: ADICIONA_CONHECIMENTO
 		case CorePresleyOperations.ADICIONA_CONHECIMENTO:
 			try {
 				retorno = executeClientQuery.adicionaConhecimento(packet);
 				typeRetorno = CorePresleyOperations.ADICIONA_CONHECIMENTO;
 			} catch (DescricaoInvalidaException e) {
-				retorno = "ERRO: Descrição inválida.";
+				retorno = "ERRO: Descriï¿½ï¿½o invï¿½lida.";
 			} catch (ConhecimentoInexistenteException e) {
 				retorno = "ERRO: Conhecimento inexistente.";
 			} catch (Exception e) {
-				retorno = "ERRO: Operação falhou.";
+				retorno = "ERRO: Operaï¿½ï¿½o falhou.";
 			}
 			pktRetorno = new PacketStruct(retorno, typeRetorno);
-			break;				
+			break;		
+		// Packet tipo 5: LOG_IN
 		case CorePresleyOperations.LOG_IN:
 			try {
 				retorno = executeClientQuery.login(packet);
@@ -71,21 +73,23 @@ public class ServerBridgeImp implements ServerBridge {
 				retorno = "ERRO: Desenvolvedor inexistente.";
 			} catch (EmailInvalidoException e2) {
 				e2.printStackTrace();
-				retorno = "ERRO: Email inválido.";
+				retorno = "ERRO: Email invï¿½lido.";
 			} catch (SenhaInvalidaException e2) {
 				e2.printStackTrace();
-				retorno = "ERRO: Senha inválida.";
+				retorno = "ERRO: Senha invï¿½lida.";
 			} catch (ErroDeAutenticacaoException e2) {
 				e2.printStackTrace();
-				retorno = "ERRO: Erro de autenticação.";
+				retorno = "ERRO: Erro de autenticaï¿½ï¿½o.";
 			}
 			pktRetorno = new PacketStruct(retorno, typeRetorno);
-			break;				
+			break;
+		// Packet tipo 6: LOG_OUT
 		case CorePresleyOperations.LOG_OUT:
 			typeRetorno = CorePresleyOperations.LOG_OUT;
 			retorno = executeClientQuery.logout(packet);
 			pktRetorno = new PacketStruct(retorno, typeRetorno);
-			break;				
+			break;
+		// Packet tipo 14: ENVIAR_MENSAGEM
 		case CorePresleyOperations.ENVIAR_MENSAGEM:
 			try {
 				retorno = executeClientQuery.enviarMensagem(packet);
@@ -95,18 +99,21 @@ public class ServerBridgeImp implements ServerBridge {
 				e2.printStackTrace();
 			}
 			pktRetorno = new PacketStruct(retorno, typeRetorno);
-			break;				
+			break;	
+		// Packet tipo 15: GET_LISTA_DESENVOLVEDORES
 		case CorePresleyOperations.GET_LISTA_DESENVOLVEDORES:
 			retorno = executeClientQuery.getListaDesenvolvedores();
 			typeRetorno = CorePresleyOperations.GET_LISTA_DESENVOLVEDORES;
 			pktRetorno = new PacketStruct(retorno, typeRetorno);
 			break;
+		// Packet tipo 16: GET_LISTA_CONHECIMENTO
 		case CorePresleyOperations.GET_LISTA_CONHECIMENTO:
 			retorno = executeClientQuery.getListaConhecimentos();
 			typeRetorno = CorePresleyOperations.GET_LISTA_CONHECIMENTO;
 
 			pktRetorno = new PacketStruct(retorno, typeRetorno);
 			break;
+		// Packet tipo 17: GET_ONTOLOGIA
 		case CorePresleyOperations.GET_ARVORECONHECIMENTOS:
 			try {
 				retorno = executeClientQuery.getArvoreConhecimentos();
@@ -116,37 +123,33 @@ public class ServerBridgeImp implements ServerBridge {
 				e1.printStackTrace();
 			}
 			pktRetorno = new PacketStruct(retorno, typeRetorno);
-			break;				
+			break;
+		// Packet tipo 18: ADICIONA_DESENVOLVEDOR
 		case CorePresleyOperations.ADICIONA_DESENVOLVEDOR:
 			try {
 				retorno = executeClientQuery.adicionaDesenvolvedor(packet);
 				typeRetorno = CorePresleyOperations.ADICIONA_DESENVOLVEDOR;
-			} 
-			catch (DesenvolvedorExisteException e) {
-				retorno = "ERRO: Desenvolvedor já Cadastrado no Banco.";
+			} catch (DesenvolvedorExisteException e) {
+				retorno = "ERRO: Desenvolvedor jï¿½ Cadastrado no Banco.";
 				e.printStackTrace();
-			} 
-			catch (SenhaInvalidaException e) {
+			} catch (SenhaInvalidaException e) {
 				retorno = "ERRO: Senha Invalida.";
 				e.printStackTrace();
-			} 
-			catch (DescricaoInvalidaException e) {
+			} catch (DescricaoInvalidaException e) {
 				retorno = "ERRO: Descricao Invalida.";
 				e.printStackTrace();
-			} 
-			catch (ConhecimentoInexistenteException e) {
+			} catch (ConhecimentoInexistenteException e) {
 				retorno = "ERRO: Conhecimento inexistente.";
 				e.printStackTrace();
-			} 
-			catch (DesenvolvedorInexistenteException e) {
+			} catch (DesenvolvedorInexistenteException e) {
 				retorno = "ERRO: Desenvolvedor inexistente.";
 				e.printStackTrace();
-			} 
-			catch (Exception e) {
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
 			pktRetorno = new PacketStruct(retorno, typeRetorno);
 			break;	
+		// Packet tipo 19: GET_LISTA_PROBLEMAS
 		case CorePresleyOperations.GET_LISTA_PROBLEMAS:
 			try {
 				retorno = executeClientQuery.getListaProblemas(packet);
@@ -160,8 +163,7 @@ public class ServerBridgeImp implements ServerBridge {
 		case CorePresleyOperations.REMOVER_CONHECIMENTO:
 			try {
 				retorno = executeClientQuery.removerConhecimento(packet);
-			} 
-			catch (ConhecimentoInexistenteException e) {
+			} catch (ConhecimentoInexistenteException e) {
 				retorno = "ERRO: Conhecimento inexistente.";
 				e.printStackTrace();
 			}
@@ -171,8 +173,7 @@ public class ServerBridgeImp implements ServerBridge {
 		case CorePresleyOperations.CONHECIMENTO_POSSUI_FILHOS:
 			try {
 				retorno = executeClientQuery.possuiFilhos(packet);
-			} 
-			catch (ConhecimentoInexistenteException e) {
+			} catch (ConhecimentoInexistenteException e) {
 				retorno = "ERRO: Conhecimento inexistente.";
 				e.printStackTrace();
 			}
@@ -204,7 +205,7 @@ public class ServerBridgeImp implements ServerBridge {
 				retorno = executeClientQuery.adicionaProblema(packet);
 				typeRetorno = CorePresleyOperations.ADICIONA_PROBLEMA;
 			} catch (ConhecimentoNaoEncontradoException e){
-				retorno = "ERRO: Conhecimento não encontrado." +
+				retorno = "ERRO: Conhecimento nï¿½o encontrado." +
 						" Por favor detalhar melhor o problema.";
 				e.printStackTrace();
 			} catch (DescricaoInvalidaException e1) {
@@ -306,7 +307,7 @@ public class ServerBridgeImp implements ServerBridge {
 				retorno = "ERRO: Conhecimento inexistente.";
 				e.printStackTrace();
 			} catch (IOException e) {
-				retorno = "ERRO: Arquivo não encontrado.";
+				retorno = "ERRO: Arquivo nï¿½o encontrado.";
 				e.printStackTrace();
 			}
 			pktRetorno = new PacketStruct(retorno, typeRetorno);
@@ -324,7 +325,7 @@ public class ServerBridgeImp implements ServerBridge {
 				retorno     = executeClientQuery.criarProjeto(packet);
 				typeRetorno = CorePresleyOperations.CRIAR_PROJETO;
 			} catch (NomeInvalidoException e) {
-				retorno = "ERRO: Projeto já Cadastrado.";
+				retorno = "ERRO: Projeto jï¿½ Cadastrado.";
 				e.printStackTrace();
 			}
 			pktRetorno = new PacketStruct(retorno, typeRetorno);

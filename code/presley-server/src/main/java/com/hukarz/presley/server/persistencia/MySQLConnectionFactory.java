@@ -6,29 +6,48 @@ import java.sql.SQLException;
 
 import com.hukarz.presley.server.core.PresleyProperties;
 
+import org.apache.log4j.Logger;
 
 public class MySQLConnectionFactory {
+	
+	private static String DEFAULT_USERNAME = "root";
+	
+	private static String DEFAULT_PASSWORD = "aluno";
+	
+	private static String DEFAULT_URL = "jdbc:mysql://localhost/presley";
+	
+	private static String DEFAULT_DRIVER = "com.mysql.jdbc.Driver";
 
 	private static Connection connection = null;
+	
+	private static Logger logger = Logger.getLogger(MySQLConnectionFactory.class);
+	
 	private MySQLConnectionFactory() {
 	}
 
-	public static Connection open() {
+	public synchronized static Connection open()
+	{
+		String url, username, password;
+		
+		PresleyProperties properties = PresleyProperties.getInstance();
+		url = properties.getProperty("jdbc.url") == null ? properties.getProperty("jdbc.url") : DEFAULT_URL;
+		username = properties.getProperty("jdbc.user") == null ? properties.getProperty("jdbc.user") : DEFAULT_USERNAME;
+		password = properties.getProperty("jdbc.password") == null ? properties.getProperty("jdbc.password") : DEFAULT_PASSWORD;
+		
+		
 		if (connection == null) {
 			try {
-				PresleyProperties properties = PresleyProperties.getInstance();
-				connection = DriverManager.getConnection(properties.getProperty("jdbc.url"), 
-						properties.getProperty("jdbc.user"), properties.getProperty("jdbc.password"));
+				Class.forName(DEFAULT_DRIVER);
+			} catch (Exception e) {}
+			
+			try {
+				connection = DriverManager.getConnection(url, username, password);
+				logger.info("Connection established with " + url);
 			} catch (SQLException e) {
-				e.printStackTrace();
+				logger.error(e);
 			}
 		}
 		return connection;
 	}
-	
-	public static void main(String arg[]) {
-		Connection connection = MySQLConnectionFactory.open();
-		System.out.println(connection.toString());
-	}
-	
+
 }

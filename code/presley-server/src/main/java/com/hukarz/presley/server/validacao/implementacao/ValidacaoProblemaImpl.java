@@ -5,7 +5,10 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
+
 import com.hukarz.presley.beans.ArquivoJava;
+import com.hukarz.presley.beans.Conhecimento;
 import com.hukarz.presley.beans.Desenvolvedor;
 import com.hukarz.presley.beans.Problema;
 import com.hukarz.presley.beans.Solucao;
@@ -15,10 +18,14 @@ import com.hukarz.presley.excessao.ProblemaInexistenteException;
 import com.hukarz.presley.excessao.ProjetoInexistenteException;
 import com.hukarz.presley.server.inferencia.Inference;
 import com.hukarz.presley.server.inferencia.InferenceFactory;
+import com.hukarz.presley.server.inferencia.Inferencia;
+import com.hukarz.presley.server.inferencia.InferenciaLine10;
+import com.hukarz.presley.server.persistencia.implementacao.ServicoArquivoImplDAO;
 import com.hukarz.presley.server.persistencia.implementacao.ServicoMensagemImplDAO;
 import com.hukarz.presley.server.persistencia.implementacao.ServicoProblemaImplDAO;
 import com.hukarz.presley.server.persistencia.implementacao.ServicoProjetoImplDAO;
 import com.hukarz.presley.server.persistencia.implementacao.ServicoSolucaoImplDAO;
+import com.hukarz.presley.server.persistencia.interfaces.ServicoArquivo;
 import com.hukarz.presley.server.persistencia.interfaces.ServicoMensagem;
 import com.hukarz.presley.server.persistencia.interfaces.ServicoProblema;
 import com.hukarz.presley.server.persistencia.interfaces.ServicoProjeto;
@@ -38,14 +45,18 @@ public class ValidacaoProblemaImpl {
 	
 	ServicoSolucao  servicoSolucao;
 	ServicoProblema servicoProblema;
+	ServicoArquivo  servicoArquivo;
 	ServicoMensagem servicoMensagem;
 	ServicoProjeto  servicoProjeto;
 	
 	ValidacaoArquivoImpl validacaoArquivo ;
 	
+	private Logger logger = Logger.getLogger(this.getClass());
+	
 	public ValidacaoProblemaImpl() {
 		servicoProblema = new ServicoProblemaImplDAO();
 		servicoSolucao  = new ServicoSolucaoImplDAO();
+		servicoArquivo  = new ServicoArquivoImplDAO();
 		servicoMensagem = new ServicoMensagemImplDAO();
 		servicoProjeto	= new ServicoProjetoImplDAO();
 		
@@ -53,8 +64,8 @@ public class ValidacaoProblemaImpl {
 	}
 	
 	/**
-	 * Esse método atualiza o status do problema, ou seja, se ele foi resolvido
-	 * ou não.
+	 * Esse mï¿½todo atualiza o status do problema, ou seja, se ele foi resolvido
+	 * ou nï¿½o.
 	 * @param id Identificador do problema.
 	 * @param status Situacao do problema.
 	 * @return true se a atualizacao foi concluida com sucesso.
@@ -66,6 +77,17 @@ public class ValidacaoProblemaImpl {
 		return servicoProblema.atualizarStatusDoProblema(id, status);
 	}
 	
+	/**
+	 * Esse mÃ©todo cadastra um novo problema na base de dados.
+	 * @param idAtividade Identificador da atividade.
+	 * @param descricao Descricao do problema relatado.
+	 * @param dataDoRelato Data em que o problema foi encontrado.
+	 * @param mensagem Mensagem a ser exibida a respeito do tipo do problema.
+	 * @return true se o problema foi cadastrado com sucesso.
+	 * @throws IOException 
+	 * @throws ProjetoInexistenteException 
+	 * @throws ConhecimentoNaoEncontradoException 
+	 */
 	public Problema cadastrarProblema(Problema problema) 
 	throws DescricaoInvalidaException, IOException, ProjetoInexistenteException, ConhecimentoNaoEncontradoException {
 
@@ -73,11 +95,13 @@ public class ValidacaoProblemaImpl {
 
 		if (!servicoProjeto.projetoExiste( problema.getProjeto() )) throw new ProjetoInexistenteException();
 
-
+		this.logger.debug("ValidaÃ§Ã£o");
+		
 		// Cria uma lista com os Desenvolvedores de cada arquivo java		 
 		Map<ArquivoJava, ArrayList<Desenvolvedor>> arquivoDesenvolvedores = validacaoArquivo.getDesenvolvedoresArquivos(problema);
 		
-
+		this.logger.debug("Lista com os Desenvolvedores de cada arquivo");
+		
 		// Identifica o conhecimeto do problema a se cadastrar
 		ProcessaSimilaridade processaSimilaridade = new ProcessaSimilaridade();
 	
@@ -92,22 +116,29 @@ public class ValidacaoProblemaImpl {
 			}			
 		}
 				
-		String texto = problema.getDescricao() + "  " + problema.getMensagem() + " " + comentariosCodigo;
-		problema.setConhecimento(processaSimilaridade.verificaConhecimentoDoTexto(texto)) ;
+		// String texto = problema.getDescricao() + "  " + problema.getMensagem() + " " + comentariosCodigo;
+		// problema.setConhecimento(processaSimilaridade.verificaConhecimentoDoTexto(texto)) ;
+		
+		Conhecimento conhecimento = new Conhecimento();
+		conhecimento.setNome("Core");
+		problema.setConhecimento( conhecimento );
+		this.logger.debug("Conhecimeto do problema");
+		
 		problema = servicoProblema.cadastrarProblema(problema);
 		
 		if (problema.isTemResposta()) {
+			// Retorna os desenvolvedores que receberÃ£o o problema
 			Inference inferencia = InferenceFactory.createInstance();
-			ArrayList<Desenvolvedor> desenvolvedores = inferencia.getDesenvolvedores(arquivoDesenvolvedores, 
-					problema);
+			ArrayList<Desenvolvedor> desenvolvedores = inferencia.getDesenvolvedores(arquivoDesenvolvedores, problema);
 			servicoMensagem.adicionarMensagem(desenvolvedores, problema);
+			this.logger.debug("Mensagem Adcionada");
 		}
 
 		return problema;
 	}
 
 	/**
-	 * Esse método retorna o objeto problema que possui tal id.
+	 * Esse mï¿½todo retorna o objeto problema que possui tal id.
 	 * @param id Identificador do problema.
 	 * @return <Problema>
 	 */	
@@ -118,7 +149,7 @@ public class ValidacaoProblemaImpl {
 	}
 	
 	/**
-	 * Esse método verifica se um dado problema existe na base de dados.
+	 * Esse mï¿½todo verifica se um dado problema existe na base de dados.
 	 * @param id Identificador do problema
 	 * @return true se o problema existir na base de dados.
 	 */
@@ -128,7 +159,7 @@ public class ValidacaoProblemaImpl {
 	}
 	
 	/**
-	 * Esse método remove um problema relatado da base de dados.
+	 * Esse mï¿½todo remove um problema relatado da base de dados.
 	 * @param id Identificador do problema
 	 * @return true se o problema foi removido da base de dados.
 	 * @throws ProblemaInexistenteException 

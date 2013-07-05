@@ -39,7 +39,7 @@ public class ServicoMensagemImplDAO implements ServicoMensagem{
 				stm.close();
 				//conn.close();
 			} catch (SQLException onConClose) {
-				System.out.println(" Houve erro no fechamento da conexão ");
+				System.out.println(" Houve erro no fechamento da conexï¿½o ");
 				onConClose.printStackTrace();	
 				return false;
 			}
@@ -65,16 +65,13 @@ public class ServicoMensagemImplDAO implements ServicoMensagem{
 						
 			while(rs.next()) {
 				Mensagem msg = new Mensagem();
-				
+			
 				int id = rs.getInt(1);
 				Problema problem = servicoProblema.getProblema(id);
 				
 				Desenvolvedor des = problem.getDesenvolvedorOrigem();
 				msg.setDesenvolvedorOrigem(des);
 				msg.setProblema(problem);
-				
-				// msg.setTexto(rs.getString(3)); *************
-				
 				mensagens.add(msg);
 			}
 			
@@ -86,7 +83,7 @@ public class ServicoMensagemImplDAO implements ServicoMensagem{
 				stm.close();
 				//conn.close();
 			} catch (SQLException onConClose) {
-				System.out.println(" Houve erro no fechamento da conexão ");
+				System.out.println(" Houve erro no fechamento da conexï¿½o ");
 				onConClose.printStackTrace();	
 				return null;
 			}
@@ -94,7 +91,6 @@ public class ServicoMensagemImplDAO implements ServicoMensagem{
 		return mensagens;
 	}
 
-	@Override
 	public boolean existeResposta(String emailDesenvolvedorDestino,
 			String emailDesenvolvedorOrigem) {
 		Connection conn = MySQLConnectionFactory.open();
@@ -125,7 +121,7 @@ public class ServicoMensagemImplDAO implements ServicoMensagem{
 				stm.close();
 				//conn.close();
 			} catch (SQLException onConClose) {
-				System.out.println(" Houve erro no fechamento da conexão ");
+				System.out.println(" Houve erro no fechamento da conexï¿½o ");
 				onConClose.printStackTrace();	
 				return false;
 			}

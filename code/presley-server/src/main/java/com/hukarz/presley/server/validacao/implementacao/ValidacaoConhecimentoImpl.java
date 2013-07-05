@@ -152,7 +152,7 @@ public class ValidacaoConhecimentoImpl {
 	}
 	
 	/**
-	 * Esse metodo cria uma associacao de herança entre dois conhecimentos
+	 * Esse metodo cria uma associacao de heranï¿½a entre dois conhecimentos
 	 * passados por parametro.
 	 * @param nomeConhecimentoPai Nome do conhecimento Pai.
 	 * @param nomeConhecimentoFilho Nome do conhecimento Filho.
@@ -171,7 +171,7 @@ public class ValidacaoConhecimentoImpl {
 	}
 	
 	/**
-	 * Esse metodo desfaz uma associacao de herança entre dois conhecimentos
+	 * Esse metodo desfaz uma associacao de heranï¿½a entre dois conhecimentos
 	 * passados por parametro.
 	 * @param nomeConhecimentoPai Nome do conhecimento Pai.
 	 * @param nomeConhecimentoFilho Nome do conhecimento Filho.
@@ -239,11 +239,9 @@ public class ValidacaoConhecimentoImpl {
 	 * @throws ConhecimentoInexistenteException
 	 * @throws IOException
 	 */
-	// TODO @alan analisar
-	// XXX: associação de arquivos a um conhecimento 
 	public Conhecimento associaArquivo(Conhecimento conhecimento) throws ConhecimentoInexistenteException, IOException {
 		
-		if (!servicoConhecimento.conhecimentoExiste(conhecimento.getNome())) {
+		if (! servicoConhecimento.conhecimentoExiste(conhecimento.getNome())) {
 			throw new ConhecimentoInexistenteException();
 		}
 
@@ -301,7 +299,7 @@ public class ValidacaoConhecimentoImpl {
     		arvore.adicionaFilho(conhecimento);
     	}
 
-    	// Obtendo as sub-árvores para montar a arvore completa.
+    	// Obtendo as sub-ï¿½rvores para montar a arvore completa.
     	Iterator<Conhecimento> it3 = filhosDoRaiz.iterator();
     	while (it3.hasNext()) {
     		Conhecimento filhoDoRaiz = it3.next();

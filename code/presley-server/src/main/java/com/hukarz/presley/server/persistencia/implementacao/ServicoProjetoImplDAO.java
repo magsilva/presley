@@ -13,7 +13,6 @@ import com.hukarz.presley.server.persistencia.interfaces.ServicoProjeto;
 
 public class ServicoProjetoImplDAO implements ServicoProjeto {
 
-	@Override
 	public Projeto getProjetoAtivo() {
 		Connection conn = MySQLConnectionFactory.open();
 		Projeto projeto = new Projeto();
@@ -80,7 +79,7 @@ public class ServicoProjetoImplDAO implements ServicoProjeto {
 				stm.close();
 				//conn.close();
 			} catch (SQLException onConClose) {
-				System.out.println(" Houve erro no fechamento da conexão ");
+				System.out.println(" Houve erro no fechamento da conexï¿½o ");
 				onConClose.printStackTrace();	             
 			}
 		}
@@ -88,7 +87,6 @@ public class ServicoProjetoImplDAO implements ServicoProjeto {
 		return true;
 	}
 
-	@Override
 	public boolean removerProjeto(Projeto projeto) {
 		Connection conn = MySQLConnectionFactory.open();
 		Statement stm = null;
@@ -105,7 +103,7 @@ public class ServicoProjetoImplDAO implements ServicoProjeto {
 				stm.close();
 				//conn.close();
 			} catch (SQLException onConClose) {
-				System.out.println(" Houve erro no fechamento da conexão ");
+				System.out.println(" Houve erro no fechamento da conexï¿½o ");
 				onConClose.printStackTrace();	             
 			}
 		}
@@ -113,7 +111,6 @@ public class ServicoProjetoImplDAO implements ServicoProjeto {
 		return true;
 	}
 
-	@Override
 	public boolean atualizarStatusProjeto(Projeto projeto) {
 		Connection conn = MySQLConnectionFactory.open();
 		Statement stm = null;
@@ -137,7 +134,7 @@ public class ServicoProjetoImplDAO implements ServicoProjeto {
 				stm.close();
 				//conn.close();
 			} catch (SQLException onConClose) {
-				System.out.println(" Houve erro no fechamento da conexão ");
+				System.out.println(" Houve erro no fechamento da conexï¿½o ");
 				onConClose.printStackTrace();	             
 			}
 		}
@@ -174,7 +171,7 @@ public class ServicoProjetoImplDAO implements ServicoProjeto {
 				stm.close();
 				//conn.close();
 			} catch (SQLException onConClose) {
-				System.out.println(" Houve erro no fechamento da conexão ");
+				System.out.println(" Houve erro no fechamento da conexï¿½o ");
 				onConClose.printStackTrace();	             
 			}
 		}
@@ -215,7 +212,7 @@ public class ServicoProjetoImplDAO implements ServicoProjeto {
 				stm.close();
 				//conn.close();
 			} catch (SQLException onConClose) {
-				System.out.println(" Houve erro no fechamento da conexão ");
+				System.out.println(" Houve erro no fechamento da conexï¿½o ");
 				onConClose.printStackTrace();	
 				return null;
 			}
@@ -223,7 +220,6 @@ public class ServicoProjetoImplDAO implements ServicoProjeto {
 		return projetos;
 	}
 
-	@Override
 	public Projeto getProjeto(String nome) {
 		//Connection conn = MySQLConnectionFactory.getConnection();
 		Connection conn = MySQLConnectionFactory.open();
@@ -258,7 +254,7 @@ public class ServicoProjetoImplDAO implements ServicoProjeto {
 				stm.close();
 				//conn.close();
 			} catch (SQLException onConClose) {
-				System.out.println(" Houve erro no fechamento da conexão ");
+				System.out.println(" Houve erro no fechamento da conexï¿½o ");
 				onConClose.printStackTrace();	             
 			}
 		}	

@@ -55,7 +55,7 @@ public class ServicoProblemaImplDAO implements ServicoProblema{
 				stm.close();
 				//conn.close();
 			} catch (SQLException onConClose) {
-				System.out.println(" Houve erro no fechamento da conexão ");
+				System.out.println(" Houve erro no fechamento da conexï¿½o ");
 				onConClose.printStackTrace();	             
 			}
 		}
@@ -122,7 +122,7 @@ public class ServicoProblemaImplDAO implements ServicoProblema{
 				stm.close();
 				//conn.close();
 			} catch (SQLException onConClose) {
-				System.out.println(" Houve erro no fechamento da conexão ");
+				System.out.println(" Houve erro no fechamento da conexï¿½o ");
 				onConClose.printStackTrace();	             
 			}
 		}
@@ -164,7 +164,7 @@ public class ServicoProblemaImplDAO implements ServicoProblema{
 				stm.close();
 				//conn.close();
 			} catch (SQLException onConClose) {
-				System.out.println(" Houve erro no fechamento da conexão ");
+				System.out.println(" Houve erro no fechamento da conexï¿½o ");
 				onConClose.printStackTrace();	             
 			}
 		}
@@ -201,7 +201,7 @@ public class ServicoProblemaImplDAO implements ServicoProblema{
 				stm.close();
 				//conn.close();
 			} catch (SQLException onConClose) {
-				System.out.println(" Houve erro no fechamento da conexão ");
+				System.out.println(" Houve erro no fechamento da conexï¿½o ");
 				onConClose.printStackTrace();	             
 			}
 		}
@@ -252,7 +252,7 @@ public class ServicoProblemaImplDAO implements ServicoProblema{
 				stm.close();
 				//conn.close();
 			} catch (SQLException onConClose) {
-				System.out.println(" Houve erro no fechamento da conexão ");
+				System.out.println(" Houve erro no fechamento da conexï¿½o ");
 				onConClose.printStackTrace();	             
 			}
 		}
@@ -301,7 +301,7 @@ public class ServicoProblemaImplDAO implements ServicoProblema{
 				stm.close();
 				//conn.close();
 			} catch (SQLException onConClose) {
-				System.out.println(" Houve erro no fechamento da conexão ");
+				System.out.println(" Houve erro no fechamento da conexï¿½o ");
 				onConClose.printStackTrace();	             
 			}
 		}
@@ -336,13 +336,12 @@ public class ServicoProblemaImplDAO implements ServicoProblema{
 				stm.close();
 				//conn.close();
 			} catch (SQLException onConClose) {
-				System.out.println(" Houve erro no fechamento da conexão ");
+				System.out.println(" Houve erro no fechamento da conexï¿½o ");
 				onConClose.printStackTrace();	             
 			}
 		}
 	}
 
-	@Override
 	public Problema getProblema(String descricao, Date dataRelato,
 			String mensagem, Desenvolvedor desenvolvedor_email) {
 		//Connection conn = MySQLConnectionFactory.getConnection();
@@ -384,7 +383,7 @@ public class ServicoProblemaImplDAO implements ServicoProblema{
 				stm.close();
 				//conn.close();
 			} catch (SQLException onConClose) {
-				System.out.println(" Houve erro no fechamento da conexão ");
+				System.out.println(" Houve erro no fechamento da conexï¿½o ");
 				onConClose.printStackTrace();	             
 			}
 		}
