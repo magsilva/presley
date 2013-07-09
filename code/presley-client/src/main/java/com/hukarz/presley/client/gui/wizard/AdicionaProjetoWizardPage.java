@@ -62,7 +62,6 @@ public class AdicionaProjetoWizardPage extends WizardPage {
     	return projeto;
     }
     
-	@Override
 	public void createControl(Composite parent) {
         Composite controls = new Composite(parent, SWT.NULL);
         GridLayout layout  = new GridLayout();
@@ -116,7 +115,7 @@ public class AdicionaProjetoWizardPage extends WizardPage {
 
         
 	    Label lblLeitura = new Label(composite, SWT.NULL);
-	    lblLeitura.setText("Endereço do Arquivo de Log: ");
+	    lblLeitura.setText("Endereï¿½o do Arquivo de Log: ");
         
         enderecoArquivoLog = new Text( composite, SWT.BORDER | SWT.SINGLE);
         enderecoArquivoLog.setLayoutData(gd);
@@ -129,7 +128,7 @@ public class AdicionaProjetoWizardPage extends WizardPage {
 
         
 	    Label lblGravacao = new Label(composite, SWT.NULL);
-	    lblGravacao.setText("Endereço para Gravação: ");
+	    lblGravacao.setText("Endereï¿½o para Gravaï¿½ï¿½o: ");
         
         enderecoGravacao = new Text( composite, SWT.BORDER | SWT.SINGLE);
         enderecoGravacao.setLayoutData(gd);
@@ -141,7 +140,7 @@ public class AdicionaProjetoWizardPage extends WizardPage {
              });
 
 	    Label lblEnderecoProjeto = new Label(composite, SWT.NULL);
-	    lblEnderecoProjeto.setText("Endereço do Projeto no Servidor: ");
+	    lblEnderecoProjeto.setText("Endereï¿½o do Projeto no Servidor: ");
         
         enderecoServidorProjeto = new Text( composite, SWT.BORDER | SWT.SINGLE);
         enderecoServidorProjeto.setLayoutData(gd);
@@ -180,13 +179,10 @@ public class AdicionaProjetoWizardPage extends WizardPage {
 		  
 		  projetosExistentes.addSelectionListener(
 				  new SelectionListener(){
-
-					  @Override
 					  public void widgetDefaultSelected(SelectionEvent e) {
 
 					  }
 
-					  @Override
 					  public void widgetSelected(SelectionEvent e) {
 						  Projeto projeto = projetos.get( projetosExistentes.getSelectionIndex() );
 						  projetoAtivo.setSelection( projeto.isAtivo() ) ;

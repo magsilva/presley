@@ -79,7 +79,7 @@ public class ViewComunication implements CorePresleyOperations{
 	
 	/**
 	 * Retorna a ontolgia dos conhecimentos.
-	 * @return Tree é a arvore de conhecimentos.
+	 * @return Tree ï¿½ a arvore de conhecimentos.
 	 * @throws ConhecimentoInexistenteException 
 	 */
 	public org.eclipse.swt.widgets.Tree getArvoreGraficaDeConhecimentos(Composite parent, int style) throws ConhecimentoInexistenteException{
@@ -98,9 +98,9 @@ public class ViewComunication implements CorePresleyOperations{
 	}
 
 	/**
-	 * Método auxiliar do método anterior que constrói a arvore. Este percore a arvore de forma recursiva em pre-ordem.
-	 * @param arvoreGrafica é a árvore gráfica que será construía
-	 * @param arvoreModelo é o modelo de árvore a partir do qual ser´construída a árvore gráfica
+	 * Mï¿½todo auxiliar do mï¿½todo anterior que constrï¿½i a arvore. Este percore a arvore de forma recursiva em pre-ordem.
+	 * @param arvoreGrafica ï¿½ a ï¿½rvore grï¿½fica que serï¿½ construï¿½a
+	 * @param arvoreModelo ï¿½ o modelo de ï¿½rvore a partir do qual serï¿½construï¿½da a ï¿½rvore grï¿½fica
 	 */
 	private void constroiArvoreGraficaHelper(org.eclipse.swt.widgets.TreeItem arvoreGrafica, Item arvoreModelo){
 		if (arvoreModelo==null) {
@@ -136,9 +136,9 @@ public class ViewComunication implements CorePresleyOperations{
 	/**
 	 * Adiciona um novo conhecimento na ontologia.
 	 * 
-	 * @param item é o nó da ontologia onde será criado novo filho
-	 * @param novoConhecimento é o nome do novo conhecimento
-	 * @return true se sucesso ou false caso contrário
+	 * @param item ï¿½ o nï¿½ da ontologia onde serï¿½ criado novo filho
+	 * @param novoConhecimento ï¿½ o nome do novo conhecimento
+	 * @return true se sucesso ou false caso contrï¿½rio
 	 * @throws Exception 
 	 */
 	
@@ -169,8 +169,8 @@ public class ViewComunication implements CorePresleyOperations{
 
 	/**
 	 * Retorna os problemas associados a um desenvolvedor
-	 * @param atividade é o nome da atividade
-	 * @return ArrayList<String> é a lista de problemas
+	 * @param atividade ï¿½ o nome da atividade
+	 * @return ArrayList<String> ï¿½ a lista de problemas
 	 */
 	@SuppressWarnings("unchecked")
 	public ArrayList<Problema> getProblemas(Desenvolvedor desenvolvedor)
@@ -191,8 +191,8 @@ public class ViewComunication implements CorePresleyOperations{
 
 	/**
 	 * Remove o problema informado
-	 * @param problema é o problema a ser excluido
-	 * @return boolean se a exclusão ocorreu bem
+	 * @param problema ï¿½ o problema a ser excluido
+	 * @return boolean se a exclusï¿½o ocorreu bem
 	 */
 	public boolean removerProblema(Problema problema) {
 		PacketStruct respostaPacket = sendPack(problema, CorePresleyOperations.REMOVER_PROBLEMA);
@@ -203,7 +203,7 @@ public class ViewComunication implements CorePresleyOperations{
 	}
 	
 	/**
-	 * Mótodo de teste que cria uma ontologia e uma atividade com seus conhecimentos e problemas associados.
+	 * Mï¿½todo de teste que cria uma ontologia e uma atividade com seus conhecimentos e problemas associados.
 	 * Esta ser para simular o ambiente operacional do sistema.
 	 */
 //	public void teste()
@@ -583,15 +583,13 @@ public class ViewComunication implements CorePresleyOperations{
 		return (Boolean)respostaPacket.getData();
 	}
 
-	@Override
 	public Tree getArvoreConhecimentos()
 			throws ConhecimentoInexistenteException {
 		return null;
 	}
 
-	@Override
-	public Desenvolvedor getDesenvolvedorPorNome(String nome)
-			throws DesenvolvedorInexistenteException {
+	public Desenvolvedor getDesenvolvedorPorNome(String nome) throws DesenvolvedorInexistenteException
+	{
 		PacketStruct respostaPacket = sendPack(nome, GET_DESENVOLVEDOR_POR_NOME);
 		Desenvolvedor desenvolvedor = (Desenvolvedor)respostaPacket.getData();
     	

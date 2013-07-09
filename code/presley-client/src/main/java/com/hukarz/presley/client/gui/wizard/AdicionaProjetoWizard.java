@@ -14,7 +14,8 @@ import com.hukarz.presley.client.gui.view.MensagemAba;
 import com.hukarz.presley.excessao.NomeInvalidoException;
 import com.hukarz.presley.excessao.ProjetoInexistenteException;
 
-public class AdicionaProjetoWizard extends Wizard implements INewWizard {
+public class AdicionaProjetoWizard extends Wizard implements INewWizard
+{
 	private MensagemAba mensagemAba;
 	private AdicionaProjetoWizardPage page;
 	private ISelection selection;
@@ -60,7 +61,6 @@ public class AdicionaProjetoWizard extends Wizard implements INewWizard {
 		return true;
 	}
 
-	@Override
 	public void init(IWorkbench workbench, IStructuredSelection selection) {
 		this.selection = selection;
 	}

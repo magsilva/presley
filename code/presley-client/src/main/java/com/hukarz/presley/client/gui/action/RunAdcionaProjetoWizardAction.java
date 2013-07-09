@@ -21,13 +21,9 @@ public class RunAdcionaProjetoWizardAction extends Action implements
 	}
 
 
-
-	@Override
 	public void init(IWorkbenchWindow window) {
-
 	}
 
-	@Override
 	public void run(IAction action) {
 		AdicionaProjetoWizard wizard = new AdicionaProjetoWizard(mensagem);
 		Shell shell = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
@@ -39,10 +35,8 @@ public class RunAdcionaProjetoWizardAction extends Action implements
 	}
 
 	public void selectionChanged(IAction action, ISelection selection) {
-
 	}
 
-	@Override
 	public void dispose() {
 	}
 
