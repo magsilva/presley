@@ -40,9 +40,9 @@ public class Threader {
 		File[] files = directory.listFiles();
 		for (File file : files) {
 			try {
+				System.out.print(".");
 				processMbox(file);
-			}
-			catch (IOException e) {
+			} catch (IOException e) {
 				e.printStackTrace();
 			}
 		} 
@@ -155,14 +155,12 @@ public class Threader {
 		return threads;
 	}
 	
-	// TODO: trocar a implementação deste método.
+	// TODO: trocar a implementaï¿½ï¿½o deste mï¿½todo.
 	protected void processMbox(File file) throws FileNotFoundException, IOException {
 		FileReader fileReader = new FileReader(file);
 		BufferedReader reader = new BufferedReader(fileReader);
-		String LINE_DASHES = "---------------------------------------------------------------------";
-		String LINE_UNSUBSCRIBE_MESSAGE = "To unsubscribe, e-mail: dev-unsubscribe@commons.apache.org";
-		String LINE_ADDITIONAL_COMMANDS = "For additional commands, e-mail: dev-help@commons.apache.org"; 
-		String linha = "";
+		String linhaOriginal;
+		String linha;
 	
 		Email email = new Email();
 	
@@ -174,25 +172,20 @@ public class Threader {
 		boolean proximaLinhaSubject = false;
 		boolean encontrouFrom		= false;
 		
-		while( (linha = reader.readLine()) != null ){
-			linha = linha.trim();
-	
-			if ( linha.equals(LINE_DASHES) || linha.equals(LINE_UNSUBSCRIBE_MESSAGE) 
-					|| linha.equals(LINE_ADDITIONAL_COMMANDS)) {
-				continue;
-			}
-
+		while ((linhaOriginal = reader.readLine()) != null ){
+			linha = linhaOriginal.trim();
 			linha = linha.toLowerCase();
 			linha = linha.replace('\t', ' ');
 	
-			if ( !email.getReferences().isEmpty() && maisReferencias) {
-				maisReferencias = !linha.contains(":"); 
+			if ( ! email.getReferences().isEmpty() && maisReferencias) {
+				maisReferencias = ! linha.contains(":"); 
 			}
 	
-			if (linha.startsWith("from ") && (linha.contains("@")) ) {
+			if (linha.startsWith("from ") && ((linha.contains("@") || linha.contains(" at ")))) {
 				if (encontrouMessageID && encontrouSubject) {
-					if (!email.adicionar(this.threads)) 
+					if (! email.adicionar(this.threads)) { 
 						this.threads.add(email);
+					}
 				}
 	
 				encontrouMessageID	= false;
@@ -202,82 +195,75 @@ public class Threader {
 				encontrouData		= false;
 				proximaLinhaSubject	= false;
 				encontrouFrom 		= false;
-				
 				email = new Email();						   
-			} 
-			else if ((!encontrouMessageID && linha.startsWith("message-id: ")) 
-					|| (encontrouMessageID && email.getMessageID().isEmpty() ) ) { 
+			} else if ((!encontrouMessageID && linha.startsWith("message-id: ")) || (encontrouMessageID && email.getMessageID().isEmpty() ) ) { 
 				encontrouMessageID = true;
 				linha = linha.replaceAll("message-id: ", "");
 				linha = retirarCaracteresExtras(linha);
 				email.setMessageID(linha);
-			} 
-			else if (linha.startsWith("in-reply-to: ")) { 
+			} else if (linha.startsWith("in-reply-to: ")) { 
 				linha = linha.replaceAll("in-reply-to: ", "");
 				linha = retirarCaracteresExtras(linha);
 				email.setInReplyTo(linha);
-			} 
-			else if ((!encontrouFrom) && linha.startsWith("from: ")){
+			} else if ((! encontrouFrom) && linha.startsWith("from: ")){
 				encontrouFrom = true;
-				
-				if (!linha.contains("@")){
+				if (! (linha.contains("@") || linha.contains(" at "))){
 					linha = linha + " "+ reader.readLine();					
 				}
-				linha = linha.replaceAll("from:", "");
+				linha = linha.replaceAll("from: ", "");
+				linha = linha.replaceAll(" at ", "@");
 				linha = retirarCaracteresExtras(linha);
-				
-				if (linha.contains("jira@apache.org")){
-					linha = linha.replace("jira@apache.org", linha.trim() + "@presley" );
-				}
 				
 				String emailFrom = "";
 				String nomeFrom  = "";				
-				
 				StringTokenizer st = new StringTokenizer(linha);
 				while (st.hasMoreTokens()) {
 					String token = st.nextToken();
-
-					if (token.contains("@")){
+					if (token.contains("@")) {
 						emailFrom = retirarCaracteresExtras(token);
 						nomeFrom  = retirarCaracteresExtras(nomeFrom);
-					} else if (emailFrom.contains(","))
+					} else if (emailFrom.contains(",")) {
 						nomeFrom = "";
-					else 
+					} else { 
 						nomeFrom = nomeFrom + token + " ";
+					}
 				}
-	
 				email.setDesenvolvedor(emailFrom, nomeFrom);	
-			} 
-			else if (linha.startsWith("date: ") && !encontrouData){ 
+			} else if (! encontrouData && linha.startsWith("date: ")){ 
 				linha = linha.replaceAll("date: ", "");
 				linha = retirarCaracteresExtras(linha);
-				email.setData(linha);
+				try {
+					email.setData(linha);
+				} catch (NumberFormatException e) {
+					System.err.println("Error parsing date: " + linha);
+				}
 				encontrouData = true;
-			} 
-			else if (linha.startsWith("references: ") || (maisReferencias) ){ 
+			} else if (linha.startsWith("references: ") || (maisReferencias) ){ 
 				linha = linha.replaceAll("references: ", "");
-				linha = this.retirarCaracteresExtras(linha);
-				email.setReferences( email.getReferences() + " " + linha);
+				linha = retirarCaracteresExtras(linha);
+				email.setReferences(email.getReferences() + " " + linha);
 				maisReferencias = true;
-			} else if ((!encontrouSubject && linha.startsWith("subject: ")) ||
-					(proximaLinhaSubject && linha.startsWith(" "))){
+			} else if ((! encontrouSubject && linha.startsWith("subject: ")) || (proximaLinhaSubject && linha.startsWith(" "))){
 				encontrouSubject = true;
 				proximaLinhaSubject = true;
 				linha = linha.replaceAll("subject: ", "");
-				email.setSubject( email.getSubject() + " " +linha);
+				email.setSubject( email.getSubject() + " " + linha);
 			} else if (encontrouMessageID && encontrouSubject && linha.isEmpty() ){
 				encontrouMensagem  = true;
+				// System.out.print("+");
 			}
 	
-			if (encontrouSubject && proximaLinhaSubject && 
-					!email.getSubject().isEmpty() && linha.contains(":") )
+			if (encontrouSubject && proximaLinhaSubject && ! email.getSubject().isEmpty() && linha.contains(":") )
 				proximaLinhaSubject = false;
 	
 			// Encontra a mensagem e a primeira linha da mensagem anterior
-			if (encontrouMensagem && !linha.startsWith(">") ){
-				email.setMensagem( email.getMensagem() + " " + linha );
+			if (encontrouMensagem && ! linha.startsWith(">") ){
+				email.appendMensagem(" ");
+				email.appendMensagem(linha);
 			}
 		}
+		reader.close();
+		fileReader.close();
 	
 		if (encontrouMessageID && encontrouSubject) {
 			if (!email.adicionar(this.threads)) { 
@@ -293,7 +279,6 @@ public class Threader {
 
 	String retirarCaracteresExtras(String palavra) {
 		String result = palavra;
-		result = result.replace("JIRA", "");
 		result = result.replace("<", "");
 		result = result.replace(">", "");
 		result = result.replace("(", "");

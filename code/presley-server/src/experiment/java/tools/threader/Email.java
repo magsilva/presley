@@ -15,6 +15,7 @@ public class Email {
 	private Desenvolvedor desenvolvedor;
 	private String inReplyTo, references;
 	private String mensagem;
+	private StringBuilder mensagemBuffer;
 	private String messageID;
 	
 	private String subject;
@@ -25,8 +26,9 @@ public class Email {
 		inReplyTo	= "";
 		references	= "";
 		subject		= "";
-		mensagem	= "";
+		mensagem	= null;
 		desenvolvedor = new Desenvolvedor();
+		mensagemBuffer = new StringBuilder();
 	}
 
 	public boolean adicionar(ArrayList<Email> emails) {
@@ -39,14 +41,14 @@ public class Email {
 			assuntoRespostaIncluir	= retornarAssuntoResposta(this.subject) ;
 			assuntoRespostaEmail	= retornarAssuntoResposta(email.getSubject()) ;
 			
-			// -> No caso normal quando a resposta vem depois do 1º e-mail
+			// -> No caso normal quando a resposta vem depois do 1ï¿½ e-mail
 			if ( this.getInReplyTo().equals( email.messageID ) ||
 					this.getReferences().contains( email.messageID ) ||
 					assuntoRespostaEmail.equals( assuntoRespostaIncluir )) {
 				email.emailsFilho.add(this);
 				retorno = true;
 				break;
-			// Casos onde o e-mail inicial está vindo depois da resposta	
+			// Casos onde o e-mail inicial estï¿½ vindo depois da resposta	
 			} 
 			else if (email.getInReplyTo().equals( this.messageID ) ||
 					email.getReferences().contains( this.messageID ) ||
@@ -104,6 +106,9 @@ public class Email {
 	}
 
 	public String getMensagem() {
+		if (mensagem == null) {
+			mensagem = mensagemBuffer.toString();
+		}
 		return mensagem;
 	}
 
@@ -208,7 +213,16 @@ public class Email {
 	public void setMensagem(String mensagem) {
 		this.mensagem = mensagem.toLowerCase();
 	}
-
+	
+	public void appendMensagem(String mensagem) {
+		if (this.mensagem == null) {
+			mensagemBuffer.append(mensagem);
+		} else {
+			this.mensagem += mensagem;
+		}
+	}
+	
+	
 	public void setMessageID(String messageID) {
 		this.messageID = messageID.toLowerCase();
 	}

@@ -64,7 +64,7 @@ public class ArvoreEmail extends JFrame implements ActionListener {
 
 		campo      = new JTextField(); 
 	
-		campo.setText("/home/marcelo/Documentos/Ana/TCC/ApacheHadoop/hadoop-common-dev");
+		campo.setText("/run/media/magsilva/magsilva-1TB/Backups/Research/UTF/Mining of Software Repositories/Data/LibreOffice/Mailing Lists/libreoffice-dev");
 
 		botao      = new JButton("Procurar");  
 		painelCima = new JPanel(new BorderLayout());  
@@ -97,11 +97,10 @@ public class ArvoreEmail extends JFrame implements ActionListener {
 
 	public void varreArvoreEmail(String base, DefaultMutableTreeNode no) {
 		Connection conn = MySQLConnectionFactory.open();
-		
+
+		ArrayList<Email> emails = new ArrayList<Email>(); 
 		File diretorio = new File(base);  
 		File[] conteudo = diretorio.listFiles();
-		ArrayList<Email> emails = new ArrayList<Email>(); 
-
 		try {
 			// (28	88)					Arquivos de 01/2004 at� 12/2008
 			// (89  conteudo.length)	Arquivos de 01/2009 at� o ultimo
@@ -124,19 +123,13 @@ public class ArvoreEmail extends JFrame implements ActionListener {
 				proximaLinhaSubject = false;
 
 				while( (linha = reader.readLine()) != null ){
-					
-					if ( linha.trim().equals("---------------------------------------------------------------------") ||
-							linha.trim().equals("To unsubscribe, e-mail: dev-unsubscribe@commons.apache.org") ||
-							linha.trim().equals("For additional commands, e-mail: dev-help@commons.apache.org"))
-						continue;
-										
 					linha = linha.toLowerCase();
 					linha = linha.replace('\t', ' ');
 					
 					if ( !email.getReferences().isEmpty() && maisReferencias )
 						maisReferencias = !linha.contains(":"); 
 
-					if (linha.startsWith("from ") && (linha.contains("@")) ){
+					if (linha.startsWith("from ") && ((linha.contains("@") || linha.contains(" at ")))) {
 						if (encontrouMessageID && encontrouSubject){
 							if (!Email.adcionarEmail(emails, email)) 
 								emails.add(email);
@@ -213,8 +206,9 @@ public class ArvoreEmail extends JFrame implements ActionListener {
 				}
 
 				if (encontrouMessageID && encontrouSubject){
-					if (!Email.adcionarEmail(emails, email)) 
+					if (!Email.adcionarEmail(emails, email)) {
 						emails.add(email);
+					}
 
 					encontrouMessageID	= false;
 					encontrouSubject	= false;
@@ -222,6 +216,8 @@ public class ArvoreEmail extends JFrame implements ActionListener {
 					maisReferencias		= false;
 					proximaLinhaSubject = false;
 				}
+				reader.close();
+				fileReader.close();
 			}
 
 			cadastrarProblemas(emails);
@@ -505,7 +501,6 @@ public class ArvoreEmail extends JFrame implements ActionListener {
 	}  
 
 	private String retirarCaracteresExtras(String palavra) {
-		palavra = palavra.replace("JIRA", "");
 		palavra = palavra.replace("<", "");
 		palavra = palavra.replace(">", "");
 		palavra = palavra.replace("(", "");

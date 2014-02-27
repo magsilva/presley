@@ -12,7 +12,7 @@ public class MySQLConnectionFactory {
 	
 	private static String DEFAULT_USERNAME = "root";
 	
-	private static String DEFAULT_PASSWORD = "aluno";
+	private static String DEFAULT_PASSWORD = "";
 	
 	private static String DEFAULT_URL = "jdbc:mysql://localhost/presley";
 	

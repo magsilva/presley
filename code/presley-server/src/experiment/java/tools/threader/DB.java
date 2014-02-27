@@ -131,18 +131,15 @@ public class DB {
 		projeto.setNome(properties.getProperty("experiment.projectName"));
 	
 		for (Email email : threader.getThreads()) {
-			if (email.getDesenvolvedor().getEmail().isEmpty() ||
-					email.getDesenvolvedor().getEmail().length() >= 50) {
+			if (email.getDesenvolvedor().getEmail().isEmpty() || email.getDesenvolvedor().getEmail().length() >= 60) {
 				continue;
 			}
 			
 			Desenvolvedor desenvolvedor;
-			// FIXME: criar construtor adequado em Problema para evitar este estilo de programação
+			// FIXME: criar construtor adequado em Problema para evitar este estilo de programaï¿½ï¿½o
 			Problema problema = new Problema();
 			try {
-				desenvolvedor = new Desenvolvedor( 
-						getDeveloperEmailInTheListaEmail( email.getDesenvolvedor().getEmail() ));
-
+				desenvolvedor = new Desenvolvedor(getDeveloperEmailInTheListaEmail( email.getDesenvolvedor().getEmail() ));
 				problema.setDesenvolvedorOrigem(desenvolvedor);
 				problema.setProjeto(projeto);
 				problema.setData(email.getData()) ;
@@ -157,11 +154,9 @@ public class DB {
 	
 			try {
 				problema = saveProblem(problema);
-			} 
-			catch (Exception e) {
-				e.printStackTrace();
+			} catch (Exception e) {
+				throw new RuntimeException(e);
 			}
-	
 			if (email.getEmailsFilho().size() > 0) {
 				cadastrarSolucoes(email.getEmailsFilho(), problema);
 			}
